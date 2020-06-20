@@ -1,0 +1,7 @@
+{
+  "name": "TEAyudo",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
