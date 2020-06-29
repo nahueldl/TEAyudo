@@ -51,9 +51,9 @@ const Menu: React.FC = () => {
   const location = useLocation();
 
   return (
-    <IonMenu contentId="main" type="overlay">
+    <IonMenu contentId="main" type="overlay" swipeGesture>
       <IonContent>
-        <IonList id="inbox-list">
+        <IonList id="menu-list">
           <IonListHeader>Inbox</IonListHeader>
           <IonNote>hi@ionicframework.com</IonNote>
           {appPages.map((appPage, index) => {
