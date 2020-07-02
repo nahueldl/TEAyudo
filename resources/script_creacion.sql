@@ -245,3 +245,161 @@ ALTER TABLE [dbo].[Nombre_Pictograma]  WITH CHECK ADD  CONSTRAINT [fkNombre_Pict
 REFERENCES [dbo].[Pictograma] ([id_pictograma])
 GO
 
+/*
+CREATE Paciente
+ */
+CREATE TABLE [dbo].[Paciente](
+	[id_paciente] [numeric](18, 0) IDENTITY(1,1) NOT NULL,
+	[nombre] [nvarchar](255) NOT NULL,
+	[apelllido] [nvarchar](255) NOT NULL,
+	[fecha_hora_alta] [datetime] NOT NULL,
+	[fecha_hora_modificacion] [datetime] NULL,
+	[fecha_hora_baja] [datetime] NULL,
+	[activo] [bit] NOT NULL,
+ CONSTRAINT [pkPaciente] PRIMARY KEY CLUSTERED 
+(
+	[id_paciente] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Paciente] ADD  CONSTRAINT [defaultPacienteFecha_hora_alta]  DEFAULT (getdate()) FOR [fecha_hora_alta]
+GO
+
+/*
+CREATE Paciente
+ */
+CREATE TABLE [dbo].[Paciente](
+	[id_paciente] [numeric](18, 0) IDENTITY(1,1) NOT NULL,
+	[nombre] [nvarchar](255) NOT NULL,
+	[apelllido] [nvarchar](255) NULL,
+	[fecha_hora_alta] [datetime] NOT NULL,
+	[fecha_hora_modificacion] [datetime] NULL,
+	[fecha_hora_baja] [datetime] NULL,
+	[activo] [bit] NOT NULL,
+ CONSTRAINT [pkPaciente] PRIMARY KEY CLUSTERED 
+(
+	[id_paciente] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Paciente] ADD  CONSTRAINT [defaultPacienteFecha_hora_alta]  DEFAULT (getdate()) FOR [fecha_hora_alta]
+GO
+
+/*
+CREATE Pictograma_Paciente
+ */
+CREATE TABLE [dbo].[Pictograma_Paciente](
+	[id_pictograma_paciente] [numeric](18, 0) IDENTITY(1,1) NOT NULL,
+	[id_paciente] [numeric](18, 0) NOT NULL,
+	[id_pictograma] [numeric](18, 0) NOT NULL,
+	[estado] [int] NULL,
+ CONSTRAINT [pkPictograma_Paciente] PRIMARY KEY CLUSTERED 
+(
+	[id_pictograma_paciente] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Pictograma_Paciente]  WITH CHECK ADD  CONSTRAINT [fkPictograma_PacientePictograma] FOREIGN KEY([id_pictograma])
+REFERENCES [dbo].[Pictograma] ([id_pictograma])
+GO
+
+ALTER TABLE [dbo].[Pictograma_Paciente]  WITH CHECK ADD  CONSTRAINT [fkPictograma_PacientePaciente] FOREIGN KEY([id_paciente])
+REFERENCES [dbo].[Paciente] ([id_paciente])
+GO
+
+/*
+CREATE Traduccion
+ */
+CREATE TABLE [dbo].[Traduccion](
+	[id_traduccion] [numeric](18, 0) IDENTITY(1,1) NOT NULL,
+	[id_paciente] [numeric](18, 0) NOT NULL,
+	[frase_traducida] [nvarchar](255) NOT NULL,
+	[fecha_hora] [datetime] NOT NULL,
+ CONSTRAINT [pkTraduccion] PRIMARY KEY CLUSTERED 
+(
+	[id_traduccion] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Traduccion]  WITH CHECK ADD  CONSTRAINT [fkTraduccionPaciente] FOREIGN KEY([id_paciente])
+REFERENCES [dbo].[Paciente] ([id_paciente])
+GO
+
+ALTER TABLE [dbo].[Traduccion] ADD  CONSTRAINT [defaultTraduccionFecha_hora]  DEFAULT (getdate()) FOR [fecha_hora]
+GO
+
+/*
+CREATE Traduccion_Pictograma
+ */
+CREATE TABLE [dbo].[Traduccion_Pictograma](
+	[id_traduccion_pictograma] [numeric](18, 0)  IDENTITY(1,1) NOT NULL,
+	[id_pictograma] [numeric](18, 0) NOT NULL,
+	[id_traduccion] [numeric](18, 0) NOT NULL,
+ CONSTRAINT [pkTraduccion_Pictograma] PRIMARY KEY CLUSTERED 
+(
+	[id_traduccion_pictograma] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Traduccion_Pictograma]  WITH CHECK ADD  CONSTRAINT [fkTraduccion_PictogramaPictograma] FOREIGN KEY([id_pictograma])
+REFERENCES [dbo].[Pictograma] ([id_pictograma])
+GO
+
+ALTER TABLE [dbo].[Traduccion_Pictograma]  WITH CHECK ADD  CONSTRAINT [fkTraduccion_PictogramaTraducciona] FOREIGN KEY([id_traduccion])
+REFERENCES [dbo].[Traduccion] ([id_traduccion])
+GO
+
+/*
+CREATE Informe
+ */
+CREATE TABLE [dbo].[Informe](
+	[id_informe] [numeric](18, 0)  IDENTITY(1,1) NOT NULL,
+	[id_paciente] [numeric](18, 0) NOT NULL,
+	[id_usuario_rol] [numeric](18, 0) NOT NULL,
+	[ruta_local_documento] [numeric](18, 0) NULL,
+	[fecha_hora] [datetime] NULL,
+ CONSTRAINT [pkInforme] PRIMARY KEY CLUSTERED 
+(
+	[id_informe] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Informe]  WITH CHECK ADD  CONSTRAINT [fkInformePaciente] FOREIGN KEY([id_paciente])
+REFERENCES [dbo].[Paciente] ([id_paciente])
+GO
+
+ALTER TABLE [dbo].[Informe]  WITH CHECK ADD  CONSTRAINT [fkInformeUsuario_Rol] FOREIGN KEY([id_usuario_rol])
+REFERENCES [dbo].[Usuario_Rol] ([id_usuario_rol])
+GO
+
+ALTER TABLE [dbo].[Informe] ADD  CONSTRAINT [defaultInformeFecha_hora]  DEFAULT (getdate()) FOR [fecha_hora]
+GO
+
+/*
+CREATE Jugada
+ */
+CREATE TABLE [dbo].[Jugada](
+	[id_jugada] [numeric](18, 0)  IDENTITY(1,1) NOT NULL,
+	[id_paciente] [numeric](18, 0) NOT NULL,
+	[nivel_juego] [int] NOT NULL,
+	[respondio_correctamente] [bit] NOT NULL,
+	[fecha_hora] [datetime] NOT NULL,
+ CONSTRAINT [pkJugada] PRIMARY KEY CLUSTERED 
+(
+	[id_informe] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Jugada]  WITH CHECK ADD  CONSTRAINT [fkJugadaPaciente] FOREIGN KEY([id_paciente])
+REFERENCES [dbo].[Paciente] ([id_paciente])
+GO
+
+ALTER TABLE [dbo].[Jugada] ADD  CONSTRAINT [defaultJugadaFecha_hora]  DEFAULT (getdate()) FOR [fecha_hora]
+GO
