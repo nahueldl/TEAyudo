@@ -254,3 +254,5 @@ lint/outputs/
 lint/tmp/
 # lint/reports/
 
+#build folder
+build
