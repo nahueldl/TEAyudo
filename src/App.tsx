@@ -22,7 +22,7 @@ import "@ionic/react/css/display.css";
 
 /* Theme variables */
 import "./theme/variables.css";
-import Inicio from "./Vistas/Inicio/Inicio";
+import Inicio from "./Vistas/Inicio";
 import Pictogramas from "./Vistas/Pictogramas/Pictogramas";
 import Categorias from "./Vistas/Categorias/Categorias";
 import Profesionales from "./Vistas/Profesionales/Profesionales";
