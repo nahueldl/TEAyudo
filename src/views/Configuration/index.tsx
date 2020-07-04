@@ -1,23 +1,13 @@
-import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import React from 'react';
+import Page from "../../components/Page";
+import React from "react";
 const ConfigurationPage: React.FC = () => {
-
-    return (
-        <IonPage>
-            <IonHeader>
-                <IonToolbar>
-                    <IonButtons slot="start">
-                        <IonMenuButton />
-                    </IonButtons>
-                    <IonTitle>Configuracion</IonTitle>
-                </IonToolbar>
-            </IonHeader>
-
-            <IonContent>
-                Cosas del Configuracion
-            </IonContent>
-        </IonPage>
-    )
-}
+  return (
+    <Page pageTitle="Configuración">
+      <div>
+        <div>Configuracion</div>
+      </div>
+    </Page>
+  );
+};
 
 export default ConfigurationPage;

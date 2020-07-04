@@ -1,23 +1,11 @@
-import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import React from 'react';
+import React from "react";
+import Page from "../../components/Page";
 const PatientsPage: React.FC = () => {
-
-    return (
-        <IonPage>
-            <IonHeader>
-                <IonToolbar>
-                    <IonButtons slot="start">
-                        <IonMenuButton />
-                    </IonButtons>
-                    <IonTitle>Pacientes</IonTitle>
-                </IonToolbar>
-            </IonHeader>
-
-            <IonContent>
-                Cosas del Pacientes
-            </IonContent>
-        </IonPage>
-    )
-}
+  return (
+    <Page pageTitle="Pacientes">
+      <div>Pacientes</div>
+    </Page>
+  );
+};
 
 export default PatientsPage;
