@@ -13,7 +13,7 @@ app.use(requestLogger);
 
 
 //API Routes
-app.use('/api/categorias', require('./routes/categorias/categoriasService'));
+app.use('/api/categorias', require('./routes/categorias/categoriasController'));
 
 
 
