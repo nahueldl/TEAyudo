@@ -1,7 +1,7 @@
 import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import React from 'react';
-const Categorias: React.FC = () => {
 
+const CategoriesPage: React.FC = () => {
     return (
         <IonPage>
             <IonHeader>
@@ -20,4 +20,4 @@ const Categorias: React.FC = () => {
     )
 }
 
-export default Categorias;
+export default CategoriesPage;

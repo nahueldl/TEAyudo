@@ -1,6 +1,6 @@
 import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import React from 'react';
-const Pacientes: React.FC = () => {
+const PatientsPage: React.FC = () => {
 
     return (
         <IonPage>
@@ -20,4 +20,4 @@ const Pacientes: React.FC = () => {
     )
 }
 
-export default Pacientes;
+export default PatientsPage;

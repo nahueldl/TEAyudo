@@ -21,7 +21,7 @@ const img: any = {
     "assets/imageedit_2_6506907493.jpg",
 };
 
-const Inicio: React.FC = () => {
+const HomePage: React.FC = () => {
   return (
     <IonPage>
       <IonHeader>
@@ -75,4 +75,4 @@ const Inicio: React.FC = () => {
   );
 };
 
-export default Inicio;
+export default HomePage;

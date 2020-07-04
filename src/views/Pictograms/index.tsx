@@ -1,6 +1,6 @@
 import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import React from 'react';
-const Pictogramas: React.FC = () => {
+const PictogramsPage: React.FC = () => {
 
     return (
         <IonPage>
@@ -20,4 +20,4 @@ const Pictogramas: React.FC = () => {
     )
 }
 
-export default Pictogramas;
+export default PictogramsPage;

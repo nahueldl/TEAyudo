@@ -22,13 +22,13 @@ import "@ionic/react/css/display.css";
 
 /* Theme variables */
 import "./theme/variables.css";
-import Inicio from "./views/Inicio";
-import Pictogramas from "./views/Pictograms";
-import Categorias from "./views/Categories";
-import Profesionales from "./views/Professionals";
-import Informes from "./views/Reports";
-import Pacientes from "./views/Patients";
-import Configuracion from "./views/Configuration";
+import HomePage from "./views/Home";
+import PictogramsPage from "./views/Pictograms";
+import CategoriesPage from "./views/Categories";
+import ProfessionalsPage from "./views/Professionals";
+import ReportsPage from "./views/Reports";
+import PatientsPage from "./views/Patients";
+import ConfigurationPage from "./views/Configuration";
 
 const App: React.FC = () => {
   //Agregar el auth+redirect a un home fuera de la app
@@ -39,13 +39,13 @@ const App: React.FC = () => {
           <Menu />
           <IonRouterOutlet id="main">
             {/* Page lo reemplazaría por una variable :username */}
-            <Route path="/page/inicio" component={Inicio} exact />
-            <Route path="/page/pictogramas" component={Pictogramas} exact />
-            <Route path="/page/categorias" component={Categorias} exact />
-            <Route path="/page/pacientes" component={Pacientes} exact />
-            <Route path="/page/profesionales" component={Profesionales} exact />
-            <Route path="/page/informes" component={Informes} exact />
-            <Route path="/page/configuracion" component={Configuracion} exact />
+            <Route path="/page/inicio" component={HomePage} exact />
+            <Route path="/page/pictogramas" component={PictogramsPage} exact />
+            <Route path="/page/categorias" component={CategoriesPage} exact />
+            <Route path="/page/pacientes" component={PatientsPage} exact />
+            <Route path="/page/profesionales" component={ProfessionalsPage} exact />
+            <Route path="/page/informes" component={ReportsPage} exact />
+            <Route path="/page/configuracion" component={ConfigurationPage} exact />
             <Redirect from="/" to="/page/inicio" exact />
             {/*Agregar redirect obligatorio para elección de paciente inicial*/}
           </IonRouterOutlet>
