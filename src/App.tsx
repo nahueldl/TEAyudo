@@ -1,4 +1,4 @@
-import Menu from "./components/Menu";
+import Menu from "./components/Menu/Menu";
 import React from "react";
 import { IonApp, IonRouterOutlet, IonSplitPane } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
@@ -22,13 +22,13 @@ import "@ionic/react/css/display.css";
 
 /* Theme variables */
 import "./theme/variables.css";
-import Inicio from "./Vistas/Inicio";
-import Pictogramas from "./Vistas/Pictogramas/Pictogramas";
-import Categorias from "./Vistas/Categorias/Categorias";
-import Profesionales from "./Vistas/Profesionales/Profesionales";
-import Informes from "./Vistas/Informes/Informes";
-import Pacientes from "./Vistas/Pacientes/Pacientes";
-import Configuracion from "./Vistas/Configuracion/Configuracion";
+import Inicio from "./views/Inicio";
+import Pictogramas from "./views/Pictograms";
+import Categorias from "./views/Categories";
+import Profesionales from "./views/Professionals";
+import Informes from "./views/Reports";
+import Pacientes from "./views/Patients";
+import Configuracion from "./views/Configuration";
 
 const App: React.FC = () => {
   //Agregar el auth+redirect a un home fuera de la app
