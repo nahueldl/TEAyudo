@@ -29,30 +29,49 @@ import ProfessionalsPage from "./views/Professionals";
 import ReportsPage from "./views/Reports";
 import PatientsPage from "./views/Patients";
 import ConfigurationPage from "./views/Configuration";
+import PatientSelection from "./views/Patients/Selection";
 
-const App: React.FC = () => {
-  //Agregar el auth+redirect a un home fuera de la app
-  return (
-    <IonApp>
-      <IonReactRouter>
-        <IonSplitPane contentId="main">
-          <Menu />
-          <IonRouterOutlet id="main">
-            {/* Page lo reemplazaría por una variable :username */}
-            <Route path="/page/inicio" component={HomePage} exact />
-            <Route path="/page/pictogramas" component={PictogramsPage} exact />
-            <Route path="/page/categorias" component={CategoriesPage} exact />
-            <Route path="/page/pacientes" component={PatientsPage} exact />
-            <Route path="/page/profesionales" component={ProfessionalsPage} exact />
-            <Route path="/page/informes" component={ReportsPage} exact />
-            <Route path="/page/configuracion" component={ConfigurationPage} exact />
-            <Redirect from="/" to="/page/inicio" exact />
-            {/*Agregar redirect obligatorio para elección de paciente inicial*/}
-          </IonRouterOutlet>
-        </IonSplitPane>
-      </IonReactRouter>
-    </IonApp>
-  );
-};
+class App extends React.PureComponent {
+  isLogged: boolean = true;
+
+  render() {
+    return (
+      <IonApp>
+        <IonReactRouter>
+          <Route path="/" component={PatientSelection} />
+
+          <IonSplitPane contentId="main">
+            {this.isLogged ? <Menu /> : <Redirect from="/" to="/page/login" />}
+            {/* <Menu /> */}
+            <IonRouterOutlet id="main">
+              {/* Page lo reemplazaría por una variable :username */}
+              <Route path="/page/inicio" component={HomePage} exact />
+              <Route
+                path="/page/pictogramas"
+                component={PictogramsPage}
+                exact
+              />
+              <Route path="/page/categorias" component={CategoriesPage} exact />
+              <Route path="/page/pacientes" component={PatientsPage} exact />
+              <Route
+                path="/page/profesionales"
+                component={ProfessionalsPage}
+                exact
+              />
+              <Route path="/page/informes" component={ReportsPage} exact />
+              <Route
+                path="/page/configuracion"
+                component={ConfigurationPage}
+                exact
+              />
+              <Redirect from="/" to="/page/inicio" exact />
+              {/*Agregar redirect obligatorio para elección de paciente inicial*/}
+            </IonRouterOutlet>
+          </IonSplitPane>
+        </IonReactRouter>
+      </IonApp>
+    );
+  }
+}
 
 export default App;
