@@ -18,11 +18,11 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.get('/:id', (req, res) => {
-    const found = ejemploCategorias.some(categoria => categoria.id === parseInt(req.params.id));
+router.get('/:id', async (req, res) => {
+    const result = await categoriaService.get(req.params.id)
 
-    if(found)
-        res.status(200).json(ejemploCategorias.filter(categoria => categoria.id === parseInt(req.params.id)));
+    if(result.state)
+        res.status(200).json(result.response);
     else
         res.status(404).json({msg: `No se encontro categoría con id=${req.params.id}`});    
 });
