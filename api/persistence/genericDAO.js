@@ -18,12 +18,15 @@ const genericDAO = {
 		}catch(err){
 			res.state = false;
 			res.response = err;
+			console.log(err);
 		}
 
 		sql.close();
 		return res;
 	},
-	runQuery: async function (query, params){//name type value
+
+
+	runQuery: async function (query, params){
 		if(isNullOrUndefined(query)) throw 'query no ha sido definida';
 		if(isNullOrUndefined(params) || params.length < 1) throw 'no se han definido parametros';
 
@@ -47,11 +50,36 @@ const genericDAO = {
 		}catch(err){
 			res.state = false;
 			res.response = err;
+			console.log(err);
 		}
 		
 		sql.close();
 		return res;
 	},
+
+
+	insert: async function (table){
+		if(isNullOrUndefined(table)) throw 'table no ha sido definida';
+
+		const res = {
+			state: null,
+			response: null
+		};
+
+		try{
+			await sql.connect(`mssql://${process.env.dbuser}:${process.env.dbpass}@${process.env.dbservername}/${process.env.dbname}?encrypt=true`);
+			const result = await new sql.Request().bulk(table);
+			res.state = true;
+			res.response = result;//sacar este resultado (dejar el null) es solo para ver que mierda devuelve un insert
+		}catch(err){
+			res.state = false;
+			res.response = err;
+			console.log(err);
+		}
+		
+		sql.close();
+		return res;
+	}
 }
 
 module.exports = genericDAO;
