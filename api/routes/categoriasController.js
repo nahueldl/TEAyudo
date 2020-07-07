@@ -27,4 +27,13 @@ router.get('/:id', async (req, res) => {
         res.status(404).json({msg: `No se encontro categoría con id=${req.params.id}`});    
 });
 
+router.post('/', async (req, res) => {
+    const result = await categoriaService.insert(req.body);
+    if(result.state){
+        res.status(200).json({msg: "La categoria ha sido correctamente creada"});
+    }else{
+        res.status(500).json({msg: "Ha ocurrido un error inesperado en el servidor"});
+    }
+});
+
 module.exports = router;
