@@ -1,7 +1,9 @@
 const sql = require('mssql');
 const { isNullOrUndefined } = require('util');
 
+
 const genericDAO = {
+
 	runSimpleQuery: async function (query){
 		if(isNullOrUndefined(query)) throw 'query no ha sido definida';
 

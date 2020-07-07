@@ -1,15 +1,21 @@
 const categoriaDAO = require('../persistence/categoriaDAO');
 const { insert } = require('../persistence/genericDAO');
 
+
 categoriaService = {
+
 	getAll: async function(){
 		//Aca iría la lógia de negocio
 		return await categoriaDAO.getAll();
 	},
+
+
 	get: async function(id){
 		//Aca iría la lógia de negocio
 		return await categoriaDAO.get(parseInt(id));
 	},
+
+
 	insert: async function(categoria){
 		//Aca iría la lógia de negocio
 
@@ -20,6 +26,8 @@ categoriaService = {
 		categorias.push(categoria);
 		return await categoriaDAO.insert(categorias);
 	}
+	
 };
+
 
 module.exports = categoriaService;
