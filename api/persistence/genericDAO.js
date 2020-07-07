@@ -1,6 +1,6 @@
 const sql = require('mssql')
 
-const abstractDAO = {
+const genericDAO = {
 	runQuery: async function (query){
 		const res = {
 			state: null,
@@ -20,4 +20,4 @@ const abstractDAO = {
 	}
 }
 
-module.exports = abstractDAO;
+module.exports = genericDAO;
