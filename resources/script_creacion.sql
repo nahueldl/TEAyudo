@@ -4,6 +4,7 @@ CREATE Tipo_Documento
 CREATE TABLE [dbo].[TipoDocumento](
 	[id_tipoDoc] [numeric](18, 0)  IDENTITY(1,1) NOT NULL,
 	[nombre] [nvarchar](255) NOT NULL,
+	[descripcion] [nvarchar](255) NOT NULL,
 	[activo] [bit] NOT NULL,
  CONSTRAINT [pkTipoDocumento] PRIMARY KEY CLUSTERED 
 (
@@ -125,6 +126,8 @@ CREATE TABLE [dbo].[Categoria](
 
 ALTER TABLE [dbo].[Categoria]  WITH CHECK ADD  CONSTRAINT [fkCategoriaUsuario_Rol] FOREIGN KEY([id_usuario_rol])
 REFERENCES [dbo].[Usuario_Rol] ([id_usuario_rol])
+
+ALTER TABLE [dbo].[Categoria] ADD  CONSTRAINT [defaultCategoriaFecha_hora_alta]  DEFAULT (getdate()) FOR [fecha_hora_alta]
 
 
 /*
