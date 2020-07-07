@@ -3,7 +3,7 @@ import Page from "../../components/Page";
 
 const ReportsPage: React.FC = () => {
   return (
-    <Page pageTitle="Informes">
+    <Page pageTitle="Informes" showHomeButton>
       <div>Informes</div>
     </Page>
   );

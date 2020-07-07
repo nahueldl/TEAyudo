@@ -4,7 +4,7 @@ import {
   IonCol,
   IonCard,
   IonCardTitle,
-  IonImg,
+  IonImg
 } from "@ionic/react";
 import React from "react";
 import styles from "./styles.module.css";
@@ -16,7 +16,7 @@ const img: any = {
 
 const HomePage: React.FC = () => {
   return (
-    <Page pageTitle="Inicio">
+    <Page pageTitle="Inicio" showHomeButton={false}>
       <IonGrid>
         <IonRow>
           <IonCol size="12" sizeMd="6">
