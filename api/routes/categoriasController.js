@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const categoriaService = require('../services/categoriaService')
 
 const ejemploCategorias = [
     {
@@ -8,7 +9,14 @@ const ejemploCategorias = [
     }
 ];
 
-router.get('/', (req, res) => res.json(ejemploCategorias));
+router.get('/', async (req, res) => {
+    const result = await categoriaService.getAll();
+    if(result.state){
+        res.status(200).json(result.response);
+    }else{
+        res.status(500).json({msg: "Ha ocurrido un error inesperado en el servidor"});
+    }
+});
 
 router.get('/:id', (req, res) => {
     const found = ejemploCategorias.some(categoria => categoria.id === parseInt(req.params.id));
