@@ -22,6 +22,7 @@ CREATE TABLE [dbo].[Usuario](
 	[nombre] [nvarchar](255) NOT NULL,
 	[apelllido] [nvarchar](255) NOT NULL,
 	[correo] [nvarchar](255) NOT NULL,
+	[hashed_password] [binary](60) NULL,
 	[nro_doc] [nvarchar](40) NULL,
 	[nro_matricula] [nvarchar](40) NULL,
 	[fecha_hora_alta] [datetime] NOT NULL,
