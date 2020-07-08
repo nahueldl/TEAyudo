@@ -10,7 +10,7 @@ categoriaService = {
 	},
 
 
-	get: async function(id){
+	getById: async function(id){
 		//Aca iría la lógia de negocio
 		return await categoriaDAO.get(parseInt(id));
 	},

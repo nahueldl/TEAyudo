@@ -12,7 +12,7 @@ const categoriaDAO = {
 	},
 
 
-	get: async function (id){
+	getById: async function (id){
 		if(isNullOrUndefined(id)) throw 'parametro id no ha sido definido';
 
 		const params = [
