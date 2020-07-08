@@ -21,33 +21,35 @@ interface AppPage {
 const appPages: AppPage[] = [
   {
     title: "Pictogramas",
-    url: "/page/pictogramas",
+    url: `/pictogramas`,
   },
   {
     title: "Categorías",
-    url: "/page/categorias",
+    url: "/categorias",
   },
   {
     title: "Pacientes",
-    url: "/page/pacientes",
+    url: "/pacientes",
   },
   {
     title: "Profesionales",
-    url: "/page/profesionales",
+    url: "/profesionales",
   },
   {
     title: "Informes",
-    url: "/page/informes",
+    url: "/informes",
   },
   {
     title: "Configuración",
-    url: "/page/configuracion",
+    url: "/configuracion",
   },
 ];
 
-const Menu: React.FC = () => {
+const Menu: React.FC<Props> = ({patientName}) => {
   const location = useLocation();
-
+  const buildUrl =(pageUrl: string) =>{
+    return `/${patientName}${pageUrl}`;
+  }
   return (
     <IonMenu contentId="main" type="overlay" swipeGesture>
       <IonContent>
@@ -60,7 +62,7 @@ const Menu: React.FC = () => {
                   className={
                     location.pathname === appPage.url ? "selected" : ""
                   }
-                  routerLink={appPage.url}
+                  routerLink={buildUrl(appPage.url)}
                   routerDirection="none"
                   lines="none"
                   detail={false}
@@ -75,5 +77,7 @@ const Menu: React.FC = () => {
     </IonMenu>
   );
 };
-
+interface Props {
+  patientName: string;
+}
 export default Menu;

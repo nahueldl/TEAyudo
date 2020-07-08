@@ -66,7 +66,7 @@ class LogInSignUpPage extends React.PureComponent<Props, State> {
                 placeholder="Contraseña"
               ></IonInput>
               <a href="#">¿Olvidaste tu contraseña?</a>
-              <IonButton>Iniciar sesión</IonButton>
+              <IonButton routerLink="/pacientes">Iniciar sesión</IonButton>
             </form>
           </div>
           <div className="overlayContainer">
