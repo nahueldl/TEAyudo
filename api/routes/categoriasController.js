@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
 
 //GET Categoria by id
 router.get('/:id', async (req, res) => {
-	const result = await categoriaService.get(req.params.id)
+	const result = await categoriaService.getById(req.params.id)
 
 	if(result.state)
 		res.status(200).json(result.response);

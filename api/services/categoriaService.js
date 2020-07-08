@@ -12,7 +12,7 @@ categoriaService = {
 
 	getById: async function(id){
 		//Aca iría la lógia de negocio
-		return await categoriaDAO.get(parseInt(id));
+		return await categoriaDAO.getById(parseInt(id));
 	},
 
 
