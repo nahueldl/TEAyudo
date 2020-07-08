@@ -4,7 +4,7 @@ const express = require('express');
 const path = require('path');
 const requestLogger = require('./middleware/requestLogger');
 const { isNullOrUndefined } = require('util');
-const bodyParser = require('body-parser');
+// const bodyParser = require('body-parser');
 
 
 //Chequea que se hayan levantado las variables de entorno sean de produccion o de desarrollo
@@ -19,8 +19,9 @@ const app = express();
 
 //Middleware
 app.use(requestLogger);
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(bodyParser.json());
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
+
 
 
 //API Routes
