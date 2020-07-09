@@ -18,9 +18,11 @@ const usuarioDAO = {
 
 		const result = await genericDAO.runQuery("select * from Usuario where id_usuario = @id", params);
 
-		if(result.response.length < 1){
+		if(!result.state && result.response.length < 1){
 			result.state = false;
 			result.response = "No se encontro un usuario con ese id";
+		}else if(result.state){
+			result.response = result.response[0];
 		}
 		
 		return result;
@@ -32,15 +34,17 @@ const usuarioDAO = {
 			{
 				name: "email",
 				type: sql.NVarChar(255),
-				value: id
+				value: email
 			}
 		]
 
 		const result = await genericDAO.runQuery("select * from Usuario where correo = @email", params);
 
-		if(result.response.length < 1){
+		if(!result.state && result.response.length < 1){
 			result.state = false;
 			result.response = "No se encontro un usuario con ese email";
+		}else if(result.state){
+			result.response = result.response[0];
 		}
 		
 		return result;
@@ -63,15 +67,17 @@ const usuarioDAO = {
 
 		const result = await genericDAO.runQuery("select * from Usuario where uuid = @uuid and datediff(hour, fecha_hora_ultimo_login, now()) < @horas_duracion_sesion", params);
 
-		if(result.response.length < 1){
+		if(!result.state && result.response.length < 1){
 			result.state = false;
 			result.response = "No se encontro un usuario con uuid dentro del tiempo de sesion activa";
+		}else if(result.state){
+			result.response = result.response[0];
 		}
 		
 		return result;
 	},
 	insert: async function (usuario){
-		if(isNullOrUndefined(usuario)) throw 'usuario no esta definida o no contiene elementos';
+		if(isNullOrUndefined(usuario)) throw 'usuario no esta definida';
 
 		const tablaUsuario = new sql.Table('Usuario');
 		tablaUsuario.columns.add('id_tipo_documento', sql.Numeric(18,0), {nullable: true});
