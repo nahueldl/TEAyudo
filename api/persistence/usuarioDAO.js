@@ -3,6 +3,7 @@ const genericDAO = require('./genericDAO');
 const { isNullOrUndefined } = require('util');
 const bcrypt = require('bcrypt');
 const saltRounds = parseInt(process.env.SALTROUNDS);
+const { v4: uuidv4 } = require('uuid');
 
 const usuarioDAO = {
 	getById: async function(id){
@@ -103,6 +104,59 @@ const usuarioDAO = {
 		);
 
 		return genericDAO.insert(tablaUsuario);
+	},
+	login: async function(email, password){
+		if(isNullOrUndefined(email)) throw 'email y/o password no estan definidas';
+
+		const resultUsuario = await this.getByEmail(email);
+
+		if(!resultUsuario.state)
+			return resultUsuario;
+
+		const usuario = resultUsuario.response;
+
+		const res = {
+			state: null,
+			response: null
+		};
+		try{
+			const match = await bcrypt.compare(password, usuario.hashed_password)
+			if(match){
+				const uuid = uuidv4();
+				
+				const params = [
+					{
+						name: "uuid",
+						type: sql.VarChar(36),
+						value: uuid
+					},
+					{
+						name: "id",
+						type: sql.Numeric(18,0),
+						value: usuario.id_usuario
+					}
+				];
+	
+				const result = await genericDAO.runQuery("update Usuario set uuid = @uuid, fecha_hora_ultimo_login = getdate() where id_usuario = @id", params);
+	
+				if(result.state){
+					res.state = true;
+					res.response = uuid;
+				}else{
+					res.state = false;
+					res.response = "Ha ocurrido un error tratando de crear la sesión";
+				}
+	
+			}else{
+				res.state = false;
+				res.response = "La contraseña no es correcta";
+			}
+		}catch(err){
+			res.state = false;
+			res.response = "Ha ocurrido un error tratando de crear la sesión";
+		}
+		
+		return res;
 	}
 };
 
