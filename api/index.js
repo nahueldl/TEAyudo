@@ -26,6 +26,7 @@ app.use(express.urlencoded({extended: true}));
 
 //API Routes
 app.use('/api/categorias', require('./routes/categoriasController'));
+app.use('/api/usuario', require('./routes/usuarioController'));
 
 
 //Levanta el puerto en que va a escuchar
