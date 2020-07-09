@@ -40,14 +40,12 @@ const categoriaDAO = {
 		const tablaCategoria = new sql.Table('Categoria');
 		tablaCategoria.columns.add('id_usuario_rol', sql.Numeric(18,0), {nullable: true});
 		tablaCategoria.columns.add('nombre', sql.NVarChar(255), {nullable: false});
-		tablaCategoria.columns.add('fecha_hora_baja', sql.DateTime, {nullable: true});
 		tablaCategoria.columns.add('activo', sql.Bit, {nullable: false});
 
 		listaCategorias.forEach(categoria => {
 			tablaCategoria.rows.add(
 				categoria.id_usuario_rol || null,
 				categoria.nombre,
-				null,
 				categoria.activo || true
 			);
 		});
