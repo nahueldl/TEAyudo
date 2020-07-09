@@ -2,7 +2,7 @@
 CREATE Tipo_Documento
  */
 CREATE TABLE [dbo].[TipoDocumento](
-	[id_tipoDoc] [numeric](18, 0)  IDENTITY(1,1) NOT NULL,
+	[id_tipo_documento] [numeric](18, 0)  IDENTITY(1,1) NOT NULL,
 	[nombre] [nvarchar](255) NOT NULL,
 	[descripcion] [nvarchar](255) NOT NULL,
 	[activo] [bit] NOT NULL,
@@ -18,17 +18,18 @@ CREATE Usuario
  */
 CREATE TABLE [dbo].[Usuario](
 	[id_usuario] [numeric](18, 0) IDENTITY(1,1) NOT NULL,
-	[id_tipoDoc] [numeric](18, 0) NOT NULL,
+	[id_tipo_documento] [numeric](18, 0) NULL,
 	[nombre] [nvarchar](255) NOT NULL,
-	[apelllido] [nvarchar](255) NOT NULL,
+	[apellido] [nvarchar](255) NOT NULL,
 	[correo] [nvarchar](255) NOT NULL,
-	[hashed_password] [binary](60) NULL,
+	[hashed_password] [varchar](60) NULL,
 	[nro_doc] [nvarchar](40) NULL,
 	[nro_matricula] [nvarchar](40) NULL,
 	[fecha_hora_alta] [datetime] NOT NULL,
 	[fecha_hora_baja] [datetime] NULL,
-	[Tipo] [int] NOT NULL,
 	[activo] [bit] NOT NULL,
+	[uuid] [varchar](36) NULL,
+	[fecha_hora_ultimo_login] [datetime] NULL,
  CONSTRAINT [pkUsuario] PRIMARY KEY CLUSTERED 
 (
 	[id_usuario] ASC
@@ -40,6 +41,9 @@ ALTER TABLE [dbo].[Usuario] ADD  CONSTRAINT [defaultUsuarioFecha_hora_alta]  DEF
 ALTER TABLE [dbo].[Usuario]  WITH CHECK ADD  CONSTRAINT [fkUsuarioTipoDocumento] FOREIGN KEY([id_tipoDoc])
 REFERENCES [dbo].[TipoDocumento] ([id_tipoDoc])
 
+CREATE NONCLUSTERED INDEX IX_Usuario_uuid ON Usuario (uuid)
+
+CREATE UNIQUE NONCLUSTERED INDEX UQ_IX_Usuario_correo ON Usuario (correo)
 
 /*
 CREATE Rol
