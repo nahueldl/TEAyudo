@@ -1,14 +1,20 @@
 import React from "react";
-import { IonIcon, IonContent, IonButton, IonInput } from "@ionic/react";
+import {
+  IonIcon,
+  IonContent,
+  IonButton,
+  IonInput,
+  IonItem,
+  IonList,
+} from "@ionic/react";
 import { logoGoogle, logoFacebook } from "ionicons/icons";
-import styles from "./styles.module.css";
-import classNames from "classnames";
+import "./styles.css";
 
 class LogInSignUpPage extends React.PureComponent<Props, State> {
   constructor(props: Readonly<Props>) {
     super(props);
     this.state = {
-      showSignIn: true,
+      showSignIn: false,
     };
   }
 
@@ -17,54 +23,78 @@ class LogInSignUpPage extends React.PureComponent<Props, State> {
   }
 
   render() {
+    const classRightPanelActive = this.state.showSignIn
+      ? "rightPanelActive"
+      : "";
     return (
       <IonContent>
-        <div className="container">
+        <div className={`container ${classRightPanelActive}`}>
           <div className="formContainer signUpContainer">
             <form>
               <h1>Registrarse</h1>
               <div>
-                <a href="#" className="social">
-                  <IonIcon icon={logoGoogle} />
+                <a href="#">
+                  <IonIcon icon={logoGoogle} size="large" />
                 </a>
-                <a href="#" className="social">
-                  <IonIcon icon={logoFacebook} />
+                <a href="#">
+                  <IonIcon icon={logoFacebook} size="large" />
                 </a>
               </div>
               <span>O utiliza tu email</span>
-              <IonInput autofocus clearInput placeholder="Nombre"></IonInput>
-              <IonInput clearInput type="email" placeholder="Email"></IonInput>
-              <IonInput
-                clearInput
-                type="password"
-                placeholder="Contraseña"
-              ></IonInput>
+              <IonList>
+                <IonItem>
+                  <IonInput required clearInput placeholder="Nombre"></IonInput>
+                </IonItem>
+                <IonItem>
+                  <IonInput
+                    required
+                    clearInput
+                    type="email"
+                    placeholder="Email"
+                  ></IonInput>
+                </IonItem>
+                <IonItem>
+                  <IonInput
+                    required
+                    clearInput
+                    type="password"
+                    placeholder="Contraseña"
+                  ></IonInput>
+                </IonItem>
+              </IonList>
               <IonButton>Registrarse </IonButton>
             </form>
           </div>
-          <div className="formContainer signInContainer rightPanelActive">
+          <div className="formContainer signInContainer">
             <form action="#">
               <h1>Iniciar sesión</h1>
               <div>
-                <a href="#" className="social">
-                  <IonIcon icon={logoGoogle} />
+                <a href="#">
+                  <IonIcon icon={logoGoogle} size="large" />
                 </a>
-                <a href="#" className="social">
-                  <IonIcon icon={logoFacebook} />
+                <a href="#">
+                  <IonIcon icon={logoFacebook} size="large" />
                 </a>
               </div>
               <span>O utiliza tu cuenta</span>
-              <IonInput
-                autofocus
-                clearInput
-                type="email"
-                placeholder="Email"
-              ></IonInput>
-              <IonInput
-                clearInput
-                type="password"
-                placeholder="Contraseña"
-              ></IonInput>
+              <IonList>
+                <IonItem>
+                  <IonInput
+                    required
+                    clearInput
+                    type="email"
+                    placeholder="Email"
+                  ></IonInput>
+                </IonItem>
+                <IonItem>
+                  <IonInput
+                    required
+                    clearInput
+                    type="password"
+                    placeholder="Contraseña"
+                  ></IonInput>
+                </IonItem>
+              </IonList>
               <a href="#">¿Olvidaste tu contraseña?</a>
               <IonButton routerLink="/pacientes">Iniciar sesión</IonButton>
             </form>
@@ -76,13 +106,20 @@ class LogInSignUpPage extends React.PureComponent<Props, State> {
                 <p>
                   Para continuar, necesitamos que inicies sesión con tu cuenta
                 </p>
-                <IonButton onClick={() => this.handleActivationChange(true)}>
+                <IonButton
+                  fill="outline"
+                  onClick={() => this.handleActivationChange(false)}
+                >
                   Iniciar sesión
                 </IonButton>
               </div>
               <div className="overlayPanel overlayRight">
                 <h1>¿Aún no estás registradx?</h1>
-                <IonButton onClick={() => this.handleActivationChange(false)}>
+                <p>Para comenzar, sólo necesitas crear una cuenta</p>
+                <IonButton
+                  fill="outline"
+                  onClick={() => this.handleActivationChange(true)}
+                >
                   Registrarse
                 </IonButton>
               </div>
