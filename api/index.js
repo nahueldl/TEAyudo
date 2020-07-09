@@ -4,7 +4,6 @@ const express = require('express');
 const path = require('path');
 const requestLogger = require('./middleware/requestLogger');
 const { isNullOrUndefined } = require('util');
-// const bodyParser = require('body-parser');
 
 
 //Chequea que se hayan levantado las variables de entorno sean de produccion o de desarrollo
