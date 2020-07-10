@@ -19,7 +19,7 @@ const usuarioDAO = {
 
 		const result = await genericDAO.runQuery("select * from Usuario where id_usuario = @id", params);
 
-		if(!result.state && result.response.length < 1){
+		if(result.state && result.response.length < 1){
 			result.state = false;
 			result.response = "No se encontro un usuario con ese id";
 		}else if(result.state){
@@ -41,7 +41,7 @@ const usuarioDAO = {
 
 		const result = await genericDAO.runQuery("select * from Usuario where correo = @email", params);
 
-		if(!result.state && result.response.length < 1){
+		if(result.state && result.response.length < 1){
 			result.state = false;
 			result.response = "No se encontro un usuario con ese email";
 		}else if(result.state){
@@ -68,7 +68,7 @@ const usuarioDAO = {
 
 		const result = await genericDAO.runQuery("select * from Usuario where uuid = @uuid and datediff(hour, fecha_hora_ultimo_login, getdate()) < @horas_duracion_sesion", params);
 
-		if(!result.state && result.response.length < 1){
+		if(result.state && result.response.length < 1){
 			result.state = false;
 			result.response = "No se encontro un usuario con uuid dentro del tiempo de sesion activa";
 		}else if(result.state){
