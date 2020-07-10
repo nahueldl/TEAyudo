@@ -3,15 +3,16 @@ const router = express.Router();
 const usuarioService = require('../services/usuarioService')
 
 
+//Desabilitado por cuestiones de seguridad
 //GET Usuario by id
-router.get('/:id', async (req, res) => {
-	const result = await usuarioService.getById(req.params.id)
+// router.get('/:id', async (req, res) => {
+// 	const result = await usuarioService.getById(req.params.id)
 
-	if(result.state)
-		res.status(200).json(result.response);
-	else
-		res.status(404).json({msg: `No se encontro usuario con id=${req.params.id}`});    
-});
+// 	if(result.state)
+// 		res.status(200).json(result.response);
+// 	else
+// 		res.status(404).json({msg: `No se encontro usuario con id=${req.params.id}`});    
+// });
 
 
 //POST Usuario
