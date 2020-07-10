@@ -1,6 +1,6 @@
-**Title**
+**Log In**
 ----
-  Log In
+  Devuelve un token que por 1 hora permite el acceso a los recursos protegidos
 
 * **URL**
 
