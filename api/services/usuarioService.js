@@ -8,6 +8,12 @@ const usuarioService = {
 		return await usuarioDAO.getById(parseInt(id));
 	},
 
+	
+	getByUUID: async function(uuid){
+		//Aca iría la lógia de negocio
+		return await usuarioDAO.getByUUID(uuid);
+	},
+
 
 	insert: async function(usuario){
 		//Aca iría la lógia de negocio
