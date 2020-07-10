@@ -7,22 +7,12 @@
   /api/usuario/login
 
 * **Method:**
-  
-  <_The request type_>
 
   `POST`
   
 *  **URL Params**
 
-   _No requiere parametros_ 
-
-   **Required:**
- 
-   `id=[integer]`
-
-   **Optional:**
- 
-   `photo_id=[alphanumeric]`
+   _No requiere_ 
 
 * **Data Params**
 
@@ -58,4 +48,4 @@ curl --location --request POST 'https://teayudotestingwebapp.azurewebsites.net/a
 
 * **Notes:**
 
-  Queda pendiente crear nuevos tipos de error en caso que falten datos en la petición
+  _Queda pendiente crear nuevos tipos de error en caso que falten datos en la petición_
