@@ -3,7 +3,9 @@ require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const requestLogger = require('./middleware/requestLogger');
+const BearerStrategy = require('./middleware/auth').BearerStrategy;
 const { isNullOrUndefined } = require('util');
+const passport = require('passport');
 
 
 //Chequea que se hayan levantado las variables de entorno sean de produccion o de desarrollo
@@ -15,12 +17,15 @@ if(isNullOrUndefined(process.env.NODE_ENV)){
 //Levanta express
 const app = express();
 
+//Set passport strategy
+passport.use(BearerStrategy);
 
 //Middleware
 app.use(requestLogger);
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
-
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 //API Routes
