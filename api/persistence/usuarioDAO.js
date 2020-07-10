@@ -66,7 +66,7 @@ const usuarioDAO = {
 			}
 		]
 
-		const result = await genericDAO.runQuery("select * from Usuario where uuid = @uuid and datediff(hour, fecha_hora_ultimo_login, now()) < @horas_duracion_sesion", params);
+		const result = await genericDAO.runQuery("select * from Usuario where uuid = @uuid and datediff(hour, fecha_hora_ultimo_login, getdate()) < @horas_duracion_sesion", params);
 
 		if(!result.state && result.response.length < 1){
 			result.state = false;
