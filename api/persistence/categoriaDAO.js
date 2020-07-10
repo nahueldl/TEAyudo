@@ -25,7 +25,7 @@ const categoriaDAO = {
 
 		const result = await genericDAO.runQuery("select * from Categoria where id_categoria = @id", params);
 
-		if(!result.state && result.response.length < 1){
+		if(result.state && result.response.length < 1){
 			result.state = false;
 			result.response = "No se encontro una categoria con ese id";
 		}else if(result.state){
