@@ -1,10 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const categoriaService = require('../services/categoriaService')
+const categoriaService = require('../services/categoriaService');
+const passport = require('passport');
+const isAuth = require('../middleware/auth').isAuth;
 
 
 //GET Categorias
-router.get('/', async (req, res) => {
+router.get('/', isAuth, async (req, res) => {
 	const result = await categoriaService.getAll();
 	if(result.state){
 		res.status(200).json(result.response);

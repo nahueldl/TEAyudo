@@ -4,7 +4,7 @@ const { isNullOrUndefined } = require('util');
 
 const genericDAO = {
 
-	runSimpleQuery: async function (query){
+	runSimpleQuery: async function (query, returnOneRecorset=true){
 		if(isNullOrUndefined(query)) throw 'query no ha sido definida';
 
 		const res = {
@@ -16,7 +16,8 @@ const genericDAO = {
 			await sql.connect(`mssql://${process.env.dbuser}:${process.env.dbpass}@${process.env.dbservername}/${process.env.dbname}?encrypt=true`);
 			const result = await sql.query(query);
 			res.state = true;
-			res.response = result.recordsets[0];
+			if(returnOneRecorset) res.response = result.recordsets[0];
+			else res.response = result.recordsets;
 		}catch(err){
 			res.state = false;
 			res.response = err;
@@ -28,7 +29,7 @@ const genericDAO = {
 	},
 
 
-	runQuery: async function (query, params){
+	runQuery: async function (query, params, returnOneRecorset=true){
 		if(isNullOrUndefined(query)) throw 'query no ha sido definida';
 		if(isNullOrUndefined(params) || params.length < 1) throw 'no se han definido parametros';
 
@@ -48,7 +49,8 @@ const genericDAO = {
 			});
 			const result = await request.query(query);
 			res.state = true;
-			res.response = result.recordsets[0];
+			if(returnOneRecorset) res.response = result.recordsets[0];
+			else res.response = result.recordsets;
 		}catch(err){
 			res.state = false;
 			res.response = err;

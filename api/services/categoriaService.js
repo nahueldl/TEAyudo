@@ -1,8 +1,7 @@
 const categoriaDAO = require('../persistence/categoriaDAO');
-const { insert } = require('../persistence/genericDAO');
 
 
-categoriaService = {
+const categoriaService = {
 
 	getAll: async function(){
 		//Aca iría la lógia de negocio
