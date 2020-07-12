@@ -17,9 +17,12 @@ const LogInSignUpPageDesktop: React.FC = () => {
 
   const handleSignIn = () => {};
 
-  const goForward = useCallback(() => navigate("/pacientes", "forward"), [
-    navigate,
-  ]);
+  const goToSelectPatient = useCallback(
+    () => navigate("/pacientes", "forward"),
+    [navigate]
+  );
+
+  const goToMoreData = useCallback(() => navigate("/alta/usuarix", "forward"), [navigate]);
 
   const appContext = useContext(TEAyudoContext);
 
