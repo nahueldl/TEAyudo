@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { IonApp } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import { Redirect, Route } from "react-router-dom";
@@ -24,35 +24,35 @@ import "./theme/variables.css";
 import AppPostLogin from "./AppPostLogin";
 import LogInSignUpPage from "./views/LogIn&SignUp";
 import PatientSelection from "./views/Patients/Selection";
+import { TEAyudoContext } from "./context";
 
-class App extends React.PureComponent {
-  isLogged: boolean = true;
-  isPatientSelected: boolean = true;
-  render() {
-    const { isLogged, isPatientSelected } = this;
-    return (
-      <IonApp>
-        <IonReactRouter>
-          {isLogged ? (
-            isPatientSelected ? (
-              // Si ambas son verdaderas, ir a la app
-              <AppPostLogin patientName="nano" />
-            ) : (
-              // Si está logueado pero no eligió paciente, debe elegir
-              <Redirect from="/login" to="/pacientes" />
-            )
+
+const App: React.FC = () => {
+  //Agregar context con theme, platform, usuario, paciente
+  const appContext = useContext(TEAyudoContext);
+  const {patientName, authenticated} = appContext
+  return (
+    <IonApp>
+      <IonReactRouter>
+        {authenticated ? (
+          patientName ? (
+            // Si ambas son verdaderas, ir a la app
+            <AppPostLogin />
           ) : (
-            //Si no está logueado, debe loguearse
-            <Redirect from="*" to="/login" />
-          )}
-          
-          <Route path="/login" component={LogInSignUpPage} exact />
-          <Route path="/pacientes" component={PatientSelection} exact />
-          {/* <Redirect from="*" to="/login" /> */}
-        </IonReactRouter>
-      </IonApp>
-    );
-  }
-}
+            // Si está logueado pero no eligió paciente, debe elegir
+            <Redirect from="/login" to="/pacientes" />
+          )
+        ) : (
+          //Si no está logueado, debe loguearse
+          <Redirect from="*" to="/login" />
+        )}
+
+        <Route path="/login" component={LogInSignUpPage} exact />
+        <Route path="/pacientes" component={PatientSelection} exact />
+        {/* <Redirect from="*" to="/login" /> */}
+      </IonReactRouter>
+    </IonApp>
+  );
+};
 
 export default App;

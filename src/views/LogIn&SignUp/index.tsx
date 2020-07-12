@@ -1,11 +1,12 @@
-import React from "react";
-import { IonContent, getPlatforms } from "@ionic/react";
+import React, { useContext } from "react";
+import { IonContent } from "@ionic/react";
 import SignUpContainer from "./Desktop/SignUpContainer";
 import SignInContainer from "./Desktop/SignInContainer";
 import OverlayLeft from "./Desktop/OverlayLeft";
 import OverlayRight from "./Desktop/OverlayRight";
 import MobileContainer from "./Mobile/MobileContainer";
 import "./styles.css";
+import { TEAyudoContext } from "../../context";
 
 class LogInSignUpPageDesktop extends React.PureComponent<Props, State> {
   constructor(props: Readonly<Props>) {
@@ -16,26 +17,25 @@ class LogInSignUpPageDesktop extends React.PureComponent<Props, State> {
     this.handleActivationChange = this.handleActivationChange.bind(this);
   }
 
-  platforms = getPlatforms();
-  isMobile =
-    this.platforms.includes("mobile") && !this.platforms.includes("tablet");
+  appContext = useContext(TEAyudoContext);
 
   handleActivationChange(value: boolean) {
     this.setState({ showSignIn: value }, () => {});
   }
 
-  handleSignUp(provider?: Provider) {}
+  handleSignUp() {}
 
-  handleLogin(provider?: Provider) {}
+  handleLogin() {}
 
   render() {
+    const { isMobile } = this.appContext;
     const classRightPanelActive = this.state.showSignIn
       ? "rightPanelActive"
       : "";
-    console.log(getPlatforms());
+  
     return (
       <IonContent>
-        {this.isMobile ? (
+        {isMobile ? (
           <MobileContainer />
         ) : (
           <div className={`container ${classRightPanelActive}`}>
