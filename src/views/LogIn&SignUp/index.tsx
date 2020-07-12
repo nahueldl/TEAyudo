@@ -1,9 +1,10 @@
 import React from "react";
-import { IonContent, isPlatform } from "@ionic/react";
-import SignUpContainer from "./SignUpContainer";
-import SignInContainer from "./SignInContainer";
-import OverlayLeft from "./OverlayLeft";
-import OverlayRight from "./OverlayRight";
+import { IonContent, getPlatforms } from "@ionic/react";
+import SignUpContainer from "./Desktop/SignUpContainer";
+import SignInContainer from "./Desktop/SignInContainer";
+import OverlayLeft from "./Desktop/OverlayLeft";
+import OverlayRight from "./Desktop/OverlayRight";
+import MobileContainer from "./Mobile/MobileContainer";
 import "./styles.css";
 
 class LogInSignUpPageDesktop extends React.PureComponent<Props, State> {
@@ -15,7 +16,9 @@ class LogInSignUpPageDesktop extends React.PureComponent<Props, State> {
     this.handleActivationChange = this.handleActivationChange.bind(this);
   }
 
-  platform = isPlatform("desktop") ? "desktop" : "mobile";
+  platforms = getPlatforms();
+  isMobile =
+    this.platforms.includes("mobile") && !this.platforms.includes("tablet");
 
   handleActivationChange(value: boolean) {
     this.setState({ showSignIn: value }, () => {});
@@ -29,23 +32,27 @@ class LogInSignUpPageDesktop extends React.PureComponent<Props, State> {
     const classRightPanelActive = this.state.showSignIn
       ? "rightPanelActive"
       : "";
-    console.log(this.platform);
+    console.log(getPlatforms());
     return (
       <IonContent>
-        <div className={`container ${classRightPanelActive}`}>
-          <SignUpContainer />
-          <SignInContainer />
-          <div className="overlayContainer">
-            <div className="overlay">
-              <OverlayLeft
-                handleActivationChange={this.handleActivationChange}
-              />
-              <OverlayRight
-                handleActivationChange={this.handleActivationChange}
-              />
+        {this.isMobile ? (
+          <MobileContainer />
+        ) : (
+          <div className={`container ${classRightPanelActive}`}>
+            <SignUpContainer />
+            <SignInContainer isMobile={false} />
+            <div className="overlayContainer">
+              <div className="overlay">
+                <OverlayLeft
+                  handleActivationChange={this.handleActivationChange}
+                />
+                <OverlayRight
+                  handleActivationChange={this.handleActivationChange}
+                />
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </IonContent>
     );
   }

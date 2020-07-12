@@ -166,3 +166,7 @@ form {
 .iconsContainer {
   margin: 15px;
 }
+
+.slides {
+  height: 100%;
+}

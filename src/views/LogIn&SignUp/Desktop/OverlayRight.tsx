@@ -6,7 +6,7 @@ const OverlayRight: React.FC<Props> = ({handleActivationChange}) => {
     <div className="overlayPanel overlayRight">
       <h1>¿Aún no estás registradx?</h1>
       <p>Para comenzar, sólo necesitas crear una cuenta</p>
-      <IonButton fill="outline" onClick={() => handleActivationChange(true)}>Registrarse</IonButton>
+      <IonButton className="overlayButton" fill="outline" onClick={() => handleActivationChange(true)}>Registrarse</IonButton>
     </div>
   );
 };

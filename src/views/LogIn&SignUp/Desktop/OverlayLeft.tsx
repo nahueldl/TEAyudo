@@ -6,7 +6,7 @@ const OverlayLeft: React.FC<Props> = ({handleActivationChange}) => {
     <div className="overlayPanel overlayLeft">
       <h1>¡Bienvenidx de vuelta!</h1>
       <p>Para continuar, necesitamos que inicies sesión con tu cuenta</p>
-      <IonButton fill="outline" onClick={() => handleActivationChange(false)}>Iniciar sesión</IonButton>
+      <IonButton className="overlayButton" fill="outline" onClick={() => handleActivationChange(false)}>Iniciar sesión</IonButton>
     </div>
   );
 };
