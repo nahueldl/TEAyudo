@@ -20,8 +20,6 @@ const MobileContainer: React.FC = () => {
   const [passwordValidation, setPasswordValidation] = useState<boolean>();
   const { navigate } = useContext(NavContext);
 
-  // Optional parameters to pass to the swiper instance.
-  // See http://idangero.us/swiper/api/ for valid options.
   const slideOpts = {
     initialSlide: 1,
     speed: 400,

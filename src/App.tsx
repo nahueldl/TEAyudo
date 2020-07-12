@@ -31,6 +31,7 @@ const App: React.FC = () => {
   //Agregar context con theme, platform, usuario, paciente
   const appContext = useContext(TEAyudoContext);
   const {patientName, authenticated} = appContext
+  console.log(appContext);
   return (
     <IonApp>
       <IonReactRouter>

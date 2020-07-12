@@ -11,7 +11,7 @@ import {
 import { logoGoogle, logoFacebook } from "ionicons/icons";
 import "./styles.css";
 
-const SignInContainer: React.FC<Props> = ({ isMobile }) => {
+const SignInContainer: React.FC = () => {
   const [email, setEmail] = useState<string>();
   const [password, setPassword] = useState<string>();
   const [passwordValidation, setPasswordValidation] = useState<boolean>();
@@ -77,21 +77,10 @@ const SignInContainer: React.FC<Props> = ({ isMobile }) => {
         >
           Iniciar sesión
         </IonButton>
-        {isMobile ? (
-          <div>
-            <a href="#">
-              ¿Aún no estás registradx? Hace click acá
-            </a>
-          </div>
-        ) : null}
       </form>
     </div>
   );
 };
-
-interface Props {
-  isMobile: boolean;
-}
 
 interface State {
   email: string;

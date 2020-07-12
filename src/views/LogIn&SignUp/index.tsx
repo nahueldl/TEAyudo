@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { IonContent } from "@ionic/react";
+import React, { useContext, useCallback, useState } from "react";
+import { IonContent, NavContext } from "@ionic/react";
 import SignUpContainer from "./Desktop/SignUpContainer";
 import SignInContainer from "./Desktop/SignInContainer";
 import OverlayLeft from "./Desktop/OverlayLeft";
@@ -8,60 +8,42 @@ import MobileContainer from "./Mobile/MobileContainer";
 import "./styles.css";
 import { TEAyudoContext } from "../../context";
 
-class LogInSignUpPageDesktop extends React.PureComponent<Props, State> {
-  constructor(props: Readonly<Props>) {
-    super(props);
-    this.state = {
-      showSignIn: false,
-    };
-    this.handleActivationChange = this.handleActivationChange.bind(this);
-  }
+const LogInSignUpPageDesktop: React.FC = () => {
+  const [showSignIn, setShowSignIn] = useState<boolean>(false);
 
-  appContext = useContext(TEAyudoContext);
+  const { navigate } = useContext(NavContext);
 
-  handleActivationChange(value: boolean) {
-    this.setState({ showSignIn: value }, () => {});
-  }
+  const handleSignUp = () => {};
 
-  handleSignUp() {}
+  const handleSignIn = () => {};
 
-  handleLogin() {}
+  const goForward = useCallback(() => navigate("/pacientes", "forward"), [
+    navigate,
+  ]);
 
-  render() {
-    const { isMobile } = this.appContext;
-    const classRightPanelActive = this.state.showSignIn
-      ? "rightPanelActive"
-      : "";
-  
-    return (
-      <IonContent>
-        {isMobile ? (
-          <MobileContainer />
-        ) : (
-          <div className={`container ${classRightPanelActive}`}>
-            <SignUpContainer />
-            <SignInContainer isMobile={false} />
-            <div className="overlayContainer">
-              <div className="overlay">
-                <OverlayLeft
-                  handleActivationChange={this.handleActivationChange}
-                />
-                <OverlayRight
-                  handleActivationChange={this.handleActivationChange}
-                />
-              </div>
+  const appContext = useContext(TEAyudoContext);
+
+  const classRightPanelActive = showSignIn ? "rightPanelActive" : "";
+
+  return (
+    <IonContent>
+      {appContext.isMobile ? (
+        <MobileContainer />
+      ) : (
+        <div className={`container ${classRightPanelActive}`}>
+          <SignUpContainer />
+          <SignInContainer />
+          <div className="overlayContainer">
+            <div className="overlay">
+              <OverlayLeft handleActivationChange={setShowSignIn} />
+              <OverlayRight handleActivationChange={setShowSignIn} />
             </div>
           </div>
-        )}
-      </IonContent>
-    );
-  }
-}
-interface Props {}
-
-interface State {
-  showSignIn: boolean;
-}
+        </div>
+      )}
+    </IonContent>
+  );
+};
 
 type Provider = "facebook" | "google";
 

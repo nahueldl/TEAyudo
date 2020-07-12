@@ -12,7 +12,7 @@ import {
 import { logoGoogle, logoFacebook } from "ionicons/icons";
 import "./styles.css";
 
-const SignUpContainer: React.FC<Props> = () => {
+const SignUpContainer: React.FC = () => {
   const [name, setName] = useState<string>();
   const [email, setEmail] = useState<string>();
   const [password, setPassword] = useState<string>();
@@ -72,9 +72,5 @@ const SignUpContainer: React.FC<Props> = () => {
     </div>
   );
 };
-
-interface Props {
-  handleSignUp?: (provider: string) => any;
-}
 
 export default SignUpContainer;
