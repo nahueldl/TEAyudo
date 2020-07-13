@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const usuarioService = require('../services/usuarioService')
+const isAuth = require('../middleware/auth').isAuth;
 
 
 //Desabilitado por cuestiones de seguridad
@@ -33,6 +34,24 @@ router.post('/login', async (req, res) => {
 		res.status(200).json({token: result.response});
 	else
 		res.status(400).json({msg: result.response});
+});
+
+router.get('/roles', isAuth, async (req, res) => {
+	const result = await usuarioService.getRoles(req.user);
+	if(result.state){
+		res.status(200).json(result.response);
+	}else{
+		res.status(400).json({msg: "Este usuario no posee roles"});
+	}
+});
+
+router.post('/roles', isAuth, async (req, res) => {
+	const result = await usuarioService.asignarRol(req.user, req.body);
+	if(result.state){
+		res.status(200).json(result.response);
+	}else{
+		res.status(400).json({msg: "Este usuario no posee roles"});
+	}
 });
 
 module.exports = router;
