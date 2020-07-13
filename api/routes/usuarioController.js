@@ -48,9 +48,9 @@ router.get('/roles', isAuth, async (req, res) => {
 router.post('/roles', isAuth, async (req, res) => {
 	const result = await usuarioService.asignarRol(req.user, req.body);
 	if(result.state){
-		res.status(200).json(result.response);
+		res.status(200).json({msg: "El rol ha sido asignado con exito"});
 	}else{
-		res.status(400).json({msg: "Este usuario no posee roles"});
+		res.status(400).json({msg: "Ha ocurrido un error al tratar de asignar el rol"});
 	}
 });
 

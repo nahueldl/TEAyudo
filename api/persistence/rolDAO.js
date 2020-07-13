@@ -47,7 +47,7 @@ const rolDAO = {
 			}
 		]
 
-		const result = await genericDAO.runQuery("select r.* from Rol r inner join Usuario_Rol ur on r.id_rol = ur_id_rol where ur.id_usuario = @id", params);
+		const result = await genericDAO.runQuery("select r.* from Rol r inner join Usuario_Rol ur on r.id_rol = ur.id_rol where ur.id_usuario = @id", params);
 
 		if(result.state && result.response.length < 1){
 			result.state = false;
