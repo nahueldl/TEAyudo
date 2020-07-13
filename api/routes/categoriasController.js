@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const categoriaService = require('../services/categoriaService');
-const passport = require('passport');
 const isAuth = require('../middleware/auth').isAuth;
 
 
