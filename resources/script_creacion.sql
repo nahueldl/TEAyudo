@@ -8,7 +8,7 @@ CREATE TABLE [dbo].[TipoDocumento](
 	[activo] [bit] NOT NULL,
  CONSTRAINT [pkTipoDocumento] PRIMARY KEY CLUSTERED 
 (
-	[id_tipoDoc] ASC
+	[id_tipo_documento] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 
@@ -38,8 +38,8 @@ CREATE TABLE [dbo].[Usuario](
 
 ALTER TABLE [dbo].[Usuario] ADD  CONSTRAINT [defaultUsuarioFecha_hora_alta]  DEFAULT (getdate()) FOR [fecha_hora_alta]
 
-ALTER TABLE [dbo].[Usuario]  WITH CHECK ADD  CONSTRAINT [fkUsuarioTipoDocumento] FOREIGN KEY([id_tipoDoc])
-REFERENCES [dbo].[TipoDocumento] ([id_tipoDoc])
+ALTER TABLE [dbo].[Usuario]  WITH CHECK ADD  CONSTRAINT [fkUsuarioTipoDocumento] FOREIGN KEY([id_tipo_documento])
+REFERENCES [dbo].[TipoDocumento] ([id_tipo_documento])
 
 CREATE NONCLUSTERED INDEX IX_Usuario_uuid ON Usuario (uuid)
 
