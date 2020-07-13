@@ -1,41 +1,46 @@
 import React, { useContext, useCallback, useState } from "react";
-import { IonContent, NavContext } from "@ionic/react";
-import SignUpContainer from "./Desktop/SignUpContainer";
-import SignInContainer from "./Desktop/SignInContainer";
-import OverlayLeft from "./Desktop/OverlayLeft";
-import OverlayRight from "./Desktop/OverlayRight";
-import MobileContainer from "./Mobile/MobileContainer";
-import "./styles.css";
+import { IonContent, NavContext, IonSlides, IonSlide } from "@ionic/react";
 import { TEAyudoContext } from "../../context";
+import OverlayLeft from "./OverlayLeft";
+import OverlayRight from "./OverlayRight";
+import SignInForm from "./SignInForm";
+import SignUpForm from "./SignUpForm";
+import "./styles.css";
 
-const LogInSignUpPageDesktop: React.FC = () => {
+const LogInSignUpPage: React.FC = () => {
   const [showSignIn, setShowSignIn] = useState<boolean>(false);
 
   const { navigate } = useContext(NavContext);
-
-  const handleSignUp = () => {};
-
-  const handleSignIn = () => {};
+  const { isMobile, handleSignIn } = useContext(
+    TEAyudoContext
+  );
 
   const goToSelectPatient = useCallback(
     () => navigate("/pacientes", "forward"),
     [navigate]
   );
 
-  const goToMoreData = useCallback(() => navigate("/alta/usuarix", "forward"), [navigate]);
-
-  const appContext = useContext(TEAyudoContext);
-
   const classRightPanelActive = showSignIn ? "rightPanelActive" : "";
 
   return (
     <IonContent>
-      {appContext.isMobile ? (
-        <MobileContainer />
+      {isMobile ? (
+        <IonSlides className="slides">
+          <IonSlide>
+            <SignInForm />
+          </IonSlide>
+          <IonSlide>
+            <SignUpForm />
+          </IonSlide>
+        </IonSlides>
       ) : (
         <div className={`container ${classRightPanelActive}`}>
-          <SignUpContainer />
-          <SignInContainer />
+          <div className="formContainer signUpContainer">
+            <SignUpForm />
+          </div>
+          <div className="formContainer signInContainer">
+            <SignInForm />
+          </div>
           <div className="overlayContainer">
             <div className="overlay">
               <OverlayLeft handleActivationChange={setShowSignIn} />
@@ -48,6 +53,5 @@ const LogInSignUpPageDesktop: React.FC = () => {
   );
 };
 
-type Provider = "facebook" | "google";
 
-export default LogInSignUpPageDesktop;
+export default LogInSignUpPage;

@@ -52,7 +52,6 @@ form {
   }
 }
 
-
 .container.rightPanelActive .signInContainer {
   transform: translateX(100%);
 }
@@ -127,7 +126,6 @@ form {
   transform: translateX(0);
   transition: transform 0.6s ease-in-out;
 }
-
 .overlayLeft {
   transform: translateX(-20%);
 }
@@ -144,10 +142,13 @@ form {
 .container.rightPanelActive .overlayRight {
   transform: translateX(20%);
 }
+.iconsContainer {
+  margin: 15px;
+}
 
 .overlayButton {
   --border-color: white;
-  --color: white
+  --color: white;
 }
 
 .formButton {
@@ -163,6 +164,6 @@ form {
   padding: 0px 10px 0 10px;
 }
 
-.iconsContainer {
-  margin: 15px;
+.slides {
+  height: 100%;
 }
