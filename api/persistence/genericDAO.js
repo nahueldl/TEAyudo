@@ -2,6 +2,9 @@ const sql = require('mssql');
 const { isNullOrUndefined } = require('util');
 
 
+const connecionUrl = `mssql://${process.env.dbuser}:${process.env.dbpass}@${process.env.dbservername}/${process.env.dbname}?encrypt=${process.env.dbencypt}`;
+
+
 const genericDAO = {
 
 	runSimpleQuery: async function (query, returnOneRecorset=true){
@@ -13,7 +16,7 @@ const genericDAO = {
 		};
 
 		try{
-			await sql.connect(`mssql://${process.env.dbuser}:${process.env.dbpass}@${process.env.dbservername}/${process.env.dbname}?encrypt=true`);
+			await sql.connect(connecionUrl);
 			const result = await sql.query(query);
 			res.state = true;
 			if(returnOneRecorset) res.response = result.recordsets[0];
@@ -39,7 +42,7 @@ const genericDAO = {
 		};
 
 		try{
-			const pool = await sql.connect(`mssql://${process.env.dbuser}:${process.env.dbpass}@${process.env.dbservername}/${process.env.dbname}?encrypt=true`);
+			const pool = await sql.connect(connecionUrl);
 			const request = pool.request();
 			params.forEach(param => {
 				if(isNullOrUndefined(param.type))
@@ -71,7 +74,7 @@ const genericDAO = {
 		};
 
 		try{
-			await sql.connect(`mssql://${process.env.dbuser}:${process.env.dbpass}@${process.env.dbservername}/${process.env.dbname}?encrypt=true`);
+			await sql.connect(connecionUrl);
 			const result = await new sql.Request().bulk(table);
 			res.state = true;
 			res.response = result;//sacar este resultado (dejar el null) es solo para ver que mierda devuelve un insert

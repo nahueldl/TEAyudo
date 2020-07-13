@@ -1,5 +1,5 @@
 const usuarioDAO = require('../persistence/usuarioDAO');
-
+const rolDAO = require('../persistence/rolDAO');
 
 const usuarioService = {
 
@@ -30,6 +30,16 @@ const usuarioService = {
 	login: async function(correo, password){
 		//Aca iría la lógia de negocio
 		return await usuarioDAO.login(correo, password);
+	},
+
+
+	getRoles: async function(usuario){
+		return await rolDAO.getByUsuarioId(usuario.id_usuario);
+	},
+
+
+	asignarRol: async function(usuario, rol){
+		return await rolDAO.insertUsuarioRol(usuario.id_usuario, rol.id_rol);
 	}
 	
 };
