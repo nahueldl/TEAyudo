@@ -5,10 +5,19 @@ const { isNullOrUndefined } = require('util');
 
 const categoriaDAO = {
 	
-	getAll: async function (){
+	getAll: async function (id_usuario){
 		//aca irian las validaciones de datos, aca no va una mierda, es para cuando hay que meter
 		//datos en la db que lleven el formato piola o devolverlos con un formato bonito
-		return await genericDAO.runSimpleQuery("select * from Categoria");
+
+		const params = [
+			{
+				name: "id",
+				type: sql.Numeric(18,0),//Puedo no definir type y se infiere automaticamente
+				value: id_usuario
+			}
+		]
+
+		return await genericDAO.runQuery("select ca.*, ro.id_rol, ro.descripcion as 'rol_descripcion' from Categoria ca left join Usuario_Rol ur on ca.id_usuario_rol = ur.id_usuario_rol left join rol ro on ro.id_rol = ur.id_rol where ca.id_usuario_rol is null or ur.id_usuario = @id", params);
 	},
 
 
