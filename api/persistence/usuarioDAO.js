@@ -4,10 +4,17 @@ const { isNullOrUndefined } = require('util');
 const bcrypt = require('bcrypt');
 const saltRounds = parseInt(process.env.SALTROUNDS);
 const { v4: uuidv4 } = require('uuid');
+const estadosRespuesta = require('../models/estados_respuesta');
 
 const usuarioDAO = {
 	getById: async function(id){
-		if(isNullOrUndefined(id)) throw 'parametro id no ha sido definido';
+		if(isNullOrUndefined(id)){
+			const result = {
+				status: estadosRespuesta.USERERROR,
+				response: 'id no ha sido definido'
+			}
+			return result;
+		}
 
 		const params = [
 			{
@@ -19,17 +26,23 @@ const usuarioDAO = {
 
 		const result = await genericDAO.runQuery("select * from Usuario where id_usuario = @id", params);
 
-		if(result.state && result.response.length < 1){
-			result.state = false;
+		if(result.state === estadosRespuesta.OK && result.response.length < 1){
+			result.state = estadosRespuesta.USERERROR;
 			result.response = "No se encontro un usuario con ese id";
-		}else if(result.state){
+		}else if(result.state === estadosRespuesta.OK){
 			result.response = result.response[0];
 		}
 		
 		return result;
 	},
 	getByEmail: async function(email){
-		if(isNullOrUndefined(email)) throw 'parametro email no ha sido definido';
+		if(isNullOrUndefined(email)){
+			const result = {
+				status: estadosRespuesta.USERERROR,
+				response: 'email no ha sido definido'
+			}
+			return result;
+		}
 
 		const params = [
 			{
@@ -41,17 +54,23 @@ const usuarioDAO = {
 
 		const result = await genericDAO.runQuery("select * from Usuario where correo = @email", params);
 
-		if(result.state && result.response.length < 1){
-			result.state = false;
+		if(result.state === estadosRespuesta.OK && result.response.length < 1){
+			result.state = estadosRespuesta.USERERROR;
 			result.response = "No se encontro un usuario con ese email";
-		}else if(result.state){
+		}else if(result.state === estadosRespuesta.OK){
 			result.response = result.response[0];
 		}
 		
 		return result;
 	},
 	getByUUID: async function(uuid){
-		if(isNullOrUndefined(uuid)) throw 'parametro uuid no ha sido definido';
+		if(isNullOrUndefined(uuid)){
+			const result = {
+				status: estadosRespuesta.USERERROR,
+				response: 'uuid no ha sido definido'
+			}
+			return result;
+		}
 
 		const params = [
 			{
@@ -68,17 +87,23 @@ const usuarioDAO = {
 
 		const result = await genericDAO.runQuery("select * from Usuario where uuid = @uuid and datediff(hour, fecha_hora_ultimo_login, getdate()) < @horas_duracion_sesion", params);
 
-		if(result.state && result.response.length < 1){
-			result.state = false;
+		if(result.state === estadosRespuesta.OK && result.response.length < 1){
+			result.state = estadosRespuesta.USERERROR;
 			result.response = "No se encontro un usuario con uuid dentro del tiempo de sesion activa";
-		}else if(result.state){
+		}else if(result.state === estadosRespuesta.OK){
 			result.response = result.response[0];
 		}
 		
 		return result;
 	},
 	insert: async function (usuario){
-		if(isNullOrUndefined(usuario)) throw 'usuario no esta definida';
+		if(isNullOrUndefined(usuario)){
+			const result = {
+				status: estadosRespuesta.USERERROR,
+				response: 'usuario no esta definido'
+			}
+			return result;
+		}
 
 		const tablaUsuario = new sql.Table('Usuario');
 		tablaUsuario.columns.add('id_tipo_documento', sql.Numeric(18,0), {nullable: true});
@@ -106,11 +131,17 @@ const usuarioDAO = {
 		return genericDAO.insert(tablaUsuario);
 	},
 	login: async function(email, password){
-		if(isNullOrUndefined(email)) throw 'email y/o password no estan definidas';
+		if(isNullOrUndefined(email)){
+			const result = {
+				status: estadosRespuesta.USERERROR,
+				response: 'email y/o password no estan definidas'
+			}
+			return result;
+		}
 
 		const resultUsuario = await this.getByEmail(email);
 
-		if(!resultUsuario.state)
+		if(resultUsuario.state !== estadosRespuesta.OK)
 			return resultUsuario;
 
 		const usuario = resultUsuario.response;
@@ -139,20 +170,20 @@ const usuarioDAO = {
 	
 				const result = await genericDAO.runQuery("update Usuario set uuid = @uuid, fecha_hora_ultimo_login = getdate() where id_usuario = @id", params);
 	
-				if(result.state){
-					res.state = true;
+				if(result.state === estadosRespuesta.OK){
+					res.state = estadosRespuesta.OK;
 					res.response = uuid;
 				}else{
-					res.state = false;
+					res.state = estadosRespuesta.SERVERERROR;
 					res.response = "Ha ocurrido un error tratando de crear la sesión";
 				}
 	
 			}else{
-				res.state = false;
+				res.state = estadosRespuesta.USERERROR;
 				res.response = "La contraseña no es correcta";
 			}
 		}catch(err){
-			res.state = false;
+			res.state = estadosRespuesta.SERVERERROR;
 			res.response = "Ha ocurrido un error tratando de crear la sesión";
 		}
 		

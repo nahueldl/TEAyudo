@@ -1,6 +1,7 @@
 const sql = require('mssql');
 const genericDAO = require('./genericDAO');
 const { isNullOrUndefined } = require('util');
+const estadosRespuesta = require('../models/estados_respuesta');
 
 
 const rolDAO = {
@@ -13,7 +14,12 @@ const rolDAO = {
 
 
 	getById: async function (id){
-		if(isNullOrUndefined(id)) throw 'parametro id no ha sido definido';
+		if(isNullOrUndefined(id)){
+			const result = {
+				status: estadosRespuesta.USERERROR,
+				response: 'id no ha sido definido'
+			}
+		}
 
 		const params = [
 			{
@@ -25,10 +31,10 @@ const rolDAO = {
 
 		const result = await genericDAO.runQuery("select * from Rol where id_rol = @id", params);
 
-		if(result.state && result.response.length < 1){
-			result.state = false;
+		if(result.state === estadosRespuesta.OK && result.response.length < 1){
+			result.state = estadosRespuesta.USERERROR;
 			result.response = "No se encontro un rol con ese id";
-		}else if(result.state){
+		}else if(result.state === estadosRespuesta.OK){
 			result.response = result.response[0];
 		}
 		
@@ -37,7 +43,7 @@ const rolDAO = {
 
 
 	getByUsuarioId: async function (id){
-		if(isNullOrUndefined(id)) throw 'parametro id no ha sido definido';
+		if(isNullOrUndefined(id)) throw 'id no ha sido definido';
 
 		const params = [
 			{
@@ -49,8 +55,8 @@ const rolDAO = {
 
 		const result = await genericDAO.runQuery("select r.* from Rol r inner join Usuario_Rol ur on r.id_rol = ur.id_rol where ur.id_usuario = @id", params);
 
-		if(result.state && result.response.length < 1){
-			result.state = false;
+		if(result.state === estadosRespuesta.OK && result.response.length < 1){
+			result.state = estadosRespuesta.USERERROR;
 			result.response = "No se encontro ningun rol para ese id de usuario";
 		}
 		
@@ -92,10 +98,10 @@ const rolDAO = {
 
 		const result = await genericDAO.runQuery("select * from Usuario_Rol where id_usuario = @idUsuario and id_rol = @idRol", params);
 
-		if(result.state && result.response.length < 1){
-			result.state = false;
+		if(result.state === estadosRespuesta.OK && result.response.length < 1){
+			result.state = estadosRespuesta.USERERROR;
 			result.response = "No se encontro ningun rol para ese id de usuario";
-		}else if(result.state){
+		}else if(result.state === estadosRespuesta.OK){
 			result.response = result.response[0];
 		}
 
