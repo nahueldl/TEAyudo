@@ -1,5 +1,6 @@
 const categoriaDAO = require('../persistence/categoriaDAO');
 const rolService = require('./rolService')
+const estadosRespuesta = require('../models/estados_respuesta');
 
 
 const categoriaService = {
@@ -17,9 +18,24 @@ const categoriaService = {
 
 
 	insert: async function(categoria, usuario){
-		//TODO if categoria.id_rol = null ERRORRRRRRRRRRRORRRR
+		if(isNullOrUndefined(categoria.id_rol)){
+			const result = {
+				status: estadosRespuesta.USERERROR,
+				response: 'id_rol no ha sido definido'
+			}
+			return result;
+		}
+
 		const result = await rolService.getUsuarioRol(usuario.id_usuario, categoria.id_rol);
-		//TODO if status is not ok ERORRRROROROROROR
+
+		if(result.status !== estadosRespuesta.OK){
+			const result = {
+				status: estadosRespuesta.USERERROR,
+				response: 'El usuario no tiene asignado el rol elegido'
+			}
+			return result;
+		}
+
 		categoria.id_usuario_rol = result.response.id_usuario_rol;
 
 		const categorias = [];
