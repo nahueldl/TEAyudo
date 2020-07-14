@@ -1,6 +1,7 @@
 const sql = require('mssql');
 const genericDAO = require('./genericDAO');
 const { isNullOrUndefined } = require('util');
+const estadosRespuesta = require('../models/estados_respuesta');
 
 
 const categoriaDAO = {
@@ -22,7 +23,13 @@ const categoriaDAO = {
 
 
 	getById: async function (id){
-		if(isNullOrUndefined(id)) throw 'parametro id no ha sido definido';
+		if(isNullOrUndefined(id)){
+			const result = {
+				status: estadosRespuesta.USERERROR,
+				response: 'id no ha sido definido'
+			}
+			return result;
+		}
 
 		const params = [
 			{
@@ -34,10 +41,10 @@ const categoriaDAO = {
 
 		const result = await genericDAO.runQuery("select * from Categoria where id_categoria = @id", params);
 
-		if(result.state && result.response.length < 1){
-			result.state = false;
+		if(result.state === estadosRespuesta.OK && result.response.length < 1){
+			result.state = estadosRespuesta.USERERROR;
 			result.response = "No se encontro una categoria con ese id";
-		}else if(result.state){
+		}else if(result.state === estadosRespuesta.OK){
 			result.response = result.response[0];
 		}
 		
@@ -46,7 +53,13 @@ const categoriaDAO = {
 
 
 	insert: async function (listaCategorias){
-		if(isNullOrUndefined(listaCategorias) || listaCategorias.length < 1) throw 'listaCategorias no esta definida o no contiene elementos';
+		if(isNullOrUndefined(listaCategorias) || listaCategorias.length < 1){
+			const result = {
+				status: estadosRespuesta.USERERROR,
+				response: 'categorias no esta definida o no contiene elementos'
+			}
+			return result;
+		}
 
 		const tablaCategoria = new sql.Table('Categoria');
 		tablaCategoria.columns.add('id_usuario_rol', sql.Numeric(18,0), {nullable: true});

@@ -1,6 +1,6 @@
 const sql = require('mssql');
 const { isNullOrUndefined } = require('util');
-
+const estadosRespuesta = require('../models/estados_respuesta');
 
 const connecionUrl = `mssql://${process.env.dbuser}:${process.env.dbpass}@${process.env.dbservername}/${process.env.dbname}?encrypt=${process.env.dbencypt}`;
 
@@ -18,11 +18,11 @@ const genericDAO = {
 		try{
 			await sql.connect(connecionUrl);
 			const result = await sql.query(query);
-			res.state = true;
+			res.state = estadosRespuesta.OK;
 			if(returnOneRecorset) res.response = result.recordsets[0];
 			else res.response = result.recordsets;
 		}catch(err){
-			res.state = false;
+			res.state = estadosRespuesta.SERVERERROR;
 			res.response = err;
 			console.log(err);
 		}
@@ -51,11 +51,11 @@ const genericDAO = {
 					request.input(param.name, param.type, param.value)
 			});
 			const result = await request.query(query);
-			res.state = true;
+			res.state = estadosRespuesta.OK;
 			if(returnOneRecorset) res.response = result.recordsets[0];
 			else res.response = result.recordsets;
 		}catch(err){
-			res.state = false;
+			res.state = estadosRespuesta.SERVERERROR;
 			res.response = err;
 			console.log(err);
 		}
@@ -76,10 +76,10 @@ const genericDAO = {
 		try{
 			await sql.connect(connecionUrl);
 			const result = await new sql.Request().bulk(table);
-			res.state = true;
+			res.state = estadosRespuesta.OK;
 			res.response = null;
 		}catch(err){
-			res.state = false;
+			res.state = estadosRespuesta.SERVERERROR;
 			res.response = err;
 			console.log(err);
 		}
