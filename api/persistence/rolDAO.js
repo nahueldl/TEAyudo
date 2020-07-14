@@ -16,7 +16,7 @@ const rolDAO = {
 	getById: async function (id){
 		if(isNullOrUndefined(id)){
 			const result = {
-				status: estadosRespuesta.USERERROR,
+				state: estadosRespuesta.USERERROR,
 				response: 'id no ha sido definido'
 			}
 		}
@@ -43,7 +43,13 @@ const rolDAO = {
 
 
 	getByUsuarioId: async function (id){
-		if(isNullOrUndefined(id)) throw 'id no ha sido definido';
+		if(isNullOrUndefined(id)) {
+			const result = {
+				state: estadosRespuesta.USERERROR,
+				response: 'id no ha sido definido'
+			}
+			return result;
+		}
 
 		const params = [
 			{
@@ -64,7 +70,13 @@ const rolDAO = {
 	},
 	
 	insertUsuarioRol: async function (idUsuario, idRol){
-		if(isNullOrUndefined(idUsuario) || isNullOrUndefined(idRol)) throw 'idUsuario y/o idRol no estan definidos';
+		if(isNullOrUndefined(idUsuario) || isNullOrUndefined(idRol)) {
+			const result = {
+				state: estadosRespuesta.USERERROR,
+				response: 'idUsuario y/o idRol no estan definidos'
+			}
+			return result;
+		}
 
 		const tablaUsuarioRol = new sql.Table('Usuario_Rol');
 		tablaUsuarioRol.columns.add('id_usuario', sql.Numeric(18,0), {nullable: false});
@@ -81,7 +93,13 @@ const rolDAO = {
 	},
 
 	getUsuarioRol: async function (idUsuario, idRol){
-		if(isNullOrUndefined(idUsuario) || isNullOrUndefined(idRol)) throw 'idUsuario y/o idRol no estan definidos';
+		if(isNullOrUndefined(idUsuario) || isNullOrUndefined(idRol)){
+			const result = {
+				state: estadosRespuesta.USERERROR,
+				response: 'idUsuario y/o idRol no estan definidos'
+			}
+			return result;
+		}
 		
 		const params = [
 			{

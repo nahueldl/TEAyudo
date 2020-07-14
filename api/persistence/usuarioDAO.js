@@ -10,7 +10,7 @@ const usuarioDAO = {
 	getById: async function(id){
 		if(isNullOrUndefined(id)){
 			const result = {
-				status: estadosRespuesta.USERERROR,
+				state: estadosRespuesta.USERERROR,
 				response: 'id no ha sido definido'
 			}
 			return result;
@@ -38,7 +38,7 @@ const usuarioDAO = {
 	getByEmail: async function(email){
 		if(isNullOrUndefined(email)){
 			const result = {
-				status: estadosRespuesta.USERERROR,
+				state: estadosRespuesta.USERERROR,
 				response: 'email no ha sido definido'
 			}
 			return result;
@@ -66,7 +66,7 @@ const usuarioDAO = {
 	getByUUID: async function(uuid){
 		if(isNullOrUndefined(uuid)){
 			const result = {
-				status: estadosRespuesta.USERERROR,
+				state: estadosRespuesta.USERERROR,
 				response: 'uuid no ha sido definido'
 			}
 			return result;
@@ -99,7 +99,7 @@ const usuarioDAO = {
 	insert: async function (usuario){
 		if(isNullOrUndefined(usuario)){
 			const result = {
-				status: estadosRespuesta.USERERROR,
+				state: estadosRespuesta.USERERROR,
 				response: 'usuario no esta definido'
 			}
 			return result;
@@ -133,7 +133,7 @@ const usuarioDAO = {
 	login: async function(email, password){
 		if(isNullOrUndefined(email)){
 			const result = {
-				status: estadosRespuesta.USERERROR,
+				state: estadosRespuesta.USERERROR,
 				response: 'email y/o password no estan definidas'
 			}
 			return result;

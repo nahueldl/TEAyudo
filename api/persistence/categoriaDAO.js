@@ -25,7 +25,7 @@ const categoriaDAO = {
 	getById: async function (id){
 		if(isNullOrUndefined(id)){
 			const result = {
-				status: estadosRespuesta.USERERROR,
+				state: estadosRespuesta.USERERROR,
 				response: 'id no ha sido definido'
 			}
 			return result;
@@ -55,7 +55,7 @@ const categoriaDAO = {
 	insert: async function (listaCategorias){
 		if(isNullOrUndefined(listaCategorias) || listaCategorias.length < 1){
 			const result = {
-				status: estadosRespuesta.USERERROR,
+				state: estadosRespuesta.USERERROR,
 				response: 'categorias no esta definida o no contiene elementos'
 			}
 			return result;
