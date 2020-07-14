@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const usuarioService = require('../services/usuarioService')
 const isAuth = require('../middleware/auth').isAuth;
+const estadosRespuesta = require('../models/estados_respuesta');
 
 
 //Desabilitado por cuestiones de seguridad
@@ -19,10 +20,12 @@ const isAuth = require('../middleware/auth').isAuth;
 //POST Usuario
 router.post('/register', async (req, res) => {
 	const result = await usuarioService.insert(req.body);
-	if(result.state){
+	if(result.state === estadosRespuesta.OK){
 		res.status(200).json({msg: "El usuario ha sido correctamente creada"});
-	}else{
+	}else if(result.state === estadosRespuesta.SERVERERROR){
 		res.status(500).json({msg: "Ha ocurrido un error inesperado en el servidor"});
+	}else if(result.state === estadosRespuesta.USERERROR){
+		res.status(400).json({msg: result.response});
 	}
 });
 
@@ -30,27 +33,33 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
 	const result = await usuarioService.login(req.body.correo, req.body.password);
 
-	if(result.state)
+	if(result.state === estadosRespuesta.OK)
 		res.status(200).json({token: result.response});
-	else
+	else if(result.state === estadosRespuesta.USERERROR)
 		res.status(400).json({msg: result.response});
+	else if(result.state === estadosRespuesta.SERVERERROR)
+		res.status(500).json({msg: "Ha ocurrido un error inesperado en el servidor"});
 });
 
 router.get('/roles', isAuth, async (req, res) => {
 	const result = await usuarioService.getRoles(req.user);
-	if(result.state){
+	if(result.state === estadosRespuesta.OK){
 		res.status(200).json(result.response);
-	}else{
-		res.status(400).json({msg: "Este usuario no posee roles"});
+	}else if(result.state === estadosRespuesta.USERERROR){
+		res.status(400).json({msg: result.response});
+	}else if(result.state === estadosRespuesta.SERVERERROR){
+		res.status(500).json({msg: "Ha ocurrido un error inesperado en el servidor"});
 	}
 });
 
 router.post('/roles', isAuth, async (req, res) => {
 	const result = await usuarioService.asignarRol(req.user, req.body);
-	if(result.state){
+	if(result.state === estadosRespuesta.OK){
 		res.status(200).json({msg: "El rol ha sido asignado con exito"});
-	}else{
-		res.status(400).json({msg: "Ha ocurrido un error al tratar de asignar el rol"});
+	}else if(result.state === estadosRespuesta.USERERROR){
+		res.status(400).json({msg: result.response});
+	}else if(result.state === estadosRespuesta.SERVERERROR){
+		res.status(500).json({msg: "Ha ocurrido un error inesperado en el servidor"});
 	}
 });
 
