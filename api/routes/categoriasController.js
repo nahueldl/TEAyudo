@@ -6,7 +6,7 @@ const isAuth = require('../middleware/auth').isAuth;
 
 //GET Categorias
 router.get('/', isAuth, async (req, res) => {
-	const result = await categoriaService.getAll();
+	const result = await categoriaService.getAll(req.user);
 	if(result.state){
 		res.status(200).json(result.response);
 	}else{
@@ -27,8 +27,8 @@ router.get('/:id', async (req, res) => {
 
 
 //POST Categoria
-router.post('/', async (req, res) => {
-	const result = await categoriaService.insert(req.body);
+router.post('/', isAuth, async (req, res) => {
+	const result = await categoriaService.insert(req.body, req.user);
 	if(result.state){
 		res.status(200).json({msg: "La categoria ha sido correctamente creada"});
 	}else{
