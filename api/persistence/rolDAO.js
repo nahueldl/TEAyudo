@@ -72,7 +72,36 @@ const rolDAO = {
 		);
 
 		return genericDAO.insert(tablaUsuarioRol);
+	},
+
+	getUsuarioRol: async function (idUsuario, idRol){
+		if(isNullOrUndefined(idUsuario) || isNullOrUndefined(idRol)) throw 'idUsuario y/o idRol no estan definidos';
+		
+		const params = [
+			{
+				name: "idUsuario",
+				type: sql.Numeric(18,0),
+				value: idUsuario
+			},
+			{
+				name: "idRol",
+				type: sql.Numeric(18,0),
+				value: idRol
+			}
+		]
+
+		const result = await genericDAO.runQuery("select * from Usuario_Rol where id_usuario = @idUsuario and id_rol = @idRol", params);
+
+		if(result.state && result.response.length < 1){
+			result.state = false;
+			result.response = "No se encontro ningun rol para ese id de usuario";
+		}else if(result.state){
+			result.response = result.response[0];
+		}
+
+		return result;
 	}
+
 };
 
 

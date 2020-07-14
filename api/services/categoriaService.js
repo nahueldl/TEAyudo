@@ -1,11 +1,12 @@
 const categoriaDAO = require('../persistence/categoriaDAO');
+const rolService = require('./rolService')
 
 
 const categoriaService = {
 
-	getAll: async function(){
+	getAll: async function(usuario){
 		//Aca iría la lógia de negocio
-		return await categoriaDAO.getAll();
+		return await categoriaDAO.getAll(usuario.id_usuario);
 	},
 
 
@@ -15,14 +16,15 @@ const categoriaService = {
 	},
 
 
-	insert: async function(categoria){
-		//Aca iría la lógia de negocio
+	insert: async function(categoria, usuario){
+		//TODO if categoria.id_rol = null ERRORRRRRRRRRRRORRRR
+		const result = await rolService.getUsuarioRol(usuario.id_usuario, categoria.id_rol);
+		//TODO if status is not ok ERORRRROROROROROR
+		categoria.id_usuario_rol = result.response.id_usuario_rol;
 
-		//Aca debería chequear quien es el usuario logueado y con que rol y asignarle la categoria a el mismo
-		//por ahora como no existe va un bello y harcodeado "1"
-		categoria.id_usuario_rol = 1;
 		const categorias = [];
 		categorias.push(categoria);
+		
 		return await categoriaDAO.insert(categorias);
 	}
 	

@@ -77,7 +77,7 @@ const genericDAO = {
 			await sql.connect(connecionUrl);
 			const result = await new sql.Request().bulk(table);
 			res.state = true;
-			res.response = result;//sacar este resultado (dejar el null) es solo para ver que mierda devuelve un insert
+			res.response = null;
 		}catch(err){
 			res.state = false;
 			res.response = err;
