@@ -38,8 +38,18 @@
  
 * **Error Response:**
 
+  * **Code:** 401 UNAUTHORIZED <br />
+    **Content:** `Unauthorized`
+
+  OR
+
   * **Code:** 400 BAD REQUEST <br />
     **Content:** `{ "msg": "Este usuario no posee roles" }`
+
+  OR
+
+  * **Code:** 500 INTERNAL SERVER ERROR <br />
+    **Content:** `{ "msg": "Ha ocurrido un error inesperado en el servidor" }`
 
 * **Sample Call:**
 
@@ -50,4 +60,4 @@ curl --location --request GET 'localhost:8080/api/usuario/roles' \
 
 * **Notes:**
 
-  _Queda pendiente crear nuevos tipos de error en caso que falten datos en la petición_
+  _Sujeto a cambios futuros_
