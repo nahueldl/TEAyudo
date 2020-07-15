@@ -363,3 +363,26 @@ ALTER TABLE [dbo].[Jugada]  WITH CHECK ADD  CONSTRAINT [fkJugadaPaciente] FOREIG
 REFERENCES [dbo].[Paciente] ([id_paciente])
 
 ALTER TABLE [dbo].[Jugada] ADD  CONSTRAINT [defaultJugadaFecha_hora]  DEFAULT (getdate()) FOR [fecha_hora]
+
+
+/*
+CREATE Rol_Paciente
+ */
+CREATE TABLE [dbo].[Rol_Paciente](
+	[id_rol_paciente] [numeric](18, 0)  IDENTITY(1,1) NOT NULL,
+	[id_paciente] [numeric](18, 0) NOT NULL,
+	[id_usuario_rol] [numeric](18, 0) NOT NULL,
+	[activo] [bit] NOT NULL,
+ CONSTRAINT [pkRol_Paciente] PRIMARY KEY CLUSTERED 
+(
+	[id_rol_paciente] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+ALTER TABLE [dbo].[Rol_Paciente]  WITH CHECK ADD  CONSTRAINT [fkRolPaciente_UsuarioRol] FOREIGN KEY([id_usuario_rol])
+REFERENCES [dbo].[Usuario_Rol] ([id_usuario_rol])
+
+ALTER TABLE [dbo].[Rol_Paciente]  WITH CHECK ADD  CONSTRAINT [fkRolPaciente_Paciente] FOREIGN KEY([id_paciente])
+REFERENCES [dbo].[Paciente] ([id_paciente])
+
+ALTER TABLE [dbo].[Rol_Paciente] ADD CONSTRAINT uq_Rol_Paciente_idRolUsuarioIdPaciente UNIQUE(id_paciente, id_usuario_rol);
