@@ -112,6 +112,8 @@ REFERENCES [dbo].[Rol] ([id_rol])
 ALTER TABLE [dbo].[Usuario_Rol]  WITH CHECK ADD  CONSTRAINT [fkUsuario_RolUsuario] FOREIGN KEY([id_usuario])
 REFERENCES [dbo].[Usuario] ([id_usuario])
 
+ALTER TABLE [dbo].[Usuario_Rol] ADD CONSTRAINT uq_Usuario_Rol_idRolIdUsuario UNIQUE(id_usuario, id_rol);
+
 
 /*
 CREATE Categoria
