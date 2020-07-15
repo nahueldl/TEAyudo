@@ -1,4 +1,4 @@
-**Register**
+**Asignar Rol**
 ----
   Devuelve un mensaje confirmando la asignacion del nuevo rol
 
