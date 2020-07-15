@@ -35,10 +35,15 @@
   * **Code:** 400 BAD REQUEST <br />
     **Content:** `{ "msg": "La contraseña no es correcta" }`
 
+  OR
+
+  * **Code:** 500 INTERNAL SERVER ERROR <br />
+    **Content:** `{ "msg": "Ha ocurrido un error inesperado en el servidor" }`
+
 * **Sample Call:**
 
 ```bash
-curl --location --request POST 'https://teayudotestingwebapp.azurewebsites.net/api/usuario/login' \
+curl --location --request POST 'localhost:8080/api/usuario/login' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "correo": "correo@prueba.com",
@@ -48,4 +53,4 @@ curl --location --request POST 'https://teayudotestingwebapp.azurewebsites.net/a
 
 * **Notes:**
 
-  _Queda pendiente crear nuevos tipos de error en caso que falten datos en la petición_
+  _Sujeto a cambios futuros_
