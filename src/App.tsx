@@ -26,17 +26,14 @@ import LogInSignUpPage from "./views/LogIn&SignUp";
 import PatientSelection from "./views/Patients/Selection";
 import { TEAyudoContext } from "./context";
 
-
 const App: React.FC = () => {
-  //Agregar context con theme, platform, usuario, paciente
-  const appContext = useContext(TEAyudoContext);
-  const {patientName, authenticated} = appContext
-  console.log(appContext);
+  const { data } = useContext(TEAyudoContext);
+
   return (
     <IonApp>
       <IonReactRouter>
-        {authenticated ? (
-          patientName ? (
+        {data.authenticated ? (
+          data.patientName ? (
             // Si ambas son verdaderas, ir a la app
             <AppPostLogin />
           ) : (

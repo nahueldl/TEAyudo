@@ -14,7 +14,8 @@ const SignUpForm: React.FC<Props> = () => {
   const [email, setEmail] = useState<string>();
   const [name, setName] = useState<string>();
   const [password, setPassword] = useState<string>();
-  const { isMobile, error, loading } = useContext(TEAyudoContext);
+  const { data } = useContext(TEAyudoContext);
+  const { isMobile, error, loading } = data;
   return (
     <form>
       <h1>Registrarse</h1>
@@ -65,7 +66,7 @@ const SignUpForm: React.FC<Props> = () => {
         Registrarse
       </IonButton>
       <IonLoading
-        isOpen={loading}
+        isOpen={loading!}
         message={"Trabajando..."}
         spinner="crescent"
       />

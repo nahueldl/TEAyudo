@@ -1,6 +1,7 @@
 import React, { useContext, useCallback, useState } from "react";
 import { IonContent, NavContext, IonSlides, IonSlide } from "@ionic/react";
 import { TEAyudoContext } from "../../context";
+import AuthenticationServices from "../../services/authentication.services"
 import OverlayLeft from "./OverlayLeft";
 import OverlayRight from "./OverlayRight";
 import SignInForm from "./SignInForm";
@@ -11,10 +12,14 @@ const LogInSignUpPage: React.FC = () => {
   const [showSignIn, setShowSignIn] = useState<boolean>(false);
 
   const { navigate } = useContext(NavContext);
-  const { isMobile, handleSignIn } = useContext(
-    TEAyudoContext
-  );
+  const { data } = useContext(TEAyudoContext);
+  const { isMobile } = data;
 
+  const handleSignIn = (email: string, password: string) => {
+    AuthenticationServices.handleLogIn(email, password).then(() => goToSelectPatient);
+  }
+
+  // const handleSignUp = (email: string,)
   const goToSelectPatient = useCallback(
     () => navigate("/pacientes", "forward"),
     [navigate]

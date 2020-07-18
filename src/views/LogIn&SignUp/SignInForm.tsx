@@ -13,7 +13,8 @@ import { TEAyudoContext } from "../../context";
 const SignInForm: React.FC<Props> = () => {
   const [email, setEmail] = useState<string>();
   const [password, setPassword] = useState<string>();
-  const { isMobile, error, loading } = useContext(TEAyudoContext);
+  const { data } = useContext(TEAyudoContext);
+  const { isMobile, error, loading } = data;
 
   return (
     <form action="#">
@@ -60,7 +61,7 @@ const SignInForm: React.FC<Props> = () => {
         Iniciar sesión
       </IonButton>
       <IonLoading
-        isOpen={loading}
+        isOpen={loading!}
         message={"Trabajando..."}
         spinner="crescent"
       />
