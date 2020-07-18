@@ -68,6 +68,34 @@ const rolDAO = {
 		
 		return result;
 	},
+
+	//Get descripcion del rol dado un id_usuario
+	getDescripcionByUsuarioId: async function (id){
+		if(isNullOrUndefined(id)) {
+			const result = {
+				state: estadosRespuesta.USERERROR,
+				response: 'id no ha sido definido'
+			}
+			return result;
+		}
+
+		const params = [
+			{
+				name: "id",
+				type: sql.Numeric(18,0),
+				value: id
+			}
+		]
+
+		const result = await genericDAO.runQuery("select r.descripcion from Rol r inner join Usuario_Rol ur on r.id_rol = ur.id_rol where ur.id_usuario = @id", params);
+
+		if(result.state === estadosRespuesta.OK && result.response.length < 1){
+			result.state = estadosRespuesta.USERERROR;
+			result.response = "No se encontro ninguna descripcion de rol para ese id de usuario";
+		}
+		
+		return result;
+	},
 	
 	insertUsuarioRol: async function (idUsuario, idRol){
 		if(isNullOrUndefined(idUsuario) || isNullOrUndefined(idRol)) {
