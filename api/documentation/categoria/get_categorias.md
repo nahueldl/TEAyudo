@@ -1,6 +1,6 @@
 **GET Categorias**
 ----
-  Devuelve una lista con todas las categorías disponibles
+  Devuelve una lista con todas las categorías y las categorias propias del usuario para cada uno de sus roles
 
 * **URL**
 
@@ -35,7 +35,9 @@
             "nombre": "Personitas",
             "fecha_hora_alta": "2020-07-07T01:34:55.873Z",
             "fecha_hora_baja": null,
-            "activo": true
+            "activo": true,
+            "id_rol": null,
+            "rol_descripcion": null
         },
         {
             "id_categoria": 7,
@@ -43,14 +45,21 @@
             "nombre": "Animalitos",
             "fecha_hora_alta": "2020-07-07T01:34:55.873Z",
             "fecha_hora_baja": null,
-            "activo": true
+            "activo": true,
+            "id_rol": 1,
+            "rol_descripcion": "Familiar"
         }
     ]
     ```
  
 * **Error Response:**
 
-  * **Code:** 500 BAD REQUEST <br />
+  * **Code:** 401 UNAUTHORIZED <br />
+    **Content:** `Unauthorized`
+
+  OR
+
+  * **Code:** 500 INTERNAL SERVER ERROR <br />
     **Content:** `{ "msg": "Ha ocurrido un error inesperado en el servidor" }`
 
 * **Sample Call:**
@@ -62,4 +71,4 @@ curl --location --request GET 'localhost:8080/api/categorias/' \
 
 * **Notes:**
 
-  _Queda pendiente crear nuevos tipos de error en caso que falten datos en la petición_
+  _Sujeto a cambios futuros_

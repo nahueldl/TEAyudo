@@ -8,8 +8,19 @@ const rolService = {
 		return await rolDAO.getUsuarioRol(idUsuario, idRol);
 	},
 
+
 	getDescripcionByUsuarioId: async function (idUsuario){
 		return await rolDAO.getDescripcionByUsuarioId(idUsuario);
+	},
+
+	getRoles: async function(usuario){
+		return await rolDAO.getByUsuarioId(usuario.id_usuario);
+	},
+
+
+	asignarRol: async function(usuario, rol){
+		return await rolDAO.insertUsuarioRol(usuario.id_usuario, rol.id_rol);
+
 	}
 	
 };

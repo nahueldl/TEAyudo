@@ -3,10 +3,13 @@ const genericDAO = require('./genericDAO');
 const { isNullOrUndefined } = require('util');
 const bcrypt = require('bcrypt');
 const saltRounds = parseInt(process.env.SALTROUNDS);
+const ttlResetToken = parseInt(process.env.RESETPASSWORD_TIME);
 const { v4: uuidv4 } = require('uuid');
 const estadosRespuesta = require('../models/estados_respuesta');
+var base62 = require('base62-random');
 
 const usuarioDAO = {
+
 	getById: async function(id){
 		if(isNullOrUndefined(id)){
 			const result = {
@@ -35,6 +38,8 @@ const usuarioDAO = {
 		
 		return result;
 	},
+
+
 	getByEmail: async function(email){
 		if(isNullOrUndefined(email)){
 			const result = {
@@ -63,6 +68,8 @@ const usuarioDAO = {
 		
 		return result;
 	},
+
+
 	getByUUID: async function(uuid){
 		if(isNullOrUndefined(uuid)){
 			const result = {
@@ -96,6 +103,8 @@ const usuarioDAO = {
 		
 		return result;
 	},
+
+
 	insert: async function (usuario){
 		if(isNullOrUndefined(usuario)){
 			const result = {
@@ -130,6 +139,8 @@ const usuarioDAO = {
 
 		return genericDAO.insert(tablaUsuario);
 	},
+
+
 	login: async function(email, password){
 		if(isNullOrUndefined(email)){
 			const result = {
@@ -187,6 +198,143 @@ const usuarioDAO = {
 			res.response = "Ha ocurrido un error tratando de crear la sesión";
 		}
 		
+		return res;
+	},
+
+
+	generateForgotPasswordToken: async function(id){
+		if(isNullOrUndefined(id)){
+			const result = {
+				state: estadosRespuesta.USERERROR,
+				response: 'id no esta definido'
+			}
+			return result;
+		}
+
+		const res = {
+			state: null,
+			response: null
+		};
+
+		try{
+
+			const token = base62(64);
+			const hashedToken = await bcrypt.hash(token, saltRounds);
+
+			const params = [
+				{
+					name: "id",
+					type: sql.Numeric(18,0),
+					value: id
+				},
+				{
+					name: "hashedToken",
+					type: sql.NVarChar(60),
+					value: hashedToken
+				}
+			];
+
+			const result = await genericDAO.runQuery("update Usuario set reset_password_token = @hashedToken, fecha_hora_reset_password = getdate() where id_usuario = @id", params);
+
+			if(result.state === estadosRespuesta.OK){
+				res.state = estadosRespuesta.OK;
+				res.response = token;
+			}else{
+				res.state = estadosRespuesta.SERVERERROR;
+				res.response = "Ha ocurrido un error tratando de crear el token de reseteo de contraseña";
+			}
+	
+		}catch(err){
+			res.state = estadosRespuesta.SERVERERROR;
+			res.response = "Ha ocurrido un error tratando de crear el token de reseteo de contraseña";
+		}
+		
+		return res;
+	},
+
+	updateForgottenPassword: async function(usuario, token, newPassword){
+		if(isNullOrUndefined(usuario) || isNullOrUndefined(token) || isNullOrUndefined(newPassword)){
+			const result = {
+				state: estadosRespuesta.USERERROR,
+				response: 'usuario, token o newPassword no esta definido'
+			}
+			return result;
+		}
+
+		const res = {
+			state: null,
+			response: null
+		};
+
+		try{
+
+			
+			if(isNullOrUndefined(usuario.reset_password_token) || isNullOrUndefined(usuario.fecha_hora_reset_password)){
+				res.state = estadosRespuesta.USERERROR;
+				res.response = "El token no es valido";
+				return res;
+			}
+
+			const match = await bcrypt.compare(token, usuario.reset_password_token);
+			//TODO chequear el ttl del token para que no genere un error 500 si ya no es valido
+			if(!match){
+				res.state = estadosRespuesta.USERERROR;
+				res.response = "El token no es valido"
+				return res;
+			}
+
+			const tokenDate = new Date(usuario.fecha_hora_reset_password);
+			const currentDate = new Date();
+
+			//TODO mejorar (horrible fix para arreglar el problema con el GTM -3) 
+			tokenDate.setTime(tokenDate.getTime() + (3*60*60*1000));
+
+			if(currentDate.getTime() - tokenDate.getTime() > ttlResetToken){
+				res.state = estadosRespuesta.USERERROR;
+				res.response = "El token ya no es valido, genere uno nuevo"
+				return res;
+			}
+
+			const hashedToken = await bcrypt.hash(token, saltRounds);
+			const hashedPassword = await bcrypt.hash(token, saltRounds);
+
+			const params = [
+				{
+					name: "id",
+					type: sql.Numeric(18,0),
+					value: usuario.id_usuario
+				},
+				{
+					name: "ttlToken",
+					type: sql.NVarChar(60),
+					value: (ttlResetToken/1000)/60
+				},
+				{
+					name: "hashedPassword",
+					type: sql.NVarChar(60),
+					value: hashedPassword
+				},
+				{
+					name: "resetToken",
+					type: sql.NVarChar(60),
+					value: hashedToken
+				}
+			];
+
+			const result = await genericDAO.runQuery("update Usuario set hashed_password = @hashedPassword, fecha_hora_reset_password = NULL, reset_password_token = NULL where id_usuario = @id", params);
+
+			if(result.state === estadosRespuesta.OK){
+				res.state = estadosRespuesta.OK;
+				res.response = "Se ha reestablecido correctamente la contraseña";
+			}else{
+				res.state = estadosRespuesta.SERVERERROR;
+				res.response = "Ha ocurrido un error tratando de reestablecer la contraseña";
+			}
+		}catch(err){
+			res.state = estadosRespuesta.SERVERERROR;
+			res.response = "Ha ocurrido un error tratando de reestablecer la contraseña";
+		}
+
 		return res;
 	}
 };

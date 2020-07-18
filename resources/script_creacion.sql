@@ -30,6 +30,8 @@ CREATE TABLE [dbo].[Usuario](
 	[activo] [bit] NOT NULL,
 	[uuid] [varchar](36) NULL,
 	[fecha_hora_ultimo_login] [datetime] NULL,
+	[reset_password_token] [varchar](60) NULL,
+	[fecha_hora_reset_password] [datetime] NULL,
  CONSTRAINT [pkUsuario] PRIMARY KEY CLUSTERED 
 (
 	[id_usuario] ASC
@@ -40,6 +42,8 @@ ALTER TABLE [dbo].[Usuario] ADD  CONSTRAINT [defaultUsuarioFecha_hora_alta]  DEF
 
 ALTER TABLE [dbo].[Usuario]  WITH CHECK ADD  CONSTRAINT [fkUsuarioTipoDocumento] FOREIGN KEY([id_tipo_documento])
 REFERENCES [dbo].[TipoDocumento] ([id_tipo_documento])
+
+CREATE NONCLUSTERED INDEX IX_Usuario_reset_password_token ON Usuario (reset_password_token)
 
 CREATE NONCLUSTERED INDEX IX_Usuario_uuid ON Usuario (uuid)
 
@@ -111,6 +115,8 @@ REFERENCES [dbo].[Rol] ([id_rol])
 
 ALTER TABLE [dbo].[Usuario_Rol]  WITH CHECK ADD  CONSTRAINT [fkUsuario_RolUsuario] FOREIGN KEY([id_usuario])
 REFERENCES [dbo].[Usuario] ([id_usuario])
+
+ALTER TABLE [dbo].[Usuario_Rol] ADD CONSTRAINT uq_Usuario_Rol_idRolIdUsuario UNIQUE(id_usuario, id_rol);
 
 
 /*
@@ -246,7 +252,7 @@ CREATE Paciente
 CREATE TABLE [dbo].[Paciente](
 	[id_paciente] [numeric](18, 0) IDENTITY(1,1) NOT NULL,
 	[nombre] [nvarchar](255) NOT NULL,
-	[apelllido] [nvarchar](255) NULL,
+	[apellido] [nvarchar](255) NULL,
 	[fecha_hora_alta] [datetime] NOT NULL,
 	[fecha_hora_modificacion] [datetime] NULL,
 	[fecha_hora_baja] [datetime] NULL,
@@ -361,3 +367,26 @@ ALTER TABLE [dbo].[Jugada]  WITH CHECK ADD  CONSTRAINT [fkJugadaPaciente] FOREIG
 REFERENCES [dbo].[Paciente] ([id_paciente])
 
 ALTER TABLE [dbo].[Jugada] ADD  CONSTRAINT [defaultJugadaFecha_hora]  DEFAULT (getdate()) FOR [fecha_hora]
+
+
+/*
+CREATE Rol_Paciente
+ */
+CREATE TABLE [dbo].[Rol_Paciente](
+	[id_rol_paciente] [numeric](18, 0)  IDENTITY(1,1) NOT NULL,
+	[id_paciente] [numeric](18, 0) NOT NULL,
+	[id_usuario_rol] [numeric](18, 0) NOT NULL,
+	[activo] [bit] NOT NULL,
+ CONSTRAINT [pkRol_Paciente] PRIMARY KEY CLUSTERED 
+(
+	[id_rol_paciente] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+ALTER TABLE [dbo].[Rol_Paciente]  WITH CHECK ADD  CONSTRAINT [fkRolPaciente_UsuarioRol] FOREIGN KEY([id_usuario_rol])
+REFERENCES [dbo].[Usuario_Rol] ([id_usuario_rol])
+
+ALTER TABLE [dbo].[Rol_Paciente]  WITH CHECK ADD  CONSTRAINT [fkRolPaciente_Paciente] FOREIGN KEY([id_paciente])
+REFERENCES [dbo].[Paciente] ([id_paciente])
+
+ALTER TABLE [dbo].[Rol_Paciente] ADD CONSTRAINT uq_Rol_Paciente_idRolUsuarioIdPaciente UNIQUE(id_paciente, id_usuario_rol);
