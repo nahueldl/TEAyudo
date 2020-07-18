@@ -5,7 +5,7 @@ import Menu from "./components/Menu/Menu";
 import HomePage from "./views/Home";
 import PictogramsPage from "./views/Pictograms";
 import CategoriesPage from "./views/Categories";
-import PatientsPage from "./views/Patients";
+import PatientsPage from "./views/Patients/Page";
 import ProfessionalsPage from "./views/Professionals";
 import ReportsPage from "./views/Reports";
 import ConfigurationPage from "./views/Configuration";
