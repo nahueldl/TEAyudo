@@ -1,93 +1,39 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { getPlatforms } from "@ionic/react";
 
 const TEAyudoContext = React.createContext({} as IContext);
 
 const TEAyudoProvider = (props: any) => {
-  let url = "https://teayudotestingwebapp.azurewebsites.net";
-  let loginEndpoint = "/api/usuario/login";
-  let signInEndpoint = "/api/usuario/register";
+  const [data, setContextData] = useState<Partial<IData>>({
+    authenticated: true,
+    username: "lila",
+    patientName: "",
+  });
 
-  const [username, setUsername] = useState<string>("");
-  const [patientName, setPatientName] = useState<string>("");
-  const [authenticated, setAuthenticated] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<boolean>(false);
-  const [isMobile, setIsMobile] = useState<boolean>(true);
-
-  const handleSignIn = (email: string, password: string) => {
-    setLoading(true);
-    setError(false);
-    axios
-      .post(`${url}${loginEndpoint}`, { correo: email, password: password })
-      .then((res) => {
-        console.log(res);
-        setUsername(email);
-        setAuthenticated(true);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        setError(true);
-        setLoading(false);
-      });
-  };
-
-  const handleSignUp = (
-    name: string,
-    email: string,
-    password: string,
-    idDoc?: string,
-    docNumber?: string,
-    licenseNumber?: string
-  ) => {
-    setLoading(true);
-    setError(false);
-    axios
-      .post(`${url}${signInEndpoint}`, {
-        nombre: name,
-        apellido: "",
-        correo: email,
-        password: password,
-      })
-      .then((res) => {
-        console.log(res);
-        setLoading(false);
-      })
-      .catch((error) => console.log(error));
+  const setData = (data: Partial<IData>) => {
+    setContextData((prevValues) => ({ ...prevValues, ...data }));
   };
 
   const fetchPlatform = () => {
     const platforms = getPlatforms();
     const isMobile =
       platforms.includes("mobile") && !platforms.includes("tablet");
-    setIsMobile(isMobile);
+    setData({ isMobile: isMobile });
   };
 
   useEffect(() => {
     fetchPlatform();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <TEAyudoContext.Provider
-      value={{
-        username,
-        patientName,
-        isMobile,
-        authenticated,
-        loading,
-        error,
-        handleSignIn,
-        handleSignUp,
-      }}
-    >
+    <TEAyudoContext.Provider value={{ data, setData }}>
       {props.children}
     </TEAyudoContext.Provider>
   );
 };
 
-interface IContext {
+interface IData {
   username: string;
   patientName: string;
   isMobile: boolean;
@@ -96,6 +42,11 @@ interface IContext {
   error: boolean;
   handleSignIn: any;
   handleSignUp: any;
+}
+
+interface IContext {
+  data: Partial<IData>;
+  setData: (data: Partial<IData>) => void;
 }
 
 export { TEAyudoProvider, TEAyudoContext };
