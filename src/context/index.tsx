@@ -40,7 +40,7 @@ interface IData {
   authenticated: boolean;
   loading: boolean;
   error: boolean;
-  handleSignIn: any;
+  handleSignIn: (email: string, password: string) => void;
   handleSignUp: any;
 }
 

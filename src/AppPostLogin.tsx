@@ -12,7 +12,9 @@ import ConfigurationPage from "./views/Configuration";
 import { TEAyudoContext } from "./context";
 
 const AppPostLogin: React.FC = () => {
+
   const appContext = useContext(TEAyudoContext);
+  
   return (
     <IonSplitPane contentId="main">
       <Menu patientName={appContext.data.patientName!} />

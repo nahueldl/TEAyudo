@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useContext } from "react";
 import {
   IonIcon,
@@ -10,7 +12,7 @@ import {
 import { logoGoogle, logoFacebook } from "ionicons/icons";
 import { TEAyudoContext } from "../../context";
 
-const SignInForm: React.FC<Props> = () => {
+const SignInForm: React.FC<Props> = ({signIn}) => {
   const [email, setEmail] = useState<string>();
   const [password, setPassword] = useState<string>();
   const { data } = useContext(TEAyudoContext);
@@ -56,7 +58,7 @@ const SignInForm: React.FC<Props> = () => {
       <IonButton
         className="formButton"
         type="submit"
-        // onClick={() => handleSignIn()}
+        onClick={(e) => signIn(email!,password!, e)}
       >
         Iniciar sesión
       </IonButton>
@@ -72,5 +74,7 @@ const SignInForm: React.FC<Props> = () => {
   );
 };
 
-interface Props {}
+interface Props {
+  signIn: (email: string, password: string, e:any) => void;
+}
 export default SignInForm;
