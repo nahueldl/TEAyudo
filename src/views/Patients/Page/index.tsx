@@ -1,5 +1,5 @@
 import React from "react";
-import Page from "../../components/Page";
+import Page from "../../../components/Page";
 const PatientsPage: React.FC = () => {
   return (
     <Page pageTitle="Pacientes" showHomeButton>
