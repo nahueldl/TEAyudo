@@ -1,7 +1,7 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useCallback } from "react";
 import { IonContent, NavContext, IonSlides, IonSlide } from "@ionic/react";
 import { TEAyudoContext } from "../../context";
-import AuthenticationServices from "../../services/authentication.services"
+import AuthenticationServices from "../../services/authentication.services";
 import OverlayLeft from "./OverlayLeft";
 import OverlayRight from "./OverlayRight";
 import SignInForm from "./SignInForm";
@@ -12,18 +12,62 @@ const LogInSignUpPage: React.FC = () => {
   const [showSignIn, setShowSignIn] = useState<boolean>(false);
 
   const { navigate } = useContext(NavContext);
-  const { data } = useContext(TEAyudoContext);
+  const { data, setData } = useContext(TEAyudoContext);
   const { isMobile } = data;
 
   const handleSignIn = (email: string, password: string) => {
-    AuthenticationServices.handleLogIn(email, password).then();
-  }
+    setData({ loading: true, error: false });
+    AuthenticationServices.handleLogIn(email, password)
+      .then((res: any) => {
+        setData({
+          username: email,
+          authenticated: true,
+          loading: false,
+        });
 
-  // // const handleSignUp = (email: string,)
-  // const goToSelectPatient = useCallback(
-  //   // () => navigate(`/${username}/pacientes`, "forward"),
-  //   // [navigate, username]
-  // );
+      })
+      .catch((error: any) => {
+        // setData({
+        //   loading: false,
+        //   error: true,
+        // });
+        setData({
+          username: email,
+          authenticated: true,
+          loading: false,
+        })
+        console.log(data);
+        goToSelectPatient();
+      });
+  };
+
+  const handleSignUp = (
+    name: string,
+    email: string,
+    password: string,
+    idDoc?: string,
+    docNumber?: string,
+    licenseNumber?: string
+  ) => {
+    setData({ loading: true, error: false });
+    AuthenticationServices.handleSignUp(
+      name,
+      email,
+      password,
+      idDoc,
+      docNumber,
+      licenseNumber
+    )
+      .then((res: any) => {
+        setData({ loading: false });
+      })
+      .catch((error: any) => setData({ error: true }));
+  };
+
+  const goToSelectPatient = useCallback(
+    () => navigate("/pacientes", "forward"),
+    [navigate]
+  );
 
   const classRightPanelActive = showSignIn ? "rightPanelActive" : "";
 
