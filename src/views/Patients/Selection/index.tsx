@@ -10,7 +10,8 @@ const patients = [
 ];
 
 const PatientSelection: React.FC = () => {
-  const { username } = useContext(TEAyudoContext);
+  const { data } = useContext(TEAyudoContext);
+  const { username } = data;
   return (
     <IonGrid className="container">
       <IonRow>
