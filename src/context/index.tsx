@@ -4,11 +4,7 @@ import { getPlatforms } from "@ionic/react";
 const TEAyudoContext = React.createContext({} as IContext);
 
 const TEAyudoProvider = (props: any) => {
-  const [data, setContextData] = useState<Partial<IData>>({
-    authenticated: true,
-    username: "lila",
-    patientName: "",
-  });
+  const [data, setContextData] = useState<Partial<IData>>({});
 
   const setData = (data: Partial<IData>) => {
     setContextData((prevValues) => ({ ...prevValues, ...data }));
@@ -23,7 +19,7 @@ const TEAyudoProvider = (props: any) => {
 
   useEffect(() => {
     fetchPlatform();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -40,8 +36,6 @@ interface IData {
   authenticated: boolean;
   loading: boolean;
   error: boolean;
-  handleSignIn: (email: string, password: string) => void;
-  handleSignUp: any;
 }
 
 interface IContext {
