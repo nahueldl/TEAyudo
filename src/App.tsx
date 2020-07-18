@@ -38,7 +38,7 @@ const App: React.FC = () => {
             <AppPostLogin />
           ) : (
             // Si está logueado pero no eligió paciente, debe elegir
-            <Redirect from="*" to="/pacientes" />
+            <Redirect from="*" to="/pacientes/seleccion" />
           )
         ) : (
           //Si no está logueado, debe loguearse
@@ -46,7 +46,8 @@ const App: React.FC = () => {
         )}
 
         <Route path="/login" component={LogInSignUpPage} exact />
-        <Route path="/pacientes" component={PatientSelection} exact />
+        <Route path="/pacientes/seleccion" component={PatientSelection} exact />
+        {/* <Route path="/pacientes/agregado" component={} exact /> */}
       </IonReactRouter>
     </IonApp>
   );
