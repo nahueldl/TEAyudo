@@ -43,7 +43,7 @@
 * **Sample Call:**
 
 ```bash
-curl --location --request POST 'localhost:8080/api/usuario/login' \
+curl --location --request POST 'https://api.teayudo.tk/api/usuario/login' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "correo": "correo@prueba.com",

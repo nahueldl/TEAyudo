@@ -45,7 +45,7 @@
 * **Sample Call:**
 
 ```bash
-curl --location --request POST 'localhost:8080/api/usuario/roles' \
+curl --location --request POST 'https://api.teayudo.tk/api/usuario/roles' \
 --header 'Authorization: Bearer 3cf9ca9f-dd7f-4670-aaff-617691d80582' \
 --header 'Content-Type: application/json' \
 --data-raw '{

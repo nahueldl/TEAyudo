@@ -45,7 +45,7 @@
 * **Sample Call:**
 
 ```bash
-curl --location --request POST 'localhost:8080/api/usuario/register' \
+curl --location --request POST 'https://api.teayudo.tk/api/usuario/register' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "id_tipo_doc": 1,

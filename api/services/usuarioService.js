@@ -50,10 +50,18 @@ const usuarioService = {
 		try{
 			await mailerService.sendResetPasswordEmail(correo, tokenResult.response)
 		}catch(err){
-			return {
-				state: estadosRespuesta.SERVERERROR,
-				response: "No se pudo enviar el mail de restablecimiento de contraseña"
-			};
+			if(process.env.NODE_ENV === "development"){
+				return {
+					state: estadosRespuesta.SERVERERROR,
+					response: `No se pudo enviar el mail de restablecimiento de contraseña peeeeeeero como estamos en testing token=${tokenResult.response}`
+				};
+			}else{
+				return {
+					state: estadosRespuesta.SERVERERROR,
+					response: "No se pudo enviar el mail de restablecimiento de contraseña"
+				};
+			}
+			
 		}
 		return tokenResult;
 	},
