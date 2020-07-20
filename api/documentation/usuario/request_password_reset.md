@@ -37,7 +37,7 @@
 * **Sample Call:**
 
 ```bash
-curl --location --request POST 'localhost:8080/api/usuario/resetPassword' \
+curl --location --request POST 'https://api.teayudo.tk/api/usuario/resetPassword' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "correo": "correo@prueba.com"
