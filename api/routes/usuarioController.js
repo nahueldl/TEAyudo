@@ -72,13 +72,13 @@ router.post('/resetPassword', async (req, res) => {
 	const result = await usuarioService.preparePasswordReset(req.body.correo);
 
 	if(result.state === estadosRespuesta.OK && process.env.NODE_ENV === "development" ){
-		res.status(200).json({msg: `Se ha enviado el mail de restablecimiento de contraseña con token=${result.response}`});
+		res.status(200).json({msg: `Se ha enviado el mail de restablecimiento de contraseña y ya que estamos en testing token=${result.response}`});
 	}else if(result.state === estadosRespuesta.OK){
 		res.status(200).json({msg: "Se ha enviado el mail de restablecimiento de contraseña"});
 	}else if(result.state === estadosRespuesta.USERERROR){
 		res.status(400).json({msg: result.response});
 	}else if(result.state === estadosRespuesta.SERVERERROR){
-		res.status(500).json({msg: "Ha ocurrido un error inesperado en el servidor"});
+		res.status(500).json({msg: result.response});
 	}
 });
 
