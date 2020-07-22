@@ -47,7 +47,11 @@ const pacienteService = {
 		const pacientes = [];
 		pacientes.push(paciente);
 		
-		return await pacienteDAO.insert(pacientes);
+		const result1 = await pacienteDAO.insert(pacientes);
+		if(result1.state !== estadosRespuesta.OK){
+			return result1;
+		}
+		return await pacienteDAO.assingRolToPaciente(usuario.id_usuario, result1.response);
 	}
 	
 };

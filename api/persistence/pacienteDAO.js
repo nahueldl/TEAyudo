@@ -60,49 +60,66 @@ const pacienteDAO = {
 			}
 			return result;
 		}
+			
+		const params = [
+			{
+				name: "nombre",
+				type: sql.NVarChar(255),//Puedo no definir type y se infiere automaticamente
+				value: listaPacientes[0].nombre
+			},
 
-		const tablaPaciente = new sql.Table('Paciente');
-		tablaPaciente.columns.add('nombre', sql.NVarChar(255), {nullable: false});
-		tablaPaciente.columns.add('apellido', sql.NVarChar(255), {nullable: true});
-		tablaPaciente.columns.add('activo', sql.Bit, {nullable: false});
+			{
+				name: "apellido",
+				type: sql.NVarChar(255),//Puedo no definir type y se infiere automaticamente
+				value: listaPacientes[0].apellido
+			}
+		]
 
-		listaPacientes.forEach(paciente => {
-			tablaPaciente.rows.add(
-				paciente.nombre,
-				paciente.apellido,
-				paciente.activo || true
-			);
-		});
+		const result = await genericDAO.runQuery('INSERT INTO Paciente (nombre, apellido, activo) output inserted.id_paciente values (@nombre, @apellido, 1)', params);
+		const idInsertado = result.response[0].id_paciente;
+		result.response = idInsertado;
 
-		return genericDAO.insert(tablaPaciente);
+		return result;
 	},
 
-	assingRolToPaciente: async function (listaRolPacientes){
-		if(isNullOrUndefined(listaRolPacientes) || listaRolPacientes.length < 1){
+	//Inserta en la tabla Rol_Paciente el id_paciente pasado por parametro y el id_usuario_rol del usuario
+	//que hace la petición 
+	assingRolToPaciente: async function (id_usuario, id_paciente){
+		/*if(isNullOrUndefined(listaRolPacientes) || listaRolPacientes.length < 1){
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'pacientes no esta definido o no contiene elementos'
 			}
 			return result;
-		}
+		}*/
+
+		const params = [
+			{
+				name: "id_usuario",
+				type: sql.Numeric(18,0),//Puedo no definir type y se infiere automaticamente
+				value: id_usuario
+			}
+		]
+
+		const result = await genericDAO.runQuery("select ur.id_usuario_rol from Usuario u join Usuario_Rol ur on ur.id_usuario=u.id_usuario where u.id_usuario = @id_usuario", params);
+		const usuario_rol = result.response[0].id_usuario_rol;
 
 		const tablaRolPaciente = new sql.Table('Rol_Paciente');
-		tablaRolPaciente.columns.add('nombre', sql.NVarChar(255), {nullable: false});
-		tablaRolPaciente.columns.add('apellido', sql.NVarChar(255), {nullable: true});
+		tablaRolPaciente.columns.add('id_paciente', sql.Numeric(18,0), {nullable: false});
+		tablaRolPaciente.columns.add('id_usuario_rol', sql.Numeric(18,0), {nullable: false});
 		tablaRolPaciente.columns.add('activo', sql.Bit, {nullable: false});
 
-		listaRolPacientes.forEach(paciente => {
+		
 			tablaRolPaciente.rows.add(
-				paciente.nombre,
-				paciente.apellido,
-				paciente.activo || true
+				id_paciente,
+				usuario_rol,
+				true
 			);
-		});
+		
 
 		return genericDAO.insert(tablaRolPaciente);
 	}
-};
-
+}
 
 module.exports = pacienteDAO;
 
