@@ -1,10 +1,10 @@
-**Log In**
+**Reset Password**
 ----
-  Devuelve un token que por 1 hora permite el acceso a los recursos protegidos
+  Utilizando el token obtenido por mail permite cambiar la contraseña por una nueva
 
 * **URL**
 
-  /api/usuario/login
+  /api/usuario/resetPassword/:token
 
 * **Method:**
 
@@ -12,7 +12,8 @@
   
 *  **URL Params**
 
-   _No requiere_ 
+    **Required:**
+   * `token=[string]` 
 
 * **Data Params**
 
@@ -23,7 +24,7 @@
 * **Success Response:**
 
   * **Code:** 200 OK <br />
-    **Content:** `{ "token": "3cf9ca9f-dd7f-4670-aaff-617691d80582" }`
+    **Content:** `{ "msg": "Se ha reestablecido correctamente la contraseña" }`
  
 * **Error Response:**
 
@@ -32,8 +33,13 @@
 
   OR
 
-  * **Code:** 400 BAD REQUEST <br />
-    **Content:** `{ "msg": "La contraseña no es correcta" }`
+    * **Code:** 400 BAD REQUEST <br />
+    **Content:** `{ "msg": "El token no es valido" }`
+
+  OR
+
+    * **Code:** 400 BAD REQUEST <br />
+    **Content:** `{ "msg": "El token ya no es valido, genere uno nuevo" }`
 
   OR
 
@@ -43,7 +49,7 @@
 * **Sample Call:**
 
 ```bash
-curl --location --request POST 'https://api.teayudo.tk/api/usuario/login' \
+curl --location --request POST 'https://api.teayudo.tk/api/usuario/resetPassword/2yuAcaUPRiWFKuhe0AHgLzA4Vnl5FUR0uCW42DpQeAFzb9l3stTNVM8VsCBRUVvm' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "correo": "correo@prueba.com",

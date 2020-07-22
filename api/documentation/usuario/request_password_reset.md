@@ -1,10 +1,10 @@
-**Log In**
+**Request Password Reset**
 ----
-  Devuelve un token que por 1 hora permite el acceso a los recursos protegidos
+  Envía un correo con un link/token valido por 15' para reestablecer la contraseña
 
 * **URL**
 
-  /api/usuario/login
+  /api/usuario/resetPassword
 
 * **Method:**
 
@@ -18,22 +18,16 @@
 
     **Required:**
    * `correo=[string]`
-   * `password=[string]`
 
 * **Success Response:**
 
   * **Code:** 200 OK <br />
-    **Content:** `{ "token": "3cf9ca9f-dd7f-4670-aaff-617691d80582" }`
+    **Content:** `{ "msg": "Se ha enviado el mail de restablecimiento de contraseña" }`
  
 * **Error Response:**
 
   * **Code:** 400 BAD REQUEST <br />
     **Content:** `{ "msg": "No se encontro un usuario con ese email" }`
-
-  OR
-
-  * **Code:** 400 BAD REQUEST <br />
-    **Content:** `{ "msg": "La contraseña no es correcta" }`
 
   OR
 
@@ -43,11 +37,10 @@
 * **Sample Call:**
 
 ```bash
-curl --location --request POST 'https://api.teayudo.tk/api/usuario/login' \
+curl --location --request POST 'https://api.teayudo.tk/api/usuario/resetPassword' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-    "correo": "correo@prueba.com",
-    "password": "passgenerica"
+    "correo": "correo@prueba.com"
 }'
 ```
 

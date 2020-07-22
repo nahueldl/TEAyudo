@@ -65,7 +65,7 @@
 * **Sample Call:**
 
 ```bash
-curl --location --request GET 'localhost:8080/api/categorias/' \
+curl --location --request GET 'https://api.teayudo.tk/api/categorias/' \
 --header 'Authorization: Bearer 3cf9ca9f-dd7f-4670-aaff-617691d80582'
 ```
 
