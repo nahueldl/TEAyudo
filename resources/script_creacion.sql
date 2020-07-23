@@ -147,7 +147,7 @@ CREATE Pictograma
 CREATE TABLE [dbo].[Pictograma](
 	[id_pictograma] [numeric](18, 0)  IDENTITY(1,1) NOT NULL,
 	[id_picto_arasaac] [numeric](18, 0) NULL,
-	[ruta_acceso_local] [varchar](255) NOT NULL,
+	[ruta_acceso_local] [varchar](255) NULL,
 	[esquematico] [bit] NULL,
 	[sexo] [bit] NULL,
 	[violencia] [bit] NULL,
@@ -238,7 +238,7 @@ CREATE TABLE [dbo].[Nombre_Pictograma](
 	[activo] [bit] NOT NULL,
  CONSTRAINT [pkNombre_Pictograma] PRIMARY KEY CLUSTERED 
 (
-	[id_pictograma] ASC
+	[id_nombre_pictograma] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 
