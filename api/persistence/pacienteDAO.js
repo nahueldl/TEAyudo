@@ -118,6 +118,35 @@ const pacienteDAO = {
 		
 
 		return genericDAO.insert(tablaRolPaciente);
+	},
+
+	delete: async function(id_paciente){
+		if(isNullOrUndefined(id_paciente)){
+			const result = {
+				state: estadosRespuesta.USERERROR,
+				response: 'id del paciente no ha sido definido'
+			}
+			return result;
+		}
+		//TODOhacer chequeo si el usuario que va a realizar la baja tiene al paciente asociado
+		const params = [
+			{
+				name: "id_paciente",
+				type: sql.Numeric(18,0),//Puedo no definir type y se infiere automaticamente
+				value: id_paciente
+			}
+		]
+
+		const result = await genericDAO.runQuery('update Paciente set activo = 0 output inserted.id_paciente where id_paciente =@id_paciente', params);
+
+		if(result.state === estadosRespuesta.OK && result.response.length < 1){
+			result.state = estadosRespuesta.USERERROR;
+			result.response = "No se encontro un paciente con ese id";
+		}else if(result.state === estadosRespuesta.OK){
+			result.response = result.response[0];
+		}
+
+		return result;
 	}
 }
 

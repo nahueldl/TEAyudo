@@ -76,9 +76,6 @@ const genericDAO = {
 		try{
 			await sql.connect(connecionUrl);
 			const result = await new sql.Request().bulk(table);
-			/*const result = await new sql.Request().bulk(table, (err, result) => {
-				let nuevaID = result.insertId;
-			});*/ 
 			res.state = estadosRespuesta.OK;
 			res.response = null;
 			}catch(err){
