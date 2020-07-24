@@ -20,8 +20,8 @@ router.get('/', isAuth, async (req, res) => {
 
 
 //GET Paciente by id
-router.get('/:id', async (req, res) => {
-	const result = await pacienteService.getById(req.params.id)
+router.get('/:id',isAuth, async (req, res) => {
+	const result = await pacienteService.getById(req.params.id, req.user)
 
 	if(result.state === estadosRespuesta.OK)
 		res.status(200).json(result.response);

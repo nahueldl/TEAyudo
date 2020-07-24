@@ -18,12 +18,12 @@ const pacienteDAO = {
 			}
 		]
 
-		return await genericDAO.runQuery("select p.* from Paciente p join Rol_Paciente rp on rp.id_paciente=p.id_paciente join Usuario_Rol ur on rp.id_usuario_rol = ur.id_usuario_rol where ur.id_usuario=@id", params);
+		return await genericDAO.runQuery("select p.* from Paciente p join Rol_Paciente rp on rp.id_paciente=p.id_paciente join Usuario_Rol ur on rp.id_usuario_rol = ur.id_usuario_rol where ur.id_usuario=@id and p.activo=1", params);
 	},
 
 
-	getById: async function (id){
-		if(isNullOrUndefined(id)){
+	getById: async function (id_paciente, id_usuario){
+		if(isNullOrUndefined(id_paciente)){
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'id no ha sido definido'
@@ -35,11 +35,17 @@ const pacienteDAO = {
 			{
 				name: "id",
 				type: sql.Numeric(18,0),//Puedo no definir type y se infiere automaticamente
-				value: id
+				value: id_paciente
+			},
+
+			{
+				name: "id_usuario",
+				type: sql.Numeric(18,0),//Puedo no definir type y se infiere automaticamente
+				value: id_usuario
 			}
 		]
 
-		const result = await genericDAO.runQuery("select * from Paciente where id_paciente = @id", params);
+		const result = await genericDAO.runQuery("select p.* from Paciente p join Rol_Paciente rp on rp.id_paciente=p.id_paciente join Usuario_Rol ur on ur.id_usuario_rol=rp.id_usuario_rol where p.id_paciente = @id and ur.id_usuario=@id_usuario and p.activo=1", params);
 
 		if(result.state === estadosRespuesta.OK && result.response.length < 1){
 			result.state = estadosRespuesta.USERERROR;
@@ -137,7 +143,7 @@ const pacienteDAO = {
 			}
 		]
 
-		const result = await genericDAO.runQuery('update Paciente set activo = 0 output inserted.id_paciente where id_paciente =@id_paciente', params);
+		const result = await genericDAO.runQuery('update Paciente set activo = 0, fecha_hora_baja=GETDATE() output inserted.id_paciente where id_paciente =@id_paciente', params);
 
 		if(result.state === estadosRespuesta.OK && result.response.length < 1){
 			result.state = estadosRespuesta.USERERROR;

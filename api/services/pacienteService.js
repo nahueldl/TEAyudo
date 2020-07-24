@@ -12,9 +12,9 @@ const pacienteService = {
 	},
 
 
-	getById: async function(id){
+	getById: async function(id_paciente, usuario){
 		//Aca iría la lógia de negocio
-		return await pacienteDAO.getById(parseInt(id));
+		return await pacienteDAO.getById(parseInt(id_paciente), usuario.id_usuario);
 	},
 
 
