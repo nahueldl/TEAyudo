@@ -28,16 +28,19 @@ const pacienteService = {
 		}*/
 
 		const result = await rolService.getDescripcionByUsuarioId(usuario.id_usuario);
+		const descripcion = result.response[0].descripcion;
 
 		if(result.state !== estadosRespuesta.OK){
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'El usuario no tiene asignado el rol elegido'
-			}} else if(result != 'familiar'){
+			}} else if(descripcion != 'familiar'){
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'El usuario no tiene permisos para crear un paciente'
-		}}
+		}
+		return result;
+	}
 		
 			
 		
