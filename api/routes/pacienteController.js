@@ -46,7 +46,7 @@ router.post('/nuevoPaciente', isAuth, async (req, res) => {
 
 //DELETE Paciente (baja logica, no fisica)
 router.delete('/borrarPaciente/:id', isAuth, async (req, res) => {
-	const result = await pacienteService.delete(req.params.id);
+	const result = await pacienteService.delete(req.params.id, req.user);
 	if(result.state === estadosRespuesta.OK)
 		res.status(200).json({msg: `Se ha dado de baja el paciente con id=${req.params.id}`});
 	else if(result.state === estadosRespuesta.USERERROR)

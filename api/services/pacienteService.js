@@ -57,8 +57,8 @@ const pacienteService = {
 		return await pacienteDAO.assingRolToPaciente(usuario.id_usuario, result1.response);
 	},
 
-	delete: async function (id_paciente){
-		const result = await pacienteDAO.delete(parseInt(id_paciente));
+	delete: async function (id_paciente, usuario){
+		const result = await pacienteDAO.delete(parseInt(id_paciente), usuario.id_usuario);
 		return result;
 	}
 	

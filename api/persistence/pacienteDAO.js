@@ -126,7 +126,7 @@ const pacienteDAO = {
 		return genericDAO.insert(tablaRolPaciente);
 	},
 
-	delete: async function(id_paciente){
+	delete: async function(id_paciente, id_usuario){
 		if(isNullOrUndefined(id_paciente)){
 			const result = {
 				state: estadosRespuesta.USERERROR,
@@ -140,10 +140,16 @@ const pacienteDAO = {
 				name: "id_paciente",
 				type: sql.Numeric(18,0),//Puedo no definir type y se infiere automaticamente
 				value: id_paciente
+			},
+
+			{
+				name: "id_usuario",
+				type: sql.Numeric(18,0),//Puedo no definir type y se infiere automaticamente
+				value: id_usuario
 			}
 		]
 
-		const result = await genericDAO.runQuery('update Paciente set activo = 0, fecha_hora_baja=GETDATE() output inserted.id_paciente where id_paciente =@id_paciente', params);
+		const result = await genericDAO.runQuery('update Paciente set activo = 0, fecha_hora_baja=GETDATE() output inserted.id_paciente from Paciente p join Rol_Paciente rp on rp.id_paciente=p.id_paciente join Usuario_Rol ur on ur.id_usuario_rol=rp.id_usuario_rol where p.id_paciente =@id_paciente and ur.id_usuario=@id_usuario', params);
 
 		if(result.state === estadosRespuesta.OK && result.response.length < 1){
 			result.state = estadosRespuesta.USERERROR;
