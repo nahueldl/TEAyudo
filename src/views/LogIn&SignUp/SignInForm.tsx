@@ -12,7 +12,7 @@ import {
 import { logoGoogle, logoFacebook } from "ionicons/icons";
 import { TEAyudoContext } from "../../context";
 
-const SignInForm: React.FC<Props> = ({signIn}) => {
+const SignInForm: React.FC<Props> = ({ signIn }) => {
   const [email, setEmail] = useState<string>();
   const [password, setPassword] = useState<string>();
   const { data } = useContext(TEAyudoContext);
@@ -58,7 +58,7 @@ const SignInForm: React.FC<Props> = ({signIn}) => {
       <IonButton
         className="formButton"
         type="submit"
-        onClick={(e) => signIn(email!,password!, e)}
+        onClick={(e) => signIn(email!, password!, e)}
       >
         Iniciar sesión
       </IonButton>
@@ -75,6 +75,6 @@ const SignInForm: React.FC<Props> = ({signIn}) => {
 };
 
 interface Props {
-  signIn: (email: string, password: string, e:any) => void;
+  signIn: (email: string, password: string, e: any) => void;
 }
 export default SignInForm;

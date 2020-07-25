@@ -29,7 +29,7 @@ import PatientAdd from "./views/Patients/Add";
 
 const App: React.FC = () => {
   const { data } = useContext(TEAyudoContext);
-  const { authenticated, patientName, flow, selectedRol } = data;
+  const { authenticated, patientName } = data;
 
   return (
     <IonApp>
