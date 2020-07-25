@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
-import "./styles.css";
+import "../styles.css";
 import { IonGrid, IonRow, IonCol } from "@ionic/react";
-import { TEAyudoContext } from "../../../context";
+import { AuthenticationContext } from "../../../context/authentication";
 import CardWithImage from "../../../components/CardWithImage";
 
 const patients = [
@@ -10,12 +10,8 @@ const patients = [
 ];
 
 const PatientSelection: React.FC = () => {
-<<<<<<< Updated upstream
-  const { data } = useContext(TEAyudoContext);
-  const { username } = data;
-=======
-  const { username } = useContext(TEAyudoContext);
->>>>>>> Stashed changes
+  const { authData } = useContext(AuthenticationContext);
+  const { username } = authData;
   return (
     <IonGrid className="container">
       <IonRow>

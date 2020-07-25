@@ -9,89 +9,52 @@ import PatientsPage from "./views/Patients/Page";
 import ProfessionalsPage from "./views/Professionals";
 import ReportsPage from "./views/Reports";
 import ConfigurationPage from "./views/Configuration";
-import { TEAyudoContext } from "./context";
+import { AuthenticationContext } from "./context/authentication";
 
 const AppPostLogin: React.FC = () => {
 
-  const appContext = useContext(TEAyudoContext);
+  const {authData} = useContext(AuthenticationContext);
   
   return (
     <IonSplitPane contentId="main">
-      <Menu patientName={appContext.data.patientName!} />
+      <Menu patientName={authData.patientName!} />
       <IonRouterOutlet id="main">
         <Route
-<<<<<<< Updated upstream
-          path={`/${appContext.data.patientName}/inicio`}
-=======
-          path="/:patient/inicio"
->>>>>>> Stashed changes
+          path={`/${authData.patientName}/inicio`}
           component={HomePage}
           exact
         />
         <Route
-<<<<<<< Updated upstream
-          path={`/${appContext.data.patientName}/pictogramas`}
-=======
-          path="/:patient/pictogramas"
->>>>>>> Stashed changes
+          path={`/${authData.patientName}/pictogramas`}
           component={PictogramsPage}
           exact
         />
         <Route
-<<<<<<< Updated upstream
-          path={`/${appContext.data.patientName}/categorias`}
-=======
-          path="/:patient/categorias"
->>>>>>> Stashed changes
+          path={`/${authData.patientName}/categorias`}
           component={CategoriesPage}
           exact
         />
         <Route
-<<<<<<< Updated upstream
-          path={`/${appContext.data.patientName}/pacientes`}
-=======
-          path="/:patient/pacientes"
->>>>>>> Stashed changes
+          path={`/${authData.patientName}/pacientes`}
           component={PatientsPage}
           exact
         />
         <Route
-<<<<<<< Updated upstream
-          path={`/${appContext.data.patientName}/profesionales`}
-=======
-          path="/:patient/profesionales"
->>>>>>> Stashed changes
+          path={`/${authData.patientName}/profesionales`}
           component={ProfessionalsPage}
           exact
         />
         <Route
-<<<<<<< Updated upstream
-          path={`/${appContext.data.patientName}/informes`}
-=======
-          path="/:patient/informes"
->>>>>>> Stashed changes
+          path={`/${authData.patientName}/informes`}
           component={ReportsPage}
           exact
         />
         <Route
-<<<<<<< Updated upstream
-          path={`/${appContext.data.patientName}/configuracion`}
+          path={`/${authData.patientName}/configuracion`}
           component={ConfigurationPage}
           exact
         />
-        <Redirect from="/login" to={`/${appContext.data.patientName}/inicio`} />
-        <Redirect from="/pacientes" to={`/${appContext.data.patientName}/inicio`} />
-        <Redirect from="/" to={`/${appContext.data.patientName}/inicio`} />
-=======
-          path="/:patient/configuracion"
-          component={ConfigurationPage}
-          exact
-        />
-        <Redirect from="/login" to={`/${appContext.patientName}/inicio`} />
-        <Redirect from="/pacientes" to={`/${appContext.patientName}/inicio`} />
-        <Redirect from="/" to={`/${appContext.patientName}/inicio`} />
-        <Redirect from="*" to={`/${appContext.patientName}/inicio`} />
->>>>>>> Stashed changes
+        <Redirect from="/" to={`/${authData.patientName}/inicio`} />
       </IonRouterOutlet>
     </IonSplitPane>
   );

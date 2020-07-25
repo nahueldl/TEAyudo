@@ -2,12 +2,18 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-import { TEAyudoProvider } from "./context";
+import { AuthenticationProvider } from "./context/authentication";
+import { RegistrationProvider } from "./context/registration";
+import { PlatformProvider } from "./context/platform";
 
 ReactDOM.render(
-  <TEAyudoProvider>
-    <App />
-  </TEAyudoProvider>,
+  <PlatformProvider>
+    <AuthenticationProvider>
+      <RegistrationProvider>
+        <App />
+      </RegistrationProvider>
+    </AuthenticationProvider>
+  </PlatformProvider>,
   document.getElementById("root")
 );
 
