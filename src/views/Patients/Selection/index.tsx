@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import "./styles.css";
+import "../styles.css";
 import { IonGrid, IonRow, IonCol } from "@ionic/react";
 import { TEAyudoContext } from "../../../context";
 import CardWithImage from "../../../components/CardWithImage";
