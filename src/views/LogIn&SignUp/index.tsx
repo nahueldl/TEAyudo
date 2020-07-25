@@ -1,43 +1,40 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useContext, useState, useCallback } from "react";
 import { IonContent, NavContext, IonSlides, IonSlide } from "@ionic/react";
-import { TEAyudoContext } from "../../context";
+import { AuthenticationContext } from "../../context/authentication";
 import AuthenticationServices from "../../services/authentication.services";
 import OverlayLeft from "./OverlayLeft";
 import OverlayRight from "./OverlayRight";
 import SignInForm from "./SignInForm";
 import SignUpForm from "./SignUpForm";
 import "./styles.css";
+import { PlatformContext } from "../../context/platform";
 
 const LogInSignUpPage: React.FC = () => {
+  const { navigate } = useContext(NavContext);
+  const { authData, setData } = useContext(AuthenticationContext);
+  const { username } = authData;
+  const { platformData } = useContext(PlatformContext);
+  const { isMobile } = platformData;
+
   const [showSignIn, setShowSignIn] = useState<boolean>(false);
 
-  const { navigate } = useContext(NavContext);
-  const { data, setData } = useContext(TEAyudoContext);
-  const { isMobile, username } = data;
-
   const handleSignIn = (email: string, password: string) => {
-    setData({ loading: true, error: false });
+    setData({ loading: false, error: true });
     AuthenticationServices.handleLogIn(email, password)
-      .then((res: any) => {
+      .then((_res: any) => {
         setData({
           username: email,
           authenticated: true,
           loading: false,
         });
-
-      })
-      .catch((error: any) => {
-        // setData({
-        //   loading: false,
-        //   error: true,
-        // });
-        setData({
-          username: email,
-          authenticated: true,
-          loading: false,
-        })
-        console.log(data);
         goToSelectPatient();
+      })
+      .catch((_error: any) => {
+        setData({
+          loading: false,
+          error: true,
+        });
       });
   };
 
@@ -58,10 +55,10 @@ const LogInSignUpPage: React.FC = () => {
       docNumber,
       licenseNumber
     )
-      .then((res: any) => {
+      .then((_res: any) => {
         setData({ loading: false });
       })
-      .catch((error: any) => setData({ error: true }));
+      .catch((_error: any) => setData({ error: true }));
   };
 
   const goToSelectPatient = useCallback(

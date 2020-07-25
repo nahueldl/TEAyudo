@@ -10,14 +10,18 @@ import {
   IonLoading,
 } from "@ionic/react";
 import { logoGoogle, logoFacebook } from "ionicons/icons";
-import { TEAyudoContext } from "../../context";
+import { AuthenticationContext } from "../../context/authentication";
+import { PlatformContext } from "../../context/platform";
 
 const SignUpForm: React.FC<Props> = () => {
   const [email, setEmail] = useState<string>();
   const [name, setName] = useState<string>();
   const [password, setPassword] = useState<string>();
-  const { data } = useContext(TEAyudoContext);
-  const { isMobile, error, loading } = data;
+  const { authData } = useContext(AuthenticationContext);
+  const { error, loading } = authData;
+  const { platformData } = useContext(PlatformContext);
+  const { isMobile } = platformData;
+
   return (
     <form>
       <h1>Registrarse</h1>

@@ -94,7 +94,7 @@ form {
 
 .overlay {
   background: #067499;
-  background: -webkit-linear-gradient(to right, #067499, #056889);
+  /* background: -webkit-linear-gradient(to right, #067499, #056889); */
   background: linear-gradient(to right, #067499, #056889);
   background-repeat: no-repeat;
   background-size: cover;
