@@ -10,8 +10,12 @@ const patients = [
 ];
 
 const PatientSelection: React.FC = () => {
+<<<<<<< Updated upstream
   const { data } = useContext(TEAyudoContext);
   const { username } = data;
+=======
+  const { username } = useContext(TEAyudoContext);
+>>>>>>> Stashed changes
   return (
     <IonGrid className="container">
       <IonRow>

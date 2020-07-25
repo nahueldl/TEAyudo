@@ -13,7 +13,7 @@ const LogInSignUpPage: React.FC = () => {
 
   const { navigate } = useContext(NavContext);
   const { data, setData } = useContext(TEAyudoContext);
-  const { isMobile } = data;
+  const { isMobile, username } = data;
 
   const handleSignIn = (email: string, password: string) => {
     setData({ loading: true, error: false });
@@ -65,8 +65,8 @@ const LogInSignUpPage: React.FC = () => {
   };
 
   const goToSelectPatient = useCallback(
-    () => navigate("/pacientes", "forward"),
-    [navigate]
+    () => navigate(`/${username}/pacientes`, "forward"),
+    [navigate, username]
   );
 
   const classRightPanelActive = showSignIn ? "rightPanelActive" : "";

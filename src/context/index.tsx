@@ -1,5 +1,17 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect } from "react";
 import { getPlatforms } from "@ionic/react";
+
+//Borrar una vez que esté resuelta la conexion con el server
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function pauseMe() {
+  await sleep(9000);
+}
+
+const user = { username: "lilapapazian@gmail.com", password: "123456789" };
 
 const TEAyudoContext = React.createContext({} as IContext);
 
