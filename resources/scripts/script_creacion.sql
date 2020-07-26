@@ -274,6 +274,8 @@ CREATE TABLE [dbo].[Pictograma_Paciente](
 	[id_paciente] [numeric](18, 0) NOT NULL,
 	[id_pictograma] [numeric](18, 0) NOT NULL,
 	[estado] [int] NULL,
+	[nombre_personalizado] [nvarchar](255) NULL,
+	[favorito] [bit] NULL,
  CONSTRAINT [pkPictograma_Paciente] PRIMARY KEY CLUSTERED 
 (
 	[id_pictograma_paciente] ASC
