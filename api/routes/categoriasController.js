@@ -3,6 +3,8 @@ const router = express.Router();
 const categoriaService = require('../services/categoriaService');
 const isAuth = require('../middleware/auth').isAuth;
 const estadosRespuesta = require('../models/estados_respuesta');
+const { isNullOrUndefined } = require('util');
+const pictogramaService = require('../services/pictogramaService')
 
 
 //GET Categorias
@@ -41,6 +43,19 @@ router.post('/', isAuth, async (req, res) => {
 	}else if(result.state === estadosRespuesta.USERERROR){
 		res.status(400).json({msg: result.response});
 	}
+});
+
+//GET Pictogramas by idCategoria
+router.get('/:id/pictogramas', isAuth, async (req, res) => {
+	let result;
+	result = await pictogramaService.getByCategoriaAndPaciente(req.user, req.query.paciente, req.params.id)
+
+	if(result.state === estadosRespuesta.OK)
+		res.status(200).json(result.response);
+	else if(result.state === estadosRespuesta.USERERROR)
+		res.status(404).json({msg: `No se encontro categoría con id=${req.params.id}`});    
+	else if(result.state === estadosRespuesta.SERVERERROR)
+		res.status(500).json({msg: "Ha ocurrido un error inesperado en el servidor"});
 });
 
 
