@@ -55,5 +55,16 @@ router.delete('/borrarPaciente/:id', isAuth, async (req, res) => {
 		res.status(500).json({msg: "Ha ocurrido un error inesperado en el servidor"});
 });
 
+//PUT Paciente
+router.put('/actualizarPaciente/:id', isAuth, async (req, res) => {
+	const result = await pacienteService.update(req.params.id, req.user, req.body);
+	if(result.state === estadosRespuesta.OK)
+		res.status(200).json({msg: `Se ha actualizado el paciente con id=${req.params.id}`});
+	else if(result.state === estadosRespuesta.USERERROR)
+		res.status(404).json({msg: result.response});  
+	else if(result.state === estadosRespuesta.SERVERERROR)
+		res.status(500).json({msg: "Ha ocurrido un error inesperado en el servidor"});
+});
+
 
 module.exports = router;

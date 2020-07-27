@@ -28,13 +28,13 @@ const pacienteService = {
 		}*/
 
 		const result = await rolService.getDescripcionByUsuarioId(usuario.id_usuario);
-		const descripcion = result.response[0].descripcion;
+		const descripcion = result.response;
 
 		if(result.state !== estadosRespuesta.OK){
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'El usuario no tiene asignado el rol elegido'
-			}} else if(descripcion != 'familiar'){
+			}} else if(descripcion.some(x => x.descripcion == 'familiar')){
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'El usuario no tiene permisos para crear un paciente'
@@ -42,11 +42,6 @@ const pacienteService = {
 		return result;
 	}
 		
-			
-		
-
-		//paciente.id_usuario_rol = result.response.id_usuario_rol;
-
 		const pacientes = [];
 		pacientes.push(paciente);
 		
@@ -60,6 +55,10 @@ const pacienteService = {
 	delete: async function (id_paciente, usuario){
 		const result = await pacienteDAO.delete(parseInt(id_paciente), usuario.id_usuario);
 		return result;
+	},
+
+	update: async function(id_paciente, usuario, paciente){
+		return await pacienteDAO.update(parseInt(id_paciente), usuario.id_usuario, paciente);
 	}
 	
 };

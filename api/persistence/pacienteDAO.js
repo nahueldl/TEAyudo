@@ -159,6 +159,69 @@ const pacienteDAO = {
 		}
 
 		return result;
+	},
+
+	update: async function(id_paciente, id_usuario, listaPaciente){
+		if(isNullOrUndefined(listaPaciente) || listaPaciente.length < 1){
+			const result = {
+				state: estadosRespuesta.USERERROR,
+				response: 'pacientes no esta definido o no contiene elementos'
+			}
+			return result;
+		}
+		if(isNullOrUndefined(id_paciente)){
+			const result = {
+				state: estadosRespuesta.USERERROR,
+				response: 'id del paciente no ha sido definido'
+			}
+			return result;
+		}
+
+		const paciente = await pacienteDAO.getById(id_paciente, id_usuario);
+		if(paciente.state === estadosRespuesta.USERERROR){
+			const result = {
+				state: estadosRespuesta.USERERROR,
+				response: 'el usuario no puede modificar a ese paciente'
+			}
+			return result;
+		}
+
+		const params = [
+			{
+				name: "nombre",
+				type: sql.NVarChar(255),//Puedo no definir type y se infiere automaticamente
+				value: listaPaciente.nombre
+			},
+
+			{
+				name: "apellido",
+				type: sql.NVarChar(255),//Puedo no definir type y se infiere automaticamente
+				value: listaPaciente.apellido
+			},
+
+			{
+				name: "id_paciente",
+				type: sql.Numeric(18,0),//Puedo no definir type y se infiere automaticamente
+				value: id_paciente
+			},
+
+			{
+				name: "id_usuario",
+				type: sql.Numeric(18,0),//Puedo no definir type y se infiere automaticamente
+				value: id_usuario
+			}
+		]
+		
+		const result = await genericDAO.runQuery('update Paciente set nombre = @nombre, apellido=@apellido, fecha_hora_modificacion=GETDATE() output inserted.id_paciente from Paciente p join Rol_Paciente rp on rp.id_paciente=p.id_paciente join Usuario_Rol ur on ur.id_usuario_rol=rp.id_usuario_rol where p.id_paciente =@id_paciente and ur.id_usuario=@id_usuario', params);
+
+		if(result.state === estadosRespuesta.OK && result.response.length < 1){
+			result.state = estadosRespuesta.USERERROR;
+			result.response = "No se encontro un paciente con ese id";
+		}else if(result.state === estadosRespuesta.OK){
+			result.response = result.response[0];
+		}
+
+		return result;
 	}
 }
 
