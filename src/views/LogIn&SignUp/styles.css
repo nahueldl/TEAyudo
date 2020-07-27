@@ -9,6 +9,17 @@ form {
   text-align: center;
 }
 
+img {
+  height: 100px !important;
+}
+
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .container {
   background-color: #ffffff;
   border-radius: 10px;
@@ -153,6 +164,8 @@ form {
 
 .formButton {
   --background: #067499;
+  margin-top: 10px;
+  margin-bottom: 15px;
 }
 
 .inputMargin {
