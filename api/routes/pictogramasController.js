@@ -1,0 +1,33 @@
+const express = require('express');
+const router = express.Router();
+const pictogramaService = require('../services/pictogramaService');
+const isAuth = require('../middleware/auth').isAuth;
+const estadosRespuesta = require('../models/estados_respuesta');
+const { isNullOrUndefined } = require('util');
+
+
+//GET Pictogramas by nombre or etiqueta
+router.get('/', isAuth, async (req, res) => {
+	let result;
+	if(!isNullOrUndefined(req.query.nombre))
+		result = await pictogramaService.getByNombre(req.query.nombre);
+	else if(!isNullOrUndefined(req.query.etiqueta))
+		result = await pictogramaService.getByEtiqueta(req.query.etiqueta);
+	else{
+		res.status(404).json();
+		return;
+	}
+	
+	if(result.state === estadosRespuesta.OK){
+		res.status(200).json(result.response);
+	}else if(result.state === estadosRespuesta.SERVERERROR){
+		res.status(500).json({msg: "Ha ocurrido un error inesperado en el servidor"});
+	}else if(result.state === estadosRespuesta.USERERROR){
+		res.status(400).json({msg: result.response});
+	}
+});
+
+
+
+
+module.exports = router;
