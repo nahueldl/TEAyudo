@@ -31,6 +31,7 @@ app.use(passport.session());
 //API Routes
 app.use('/api/categorias', require('./routes/categoriasController'));
 app.use('/api/usuario', require('./routes/usuarioController'));
+app.use('/api/pictogramas', require('./routes/pictogramasController'));
 
 
 //Levanta el puerto en que va a escuchar
