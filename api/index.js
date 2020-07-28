@@ -6,6 +6,7 @@ const requestLogger = require('./middleware/requestLogger');
 const BearerStrategy = require('./middleware/auth').BearerStrategy;
 const { isNullOrUndefined } = require('util');
 const passport = require('passport');
+const corsPolicy = require('./middleware/setCorsPolicy')
 
 
 //Chequea que se hayan levantado las variables de entorno sean de produccion o de desarrollo
@@ -26,6 +27,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(corsPolicy);
 
 
 //API Routes
