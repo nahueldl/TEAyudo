@@ -286,9 +286,6 @@ const usuarioDAO = {
 			const tokenDate = new Date(usuario.fecha_hora_reset_password);
 			const currentDate = new Date();
 
-			//TODO mejorar (horrible fix para arreglar el problema con el GTM -3) 
-			tokenDate.setTime(tokenDate.getTime() + (3*60*60*1000));
-
 			if(currentDate.getTime() - tokenDate.getTime() > ttlResetToken){
 				res.state = estadosRespuesta.USERERROR;
 				res.response = "El token ya no es valido, genere uno nuevo"

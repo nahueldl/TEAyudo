@@ -11,7 +11,8 @@ const connectionObject = {
 	database: process.env.dbname,
 	options: {
 		"enableArithAbort": false,
-		"encrypt": (process.env.dbencypt == 'true')
+		"encrypt": (process.env.dbencypt == 'true'),
+		"useUTC": false
 	}
 };
 
