@@ -3,7 +3,18 @@ const { isNullOrUndefined } = require('util');
 const estadosRespuesta = require('../models/estados_respuesta');
 
 const connecionUrl = `mssql://${process.env.dbuser}:${process.env.dbpass}@${process.env.dbservername}/${process.env.dbname}?encrypt=${process.env.dbencypt}`;
-
+const connectionObject = {
+	user: process.env.dbuser,
+	password: process.env.dbpass,
+	server: process.env.dbservername,
+	port: parseInt(process.env.dbport),
+	database: process.env.dbname,
+	options: {
+		"enableArithAbort": false,
+		"encrypt": (process.env.dbencypt == 'true'),
+		"useUTC": false
+	}
+};
 
 const genericDAO = {
 
@@ -16,7 +27,7 @@ const genericDAO = {
 		};
 
 		try{
-			await sql.connect(connecionUrl);
+			await sql.connect(connectionObject);
 			const result = await sql.query(query);
 			res.state = estadosRespuesta.OK;
 			if(returnOneRecorset) res.response = result.recordsets[0];
@@ -42,7 +53,7 @@ const genericDAO = {
 		};
 
 		try{
-			const pool = await sql.connect(connecionUrl);
+			const pool = await sql.connect(connectionObject);
 			const request = pool.request();
 			params.forEach(param => {
 				if(isNullOrUndefined(param.type))
@@ -74,7 +85,7 @@ const genericDAO = {
 		};
 
 		try{
-			await sql.connect(connecionUrl);
+			await sql.connect(connectionObject);
 			const result = await new sql.Request().bulk(table);
 			res.state = estadosRespuesta.OK;
 			res.response = null;

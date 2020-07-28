@@ -32,6 +32,9 @@ app.use(passport.session());
 app.use('/api/categorias', require('./routes/categoriasController'));
 app.use('/api/usuario', require('./routes/usuarioController'));
 app.use('/api/pacientes', require('./routes/pacienteController'));
+app.use('/api/pictogramas', require('./routes/pictogramasController'));
+
+
 
 //Levanta el puerto en que va a escuchar
 app.listen(process.env.PORT, () => console.log(`Servidor iniciado en el puerto ${process.env.PORT}`));
