@@ -2,7 +2,9 @@ const pictogramaDAO = require('../persistence/pictogramaDAO');
 const estadosRespuesta = require('../models/estados_respuesta');
 const { isNullOrUndefined } = require('util');
 
+
 const pictogramaService = {
+
 	getByCategoriaAndPaciente: async function (usuario, idPaciente, idCategoria) {
 		//TODO Check que el paciente para el que se esta pidiendo pertenezca al usuario
 		if(isNullOrUndefined(idPaciente))
@@ -10,6 +12,8 @@ const pictogramaService = {
 		else
 			return await pictogramaDAO.getByCategoriaAndPaciente(parseInt(idCategoria), parseInt(idPaciente))
 	},
+
+
 	getByEtiqueta: async function (etiqueta) {
 		if(isNullOrUndefined(etiqueta) || etiqueta.length < 3){
 			return {
@@ -19,6 +23,8 @@ const pictogramaService = {
 		}
 		return await pictogramaDAO.findByTag(etiqueta);
 	},
+
+
 	getByNombre: async function (nombre){
 		if(isNullOrUndefined(nombre) || nombre.length < 3){
 			return {
@@ -27,7 +33,19 @@ const pictogramaService = {
 			};
 		}
 		return await pictogramaDAO.findByNombre(nombre);
+	},
+
+
+	customizePictograma: async function (usuario, idPictograma, infoPictograma){
+		// if(isNullOrUndefined(idPictograma) || isNullOrUndefined(infoPictograma.paciente) || (isNullOrUndefined(infoPictograma.nombre) && isNullOrUndefined(infoPictograma.favorito))){
+		// 	return {
+		// 		state: estadosRespuesta.USERERROR,
+		// 		response: 'Faltan definir datos'
+		// 	};
+		// }
+		return await pictogramaDAO.customizePictograma(idPictograma, infoPictograma.paciente, infoPictograma.nombre, infoPictograma.favorito, infoPictograma.estado);
 	}
+
 }
 
 

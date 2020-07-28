@@ -2,6 +2,7 @@ const sql = require('mssql');
 const genericDAO = require('./genericDAO');
 const { isNullOrUndefined } = require('util');
 const estadosRespuesta = require('../models/estados_respuesta');
+const estadosPictograma = require('../models/estados_pictograma_personalizado');
 
 
 const pictogramaDAO = {
@@ -96,7 +97,85 @@ const pictogramaDAO = {
 		]
 
 		return await genericDAO.runQuery("select pi.*, np.nombre, np.nombre_plural, np.descripcion, np.tiene_locucion, np.tipo from Nombre_Pictograma np inner join Pictograma pi on pi.id_pictograma = np.id_pictograma where (np.nombre like @nombre or np.nombre_plural like @nombre) and pi.activo = 1 and np.activo = 1", params);
-	}
+	},
+
+
+	customizePictograma: async function (idPictograma, idPaciente, nombre, favorito, estado) {//estadosPictograma
+
+		if (isNullOrUndefined(idPictograma) || isNullOrUndefined(idPaciente) || (isNullOrUndefined(nombre) && isNullOrUndefined(favorito))) {
+			const result = {
+				state: estadosRespuesta.USERERROR,
+				response: 'Parametros necesarios no han sido definidos'
+			}
+			return result;
+		}
+
+		const params = [
+			{
+				name: "idPictograma",
+				type: sql.Numeric(18, 0),
+				value: idPictograma
+			},
+			{
+				name: "idPaciente",
+				type: sql.Numeric(18, 0),
+				value: idPaciente
+			},
+			{
+				name: "nombre",
+				type: sql.NVarChar(255),
+				value: nombre || null
+			},
+			{
+				name: "favorito",
+				type: sql.Bit,
+				value: favorito || 0
+			},
+			{
+				name: "estado",
+				type: sql.Int,
+				value: estado || estadosPictograma.ACTIVO
+			}
+		]
+
+		return await genericDAO.runQuery("IF NOT EXISTS (SELECT * FROM Pictograma_Paciente WHERE id_paciente = @idPaciente and id_pictograma = @idPictograma) BEGIN INSERT INTO Pictograma_Paciente (id_paciente, id_pictograma, estado, nombre_personalizado, favorito) VALUES (@idPaciente, @idPictograma, @estado, @nombre, @favorito) END ELSE BEGIN UPDATE Pictograma_Paciente SET estado = @estado, nombre_personalizado = @nombre, favorito = @favorito WHERE id_paciente = @idPaciente, id_pictograma = @idPictograma END", params);
+	},
+
+	cambiarEstadoPictogramaParaPaciente: async function (idPictograma, idPaciente, estado) {
+
+		if (isNullOrUndefined(idPictograma) || isNullOrUndefined(idPaciente) || (isNullOrUndefined(nombre) && isNullOrUndefined(favorito) && isNullOrUndefined(estado))) {
+			const result = {
+				state: estadosRespuesta.USERERROR,
+				response: 'Parametros necesarios no han sido definidos'
+			}
+			return result;
+		}
+
+		const params = [
+			{
+				name: "idPictograma",
+				type: sql.Numeric(18, 0),
+				value: idPictograma
+			},
+			{
+				name: "idPaciente",
+				type: sql.Numeric(18, 0),
+				value: idPaciente
+			},
+			{
+				name: "estado",
+				type: sql.Int,
+				value: estado
+			}
+		]
+
+		return await genericDAO.runQuery("IF NOT EXISTS (SELECT * FROM Pictograma_Paciente WHERE id_paciente = @idPaciente and id_pictograma = @idPictograma) BEGIN INSERT INTO Pictograma_Paciente (id_paciente, id_pictograma, estado) VALUES (@idPaciente, @idPictograma, @estado) END ELSE BEGIN UPDATE Pictograma_Paciente SET estado = @estado WHERE id_paciente = @idPaciente, id_pictograma = @idPictograma END", params);
+	},
+
+
+	deletePictogramaParaPaciente: async (idPictograma, idPaciente) => await this.cambiarEstadoPictogramaParaPaciente(idPictograma, idPaciente, estadosPictograma.ELIMINADO),
+
+	reenablePictogramaParaPaciente: async (idPictograma, idPaciente) => await this.cambiarEstadoPictogramaParaPaciente(idPictograma, idPaciente, estadosPictograma.ACTIVO)
 
 }
 
