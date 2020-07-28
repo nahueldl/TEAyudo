@@ -29,13 +29,18 @@
 
 * **Success Response:**
 
-  * **Code:** 200 OK <br />
+  * **Code:** 201 CREATED <br />
     **Content:** `{ "msg": "El usuario ha sido correctamente creada"}`
  
 * **Error Response:**
 
   * **Code:** 400 BAD REQUEST <br />
     **Content:** `{ "msg": "Ha ocurrido un error inesperado en el servidor"}`
+
+  OR
+  
+  * **Code:** 409 CONFLICT <br />
+    **Content:** `{ "msg": "Ya existe un usuario con ese correo"}`
 
   OR
 
