@@ -293,7 +293,7 @@ const usuarioDAO = {
 			}
 
 			const hashedToken = await bcrypt.hash(token, saltRounds);
-			const hashedPassword = await bcrypt.hash(token, saltRounds);
+			const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
 
 			const params = [
 				{
