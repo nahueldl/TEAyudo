@@ -29,7 +29,7 @@ router.get('/', isAuth, async (req, res) => {
 
 //PUT Pictograma
 router.put('/:id', isAuth, async (req, res) => {
-	const result = await pictogramaService.update(req.user, req.params.id, req.body);
+	const result = await pictogramaService.customizePictograma(req.user, req.params.id, req.body);
 	
 	if(result.state === estadosRespuesta.OK){
 		res.status(200).json(result.response);
