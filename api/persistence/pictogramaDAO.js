@@ -78,7 +78,7 @@ const pictogramaDAO = {
 	},
 
 
-	findByNombre: async function (nombre) {
+	findByNombre: async function (nombre, idPaciente = null) {
 
 		if (isNullOrUndefined(nombre)) {
 			const result = {
@@ -96,7 +96,18 @@ const pictogramaDAO = {
 			}
 		]
 
-		return await genericDAO.runQuery("select pi.*, np.nombre, np.nombre_plural, np.descripcion, np.tiene_locucion, np.tipo from Nombre_Pictograma np inner join Pictograma pi on pi.id_pictograma = np.id_pictograma where (np.nombre like @nombre or np.nombre_plural like @nombre) and pi.activo = 1 and np.activo = 1", params);
+		if(idPaciente === null)
+			return await genericDAO.runQuery("select pi.*, np.nombre, np.nombre_plural, np.descripcion, np.tiene_locucion, np.tipo from Nombre_Pictograma np inner join Pictograma pi on pi.id_pictograma = np.id_pictograma where (np.nombre like @nombre or np.nombre_plural like @nombre) and pi.activo = 1 and np.activo = 1", params);
+		else{
+			params.push(
+				{
+					name: "idPaciente",
+					type: sql.Numeric(18,0),
+					value: idPaciente
+				}
+			);
+			return await genericDAO.runQuery("select pi.*, np.nombre, np.nombre_plural, np.descripcion, np.tiene_locucion, np.tipo, pp.estado, pp.nombre_personalizado, pp.favorito from Nombre_Pictograma np inner join Pictograma pi on pi.id_pictograma = np.id_pictograma inner join Pictograma_Paciente pp on pp.id_pictograma = pi.id_pictograma where (np.nombre like @nombre or np.nombre_plural like @nombre or (pp.nombre_personalizado like @nombre and pp.id_paciente = @idPaciente)) and pi.activo = 1 and np.activo = 1", params);
+		}
 	},
 
 
@@ -138,7 +149,7 @@ const pictogramaDAO = {
 			}
 		]
 
-		return await genericDAO.runQuery("IF NOT EXISTS (SELECT * FROM Pictograma_Paciente WHERE id_paciente = @idPaciente and id_pictograma = @idPictograma) BEGIN INSERT INTO Pictograma_Paciente (id_paciente, id_pictograma, estado, nombre_personalizado, favorito) VALUES (@idPaciente, @idPictograma, @estado, @nombre, @favorito) END ELSE BEGIN UPDATE Pictograma_Paciente SET estado = @estado, nombre_personalizado = @nombre, favorito = @favorito WHERE id_paciente = @idPaciente, id_pictograma = @idPictograma END", params);
+		return await genericDAO.runQuery("IF NOT EXISTS (SELECT * FROM Pictograma_Paciente WHERE id_paciente = @idPaciente and id_pictograma = @idPictograma) BEGIN INSERT INTO Pictograma_Paciente (id_paciente, id_pictograma, estado, nombre_personalizado, favorito) VALUES (@idPaciente, @idPictograma, @estado, @nombre, @favorito) END ELSE BEGIN UPDATE Pictograma_Paciente SET estado = @estado, nombre_personalizado = @nombre, favorito = @favorito WHERE id_paciente = @idPaciente and id_pictograma = @idPictograma END", params);
 	},
 
 	cambiarEstadoPictogramaParaPaciente: async function (idPictograma, idPaciente, estado) {

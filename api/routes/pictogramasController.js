@@ -10,7 +10,7 @@ const { isNullOrUndefined } = require('util');
 router.get('/', isAuth, async (req, res) => {
 	let result;
 	if(!isNullOrUndefined(req.query.nombre))
-		result = await pictogramaService.getByNombre(req.query.nombre);
+		result = await pictogramaService.getByNombre(req.query.nombre, req.query.paciente);
 	else if(!isNullOrUndefined(req.query.etiqueta))
 		result = await pictogramaService.getByEtiqueta(req.query.etiqueta);
 	else{

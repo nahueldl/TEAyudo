@@ -25,14 +25,17 @@ const pictogramaService = {
 	},
 
 
-	getByNombre: async function (nombre){
+	getByNombre: async function (nombre, paciente){
 		if(isNullOrUndefined(nombre) || nombre.length < 3){
 			return {
 				state: estadosRespuesta.USERERROR,
 				response: 'No se puede realizar una busqueda para menos de 3 caracteres'
 			};
 		}
-		return await pictogramaDAO.findByNombre(nombre);
+		if(isNullOrUndefined(paciente))
+			return await pictogramaDAO.findByNombre(nombre);
+		else
+			return await pictogramaDAO.findByNombre(nombre, parseInt(paciente));
 	},
 
 
