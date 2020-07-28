@@ -29,12 +29,13 @@ const pacienteService = {
 
 		const result = await rolService.getDescripcionByUsuarioId(usuario.id_usuario);
 		const descripcion = result.response;
+		const tieneFamiliar = descripcion.some(x => x.descripcion == 'familiar')
 
 		if(result.state !== estadosRespuesta.OK){
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'El usuario no tiene asignado el rol elegido'
-			}} else if(descripcion.some(x => x.descripcion == 'familiar')){
+			}} else if(tieneFamiliar == false){
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'El usuario no tiene permisos para crear un paciente'
@@ -51,6 +52,26 @@ const pacienteService = {
 		}
 		return await pacienteDAO.assingRolToPaciente(usuario.id_usuario, result1.response);
 	},
+
+	//los requisitos serian el id del paciente, id del profesional y nro de matricula que escribe el usuario
+	assignProfesional: async function(requisitos, usuario){
+		const result = await rolService.getDescripcionByUsuarioId(usuario.id_usuario);
+		const descripcion = result.response;
+		const tieneFamiliar = descripcion.some(x => x.descripcion == 'familiar')
+
+		if(result.state !== estadosRespuesta.OK){
+			const result = {
+				state: estadosRespuesta.USERERROR,
+				response: 'El usuario no tiene asignado el rol elegido'
+			}} else if(tieneFamiliar == false){
+			const result = {
+				state: estadosRespuesta.USERERROR,
+				response: 'El usuario no tiene permisos para asignar un Profesional'
+		}
+		return result;
+	}
+		return await pacienteDAO.assingProfesional(requisitos, usuario.id_usuario);
+	}, 
 
 	delete: async function (id_paciente, usuario){
 		const result = await pacienteDAO.delete(parseInt(id_paciente), usuario.id_usuario);

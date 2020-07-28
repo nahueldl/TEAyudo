@@ -4,6 +4,7 @@ const pacienteService = require('../services/pacienteService');
 const isAuth = require('../middleware/auth').isAuth;
 const estadosRespuesta = require('../models/estados_respuesta');
 const rolService = require('../services/rolService');
+const { Int } = require('mssql');
 
 
 //GET Pacientes
@@ -37,6 +38,18 @@ router.post('/nuevoPaciente', isAuth, async (req, res) => {
 	const result = await pacienteService.insert(req.body, req.user);
 	if(result.state === estadosRespuesta.OK){
 		res.status(200).json({msg: "El paciente ha sido correctamente creado"});
+	}else if(result.state === estadosRespuesta.SERVERERROR){
+		res.status(500).json({msg: "Ha ocurrido un error inesperado en el servidor"});
+	}else if(result.state === estadosRespuesta.USERERROR){
+		res.status(400).json({msg: result.response});
+	}
+});
+
+//Asignar Paciente a profesional
+router.post('/asignarProfesional', isAuth, async (req, res) => {
+	const result = await pacienteService.assignProfesional(req.body, req.user);
+	if(result.state === estadosRespuesta.OK){
+		res.status(200).json({msg: "El profesional ha sido asignado al paciente"});
 	}else if(result.state === estadosRespuesta.SERVERERROR){
 		res.status(500).json({msg: "Ha ocurrido un error inesperado en el servidor"});
 	}else if(result.state === estadosRespuesta.USERERROR){

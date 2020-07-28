@@ -126,6 +126,82 @@ const pacienteDAO = {
 		return genericDAO.insert(tablaRolPaciente);
 	},
 
+	assingProfesional: async function (listadoRequisitos, id_usuario){
+		if(isNullOrUndefined(listadoRequisitos) || listadoRequisitos.length < 1){
+			const result = {
+				state: estadosRespuesta.USERERROR,
+				response: 'faltan llenar uno o mas campos para asignar profesional'
+			}
+			return result;
+		}
+
+		const params = [
+			{
+				name: "id_usuario",
+				type: sql.Numeric(18,0),//Puedo no definir type y se infiere automaticamente
+				value: id_usuario
+			},
+
+			{
+				name: "id_paciente",
+				type: sql.Numeric(18,0),
+				value: listadoRequisitos.id_paciente
+			},
+
+			{
+				name: "id_profesional",
+				type: sql.Numeric(18,0),
+				value: listadoRequisitos.id_profesional
+			},
+
+			{
+				name: "nro_matricula",
+				type: sql.NVarChar(40),
+				value: listadoRequisitos.nro_matricula
+			}
+		]
+
+		//query para ver si el usuario que hace la peticion tiene al paciente asociado y esta activo
+		//(usar id_paciente y id_usuario), no me importa lo que me devuelve la query, me importa que traiga algo
+		const result1 = await genericDAO.runQuery("select p.id_paciente from Usuario u join Usuario_Rol ur on ur.id_usuario=u.id_usuario join Rol_Paciente rp on rp.id_usuario_rol=ur.id_usuario_rol join Paciente p on p.id_paciente=rp.id_paciente where u.id_usuario=@id_usuario and p.id_paciente=@id_paciente and p.activo=1", params);
+		if(isNullOrUndefined(result1.response[0])){
+			const result1 = {
+				state: estadosRespuesta.USERERROR,
+				response: 'El usuario no tiene asignado al paciente'
+			}
+			return result1;
+		}
+
+		//query para chequear que el nro de matricula pasado sea el mismo que tiene el id del profesional pasado
+		//(usar id_profesional y nro_matricula), no me importa lo que me devuelve la query, me importa que traiga algo
+		const result2 = await genericDAO.runQuery("select id_usuario from Usuario where id_usuario=@id_profesional and nro_matricula=@nro_matricula", params);
+		if(isNullOrUndefined(result2.response[0])){
+			const result2 = {
+				state: estadosRespuesta.USERERROR,
+				response: 'El profesional no tiene la matricula asociada'
+			}
+			return result2;
+		}
+		//reviasr query de abajo, yo en realidad querria el usuario_rol del profesional que voy a asignar
+		const result = await genericDAO.runQuery("select ur.id_usuario_rol from Usuario u join Usuario_Rol ur on ur.id_usuario=u.id_usuario join Rol r on r.id_rol=ur.id_rol where u.id_usuario = @id_profesional and r.descripcion='profesional' and ur.activo=1", params);
+		const usuario_rol = result.response[0].id_usuario_rol;
+
+		const tablaRolPaciente = new sql.Table('Rol_Paciente');
+		tablaRolPaciente.columns.add('id_paciente', sql.Numeric(18,0), {nullable: false});
+		tablaRolPaciente.columns.add('id_usuario_rol', sql.Numeric(18,0), {nullable: false});
+		tablaRolPaciente.columns.add('activo', sql.Bit, {nullable: false});
+
+		
+			tablaRolPaciente.rows.add(
+				listadoRequisitos.id_paciente,
+				usuario_rol,
+				true
+			);
+		
+
+		return genericDAO.insert(tablaRolPaciente);
+	},
+
 	delete: async function(id_paciente, id_usuario){
 		if(isNullOrUndefined(id_paciente)){
 			const result = {
