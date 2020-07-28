@@ -114,6 +114,15 @@ const usuarioDAO = {
 			return result;
 		}
 
+		const result = await this.getByEmail(usuario.correo);
+
+		if(result.state === estadosRespuesta.OK){
+			return {
+				state: estadosRespuesta.CONFLICT,
+				response: 'Ya existe un usuario con ese correo'
+			};
+		}
+
 		const tablaUsuario = new sql.Table('Usuario');
 		tablaUsuario.columns.add('id_tipo_documento', sql.Numeric(18,0), {nullable: true});
 		tablaUsuario.columns.add('nombre', sql.NVarChar(255), {nullable: false});
