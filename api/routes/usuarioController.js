@@ -22,11 +22,13 @@ const estadosRespuesta = require('../models/estados_respuesta');
 router.post('/register', async (req, res) => {
 	const result = await usuarioService.insert(req.body);
 	if(result.state === estadosRespuesta.OK){
-		res.status(200).json({msg: "El usuario ha sido correctamente creada"});
+		res.status(201).json({msg: "El usuario ha sido correctamente creada"});
 	}else if(result.state === estadosRespuesta.SERVERERROR){
 		res.status(500).json({msg: "Ha ocurrido un error inesperado en el servidor"});
 	}else if(result.state === estadosRespuesta.USERERROR){
 		res.status(400).json({msg: result.response});
+	}else if(result.state === estadosRespuesta.CONFLICT){
+		res.status(409).json({msg: result.response});
 	}
 });
 
