@@ -51,6 +51,7 @@ const App: React.FC = () => {
           //Si no está autenticado, debe iniciar sesión/registrarse
           <Redirect from="*" to="/login" />
         )} */}
+        <AppPostLogin />
         <Route path="/alta" component={PatientAdd} exact />
         <Route path="/login" component={LogInSignUpPage} exact />
         <Route path="/pacientes/seleccion" component={PatientSelection} exact />
