@@ -1,3 +1,4 @@
 *.env
 *.deployment
 *.deployignore
+*.artifactignore
