@@ -4,7 +4,7 @@ import axios, {
   AxiosError,
   AxiosResponse,
 } from "axios";
-const __API_BASE_URL__ = "https://teayudotestingwebapp.azurewebsites.net";
+const __API_BASE_URL__ = "https://api.teayudo.tk";
 
 export default class AxiosWrapper {
   private instance: AxiosInstance;
