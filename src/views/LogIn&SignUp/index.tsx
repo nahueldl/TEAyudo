@@ -22,7 +22,7 @@ const LogInSignUpPage: React.FC = () => {
   const { platformData } = useContext(PlatformContext);
   const { isMobile } = platformData;
 
-  const [showModal, setShowModal] = useState<boolean>(true);
+  
   const [showSignIn, setShowSignIn] = useState<boolean>(false);
 
   const handleSignIn = ({ email, password }: any) => {
@@ -83,11 +83,7 @@ const LogInSignUpPage: React.FC = () => {
           </div>
         </div>
       )}
-      <IonModal isOpen={showModal} backdropDismiss={false}>
-        <p>Para continuar, necesitamos que elijas tu rol</p>
-        {/* TODO rol + explicación de cada uno */}
-        {/* <IonButton onClick={() => setShowModal(false)}>Close Modal</IonButton> */}
-      </IonModal>
+     
     </IonContent>
   );
 };
