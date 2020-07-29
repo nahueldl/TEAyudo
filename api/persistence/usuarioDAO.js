@@ -292,12 +292,18 @@ const usuarioDAO = {
 				return res;
 			}
 
-			const tokenDate = new Date(usuario.fecha_hora_reset_password);
-			const currentDate = new Date();
+			const tokenDate = usuario.fecha_hora_reset_password;
+
+
+			const date = new Date();
+			const utcString = date.toUTCString();
+			const utcCurrentDate = new Date(utcString);
+			let currentDate = new Date();
+			currentDate.setTime(utcCurrentDate - (3*60*60*1000));
 
 			if(currentDate.getTime() - tokenDate.getTime() > ttlResetToken){
 				res.state = estadosRespuesta.USERERROR;
-				res.response = "El token ya no es valido, genere uno nuevo"
+				res.response = `El token ya no es valido, genere uno nuevo (HORA ACTUAL ${currentDate} | HORA TOKEN ${tokenDate})`
 				return res;
 			}
 
