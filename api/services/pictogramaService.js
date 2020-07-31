@@ -1,5 +1,6 @@
 const pictogramaDAO = require('../persistence/pictogramaDAO');
 const estadosRespuesta = require('../models/estados_respuesta');
+const imageUploaderService = require('./imageUploaderService');
 const { isNullOrUndefined } = require('util');
 
 
@@ -47,6 +48,19 @@ const pictogramaService = {
 		// 	};
 		// }
 		return await pictogramaDAO.customizePictograma(idPictograma, infoPictograma.paciente, infoPictograma.nombre, infoPictograma.favorito, infoPictograma.estado);
+	},
+
+
+	addPictograma: async function(usuario, data){
+		if(isNullOrUndefined(data.categoria) || isNullOrUndefined(data.base64img) || isNullOrUndefined(data.nombres)){
+			return {
+				state: estadosRespuesta.USERERROR,
+				response: 'Faltan definir parametros'
+			};
+		}
+
+		const result = await imageUploaderService.uploadImage("004", data.base64img, "png");
+		return result;
 	}
 
 }
