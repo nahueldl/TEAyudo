@@ -13,6 +13,7 @@
 	"dependencies": {
 		"base62-random": "^0.3.5",
 		"bcrypt": "^5.0.0",
+		"cloudinary": "^1.22.0",
 		"dotenv": "^8.2.0",
 		"express": "^4.17.1",
 		"install": "^0.13.0",
