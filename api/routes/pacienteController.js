@@ -46,6 +46,7 @@ router.post('/nuevoPaciente', isAuth, async (req, res) => {
 });
 
 //Asignar Paciente a profesional
+//Agregar el /:id
 router.post('/asignarProfesional', isAuth, async (req, res) => {
 	const result = await pacienteService.assignProfesional(req.body, req.user);
 	if(result.state === estadosRespuesta.OK){
@@ -58,7 +59,7 @@ router.post('/asignarProfesional', isAuth, async (req, res) => {
 });
 
 //DELETE Paciente (baja logica, no fisica)
-router.delete('/borrarPaciente/:id', isAuth, async (req, res) => {
+router.delete('/:id', isAuth, async (req, res) => {
 	const result = await pacienteService.delete(req.params.id, req.user);
 	if(result.state === estadosRespuesta.OK)
 		res.status(200).json({msg: `Se ha dado de baja el paciente con id=${req.params.id}`});
@@ -69,7 +70,7 @@ router.delete('/borrarPaciente/:id', isAuth, async (req, res) => {
 });
 
 //PUT Paciente
-router.put('/actualizarPaciente/:id', isAuth, async (req, res) => {
+router.put('/:id', isAuth, async (req, res) => {
 	const result = await pacienteService.update(req.params.id, req.user, req.body);
 	if(result.state === estadosRespuesta.OK)
 		res.status(200).json({msg: `Se ha actualizado el paciente con id=${req.params.id}`});
