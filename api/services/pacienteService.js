@@ -54,7 +54,7 @@ const pacienteService = {
 	},
 
 	//los requisitos serian el id del paciente, id del profesional y nro de matricula que escribe el usuario
-	assignProfesional: async function(requisitos, usuario){
+	assignProfesional: async function(requisitos, id_paciente, usuario){
 		const result = await rolService.getDescripcionByUsuarioId(usuario.id_usuario);
 		const descripcion = result.response;
 		const tieneFamiliar = descripcion.some(x => x.descripcion == 'familiar')
@@ -70,7 +70,7 @@ const pacienteService = {
 		}
 		return result;
 	}
-		return await pacienteDAO.assingProfesional(requisitos, usuario.id_usuario);
+		return await pacienteDAO.assingProfesional(requisitos, id_paciente, usuario.id_usuario);
 	}, 
 
 	delete: async function (id_paciente, usuario){

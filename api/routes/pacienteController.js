@@ -47,8 +47,8 @@ router.post('/nuevoPaciente', isAuth, async (req, res) => {
 
 //Asignar Paciente a profesional
 //Agregar el /:id
-router.post('/asignarProfesional', isAuth, async (req, res) => {
-	const result = await pacienteService.assignProfesional(req.body, req.user);
+router.post('/:id/asignarProfesional', isAuth, async (req, res) => {
+	const result = await pacienteService.assignProfesional(req.body, req.params.id, req.user);
 	if(result.state === estadosRespuesta.OK){
 		res.status(200).json({msg: "El profesional ha sido asignado al paciente"});
 	}else if(result.state === estadosRespuesta.SERVERERROR){

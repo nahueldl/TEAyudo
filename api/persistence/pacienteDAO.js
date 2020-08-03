@@ -126,7 +126,7 @@ const pacienteDAO = {
 		return genericDAO.insert(tablaRolPaciente);
 	},
 
-	assingProfesional: async function (listadoRequisitos, id_usuario){
+	assingProfesional: async function (listadoRequisitos,id_paciente, id_usuario){
 		if(isNullOrUndefined(listadoRequisitos) || listadoRequisitos.length < 1){
 			const result = {
 				state: estadosRespuesta.USERERROR,
@@ -145,7 +145,7 @@ const pacienteDAO = {
 			{
 				name: "id_paciente",
 				type: sql.Numeric(18,0),
-				value: listadoRequisitos.id_paciente
+				value: id_paciente
 			},
 
 			{
@@ -193,7 +193,7 @@ const pacienteDAO = {
 
 		
 			tablaRolPaciente.rows.add(
-				listadoRequisitos.id_paciente,
+				id_paciente,
 				usuario_rol,
 				true
 			);
