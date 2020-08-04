@@ -11,6 +11,7 @@
 	"author": "TEAyudo",
 	"license": "ISC",
 	"dependencies": {
+		"axios": "^0.19.2",
 		"base62-random": "^0.3.5",
 		"bcrypt": "^5.0.0",
 		"dotenv": "^8.2.0",

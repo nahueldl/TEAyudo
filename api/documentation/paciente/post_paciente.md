@@ -54,5 +54,5 @@ curl --location --request POST 'https://api.teayudo.tk/api/pacientes' \
 ```
 
 * **Notes:**
-
+Para crear un paciente, el usuario debe tener asignado el rol "familiar", pudiendo ser simultáneamente también un "profesional"
   _Sujeto a cambios futuros_
