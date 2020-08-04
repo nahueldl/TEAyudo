@@ -30,12 +30,7 @@ const SignUpForm: React.FC<Props> = ({ signUp }) => {
     mode: "onChange",
   });
 
-  /**
-   *
-   * @param data
-   */
   const onSubmit = (data: any) => {
-    alert(JSON.stringify(data, null, 2));
     setData(data);
     signUp(data);
   };
@@ -76,6 +71,27 @@ const SignUpForm: React.FC<Props> = ({ signUp }) => {
           <ErrorMessage
             errors={errors}
             name="name"
+            as={<div style={{ color: "red" }} />}
+          />
+          <IonItem className="inputMargin">
+            <Controller
+              render={({ onChange, onBlur, value }) => (
+                <IonInput
+                  clearInput
+                  placeholder="Apellido"
+                  onIonChange={onChange}
+                />
+              )}
+              control={control}
+              name="lastname"
+              rules={{
+                required: true,
+              }}
+            />
+          </IonItem>
+          <ErrorMessage
+            errors={errors}
+            name="lastname"
             as={<div style={{ color: "red" }} />}
           />
           <IonItem className="inputMargin">

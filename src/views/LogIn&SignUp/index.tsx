@@ -1,12 +1,5 @@
 import React, { useContext, useState, useCallback } from "react";
-import {
-  IonContent,
-  NavContext,
-  IonSlides,
-  IonSlide,
-  IonModal,
-  IonButton,
-} from "@ionic/react";
+import { IonContent, NavContext, IonSlides, IonSlide } from "@ionic/react";
 import { AuthenticationContext } from "../../context/authentication";
 import AuthenticationServices from "../../services/authentication.services";
 import OverlayLeft from "./OverlayLeft";
@@ -15,15 +8,20 @@ import SignInForm from "./SignInForm";
 import SignUpForm from "./SignUpForm";
 import "./styles.css";
 import { PlatformContext } from "../../context/platform";
+import ChooseRoleModal from "./ChooseRoleModal";
+import { RegistrationContext } from "../../context/registration";
 
 const LogInSignUpPage: React.FC = () => {
   const { navigate } = useContext(NavContext);
+  const { registrationData, setRegistrationData } = useContext(
+    RegistrationContext
+  );
   const { setAuthData } = useContext(AuthenticationContext);
   const { platformData } = useContext(PlatformContext);
   const { isMobile } = platformData;
 
-  
   const [showSignIn, setShowSignIn] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   const handleSignIn = ({ email, password }: any) => {
     setAuthData({ loading: false, error: true });
@@ -44,13 +42,49 @@ const LogInSignUpPage: React.FC = () => {
       });
   };
 
-  const handleSignUp = ({ name, email, password }: any) => {
-    console.log(name);
+  const handleSignUp = ({ name, lastname, email, password }: any) => {
+    setRegistrationData({
+      name: name,
+      lastname: lastname,
+      email: email,
+      password: password,
+    });
+    setShowModal(true);
+  };
+
+  const handleRolSelection = (
+    idType?: string,
+    idNumber?: number,
+    licenseNumber?: number
+  ) => {
+    setShowModal(false);
     setAuthData({ loading: true, error: false });
+    const { name, lastname, email, password } = registrationData;
+    AuthenticationServices.handleSignUp(
+      name!,
+      lastname!,
+      email!,
+      password!,
+      idType,
+      (idNumber as unknown) as string,
+      (licenseNumber as unknown) as string
+    )
+      .then((_res: any) => {
+        setAuthData({ username: email, authenticated: true, loading: false });
+        goToAddPatient();
+      })
+      .catch((_error: any) => {
+        setAuthData({ loading: false, error: true });
+      });
   };
 
   const goToSelectPatient = useCallback(
-    () => navigate("/paciente", "forward"),
+    () => navigate("/pacientes/seleccion", "forward"),
+    [navigate]
+  );
+
+  const goToAddPatient = useCallback(
+    () => navigate("/pacientes/alta", "forward", "replace"),
     [navigate]
   );
 
@@ -83,7 +117,10 @@ const LogInSignUpPage: React.FC = () => {
           </div>
         </div>
       )}
-     
+      <ChooseRoleModal
+        isOpen={showModal}
+        handleSelection={handleRolSelection}
+      />
     </IonContent>
   );
 };

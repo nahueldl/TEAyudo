@@ -19,23 +19,18 @@ const ERROR_MESSAGE =
   "Hubo un error al iniciar sesión, por favor intenta nuevamente más tarde";
 
 const SignInForm: React.FC<Props> = ({ signIn }) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [data, setData] = useState();
 
   const { authData, setAuthData } = useContext(AuthenticationContext);
   const { error, loading } = authData;
   const { isMobile } = useContext(PlatformContext).platformData;
-
   const { control, handleSubmit, formState, errors } = useForm({
     defaultValues: {},
     mode: "onChange",
   });
 
-  /**
-   *
-   * @param data
-   */
   const onSubmit = (data: any) => {
-    alert(JSON.stringify(data, null, 2));
     setData(data);
     signIn(data);
   };

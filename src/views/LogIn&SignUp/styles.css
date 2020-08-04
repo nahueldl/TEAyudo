@@ -180,3 +180,22 @@ img {
 .slides {
   height: 100%;
 }
+
+.modalBody {
+  padding: 5px;
+}
+
+.title {
+  text-align: center;
+}
+
+.itemTitle {
+  font-weight: bold !important;
+}
+
+.doctorData {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin: 20px;
+}
