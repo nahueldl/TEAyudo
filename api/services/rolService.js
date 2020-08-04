@@ -9,6 +9,10 @@ const rolService = {
 	},
 
 
+	getDescripcionByUsuarioId: async function (idUsuario){
+		return await rolDAO.getDescripcionByUsuarioId(idUsuario);
+	},
+
 	getRoles: async function(usuario){
 		return await rolDAO.getByUsuarioId(usuario.id_usuario);
 	},
@@ -16,6 +20,7 @@ const rolService = {
 
 	asignarRol: async function(usuario, rol){
 		return await rolDAO.insertUsuarioRol(usuario.id_usuario, rol.id_rol);
+
 	}
 	
 };

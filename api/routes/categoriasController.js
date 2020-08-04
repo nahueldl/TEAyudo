@@ -7,6 +7,7 @@ const { isNullOrUndefined } = require('util');
 const pictogramaService = require('../services/pictogramaService')
 
 
+
 //GET Categorias
 router.get('/', isAuth, async (req, res) => {
 	const result = await categoriaService.getAll(req.user);

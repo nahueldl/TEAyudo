@@ -89,7 +89,7 @@ const genericDAO = {
 			const result = await new sql.Request().bulk(table);
 			res.state = estadosRespuesta.OK;
 			res.response = null;
-		}catch(err){
+			}catch(err){
 			res.state = estadosRespuesta.SERVERERROR;
 			res.response = err;
 			console.log(err);
