@@ -27,26 +27,26 @@
   * **Code:** 200 OK <br />
     **Content:**
     ```json
-   [
-    {
-        "id_paciente": 1,
-        "nombre": "Paciente",
-        "apellido": "actualizado2",
-        "fecha_hora_alta": "2020-07-15T02:23:49.880Z",
-        "fecha_hora_modificacion": "2020-07-24T23:06:48.960Z",
-        "fecha_hora_baja": null,
-        "activo": true
-    },
-    {
-        "id_paciente": 30,
-        "nombre": "Paciente",
-        "apellido": "Nuevo bb",
-        "fecha_hora_alta": "2020-08-03T06:37:36.480Z",
-        "fecha_hora_modificacion": null,
-        "fecha_hora_baja": null,
-        "activo": true
-    }
-]
+    [
+        {
+            "id_paciente": 1,
+            "nombre": "Paciente",
+            "apellido": "actualizado2",
+            "fecha_hora_alta": "2020-07-15T02:23:49.880Z",
+            "fecha_hora_modificacion": "2020-07-24T23:06:48.960Z",
+            "fecha_hora_baja": null,
+            "activo": true
+        },
+        {
+            "id_paciente": 30,
+            "nombre": "Paciente",
+            "apellido": "Nuevo bb",
+            "fecha_hora_alta": "2020-08-03T06:37:36.480Z",
+            "fecha_hora_modificacion": null,
+            "fecha_hora_baja": null,
+            "activo": true
+        }
+    ]
     ```
  
 * **Error Response:**
