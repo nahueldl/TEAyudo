@@ -1,6 +1,6 @@
 import AxiosWrapper from "../utils/axios";
 
-class AuthenticationServices {
+class AuthenticationService {
   private axios: AxiosWrapper;
   constructor() {
     this.axios = new AxiosWrapper({ useErrorInterceptor: true });
@@ -34,7 +34,7 @@ class AuthenticationServices {
   }
 }
 
-const instance = new AuthenticationServices();
+const instance = new AuthenticationService();
 Object.freeze(instance);
 
 export default instance;
