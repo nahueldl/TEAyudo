@@ -1,7 +1,7 @@
 import React, { useContext, useState, useCallback } from "react";
 import { IonContent, NavContext, IonSlides, IonSlide } from "@ionic/react";
 import { AuthenticationContext } from "../../context/authentication";
-import AuthenticationServices from "../../services/authentication.services";
+import AuthenticationService from "../../services/authentication.services";
 import OverlayLeft from "./OverlayLeft";
 import OverlayRight from "./OverlayRight";
 import SignInForm from "./SignInForm";
@@ -25,7 +25,7 @@ const LogInSignUpPage: React.FC = () => {
 
   const handleSignIn = ({ email, password }: any) => {
     setAuthData({ loading: false, error: false });
-    AuthenticationServices.handleLogIn(email, password)
+    AuthenticationService.handleLogIn(email, password)
       .then((_res: any) => {
         setAuthData({
           username: email,
@@ -60,7 +60,7 @@ const LogInSignUpPage: React.FC = () => {
     setShowModal(false);
     setAuthData({ loading: true, error: false });
     const { name, lastname, email, password } = registrationData;
-    AuthenticationServices.handleSignUp(
+    AuthenticationService.handleSignUp(
       name!,
       lastname!,
       email!,
