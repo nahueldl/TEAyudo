@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import "../styles.css";
-import { IonGrid, IonRow, IonCol } from "@ionic/react";
+import { IonGrid, IonRow, IonCol, IonContent } from "@ionic/react";
 import { AuthenticationContext } from "../../../context/authentication";
 import CardWithImage from "../../../components/CardWithImage";
 
@@ -13,27 +13,30 @@ const PatientSelection: React.FC = () => {
   const { authData } = useContext(AuthenticationContext);
   const { username } = authData;
   return (
-    <IonGrid className="container">
-      <IonRow>
-        <IonCol size="12">
-          <h1 className="title">Selecciona un paciente para avanzar</h1>
-        </IonCol>
-      </IonRow>
-      <IonRow>
-        {patients.map((patient, index) => (
-          <IonCol key={index} size="12" sizeMd="6">
-            <CardWithImage
-              img={{
-                src: `https://api.adorable.io/avatars/100/${username}-${patient.name}`,
-                alt: `Avatar ${patient.name}`,
-              }}
-              title={patient.name}
-              touchable
-            />
+    <IonContent>
+      <IonGrid className="container">
+        <IonRow>
+          <IonCol size="12">
+            <h1 className="title">Selecciona un paciente para avanzar</h1>
           </IonCol>
-        ))}
-      </IonRow>
-    </IonGrid>
+        </IonRow>
+        <IonRow>
+          {patients.map((patient, index) => (
+            <IonCol key={index} size="6" sizeMd="3">
+              <CardWithImage
+                img={{
+                  src: `https://api.adorable.io/avatars/100/${username}-${patient.name}`,
+                  alt: `Avatar ${patient.name}`,
+
+                }}
+                title={patient.name}
+                touchable
+              />
+            </IonCol>
+          ))}
+        </IonRow>
+      </IonGrid>
+    </IonContent>
   );
 };
 
