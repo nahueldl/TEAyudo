@@ -2,8 +2,8 @@ const sql = require('mssql');
 const { isNullOrUndefined } = require('util');
 const estadosRespuesta = require('../models/estados_respuesta');
 
-const connecionUrl = `mssql://${process.env.dbuser}:${process.env.dbpass}@${process.env.dbservername}/${process.env.dbname}?encrypt=${process.env.dbencypt}`;
-const connectionObject = {
+// const connecionUrl = `mssql://${process.env.dbuser}:${process.env.dbpass}@${process.env.dbservername}/${process.env.dbname}?encrypt=${process.env.dbencypt}`;
+const connectionConfig = {
 	user: process.env.dbuser,
 	password: process.env.dbpass,
 	server: process.env.dbservername,
@@ -16,64 +16,61 @@ const connectionObject = {
 	}
 };
 
+let globalPool;
+
 const genericDAO = {
 
-	runSimpleQuery: async function (query, returnOneRecorset=true){
-		if(isNullOrUndefined(query)) throw 'query no ha sido definida';
-
-		const res = {
-			state: null,
-			response: null
-		};
-
-		try{
-			await sql.connect(connectionObject);
-			const result = await sql.query(query);
-			res.state = estadosRespuesta.OK;
-			if(returnOneRecorset) res.response = result.recordsets[0];
-			else res.response = result.recordsets;
-		}catch(err){
-			res.state = estadosRespuesta.SERVERERROR;
-			res.response = err;
-			console.log(err);
-		}
-
-		sql.close();
-		return res;
-	},
-
-
-	runQuery: async function (query, params, returnOneRecorset=true){
+	runQuery: async function (query, params, options){
 		if(isNullOrUndefined(query)) throw 'query no ha sido definida';
 		if(isNullOrUndefined(params) || params.length < 1) throw 'no se han definido parametros';
 
+		if(isNullOrUndefined(options)) options = {};
+		options.returnOneRecorset = options.returnOneRecorset || true;
+		options.transaction = options.transaction || null;
+		
 		const res = {
 			state: null,
 			response: null
 		};
 
+		let pool;
+
 		try{
-			const pool = await sql.connect(connectionObject);
-			const request = pool.request();
+			let request;
+
+			if(isNullOrUndefined(options.transaction)){
+				pool = await sql.connect(connectionConfig);
+				request = pool.request();
+			}else{
+				request = new sql.Request(options.transaction);
+			}
+
 			params.forEach(param => {
 				if(isNullOrUndefined(param.type))
 					request.input(param.name, param.value)
 				else
 					request.input(param.name, param.type, param.value)
 			});
+
 			const result = await request.query(query);
+
 			res.state = estadosRespuesta.OK;
-			if(returnOneRecorset) res.response = result.recordsets[0];
+
+			if(options.returnOneRecorset) res.response = result.recordsets[0];
 			else res.response = result.recordsets;
+
 		}catch(err){
 			res.state = estadosRespuesta.SERVERERROR;
 			res.response = err;
 			console.log(err);
 		}
 		
-		sql.close();
+		if(!isNullOrUndefined(pool)) pool.close();
 		return res;
 	},
+
+
+	runSimpleQuery: async (query) => await this.runQuery(query),
 
 
 	insert: async function (table){
@@ -85,7 +82,7 @@ const genericDAO = {
 		};
 
 		try{
-			await sql.connect(connectionObject);
+			await sql.connect(connectionConfig);
 			const result = await new sql.Request().bulk(table);
 			res.state = estadosRespuesta.OK;
 			res.response = null;
@@ -97,7 +94,14 @@ const genericDAO = {
 		
 		sql.close();
 		return res;
+	},
+
+	openTransaction: async function(){
+		const pool = await sql.connect(connectionConfig);
+		const transaction = new sql.Transaction(pool);
+		return transaction;
 	}
+
 }
 
 module.exports = genericDAO;
