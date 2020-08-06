@@ -13,10 +13,17 @@ import {
   IonButton,
   IonContent,
   IonLabel,
+  IonAvatar,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonImg,
+  IonIcon,
 } from "@ionic/react";
 import "./styles.css";
+import { arrowBackOutline } from "ionicons/icons";
 
-const PatientAdd: React.FC = () => {
+const InfoPatient: React.FC<InfoPatientProps> = ({ title, add }) => {
   const { data, setData } = useContext(TEAyudoContext);
   const { username } = data;
   const [name, setName] = useState<string>();
@@ -24,19 +31,22 @@ const PatientAdd: React.FC = () => {
   const [birthday, setBirthday] = useState<string>();
   const [fase, setFase] = useState<string>();
   const fases = [1, 2, 3, 4];
+  const img: any = {
+    src: "assets/icon/icon.png",
+  };
 
   const handleAddPatient = () => {};
 
   return (
     <IonContent>
-      <IonGrid className="container">
+      <IonGrid className="container-patientAdd">
         <IonRow>
-          <IonCol size="12">{/* logo */}</IonCol>
-        </IonRow>
-        <IonRow>
-          <form>
-            <h1>Agregar un paciente</h1>
-            <IonList>
+          <form className="form-no-background">
+            <h1>{title}</h1>
+            <IonList className="mt-5">
+              <IonAvatar className="avatars">
+                <img src="https://api.adorable.io/avatars/99" alt="Avatar" />
+              </IonAvatar>
               <IonItem className="inputMargin">
                 <IonInput
                   name="name"
@@ -85,13 +95,34 @@ const PatientAdd: React.FC = () => {
                 </IonSelect>
               </IonItem>
             </IonList>
-            <IonButton
-              type="submit"
-              className="formButton mt-5"
-              onClick={handleAddPatient}
-            >
-              Agregar
-            </IonButton>
+            {add ? (
+              <IonButton
+                type="submit"
+                className="formButton mt-5"
+                onClick={handleAddPatient}
+                expand="block"
+              >
+                Agregar paciente
+              </IonButton>
+            ) : (
+              <div>
+                <IonButton
+                  type="submit"
+                  className="formButton mt-5"
+                  expand="block"
+                >
+                  Editar paciente
+                </IonButton>
+                <IonButton
+                  type="submit"
+                  className="formButton red-buttom mt-5"
+                  onClick={handleAddPatient}
+                  expand="block"
+                >
+                  Eliminar paciente
+                </IonButton>
+              </div>
+            )}
           </form>
         </IonRow>
       </IonGrid>
@@ -99,4 +130,9 @@ const PatientAdd: React.FC = () => {
   );
 };
 
-export default PatientAdd;
+interface InfoPatientProps {
+  title?: string;
+  add: boolean;
+}
+
+export default InfoPatient;

@@ -5,11 +5,13 @@ import {
   IonList,
   IonMenu,
   IonMenuToggle,
+  IonIcon,
 } from "@ionic/react";
 
 import React from "react";
 import { useLocation } from "react-router-dom";
 import "./Menu.css";
+import { chevronForwardOutline, chevronDownOutline } from "ionicons/icons";
 
 interface AppPage {
   url: string;
@@ -45,11 +47,12 @@ const appPages: AppPage[] = [
   },
 ];
 
-const Menu: React.FC<Props> = ({patientName}) => {
+const Menu: React.FC<Props> = ({ patientName }) => {
   const location = useLocation();
-  const buildUrl =(pageUrl: string) =>{
+  const buildUrl = (pageUrl: string) => {
     return `/${patientName}${pageUrl}`;
-  }
+  };
+
   return (
     <IonMenu contentId="main" type="overlay" swipeGesture>
       <IonContent>
@@ -62,7 +65,7 @@ const Menu: React.FC<Props> = ({patientName}) => {
                   className={
                     location.pathname === appPage.url ? "selected" : ""
                   }
-                  routerLink={buildUrl(appPage.url)}
+                  routerLink={buildUrl(appPage.url?.length ? appPage.url : "")}
                   routerDirection="none"
                   lines="none"
                   detail={false}

@@ -24,8 +24,9 @@ import "./theme/variables.css";
 import AppPostLogin from "./AppPostLogin";
 import LogInSignUpPage from "./views/LogIn&SignUp";
 import PatientSelection from "./views/Patients/Selection";
+import PatientPage from "./views/Patients/Page";
 import { TEAyudoContext } from "./context";
-import PatientAdd from "./views/Patients/Add";
+import PatientAdd from "./views/Patients/InfoPatient";
 
 const App: React.FC = () => {
   const { data } = useContext(TEAyudoContext);
@@ -55,6 +56,7 @@ const App: React.FC = () => {
         <Route path="/alta" component={PatientAdd} exact />
         <Route path="/login" component={LogInSignUpPage} exact />
         <Route path="/pacientes/seleccion" component={PatientSelection} exact />
+        <Route path="/pacientes/principal" component={PatientPage} exact />
         {/* <Route path="/pacientes/alta" component={} exact /> */}
       </IonReactRouter>
     </IonApp>
