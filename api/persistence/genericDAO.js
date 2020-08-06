@@ -1,6 +1,7 @@
 const sql = require('mssql');
 const { isNullOrUndefined } = require('util');
 const estadosRespuesta = require('../models/estados_respuesta');
+const { request } = require('http');
 
 // const connecionUrl = `mssql://${process.env.dbuser}:${process.env.dbpass}@${process.env.dbservername}/${process.env.dbname}?encrypt=${process.env.dbencypt}`;
 const connectionConfig = {
@@ -73,8 +74,11 @@ const genericDAO = {
 	runSimpleQuery: async (query) => await this.runQuery(query),
 
 
-	insert: async function (table){
+	insert: async function (table, options){
 		if(isNullOrUndefined(table)) throw 'table no ha sido definida';
+
+		if(isNullOrUndefined(options)) options = {};
+		options.transaction = options.transaction || null;
 
 		const res = {
 			state: null,
@@ -82,8 +86,16 @@ const genericDAO = {
 		};
 
 		try{
-			await sql.connect(connectionConfig);
-			const result = await new sql.Request().bulk(table);
+			let request;
+			
+			if(isNullOrUndefined(options.transaction)){
+				await sql.connect(connectionConfig);
+				request = await new sql.Request();
+			}else{
+				request = new sql.Request(options.transaction);
+			}
+			
+			const result = request.bulk(table);
 			res.state = estadosRespuesta.OK;
 			res.response = null;
 		}catch(err){
