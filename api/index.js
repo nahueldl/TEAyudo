@@ -35,7 +35,7 @@ app.use('/api/categorias', require('./routes/categoriasController'));
 app.use('/api/usuario', require('./routes/usuarioController'));
 app.use('/api/pacientes', require('./routes/pacienteController'));
 app.use('/api/pictogramas', require('./routes/pictogramasController'));
-
+app.use('/api/matricula', require('./routes/matriculaController'));
 
 
 //Levanta el puerto en que va a escuchar
