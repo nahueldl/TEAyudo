@@ -13,7 +13,7 @@ class RolesService {
     });
   }
 
-  handleGetRoles(token: any) {
+  handleGetRoles(token: string) {
     const header = `Bearer ${token}`;
     return this.axios.get("/api/usuario/roles", {
       headers: {
