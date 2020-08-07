@@ -26,8 +26,9 @@ const LogInSignUpPage: React.FC = () => {
   const handleSignIn = ({ email, password }: any) => {
     setAuthData({ loading: false, error: false });
     AuthenticationService.handleLogIn(email, password)
-      .then((_res: any) => {
+      .then((res: any) => {
         setAuthData({
+          token: res.data.token,
           username: email,
           authenticated: true,
           loading: false,
@@ -42,7 +43,7 @@ const LogInSignUpPage: React.FC = () => {
       });
   };
 
-  const handleSignUp = ({ name, lastname, email, password }: any) => {
+  const handleSignUpForm = ({ name, lastname, email, password }: any) => {
     setRegistrationData({
       name: name,
       lastname: lastname,
@@ -58,6 +59,10 @@ const LogInSignUpPage: React.FC = () => {
     licenseNumber?: number
   ) => {
     setShowModal(false);
+    handleSignUp(idType, idNumber, licenseNumber)
+  };
+
+  const handleSignUp = (idType?: string, idNumber?: number, licenseNumber?: number) => {
     setAuthData({ loading: true, error: false });
     const { name, lastname, email, password } = registrationData;
     AuthenticationService.handleSignUp(
@@ -76,8 +81,8 @@ const LogInSignUpPage: React.FC = () => {
       .catch((_error: any) => {
         setAuthData({ loading: false, error: true });
       });
-  };
-
+  }
+ 
   const goToSelectPatient = useCallback(
     () => navigate("/pacientes/seleccion", "forward"),
     [navigate]
@@ -98,13 +103,13 @@ const LogInSignUpPage: React.FC = () => {
             <SignInForm signIn={handleSignIn} />
           </IonSlide>
           <IonSlide>
-            <SignUpForm signUp={handleSignUp} />
+            <SignUpForm signUp={handleSignUpForm} />
           </IonSlide>
         </IonSlides>
       ) : (
         <div className={`container ${classRightPanelActive}`}>
           <div className="formContainer signUpContainer">
-            <SignUpForm signUp={handleSignUp} />
+            <SignUpForm signUp={handleSignUpForm} />
           </div>
           <div className="formContainer signInContainer">
             <SignInForm signIn={handleSignIn} />
