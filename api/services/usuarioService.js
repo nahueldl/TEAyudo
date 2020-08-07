@@ -25,7 +25,12 @@ const usuarioService = {
 
 		//TODO: validar que el correo cumpla el formato
 
-		return await usuarioDAO.insert(usuario);
+		const result = await usuarioDAO.insert(usuario);
+
+		if(result.state === estadosRespuesta.OK)
+			return await this.login(usuario.correo, usuario.password);
+		else
+			return result;
 	},
 
 
