@@ -82,17 +82,19 @@ const genericDAO = {
 			response: null
 		};
 
+		let pool = null;
+
 		try{
 			let request;
 
 			if(isNullOrUndefined(options.transaction)){
-				await sql.connect(connectionConfig);
+				pool = await sql.connect(connectionConfig);
 				request = await new sql.Request();
 			}else{
 				request = new sql.Request(options.transaction);
 			}
 			
-			const result = request.bulk(table);
+			const result = await request.bulk(table);
 			res.state = estadosRespuesta.OK;
 			res.response = null;
 		}catch(err){
@@ -101,7 +103,7 @@ const genericDAO = {
 			console.log(err);
 		}
 		
-		sql.close();
+		if(!isNullOrUndefined(pool)) sql.close();
 		return res;
 	},
 
