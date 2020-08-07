@@ -1,7 +1,6 @@
 const sql = require('mssql');
 const { isNullOrUndefined } = require('util');
 const estadosRespuesta = require('../models/estados_respuesta');
-const { request } = require('http');
 
 // const connecionUrl = `mssql://${process.env.dbuser}:${process.env.dbpass}@${process.env.dbservername}/${process.env.dbname}?encrypt=${process.env.dbencypt}`;
 const connectionConfig = {
@@ -16,8 +15,6 @@ const connectionConfig = {
 		"useUTC": false
 	}
 };
-
-let globalPool;
 
 const genericDAO = {
 
@@ -87,7 +84,7 @@ const genericDAO = {
 
 		try{
 			let request;
-			
+
 			if(isNullOrUndefined(options.transaction)){
 				await sql.connect(connectionConfig);
 				request = await new sql.Request();
