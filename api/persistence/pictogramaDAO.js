@@ -266,9 +266,9 @@ const pictogramaDAO = {
 					{
 						name: "nombreEtiq",
 						type: sql.NVarChar(255),
-						value: etiquetas[i]
+						value: etiquetas[i].nombre
 					}
-				]);
+				], {transaction});
 
 				if(etResult.state != estadosRespuesta.OK) throw etResult.response;
 
@@ -283,7 +283,7 @@ const pictogramaDAO = {
 						type: sql.Numeric(18,0),
 						value: etResult.response[0].id_etiqueta
 					}
-				]);
+				], {transaction});
 
 				if(etPicResult.state != estadosRespuesta.OK) throw etPicResult.response;
 
@@ -302,7 +302,7 @@ const pictogramaDAO = {
 				);
 			});
 	
-			const nomResult = await genericDAO.insert(tablaNombrePictograma);
+			const nomResult = await genericDAO.insert(tablaNombrePictograma, {transaction});
 
 			if(nomResult.state != estadosRespuesta.OK) throw nomResult.response;
 
@@ -312,18 +312,21 @@ const pictogramaDAO = {
 				idCategoria
 			);
 
-			const catResult = await genericDAO.insert(tablaCategoriaPictograma);
+			const catResult = await genericDAO.insert(tablaCategoriaPictograma, {transaction});
 
 			if(catResult.state != estadosRespuesta.OK) throw catResult.response;
 
 			//Si salio todo atr commiteamos
-			transaction.commit(tErr => tErr);
-		
+			await transaction.commit();
 			return result;
 
 		}catch(err){
-			transaction.rollback(tErr => tErr)
+			
+			try{
+				await transaction.rollback()
+			}catch(err){
 
+			}
 			result = {
 				state: estadosRespuesta.SERVERERROR,
 				response: 'Ha ocurrido un error inesperado en el servidor'
@@ -338,7 +341,7 @@ const pictogramaDAO = {
 
 
 	getById: async function (id){
-		if(isNullOrUndefined(id)){
+		if(id === null || id === undefined){
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'id no ha sido definido'

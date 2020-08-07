@@ -71,7 +71,7 @@ const pictogramaService = {
 
 
 		if(result2.state === estadosRespuesta.OK)
-			return await pictogramaDAO.getById(result.response.id_pictograma);
+			return await pictogramaDAO.getById(result2.response.id_pictograma);
 		else
 			return result2;
 
