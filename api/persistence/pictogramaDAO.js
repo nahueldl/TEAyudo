@@ -186,7 +186,188 @@ const pictogramaDAO = {
 
 	deletePictogramaParaPaciente: async (idPictograma, idPaciente) => await this.cambiarEstadoPictogramaParaPaciente(idPictograma, idPaciente, estadosPictograma.ELIMINADO),
 
-	reenablePictogramaParaPaciente: async (idPictograma, idPaciente) => await this.cambiarEstadoPictogramaParaPaciente(idPictograma, idPaciente, estadosPictograma.ACTIVO)
+
+	reenablePictogramaParaPaciente: async (idPictograma, idPaciente) => await this.cambiarEstadoPictogramaParaPaciente(idPictograma, idPaciente, estadosPictograma.ACTIVO),
+
+
+	createPictograma: async function (idCategoria, nombres, etiquetas, esquematico, sexo, violencia, activo, id_picto_arasaac, ruta_acceso_local){
+		if(isNullOrUndefined(idCategoria) || isNullOrUndefined(nombres) || nombres.length < 1 || isNullOrUndefined(etiquetas) || etiquetas.length < 1){
+			const result = {
+				state: estadosRespuesta.USERERROR,
+				response: 'Parametros necesarios no han sido definidos'
+			}
+			return result;
+		}
+
+		const params = [
+			{
+				name: "idPicto",
+				type: sql.Numeric(18,0),
+				value: id_picto_arasaac || null
+			},
+			{
+				name: "ruta",
+				type: sql.VarChar(255),
+				value: ruta_acceso_local || null
+			},
+			{
+				name: "schematic",
+				type: sql.Bit,
+				value: esquematico || null
+			},
+			{
+				name: "sex",
+				type: sql.Bit,
+				value: sexo || null
+			},
+			{
+				name: "violence",
+				type: sql.Bit,
+				value: violencia || null
+			},
+			{
+				name: "activo",
+				type: sql.Bit,
+				value: activo || 1
+			}
+		];
+
+		const tablaNombrePictograma = new sql.Table('Nombre_Pictograma');
+		tablaNombrePictograma.columns.add('id_pictograma', sql.Numeric(18,0), {nullable: false});
+		tablaNombrePictograma.columns.add('nombre', sql.NVarChar(255), {nullable: false});
+		tablaNombrePictograma.columns.add('descripcion', sql.NVarChar(255), {nullable: true});
+		tablaNombrePictograma.columns.add('tiene_locucion', sql.Bit, {nullable: true});
+		tablaNombrePictograma.columns.add('tipo', sql.Int, {nullable: true});
+		tablaNombrePictograma.columns.add('nombre_plural', sql.NVarChar(255), {nullable: true});
+		tablaNombrePictograma.columns.add('activo', sql.Bit, {nullable: false});
+
+		
+		const tablaCategoriaPictograma = new sql.Table('Categoria_Pictograma');
+		tablaCategoriaPictograma.columns.add('id_pictograma', sql.Numeric(18,0), {nullable: false});
+		tablaCategoriaPictograma.columns.add('id_categoria', sql.Numeric(18,0), {nullable: false});
+
+		let result;
+		let transaction;
+		try{
+			transaction = await genericDAO.openTransaction();
+			transaction = await transaction.begin();
+
+			//Insertamos el pictograma
+			result = await genericDAO.runQuery("INSERT INTO Pictograma ([id_picto_arasaac], [ruta_acceso_local], [esquematico], [sexo], [violencia], [activo]) OUTPUT inserted.id_pictograma VALUES (@idPicto, @ruta, @schematic, @sex, @violence, @activo)", params, {transaction});
+			
+			if(result.state != estadosRespuesta.OK) throw result.response;
+			//Asigno el idPictograma para poder usarlo mas adelante
+			result.response = result.response[0];
+
+			//Insertamos las etiquetas y creamos las asociaciones
+			for(let i = 0; i < etiquetas.length; i++){
+
+				const etResult = await genericDAO.runQuery("IF NOT EXISTS (SELECT * FROM Etiqueta WHERE nombre = @nombreEtiq) BEGIN INSERT INTO Etiqueta (nombre, activo) OUTPUT inserted.id_etiqueta VALUES (@nombreEtiq, 1) END ELSE BEGIN SELECT id_etiqueta FROM Etiqueta WHERE nombre = @nombreEtiq END", [
+					{
+						name: "nombreEtiq",
+						type: sql.NVarChar(255),
+						value: etiquetas[i].nombre
+					}
+				], {transaction});
+
+				if(etResult.state != estadosRespuesta.OK) throw etResult.response;
+
+				const etPicResult = await genericDAO.runQuery("INSERT INTO Etiqueta_Pictograma (id_pictograma, id_etiqueta) VALUES (@idPicto, @idEt)", [
+					{
+						name: "idPicto",
+						type: sql.Numeric(18,0),
+						value: result.response.id_pictograma
+					},
+					{
+						name: "idEt",
+						type: sql.Numeric(18,0),
+						value: etResult.response[0].id_etiqueta
+					}
+				], {transaction});
+
+				if(etPicResult.state != estadosRespuesta.OK) throw etPicResult.response;
+
+			}
+
+			//Insertamos los nombres
+			nombres.forEach(nombre => {
+				tablaNombrePictograma.rows.add(
+					result.response.id_pictograma,
+					nombre.nombre,
+					nombre.descripcion || null,
+					nombre.tiene_locucion || null,
+					nombre.tipo || null,
+					nombre.nombre_plural || null,
+					1
+				);
+			});
+	
+			const nomResult = await genericDAO.insert(tablaNombrePictograma, {transaction});
+
+			if(nomResult.state != estadosRespuesta.OK) throw nomResult.response;
+
+			//Insertamos las categorias
+			tablaCategoriaPictograma.rows.add(
+				result.response.id_pictograma,
+				idCategoria
+			);
+
+			const catResult = await genericDAO.insert(tablaCategoriaPictograma, {transaction});
+
+			if(catResult.state != estadosRespuesta.OK) throw catResult.response;
+
+			//Si salio todo atr commiteamos
+			await transaction.commit();
+			return result;
+
+		}catch(err){
+			
+			try{
+				await transaction.rollback()
+			}catch(err){
+
+			}
+			result = {
+				state: estadosRespuesta.SERVERERROR,
+				response: 'Ha ocurrido un error inesperado en el servidor'
+			};
+
+			console.error(err);
+		}
+
+		return result;
+		
+	},
+
+
+	getById: async function (id){
+		if(id === null || id === undefined){
+			const result = {
+				state: estadosRespuesta.USERERROR,
+				response: 'id no ha sido definido'
+			}
+			return result;
+		}
+
+		const params = [
+			{
+				name: "id",
+				type: sql.Numeric(18,0),
+				value: id
+			}
+		]
+
+		const result = await genericDAO.runQuery("select * from Pictograma where id_pictograma = @id", params);
+
+		if(result.state === estadosRespuesta.OK && result.response.length < 1){
+			result.state = estadosRespuesta.USERERROR;
+			result.response = "No se encontro un pictograma con ese id";
+		}else if(result.state === estadosRespuesta.OK){
+			result.response = result.response[0];
+		}
+		
+		return result;
+	},
 
 }
 
