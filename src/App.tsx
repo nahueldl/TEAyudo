@@ -32,7 +32,7 @@ const App: React.FC = () => {
   return (
     <IonApp>
       <IonReactRouter>
-        {authData.authenticated ? (
+        {authData.token ? (
           authData.patientName ? (
             // Si ambas son verdaderas, ir a la app
             <AppPostLogin />
