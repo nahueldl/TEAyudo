@@ -58,9 +58,23 @@ const pictogramaService = {
 				response: 'Faltan definir parametros'
 			};
 		}
+		
+		
+		const result = await imageUploaderService.uploadImage(null, data.base64img, "png");
+		
+		let result2;
 
-		const result = await imageUploaderService.uploadImage("004", data.base64img, "png");
-		return result;
+		if(result.state === estadosRespuesta.OK)
+			result2 = await pictogramaDAO.createPictograma(data.categoria, data.nombres, data.etiquetas, data.esquematico, data.sexo, data.violencia, 1, null, result.response);
+		else
+			return result;
+
+
+		if(result2.state === estadosRespuesta.OK)
+			return await pictogramaDAO.getById(result.response.id_pictograma);
+		else
+			return result2;
+
 	}
 
 }
