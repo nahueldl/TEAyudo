@@ -18,7 +18,7 @@ const PatientsPage: React.FC = () => {
 
   return (
     <Page pageTitle="Pacientes" showHomeButton>
-      <InfoPatient add={false}></InfoPatient>
+      <ListPatients></ListPatients>
     </Page>
   );
 };
