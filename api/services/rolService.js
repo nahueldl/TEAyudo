@@ -1,4 +1,6 @@
 const rolDAO = require('../persistence/rolDAO');
+const matriculaService = require('./matriculaService');
+const estadosRespuesta = require('../models/estados_respuesta');
 
 
 const rolService = {
@@ -19,6 +21,29 @@ const rolService = {
 
 
 	asignarRol: async function(usuario, rol){
+		//chequear si el rol es un profesional
+		const result = await rolDAO.getDescripcionById(rol.id_rol);
+		const descripcion = result.response;
+		const esProfesional = descripcion.descripcion.toUpperCase();
+
+		if(esProfesional == 'PROFESIONAL'){
+			const usuarioData = {
+				nombre: usuario.nombre,
+				apellido: usuario.apellido,
+				matricula: usuario.nro_matricula,
+				dni: usuario.nro_doc
+			}
+
+			const resultado1 = await matriculaService.checkMatricula(usuarioData);
+			if(resultado1.state != estadosRespuesta.OK){
+				const resultado = {
+					state: estadosRespuesta.USERERROR,
+					response: 'No se puede crear al profesional'
+				}
+				return resultado;
+			}
+		}
+		
 		return await rolDAO.insertUsuarioRol(usuario.id_usuario, rol.id_rol);
 
 	}
