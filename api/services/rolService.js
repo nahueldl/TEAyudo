@@ -36,11 +36,7 @@ const rolService = {
 
 			const resultado1 = await matriculaService.checkMatricula(usuarioData);
 			if(resultado1.state != estadosRespuesta.OK){
-				const resultado = {
-					state: estadosRespuesta.USERERROR,
-					response: 'No se puede crear al profesional'
-				}
-				return resultado;
+				return resultado1;
 			}
 		}
 		
