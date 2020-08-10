@@ -22,7 +22,7 @@ const PatientSelection: React.FC = () => {
         </IonRow>
         <IonRow>
           {patients.map((patient, index) => (
-            <IonCol key={index} size="6" sizeMd="3">
+            <IonCol key={index} size="12" sizeMd="6">
               <CardWithImage
                 img={{
                   src: `https://api.adorable.io/avatars/100/${username}-${patient.name}`,
