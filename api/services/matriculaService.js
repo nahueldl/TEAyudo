@@ -1,6 +1,8 @@
 const estadosRespuesta = require('../models/estados_respuesta');
 const { isNullOrUndefined } = require('util');
 const axios = require('axios').default;
+const USUARIO=String(process.env.USUARIOMATRICULA);
+const CLAVE=String(process.env.CLAVEMATRICULA);
 
 
 const matriculaService = {
@@ -9,8 +11,8 @@ const matriculaService = {
           
         const response = await axios.get('https://sisa.msal.gov.ar/sisa/services/rest/profesional/obtener', {
           params: {
-            usuario: "***REMOVED***",
-            clave: "***REMOVED***",
+            usuario: USUARIO,
+            clave: CLAVE,
             apellido: datosProfesional.apellido,
             nombre: datosProfesional.nombre,
             nrodoc: datosProfesional.dni
@@ -26,9 +28,21 @@ const matriculaService = {
           }
           return result;
         }
-          
-      const matriculaProf = parseInt((await response).data.matriculas[0].matricula);  
-      const estado = (await response).data.matriculas[0].estado; 
+      //hacer que busque en las varias matriculas si las hubiera, no solo la primera
+
+      for(var i = 0; i <response.data.matriculas.length; i++){
+        if(datosProfesional.matricula == parseInt(response.data.matriculas[i].matricula)){
+          var matriculaProf = parseInt(response.data.matriculas[i].matricula);
+          var estado = response.data.matriculas[i].estado; 
+          break;
+        }else{
+          var matriculaProf = -1;
+          var estado = 'No encontrado';
+        }
+      }    
+      //const matriculaProf = parseInt((await response).data.matriculas[0].matricula);
+      //la posicion del array del estado deberia ser la misma a la de la matricula encontrada  
+      //const estado = (await response).data.matriculas[0].estado; 
 
       if(matriculaProf == datosProfesional.matricula && estado == 'Habilitado'){
         const result = {
