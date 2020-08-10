@@ -69,4 +69,3 @@ const matriculaService = {
 };
 
 module.exports = matriculaService;
-
