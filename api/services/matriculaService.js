@@ -1,5 +1,6 @@
 const estadosRespuesta = require('../models/estados_respuesta');
 const { isNullOrUndefined } = require('util');
+const { chownSync } = require('fs');
 const axios = require('axios').default;
 const USUARIO=String(process.env.USUARIOMATRICULA);
 const CLAVE=String(process.env.CLAVEMATRICULA);
@@ -30,14 +31,14 @@ const matriculaService = {
         }
       //hacer que busque en las varias matriculas si las hubiera, no solo la primera
 
-      for(var i = 0; i <response.data.matriculas.length; i++){
+      let matriculaProf=-1;
+      let estado='No encontrado';
+
+      for(let i = 0; i <response.data.matriculas.length; i++){
         if(datosProfesional.matricula == parseInt(response.data.matriculas[i].matricula)){
-          var matriculaProf = parseInt(response.data.matriculas[i].matricula);
-          var estado = response.data.matriculas[i].estado; 
+          matriculaProf = parseInt(response.data.matriculas[i].matricula);
+          estado = response.data.matriculas[i].estado; 
           break;
-        }else{
-          var matriculaProf = -1;
-          var estado = 'No encontrado';
         }
       }    
       //const matriculaProf = parseInt((await response).data.matriculas[0].matricula);
