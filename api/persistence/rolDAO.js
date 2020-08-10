@@ -152,6 +152,35 @@ const rolDAO = {
 		}
 
 		return result;
+	},
+
+	getDescripcionById: async function(idRol){
+		if(isNullOrUndefined(idRol)){
+			const result = {
+				state: estadosRespuesta.USERERROR,
+				response: 'idRol no estan definidos'
+			}
+			return result;
+		}
+
+		const params = [
+			{
+				name: "idRol",
+				type: sql.Numeric(18,0),
+				value: idRol
+			}
+		]
+
+		const result = await genericDAO.runQuery("select descripcion from Rol where id_rol=@idRol", params);
+
+		if(result.state === estadosRespuesta.OK && result.response.length < 1){
+			result.state = estadosRespuesta.USERERROR;
+			result.response = "No se encontro ninguna descripcion para ese idRol";
+		}else if(result.state === estadosRespuesta.OK){
+			result.response = result.response[0];
+		}
+
+		return result;
 	}
 
 };
