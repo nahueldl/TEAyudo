@@ -10,20 +10,18 @@ import {
   IonRow,
   IonCol,
   IonCard,
-  IonIcon,
 } from "@ionic/react";
 import { AuthenticationContext } from "../../../context/authentication";
 import RolesService from "../../../services/roles.services";
 import "./styles.css";
-import { personCircleOutline } from "ionicons/icons";
 
 const RoleSelection: React.FC = () => {
   const { navigate } = useContext(NavContext);
-  const { token } = useContext(AuthenticationContext).authData;
+  const { authData, setAuthData } = useContext(AuthenticationContext);
   const [render, setRender] = useState<boolean>(true);
   const [roles, setRoles] = useState<any>([
-    { title: "Familiar" },
-    { title: "Medicx" },
+    { title: "Familiar", id: "F" },
+    { title: "Medicx", id: "M" },
   ]);
 
   useEffect(() => {
@@ -31,11 +29,16 @@ const RoleSelection: React.FC = () => {
   });
 
   const handleGetRoles = () => {
-    RolesService.handleGetRoles(token!)
+    RolesService.handleGetRoles(authData.token!)
       .then((res: any) =>
-        res.data.length > 1 ? setRender(true) : goToSelectPatient()
+        res.data.length > 1 ? setRender(true) : handleRolSelection(res.data[0])
       )
       .catch((error: any) => console.log(error));
+  };
+
+  const handleRolSelection = (rol: any) => {
+    setAuthData({ role: rol.id });
+    goToSelectPatient();
   };
 
   const goToSelectPatient = useCallback(
@@ -60,10 +63,9 @@ const RoleSelection: React.FC = () => {
         </IonRow>
         <IonRow>
           {roles.map((rol: any, index: number) => (
-            <IonCol size="auto" sizeSm="12" sizeMd="6">
-              <IonCard button={true}>
+            <IonCol key={rol.id} size="auto" sizeSm="12" sizeMd="6">
+              <IonCard button={true} onClick={() => handleRolSelection(rol)}>
                 <IonItem>
-                  <IonIcon icon={personCircleOutline} slot="start" />
                   <IonLabel>{rol.title}</IonLabel>
                 </IonItem>
               </IonCard>

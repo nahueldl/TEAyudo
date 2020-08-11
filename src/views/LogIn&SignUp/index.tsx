@@ -33,8 +33,7 @@ const LogInSignUpPage: React.FC = () => {
           authenticated: true,
           loading: false,
         });
-        goToSelectPatient();
-        // goToSelectRole();
+        goToSelectRole();
       })
       .catch((_error: any) => {
         setAuthData({
@@ -87,11 +86,6 @@ const LogInSignUpPage: React.FC = () => {
         setAuthData({ loading: false, error: true });
       });
   };
-
-  const goToSelectPatient = useCallback(
-    () => navigate("/pacientes/seleccion", "forward"),
-    [navigate]
-  );
 
   const goToAddPatient = useCallback(
     () => navigate("/pacientes/alta", "forward"),
