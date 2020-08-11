@@ -20,8 +20,8 @@ const RoleSelection: React.FC = () => {
   const { authData, setAuthData } = useContext(AuthenticationContext);
   const [render, setRender] = useState<boolean>(true);
   const [roles, setRoles] = useState<any>([
-    { title: "Familiar", id: "F" },
-    { title: "Medicx", id: "M" },
+    { descripcion: "Familiar", id_rol: "F" },
+    { descripcion: "Medicx", id_rol: "M" },
   ]);
 
   useEffect(() => {
@@ -31,13 +31,18 @@ const RoleSelection: React.FC = () => {
   const handleGetRoles = () => {
     RolesService.handleGetRoles(authData.token!)
       .then((res: any) =>
-        res.data.length > 1 ? setRender(true) : handleRolSelection(res.data[0])
+        res.data.length > 1 ? setStateForView(res.data) : handleRolSelection(res.data[0])
       )
       .catch((error: any) => console.log(error));
   };
 
+  const setStateForView = (roles: any) => {
+    setRoles(roles);
+    setRender(true);
+  }
+
   const handleRolSelection = (rol: any) => {
-    setAuthData({ role: rol.id });
+    setAuthData({ role: rol.id_rol });
     goToSelectPatient();
   };
 
@@ -63,10 +68,10 @@ const RoleSelection: React.FC = () => {
         </IonRow>
         <IonRow>
           {roles.map((rol: any, index: number) => (
-            <IonCol key={rol.id} size="auto" sizeSm="12" sizeMd="6">
+            <IonCol key={rol.id_rol} size="auto" sizeSm="12" sizeMd="6">
               <IonCard button={true} onClick={() => handleRolSelection(rol)}>
                 <IonItem>
-                  <IonLabel>{rol.title}</IonLabel>
+                  <IonLabel>{rol.descripcion}</IonLabel>
                 </IonItem>
               </IonCard>
             </IonCol>
