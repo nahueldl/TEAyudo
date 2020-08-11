@@ -45,15 +45,15 @@ const appPages: AppPage[] = [
   },
 ];
 
-const Menu: React.FC<Props> = ({patientName}) => {
+const Menu: React.FC<Props> = ({ patientName }) => {
   const location = useLocation();
-  const buildUrl =(pageUrl: string) =>{
+  const buildUrl = (pageUrl: string) => {
     return `/${patientName}${pageUrl}`;
-  }
+  };
   return (
     <IonMenu contentId="main" type="overlay" swipeGesture>
       <IonContent>
-        <h1>Bienvenidx Nano!</h1>
+        <h1 className="title">{`Bienvenidx ${patientName}!`}</h1>
         <IonList id="menu-list">
           {appPages.map((appPage, index) => {
             return (

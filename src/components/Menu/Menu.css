@@ -116,3 +116,7 @@ ion-item.selected {
   display: flex !important;
   justify-content: center;
 }
+
+.title {
+  text-align: center;
+}
