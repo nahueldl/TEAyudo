@@ -34,6 +34,7 @@ const LogInSignUpPage: React.FC = () => {
           loading: false,
         });
         goToSelectPatient();
+        // goToSelectRole();
       })
       .catch((_error: any) => {
         setAuthData({
@@ -59,10 +60,14 @@ const LogInSignUpPage: React.FC = () => {
     licenseNumber?: number
   ) => {
     setShowModal(false);
-    handleSignUp(idType, idNumber, licenseNumber)
+    handleSignUp(idType, idNumber, licenseNumber);
   };
 
-  const handleSignUp = (idType?: string, idNumber?: number, licenseNumber?: number) => {
+  const handleSignUp = (
+    idType?: string,
+    idNumber?: number,
+    licenseNumber?: number
+  ) => {
     setAuthData({ loading: true, error: false });
     const { name, lastname, email, password } = registrationData;
     AuthenticationService.handleSignUp(
@@ -74,22 +79,27 @@ const LogInSignUpPage: React.FC = () => {
       (idNumber as unknown) as string,
       (licenseNumber as unknown) as string
     )
-      .then((_res: any) => {
-        setAuthData({ username: email, authenticated: true, loading: false });
+      .then((res: any) => {
+        setAuthData({ username: email, authenticated: true, loading: false, token: res.data.token });
         goToAddPatient();
       })
       .catch((_error: any) => {
         setAuthData({ loading: false, error: true });
       });
-  }
- 
+  };
+
   const goToSelectPatient = useCallback(
     () => navigate("/pacientes/seleccion", "forward"),
     [navigate]
   );
 
   const goToAddPatient = useCallback(
-    () => navigate("/pacientes/alta", "forward", "replace"),
+    () => navigate("/pacientes/alta", "forward"),
+    [navigate]
+  );
+
+  const goToSelectRole = useCallback(
+    () => navigate("/roles/seleccion", "forward"),
     [navigate]
   );
 
