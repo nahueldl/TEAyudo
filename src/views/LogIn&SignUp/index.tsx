@@ -24,7 +24,7 @@ const LogInSignUpPage: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
 
   const handleSignIn = ({ email, password }: any) => {
-    setAuthData({ loading: false, error: false });
+    setAuthData({ loading: true, error: false });
     AuthenticationService.handleLogIn(email, password)
       .then((res: any) => {
         setAuthData({
