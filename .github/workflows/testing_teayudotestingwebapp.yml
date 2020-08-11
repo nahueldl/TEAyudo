@@ -1,12 +1,11 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-
-name: Build and deploy Node.js app to Azure Web App - teayudotestingwebapp
+name: Build and deploy TEAyudo API on Testing Srv
 
 on:
   push:
     branches:
       - testing
+    paths:
+      - 'api/**'
 
 jobs:
   build-and-deploy:
@@ -22,14 +21,14 @@ jobs:
 
     - name: npm install, build, and test
       run: |
+        cd api
         npm install
         npm run build --if-present
         npm run test --if-present
-
     - name: 'Deploy to Azure Web App'
-      uses: azure/webapps-deploy@v2
+      uses: azure/webapps-deploy@v1
       with:
         app-name: 'teayudotestingwebapp'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_0f87261b317745d99dd8d4563aab6487 }}
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_2233d2329ff340e1a857510380934dff }}
         package: .
