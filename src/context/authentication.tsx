@@ -23,6 +23,7 @@ interface IData {
   loading: boolean;
   error: boolean;
   token: string;
+  role: "F" | "M";
 }
 
 interface IContext {
