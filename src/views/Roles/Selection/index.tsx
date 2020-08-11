@@ -9,10 +9,13 @@ import {
   IonGrid,
   IonRow,
   IonCol,
+  IonCard,
+  IonIcon,
 } from "@ionic/react";
 import { AuthenticationContext } from "../../../context/authentication";
 import RolesService from "../../../services/roles.services";
 import "./styles.css";
+import { personCircleOutline } from "ionicons/icons";
 
 const RoleSelection: React.FC = () => {
   const { navigate } = useContext(NavContext);
@@ -28,9 +31,11 @@ const RoleSelection: React.FC = () => {
   });
 
   const handleGetRoles = () => {
-    // RolesService.handleGetRoles(token!).then((res: any) =>
-    //   res.data.length > 1 ? setRender(true) : goToSelectPatient()
-    // );
+    RolesService.handleGetRoles(token!)
+      .then((res: any) =>
+        res.data.length > 1 ? setRender(true) : goToSelectPatient()
+      )
+      .catch((error: any) => console.log(error));
   };
 
   const goToSelectPatient = useCallback(
@@ -54,15 +59,16 @@ const RoleSelection: React.FC = () => {
           </IonCol>
         </IonRow>
         <IonRow>
-          <IonCol size="12" sizeMd="6">
-            {roles.map((rol: any, index: number) => (
-              <IonRow key={index}>
+          {roles.map((rol: any, index: number) => (
+            <IonCol size="auto" sizeSm="12" sizeMd="6">
+              <IonCard button={true}>
                 <IonItem>
+                  <IonIcon icon={personCircleOutline} slot="start" />
                   <IonLabel>{rol.title}</IonLabel>
                 </IonItem>
-              </IonRow>
-            ))}
-          </IonCol>
+              </IonCard>
+            </IonCol>
+          ))}
         </IonRow>
       </IonGrid>
     </IonContent>
