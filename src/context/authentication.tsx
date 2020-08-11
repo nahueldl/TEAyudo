@@ -22,6 +22,8 @@ interface IData {
   authenticated: boolean;
   loading: boolean;
   error: boolean;
+  token: string;
+  role: "F" | "M";
 }
 
 interface IContext {

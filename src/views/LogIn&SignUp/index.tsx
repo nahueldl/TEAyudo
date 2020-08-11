@@ -1,7 +1,7 @@
 import React, { useContext, useState, useCallback } from "react";
 import { IonContent, NavContext, IonSlides, IonSlide } from "@ionic/react";
 import { AuthenticationContext } from "../../context/authentication";
-import AuthenticationServices from "../../services/authentication.services";
+import AuthenticationService from "../../services/authentication.services";
 import OverlayLeft from "./OverlayLeft";
 import OverlayRight from "./OverlayRight";
 import SignInForm from "./SignInForm";
@@ -25,14 +25,15 @@ const LogInSignUpPage: React.FC = () => {
 
   const handleSignIn = ({ email, password }: any) => {
     setAuthData({ loading: false, error: false });
-    AuthenticationServices.handleLogIn(email, password)
-      .then((_res: any) => {
+    AuthenticationService.handleLogIn(email, password)
+      .then((res: any) => {
         setAuthData({
+          token: res.data.token,
           username: email,
           authenticated: true,
           loading: false,
         });
-        goToSelectPatient();
+        goToSelectRole();
       })
       .catch((_error: any) => {
         setAuthData({
@@ -42,7 +43,7 @@ const LogInSignUpPage: React.FC = () => {
       });
   };
 
-  const handleSignUp = ({ name, lastname, email, password }: any) => {
+  const handleSignUpForm = ({ name, lastname, email, password }: any) => {
     setRegistrationData({
       name: name,
       lastname: lastname,
@@ -58,9 +59,17 @@ const LogInSignUpPage: React.FC = () => {
     licenseNumber?: number
   ) => {
     setShowModal(false);
+    handleSignUp(idType, idNumber, licenseNumber);
+  };
+
+  const handleSignUp = (
+    idType?: string,
+    idNumber?: number,
+    licenseNumber?: number
+  ) => {
     setAuthData({ loading: true, error: false });
     const { name, lastname, email, password } = registrationData;
-    AuthenticationServices.handleSignUp(
+    AuthenticationService.handleSignUp(
       name!,
       lastname!,
       email!,
@@ -69,8 +78,8 @@ const LogInSignUpPage: React.FC = () => {
       (idNumber as unknown) as string,
       (licenseNumber as unknown) as string
     )
-      .then((_res: any) => {
-        setAuthData({ username: email, authenticated: true, loading: false });
+      .then((res: any) => {
+        setAuthData({ username: email, authenticated: true, loading: false, token: res.data.token });
         goToAddPatient();
       })
       .catch((_error: any) => {
@@ -78,13 +87,13 @@ const LogInSignUpPage: React.FC = () => {
       });
   };
 
-  const goToSelectPatient = useCallback(
-    () => navigate("/pacientes/seleccion", "forward"),
+  const goToAddPatient = useCallback(
+    () => navigate("/pacientes/alta", "forward"),
     [navigate]
   );
 
-  const goToAddPatient = useCallback(
-    () => navigate("/pacientes/alta", "forward", "replace"),
+  const goToSelectRole = useCallback(
+    () => navigate("/roles/seleccion", "forward"),
     [navigate]
   );
 
@@ -98,13 +107,13 @@ const LogInSignUpPage: React.FC = () => {
             <SignInForm signIn={handleSignIn} />
           </IonSlide>
           <IonSlide>
-            <SignUpForm signUp={handleSignUp} />
+            <SignUpForm signUp={handleSignUpForm} />
           </IonSlide>
         </IonSlides>
       ) : (
         <div className={`container ${classRightPanelActive}`}>
           <div className="formContainer signUpContainer">
-            <SignUpForm signUp={handleSignUp} />
+            <SignUpForm signUp={handleSignUpForm} />
           </div>
           <div className="formContainer signInContainer">
             <SignInForm signIn={handleSignIn} />

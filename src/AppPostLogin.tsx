@@ -20,41 +20,41 @@ const AppPostLogin: React.FC = () => {
       <Menu patientName={authData.patientName!} />
       <IonRouterOutlet id="main">
         <Route
-          path={`/${authData.patientName}/inicio`}
+          path="/inicio"
           component={HomePage}
           exact
         />
         <Route
-          path={`/${authData.patientName}/pictogramas`}
+          path="/pictogramas"
           component={PictogramsPage}
           exact
         />
         <Route
-          path={`/${authData.patientName}/categorias`}
+          path="/categorias"
           component={CategoriesPage}
           exact
         />
         <Route
-          path={`/${authData.patientName}/pacientes`}
+          path="/pacientes"
           component={PatientsPage}
           exact
         />
         <Route
-          path={`/${authData.patientName}/profesionales`}
+          path="/profesionales"
           component={ProfessionalsPage}
           exact
         />
         <Route
-          path={`/${authData.patientName}/informes`}
+          path="/informes"
           component={ReportsPage}
           exact
         />
         <Route
-          path={`/${authData.patientName}/configuracion`}
+          path="/configuracion"
           component={ConfigurationPage}
           exact
         />
-        <Redirect from="/" to={`/${authData.patientName}/inicio`} />
+        <Redirect from="/" to="/inicio" />
       </IonRouterOutlet>
     </IonSplitPane>
   );
