@@ -261,6 +261,7 @@ const usuarioDAO = {
 		return res;
 	},
 
+
 	updateForgottenPassword: async function(usuario, token, newPassword){
 		if(isNullOrUndefined(usuario) || isNullOrUndefined(token) || isNullOrUndefined(newPassword)){
 			const result = {
@@ -348,7 +349,90 @@ const usuarioDAO = {
 		}
 
 		return res;
+	},
+
+
+	updateUsuario: async function(usuario, data){
+		if(isNullOrUndefined(data)){
+			const result = {
+				state: estadosRespuesta.USERERROR,
+				response: 'No se han definido parametros'
+			}
+			return result;
+		}
+		const res = {
+			state: null,
+			response: null
+		};
+
+		let hashedPassword = null;
+		if(data.password != null && data.password != undefined)
+			hashedPassword = await bcrypt.hash(data.password, saltRounds);
+
+		const params = [
+			{
+				name: "id",
+				type: sql.Numeric(18,0),
+				value: usuario.id_usuario || null
+			},
+			{
+				name: "nombre",
+				type: sql.NVarChar(255),
+				value: data.nombre || null
+			},
+			{
+				name: "apellido",
+				type: sql.NVarChar(255),
+				value: data.apellido || null
+			},
+			{
+				name: "hashedPassword",
+				type: sql.NVarChar(60),
+				value: hashedPassword || null
+			},
+			{
+				name: "nroDoc",
+				type: sql.NVarChar(40),
+				value: data.nro_doc || null
+			},
+			{
+				name: "nroMatricula",
+				type: sql.NVarChar(40),
+				value: data.nro_matricula || null
+			},
+			{
+				name: "correo",
+				type: sql.NVarChar(40),
+				value: data.correo || null
+			},
+			{
+				name: "idTipoDocumento",
+				type: sql.Numeric(18,0),
+				value: data.id_tipo_documento || null
+			}
+		];
+
+		try{
+
+			const result = await genericDAO.runQuery("update Usuario set nombre = ISNULL(@nombre, nombre), apellido = ISNULL(@apellido, apellido), hashed_password = ISNULL(@hashedPassword, hashed_password), nro_doc = ISNULL(@nroDoc, nro_doc), nro_matricula = ISNULL(@nroMatricula, nro_matricula), correo = ISNULL(@correo, correo), id_tipo_documento = ISNULL(@idTipoDocumento, id_tipo_documento) where id_usuario = @id", params);
+			
+			if(result.state === estadosRespuesta.OK){
+				res.state = estadosRespuesta.OK;
+				res.response = "La información del usuario ha sido actualizada con éxito";
+			}else{
+				res.state = estadosRespuesta.SERVERERROR;
+				res.response = "Ha ocurrido un error tratando de actualizar la información";
+			}
+
+		}catch(err){
+			res.state = estadosRespuesta.SERVERERROR;
+			res.response = "Ha ocurrido un error tratando de actualizar la información";
+		}
+
+		return res;
+
 	}
+
 };
 
 module.exports = usuarioDAO;

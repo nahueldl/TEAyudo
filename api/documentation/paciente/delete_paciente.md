@@ -1,4 +1,4 @@
-**PUT Pictograma**
+**DELETE Paciente**
 ----
   Permite realizar la baja lógica de un paciente asociado al usuario
 
