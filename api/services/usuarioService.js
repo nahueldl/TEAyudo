@@ -89,17 +89,20 @@ const usuarioService = {
 
 	getUsuario: async function(usuario){
 
-		delete usuario.hashed_password;
-		delete usuario.fecha_hora_baja;
-		delete usuario.activo;
-		delete usuario.uuid;
-		delete usuario.fecha_hora_ultimo_login;
-		delete usuario.reset_password_token;
-		delete usuario.fecha_hora_reset_password;
+		const resultUser = {
+			id_usuario: usuario.id_usuario,
+			id_tipo_documento: usuario.id_tipo_documento,
+			nombre: usuario.nombre,
+			apellido: usuario.apellido,
+			correo: usuario.correo,
+			nro_doc: usuario.nro_doc,
+			nro_matricula: usuario.nro_matricula,
+			fecha_hora_alta: usuario.fecha_hora_alta
+		};
 
 		return {
 			state: estadosRespuesta.OK,
-			response: usuario
+			response: resultUser
 		};
 	}
 
