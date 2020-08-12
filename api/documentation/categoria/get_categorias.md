@@ -1,10 +1,10 @@
 **GET Categorias**
 ----
-  Devuelve una lista con todas las categorías y las categorias propias del usuario para cada uno de sus roles
+  Devuelve una lista con todas las categorías para un paciente (inlusive las creadas por su profesional asociado); Y si idPaciente es null devuelve solo las categorias creadas por el usuario logueado
 
 * **URL**
 
-  /api/categorias
+  /api/categorias?paciente=:idPaciente
 
 * **Method:**
 
@@ -17,7 +17,8 @@
 
 *  **URL Params**
 
-   _No requiere_ 
+    **Optional:**
+   * `idPaciente=[string]`
 
 * **Data Params**
 
@@ -29,26 +30,18 @@
     **Content:**
     ```json
     [
-        {
-            "id_categoria": 5,
-            "id_usuario_rol": 1,
-            "nombre": "Personitas",
-            "fecha_hora_alta": "2020-07-07T01:34:55.873Z",
-            "fecha_hora_baja": null,
-            "activo": true,
-            "id_rol": null,
-            "rol_descripcion": null
-        },
-        {
-            "id_categoria": 7,
-            "id_usuario_rol": 1,
-            "nombre": "Animalitos",
-            "fecha_hora_alta": "2020-07-07T01:34:55.873Z",
-            "fecha_hora_baja": null,
-            "activo": true,
-            "id_rol": 1,
-            "rol_descripcion": "Familiar"
-        }
+      {
+          "id_categoria": 1,
+          "id_usuario_rol": null,
+          "nombre": "protective equipment",
+          "fecha_hora_alta": "2020-07-23T06:23:26.810Z"
+      },
+      {
+          "id_categoria": 2,
+          "id_usuario_rol": null,
+          "nombre": "medical equipment",
+          "fecha_hora_alta": "2020-07-23T06:23:26.817Z"
+      }
     ]
     ```
  

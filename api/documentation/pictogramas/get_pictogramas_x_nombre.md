@@ -34,34 +34,33 @@
     ```json
     [
       {
-          "id_pictograma": 5,
-          "id_picto_arasaac": 36863,
-          "ruta_acceso_local": "https://api.arasaac.org/api/pictograms/36863",
+          "id_pictograma": 1,
+          "ruta_acceso_local": "https://api.arasaac.org/api/pictograms/36864",
           "esquematico": true,
           "sexo": false,
           "violencia": false,
-          "fecha_hora_alta": "2020-07-23T06:23:26.810Z",
+          "fecha_hora_alta": "2020-07-23T06:23:26.800Z",
           "fecha_hora_modificacion": null,
           "fecha_hora_baja": null,
-          "activo": true,
-          "estado": null,
-          "nombre_personalizado": null,
-          "favorito": null
-      },
-      {
-          "id_pictograma": 6,
-          "id_picto_arasaac": 36856,
-          "ruta_acceso_local": "https://api.arasaac.org/api/pictograms/36856",
-          "esquematico": false,
-          "sexo": false,
-          "violencia": false,
-          "fecha_hora_alta": "2020-07-23T06:23:26.817Z",
-          "fecha_hora_modificacion": null,
-          "fecha_hora_baja": null,
-          "activo": true,
-          "estado": null,
-          "nombre_personalizado": null,
-          "favorito": null
+          "estado": 1,
+          "nombre_personalizado": "NombrePersonalizado1",
+          "favorito": false,
+          "nombres": [
+              {
+                  "id_nombre_pictograma": 1,
+                  "nombre": "persona con pantalla",
+                  "tiene_locucion": false,
+                  "tipo": 2,
+                  "nombre_plural": "personas con pantalla"
+              },
+              {
+                  "id_nombre_pictograma": 2,
+                  "nombre": "llevar pantalla",
+                  "tiene_locucion": false,
+                  "tipo": 3
+              }
+          ],
+          "etiquetas": null
       }
     ]
     ```

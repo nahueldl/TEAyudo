@@ -6,9 +6,9 @@ const { isNullOrUndefined } = require('util');
 
 const categoriaService = {
 
-	getAll: async function(usuario){
+	getAll: async function(usuario, idPaciente){
 		//Aca iría la lógia de negocio
-		return await categoriaDAO.getAll(usuario.id_usuario);
+		return await categoriaDAO.getAll(usuario.id_usuario, idPaciente);
 	},
 
 
