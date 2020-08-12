@@ -98,4 +98,32 @@ router.post('/resetPassword/:token', async (req, res) => {
 	}
 });
 
+//PATCH Usuario
+router.patch('/', isAuth, async (req, res) => {
+
+	const result = await usuarioService.update(req.user, req.body);
+
+	if(result.state === estadosRespuesta.OK){
+		res.status(200).json({msg: result.response});
+	}else if(result.state === estadosRespuesta.USERERROR){
+		res.status(400).json({msg: result.response});
+	}else if(result.state === estadosRespuesta.SERVERERROR){
+		res.status(500).json({msg: "Ha ocurrido un error inesperado en el servidor"});
+	}
+});
+
+//GET Usuario
+router.get('/', isAuth, async (req, res) => {
+
+	const result = await usuarioService.getUsuario(req.user);
+
+	if(result.state === estadosRespuesta.OK){
+		res.status(200).json(result.response);
+	}else if(result.state === estadosRespuesta.USERERROR){
+		res.status(400).json({msg: result.response});
+	}else if(result.state === estadosRespuesta.SERVERERROR){
+		res.status(500).json({msg: "Ha ocurrido un error inesperado en el servidor"});
+	}
+});
+
 module.exports = router;
