@@ -78,6 +78,29 @@ const usuarioService = {
 			return resultUsuario;
 
 		return await usuarioDAO.updateForgottenPassword(resultUsuario.response, token, newPassword);
+	},
+
+
+	update: async function(usuario, data){
+		//Aca iría la lógia de negocio
+		return await usuarioDAO.updateUsuario(usuario, data);
+	},
+
+
+	getUsuario: async function(usuario){
+
+		delete usuario.hashed_password;
+		delete usuario.fecha_hora_baja;
+		delete usuario.activo;
+		delete usuario.uuid;
+		delete usuario.fecha_hora_ultimo_login;
+		delete usuario.reset_password_token;
+		delete usuario.fecha_hora_reset_password;
+
+		return {
+			state: estadosRespuesta.OK,
+			response: usuario
+		};
 	}
 
 };
