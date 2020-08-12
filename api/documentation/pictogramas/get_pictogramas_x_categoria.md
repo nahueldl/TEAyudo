@@ -36,7 +36,6 @@
     [
       {
           "id_pictograma": 5,
-          "id_picto_arasaac": 36863,
           "ruta_acceso_local": "https://api.arasaac.org/api/pictograms/36863",
           "esquematico": true,
           "sexo": false,
@@ -44,25 +43,35 @@
           "fecha_hora_alta": "2020-07-23T06:23:26.810Z",
           "fecha_hora_modificacion": null,
           "fecha_hora_baja": null,
-          "activo": true,
           "estado": null,
           "nombre_personalizado": null,
-          "favorito": null
-      },
-      {
-          "id_pictograma": 6,
-          "id_picto_arasaac": 36856,
-          "ruta_acceso_local": "https://api.arasaac.org/api/pictograms/36856",
-          "esquematico": false,
-          "sexo": false,
-          "violencia": false,
-          "fecha_hora_alta": "2020-07-23T06:23:26.817Z",
-          "fecha_hora_modificacion": null,
-          "fecha_hora_baja": null,
-          "activo": true,
-          "estado": null,
-          "nombre_personalizado": null,
-          "favorito": null
+          "favorito": null,
+          "nombres": [
+            {
+                "id_nombre_pictograma": 9,
+                "nombre": "mampara",
+                "tiene_locucion": false,
+                "tipo": 2,
+                "nombre_plural": "mamparas"
+            },
+            {
+                "id_nombre_pictograma": 10,
+                "nombre": "mampara protectora",
+                "tiene_locucion": false,
+                "tipo": 2,
+                "nombre_plural": "mamparas protectoras"
+            }
+          ],
+          "etiquetas": [
+            {
+                "nombre": "object",
+                "fecha_hora_alta": "2020-07-23T03:23:26.810"
+            },
+            {
+                "nombre": "fashion",
+                "fecha_hora_alta": "2020-07-23T03:23:26.813"
+            }
+          ]
       }
     ]
     ```
