@@ -10,7 +10,7 @@ const pictogramaService = require('../services/pictogramaService')
 
 //GET Categorias
 router.get('/', isAuth, async (req, res) => {
-	const result = await categoriaService.getAll(req.user);
+	const result = await categoriaService.getAll(req.user, req.query.paciente);
 	if(result.state === estadosRespuesta.OK){
 		res.status(200).json(result.response);
 	}else if(result.state === estadosRespuesta.SERVERERROR){
