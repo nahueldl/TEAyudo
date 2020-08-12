@@ -9,10 +9,12 @@ const connectionConfig = {
 	server: process.env.dbservername,
 	port: parseInt(process.env.dbport),
 	database: process.env.dbname,
+	parseJSON: true,
 	options: {
 		"enableArithAbort": false,
 		"encrypt": (process.env.dbencypt == 'true'),
-		"useUTC": false
+		"useUTC": false,
+		"parseJSON": true
 	}
 };
 
