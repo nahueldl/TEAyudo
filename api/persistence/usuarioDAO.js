@@ -365,6 +365,10 @@ const usuarioDAO = {
 			response: null
 		};
 
+		let hashedPassword = null;
+		if(data.password != null && data.password != undefined)
+			hashedPassword = await bcrypt.hash(data.password, saltRounds);
+
 		const params = [
 			{
 				name: "id",
@@ -380,6 +384,11 @@ const usuarioDAO = {
 				name: "apellido",
 				type: sql.NVarChar(255),
 				value: data.apellido || null
+			},
+			{
+				name: "hashedPassword",
+				type: sql.NVarChar(60),
+				value: hashedPassword || null
 			},
 			{
 				name: "nroDoc",
@@ -405,7 +414,7 @@ const usuarioDAO = {
 
 		try{
 
-			const result = await genericDAO.runQuery("update Usuario set nombre = ISNULL(@nombre, nombre), apellido = ISNULL(@apellido, apellido), nro_doc = ISNULL(@nroDoc, nro_doc), nro_matricula = ISNULL(@nroMatricula, nro_matricula), correo = ISNULL(@correo, correo), id_tipo_documento = ISNULL(@idTipoDocumento, id_tipo_documento) where id_usuario = @id", params);
+			const result = await genericDAO.runQuery("update Usuario set nombre = ISNULL(@nombre, nombre), apellido = ISNULL(@apellido, apellido), hashed_password = ISNULL(@hashedPassword, hashed_password), nro_doc = ISNULL(@nroDoc, nro_doc), nro_matricula = ISNULL(@nroMatricula, nro_matricula), correo = ISNULL(@correo, correo), id_tipo_documento = ISNULL(@idTipoDocumento, id_tipo_documento) where id_usuario = @id", params);
 			
 			if(result.state === estadosRespuesta.OK){
 				res.state = estadosRespuesta.OK;
