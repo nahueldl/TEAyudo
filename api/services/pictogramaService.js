@@ -6,6 +6,10 @@ const { isNullOrUndefined } = require('util');
 
 const pictogramaService = {
 
+	getById: async function (id, idPaciente) {
+		return await pictogramaDAO.getById(id, idPaciente);
+	},
+
 	getByCategoriaAndPaciente: async function (usuario, idPaciente, idCategoria) {
 		//TODO Check que el paciente para el que se esta pidiendo pertenezca al usuario
 		if(isNullOrUndefined(idPaciente))

@@ -27,7 +27,7 @@ const usuarioDAO = {
 			}
 		]
 
-		const result = await genericDAO.runQuery("select * from Usuario where id_usuario = @id", params);
+		const result = await genericDAO.runQuery("select * from Usuario where id_usuario = @id and activo = 1", params);
 
 		if(result.state === estadosRespuesta.OK && result.response.length < 1){
 			result.state = estadosRespuesta.USERERROR;
@@ -57,7 +57,7 @@ const usuarioDAO = {
 			}
 		]
 
-		const result = await genericDAO.runQuery("select * from Usuario where correo = @email", params);
+		const result = await genericDAO.runQuery("select * from Usuario where correo = @email and activo = 1", params);
 
 		if(result.state === estadosRespuesta.OK && result.response.length < 1){
 			result.state = estadosRespuesta.USERERROR;
@@ -92,7 +92,7 @@ const usuarioDAO = {
 			}
 		]
 
-		const result = await genericDAO.runQuery("select * from Usuario where uuid = @uuid and datediff(hour, fecha_hora_ultimo_login, getdate()) < @horas_duracion_sesion", params);
+		const result = await genericDAO.runQuery("select * from Usuario where uuid = @uuid and datediff(hour, fecha_hora_ultimo_login, getdate()) < @horas_duracion_sesion and activo = 1", params);
 
 		if(result.state === estadosRespuesta.OK && result.response.length < 1){
 			result.state = estadosRespuesta.USERERROR;
@@ -243,7 +243,7 @@ const usuarioDAO = {
 				}
 			];
 
-			const result = await genericDAO.runQuery("update Usuario set reset_password_token = @hashedToken, fecha_hora_reset_password = getdate() where id_usuario = @id", params);
+			const result = await genericDAO.runQuery("update Usuario set reset_password_token = @hashedToken, fecha_hora_reset_password = getdate() where id_usuario = @id and activo = 1", params);
 
 			if(result.state === estadosRespuesta.OK){
 				res.state = estadosRespuesta.OK;
@@ -334,7 +334,7 @@ const usuarioDAO = {
 				}
 			];
 
-			const result = await genericDAO.runQuery("update Usuario set hashed_password = @hashedPassword, fecha_hora_reset_password = NULL, reset_password_token = NULL where id_usuario = @id", params);
+			const result = await genericDAO.runQuery("update Usuario set hashed_password = @hashedPassword, fecha_hora_reset_password = NULL, reset_password_token = NULL where id_usuario = @id and activo = 1", params);
 
 			if(result.state === estadosRespuesta.OK){
 				res.state = estadosRespuesta.OK;
