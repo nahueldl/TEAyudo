@@ -43,6 +43,19 @@ const categoriaService = {
 		categorias.push(categoria);
 		
 		return await categoriaDAO.insert(categorias);
+	},
+
+	delete: async function(usuario, idCategoria){
+		const posee = await categoriaDAO.poseeCategoria(usuario.id_usuario, idCategoria);
+
+		if(posee.state !== estadosRespuesta.OK){
+			return {
+				state: estadosRespuesta.FORBIDDEN,
+				response: "No puede acceder a este recurso"
+			}
+		}
+
+		return await categoriaDAO.delete(idCategoria);
 	}
 	
 };

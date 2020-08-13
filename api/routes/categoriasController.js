@@ -7,7 +7,6 @@ const { isNullOrUndefined } = require('util');
 const pictogramaService = require('../services/pictogramaService')
 
 
-
 //GET Categorias
 router.get('/', isAuth, async (req, res) => {
 	const result = await categoriaService.getAll(req.user, req.query.paciente);
@@ -34,6 +33,21 @@ router.get('/:id', async (req, res) => {
 });
 
 
+//DELETE Categoria
+router.delete('/:id', async (req, res) => {
+	const result = await categoriaService.delete(req.user, req.params.id)
+
+	if(result.state === estadosRespuesta.OK)
+		res.status(200).json(result.response);
+	else if(result.state === estadosRespuesta.USERERROR)
+		res.status(400).json({msg: result.response});    
+	else if(result.state === estadosRespuesta.FORBIDDEN)
+		res.status(400).json({msg: "La categoría no le pertenece al usuario"});
+	else if(result.state === estadosRespuesta.SERVERERROR)
+		res.status(500).json({msg: "Ha ocurrido un error inesperado en el servidor"});
+});
+
+
 //POST Categoria
 router.post('/', isAuth, async (req, res) => {
 	const result = await categoriaService.insert(req.body, req.user);
@@ -45,6 +59,7 @@ router.post('/', isAuth, async (req, res) => {
 		res.status(400).json({msg: result.response});
 	}
 });
+
 
 //GET Pictogramas by idCategoria
 router.get('/:id/pictogramas', isAuth, async (req, res) => {
