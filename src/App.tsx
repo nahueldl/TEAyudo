@@ -25,25 +25,20 @@ import AppPostLogin from "./AppPostLogin";
 import LogInSignUpPage from "./views/LogIn&SignUp";
 import PatientSelection from "./views/Patients/Selection";
 import PatientPage from "./views/Patients/Page";
-import { TEAyudoContext } from "./context";
 import PatientAdd from "./views/Patients/InfoPatient";
+import { AuthenticationContext } from "./context/authentication";
+import RoleSelection from "./views/Roles/Selection";
 
 const App: React.FC = () => {
-  const { data } = useContext(TEAyudoContext);
-  const { authenticated, patientName } = data;
+  const { authData } = useContext(AuthenticationContext);
 
   return (
     <IonApp>
       <IonReactRouter>
-        {/* {authenticated ? (
-          flow === "SIGNIN" ? (
-            patientName ? (
-              // Está autenticado, inició sesión y eligió paciente
-              <AppPostLogin />
-            ) : (
-              // Está autenticado, inició sesión y no eligió paciente
-              <Redirect from="*" to="/pacientes/seleccion" />
-            )
+        {authData.token ? (
+          authData.patientName ? (
+            // Si ambas son verdaderas, ir a la app
+            <AppPostLogin />
           ) : (
             //Está autenticado, registró cuenta nueva (faltaría elegir rol, cargar datos extra si necesario, cargar un paciente)
             <Redirect from="*" to="/login" />
@@ -58,6 +53,8 @@ const App: React.FC = () => {
         <Route path="/pacientes/seleccion" component={PatientSelection} exact />
         <Route path="/pacientes/principal" component={PatientPage} exact />
         {/* <Route path="/pacientes/alta" component={} exact /> */}
+        <Route path="/pacientes/alta" component={PatientSelection} exact />
+        <Route path="/roles/seleccion" component={RoleSelection} exact />
       </IonReactRouter>
     </IonApp>
   );

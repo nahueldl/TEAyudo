@@ -1,71 +1,99 @@
 import React, { useContext, useState, useCallback } from "react";
 import { IonContent, NavContext, IonSlides, IonSlide } from "@ionic/react";
-import { TEAyudoContext } from "../../context";
-import AuthenticationServices from "../../services/authentication.services";
+import { AuthenticationContext } from "../../context/authentication";
+import AuthenticationService from "../../services/authentication.services";
 import OverlayLeft from "./OverlayLeft";
 import OverlayRight from "./OverlayRight";
 import SignInForm from "./SignInForm";
 import SignUpForm from "./SignUpForm";
 import "./styles.css";
+import { PlatformContext } from "../../context/platform";
+import ChooseRoleModal from "./ChooseRoleModal";
+import { RegistrationContext } from "../../context/registration";
 
 const LogInSignUpPage: React.FC = () => {
-  const [showSignIn, setShowSignIn] = useState<boolean>(false);
-
   const { navigate } = useContext(NavContext);
-  const { data, setData } = useContext(TEAyudoContext);
-  const { isMobile } = data;
+  const { registrationData, setRegistrationData } = useContext(
+    RegistrationContext
+  );
+  const { setAuthData } = useContext(AuthenticationContext);
+  const { platformData } = useContext(PlatformContext);
+  const { isMobile } = platformData;
 
-  const handleSignIn = (email: string, password: string) => {
-    setData({ loading: true, error: false });
-    AuthenticationServices.handleLogIn(email, password)
+  const [showSignIn, setShowSignIn] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
+
+  const handleSignIn = ({ email, password }: any) => {
+    setAuthData({ loading: true, error: false });
+    AuthenticationService.handleLogIn(email, password)
       .then((res: any) => {
-        setData({
+        setAuthData({
+          token: res.data.token,
           username: email,
           authenticated: true,
           loading: false,
         });
-
+        goToSelectRole();
       })
-      .catch((error: any) => {
-        // setData({
-        //   loading: false,
-        //   error: true,
-        // });
-        setData({
-          username: email,
-          authenticated: true,
+      .catch((_error: any) => {
+        setAuthData({
           loading: false,
-        })
-        console.log(data);
-        goToSelectPatient();
+          error: true,
+        });
       });
   };
 
-  const handleSignUp = (
-    name: string,
-    email: string,
-    password: string,
-    idDoc?: string,
-    docNumber?: string,
-    licenseNumber?: string
-  ) => {
-    setData({ loading: true, error: false });
-    AuthenticationServices.handleSignUp(
-      name,
-      email,
-      password,
-      idDoc,
-      docNumber,
-      licenseNumber
-    )
-      .then((res: any) => {
-        setData({ loading: false });
-      })
-      .catch((error: any) => setData({ error: true }));
+  const handleSignUpForm = ({ name, lastname, email, password }: any) => {
+    setRegistrationData({
+      name: name,
+      lastname: lastname,
+      email: email,
+      password: password,
+    });
+    setShowModal(true);
   };
 
-  const goToSelectPatient = useCallback(
-    () => navigate("/pacientes", "forward"),
+  const handleRolSelection = (
+    idType?: string,
+    idNumber?: number,
+    licenseNumber?: number
+  ) => {
+    setShowModal(false);
+    handleSignUp(idType, idNumber, licenseNumber);
+  };
+
+  const handleSignUp = (
+    idType?: string,
+    idNumber?: number,
+    licenseNumber?: number
+  ) => {
+    setAuthData({ loading: true, error: false });
+    const { name, lastname, email, password } = registrationData;
+    AuthenticationService.handleSignUp(
+      name!,
+      lastname!,
+      email!,
+      password!,
+      idType,
+      (idNumber as unknown) as string,
+      (licenseNumber as unknown) as string
+    )
+      .then((res: any) => {
+        setAuthData({ username: email, authenticated: true, loading: false, token: res.data.token });
+        goToAddPatient();
+      })
+      .catch((_error: any) => {
+        setAuthData({ loading: false, error: true });
+      });
+  };
+
+  const goToAddPatient = useCallback(
+    () => navigate("/pacientes/alta", "forward"),
+    [navigate]
+  );
+
+  const goToSelectRole = useCallback(
+    () => navigate("/roles/seleccion", "forward"),
     [navigate]
   );
 
@@ -79,13 +107,13 @@ const LogInSignUpPage: React.FC = () => {
             <SignInForm signIn={handleSignIn} />
           </IonSlide>
           <IonSlide>
-            <SignUpForm />
+            <SignUpForm signUp={handleSignUpForm} />
           </IonSlide>
         </IonSlides>
       ) : (
         <div className={`container ${classRightPanelActive}`}>
           <div className="formContainer signUpContainer">
-            <SignUpForm />
+            <SignUpForm signUp={handleSignUpForm} />
           </div>
           <div className="formContainer signInContainer">
             <SignInForm signIn={handleSignIn} />
@@ -98,6 +126,10 @@ const LogInSignUpPage: React.FC = () => {
           </div>
         </div>
       )}
+      <ChooseRoleModal
+        isOpen={showModal}
+        handleSelection={handleRolSelection}
+      />
     </IonContent>
   );
 };

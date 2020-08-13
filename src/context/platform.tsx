@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { getPlatforms } from "@ionic/react";
 
-const TEAyudoContext = React.createContext({} as IContext);
+const PlatformContext = React.createContext({} as IContext);
 
-const TEAyudoProvider = (props: any) => {
-  const [data, setContextData] = useState<Partial<IData>>({});
+const PlatformProvider = (props: any) => {
+  const [platformData, setContextData] = useState<Partial<IData>>({});
 
   const setData = (data: Partial<IData>) => {
     setContextData((prevValues) => ({ ...prevValues, ...data }));
@@ -23,24 +23,18 @@ const TEAyudoProvider = (props: any) => {
   }, []);
 
   return (
-    <TEAyudoContext.Provider value={{ data, setData }}>
+    <PlatformContext.Provider value={{ platformData }}>
       {props.children}
-    </TEAyudoContext.Provider>
+    </PlatformContext.Provider>
   );
 };
 
 interface IData {
-  username: string;
-  patientName: string;
   isMobile: boolean;
-  authenticated: boolean;
-  loading: boolean;
-  error: boolean;
 }
 
 interface IContext {
-  data: Partial<IData>;
-  setData: (data: Partial<IData>) => void;
+  platformData: Partial<IData>;
 }
 
-export { TEAyudoProvider, TEAyudoContext };
+export { PlatformProvider, PlatformContext };

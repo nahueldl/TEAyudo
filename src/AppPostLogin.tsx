@@ -9,54 +9,52 @@ import PatientsPage from "./views/Patients/Page";
 import ProfessionalsPage from "./views/Professionals";
 import ReportsPage from "./views/Reports";
 import ConfigurationPage from "./views/Configuration";
-import { TEAyudoContext } from "./context";
+import { AuthenticationContext } from "./context/authentication";
 
 const AppPostLogin: React.FC = () => {
 
-  const appContext = useContext(TEAyudoContext);
+  const {authData} = useContext(AuthenticationContext);
   
   return (
     <IonSplitPane contentId="main">
-      <Menu patientName={appContext.data.patientName!} />
+      <Menu patientName={authData.patientName!} />
       <IonRouterOutlet id="main">
         <Route
-          path={`/${appContext.data.patientName}/inicio`}
+          path="/inicio"
           component={HomePage}
           exact
         />
         <Route
-          path={`/${appContext.data.patientName}/pictogramas`}
+          path="/pictogramas"
           component={PictogramsPage}
           exact
         />
         <Route
-          path={`/${appContext.data.patientName}/categorias`}
+          path="/categorias"
           component={CategoriesPage}
           exact
         />
         <Route
-          path={`/${appContext.data.patientName}/pacientes`}
+          path="/pacientes"
           component={PatientsPage}
           exact
         />
         <Route
-          path={`/${appContext.data.patientName}/profesionales`}
+          path="/profesionales"
           component={ProfessionalsPage}
           exact
         />
         <Route
-          path={`/${appContext.data.patientName}/informes`}
+          path="/informes"
           component={ReportsPage}
           exact
         />
         <Route
-          path={`/${appContext.data.patientName}/configuracion`}
+          path="/configuracion"
           component={ConfigurationPage}
           exact
         />
-        <Redirect from="/login" to={`/${appContext.data.patientName}/inicio`} />
-        <Redirect from="/pacientes" to={`/${appContext.data.patientName}/inicio`} />
-        <Redirect from="/" to={`/${appContext.data.patientName}/inicio`} />
+        <Redirect from="/" to="/inicio" />
       </IonRouterOutlet>
     </IonSplitPane>
   );

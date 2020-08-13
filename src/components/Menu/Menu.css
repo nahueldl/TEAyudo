@@ -121,3 +121,8 @@ ion-item.selected {
 .text-small {
   font-size: small !important;
 }
+
+
+.title {
+  text-align: center;
+}

@@ -4,6 +4,7 @@ import "./styles.css";
 const OverlayLeft: React.FC<Props> = ({handleActivationChange}) => {
   return (
     <div className="overlayPanel overlayLeft">
+      <img src="assets/icon/favicon.png" alt="TEAyudo logo" height="200em"/>
       <h1>¡Bienvenidx de vuelta!</h1>
       <p>Para continuar, necesitamos que inicies sesión con tu cuenta</p>
       <IonButton className="overlayButton" fill="outline" onClick={() => handleActivationChange(false)}>Iniciar sesión</IonButton>

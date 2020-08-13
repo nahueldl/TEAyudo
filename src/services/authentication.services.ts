@@ -1,6 +1,6 @@
 import AxiosWrapper from "../utils/axios";
 
-class AuthenticationServices {
+class AuthenticationService {
   private axios: AxiosWrapper;
   constructor() {
     this.axios = new AxiosWrapper({ useErrorInterceptor: true });
@@ -15,23 +15,26 @@ class AuthenticationServices {
 
   handleSignUp(
     name: string,
+    lastname: string,
     email: string,
     password: string,
     idDoc?: string,
     docNumber?: string,
     licenseNumber?: string
   ) {
-    // TODO 
     return this.axios.post("/api/usuario/register", {
       nombre: name,
-      apellido: "",
+      apellido: lastname,
       correo: email,
       password: password,
+      id_tipo_documento: idDoc,
+      nro_doc: docNumber,
+      nro_matricula: licenseNumber,
     });
   }
 }
 
-const instance = new AuthenticationServices();
+const instance = new AuthenticationService();
 Object.freeze(instance);
 
 export default instance;
