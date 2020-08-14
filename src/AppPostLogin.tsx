@@ -10,6 +10,8 @@ import ProfessionalsPage from "./views/Professionals";
 import ReportsPage from "./views/Reports";
 import ConfigurationPage from "./views/Configuration";
 import { AuthenticationContext } from "./context/authentication";
+import ComunicationPage from "./views/Comunication";
+import GamesPage from "./views/Game";
 
 const AppPostLogin: React.FC = () => {
 
@@ -54,6 +56,8 @@ const AppPostLogin: React.FC = () => {
           component={ConfigurationPage}
           exact
         />
+        <Route path="/comunicacion" component={ComunicationPage}/>
+        <Route path="/juegos" component={GamesPage} />
         <Redirect from="/" to="/inicio" />
       </IonRouterOutlet>
     </IonSplitPane>
