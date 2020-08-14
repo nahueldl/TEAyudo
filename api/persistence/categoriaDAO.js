@@ -84,6 +84,7 @@ const categoriaDAO = {
 		return genericDAO.insert(tablaCategoria);
 	},
 
+
 	poseeCategoria: async function(idUsuario, idCategoria){
 		if(idUsuario === null || idUsuario === undefined || idCategoria === null || idCategoria === undefined ){
 			return null;
@@ -116,6 +117,7 @@ const categoriaDAO = {
 		}
 	},
 
+
 	delete: async function (idCategoria){
 		if(idCategoria === null || idCategoria === undefined){
 			const result = {
@@ -134,6 +136,32 @@ const categoriaDAO = {
 		];
 
 		return await genericDAO.runQuery("update Categoria set activo = 0 where id_categoria = @idCategoria", params);
+	},
+
+
+	update: async function (idCategoria, nombre){
+		if(idCategoria === null || idCategoria === undefined || nombre === null || nombre === undefined){
+			const result = {
+				state: estadosRespuesta.USERERROR,
+				response: 'Algun parámetro no fue definido'
+			}
+			return result;
+		}
+
+		const params = [
+			{
+				name: "idCategoria",
+				type: sql.Numeric(18,0),
+				value: idCategoria
+			},
+			{
+				name: "nombre",
+				type: sql.NVarChar(255),
+				value: nombre
+			}
+		];
+
+		return await genericDAO.runQuery("update Categoria set nombre = @nombre where id_categoria = @idCategoria", params);
 	}
 
 };

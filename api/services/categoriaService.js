@@ -45,7 +45,21 @@ const categoriaService = {
 		return await categoriaDAO.insert(categorias);
 	},
 
+
 	delete: async function(usuario, idCategoria){
+		const posee = await categoriaDAO.poseeCategoria(usuario.id_usuario, idCategoria);
+		if(posee.state !== estadosRespuesta.OK){
+			return {
+				state: estadosRespuesta.FORBIDDEN,
+				response: "No puede acceder a este recurso"
+			}
+		}
+		//TODO: Eliminar todos los pictogramas asociados
+		return await categoriaDAO.delete(idCategoria);
+	},
+
+
+	update: async function(usuario, idCategoria, data){
 		const posee = await categoriaDAO.poseeCategoria(usuario.id_usuario, idCategoria);
 
 		if(posee.state !== estadosRespuesta.OK){
@@ -55,7 +69,11 @@ const categoriaService = {
 			}
 		}
 
-		return await categoriaDAO.delete(idCategoria);
+		return await categoriaDAO.update(idCategoria, data.nombre);
+	},
+
+	poseeCategoria: async function(idUsuario, idCategoria){
+		return await categoriaDAO.poseeCategoria(idUsuario, idCategoria);
 	}
 	
 };
