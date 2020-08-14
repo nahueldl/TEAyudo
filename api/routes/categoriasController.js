@@ -68,8 +68,8 @@ router.get('/:id/pictogramas', isAuth, async (req, res) => {
 
 	if(result.state === estadosRespuesta.OK)
 		res.status(200).json(result.response);
-	else if(result.state === estadosRespuesta.USERERROR)
-		res.status(404).json({msg: `No se encontro categoría con id=${req.params.id}`});    
+	else if(result.state === estadosRespuesta.USERERROR || (Array.isArray(result.response) && result.response.length < 1))
+		res.status(404).json({msg: `No se encontro categoría con id=${req.params.id} o no tiene pictogramas asociados`});
 	else if(result.state === estadosRespuesta.SERVERERROR)
 		res.status(500).json({msg: "Ha ocurrido un error inesperado en el servidor"});
 });

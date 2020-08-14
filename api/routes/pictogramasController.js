@@ -62,6 +62,8 @@ router.post('/', isAuth, async (req, res) => {
 		res.status(500).json({msg: "Ha ocurrido un error inesperado en el servidor"});
 	}else if(result.state === estadosRespuesta.USERERROR){
 		res.status(400).json({msg: result.response});
+	}else if(result.state === estadosRespuesta.FORBIDDEN){
+		res.status(403).json({msg: "La categoría no le pertenece al usuario"});
 	}
 });
 

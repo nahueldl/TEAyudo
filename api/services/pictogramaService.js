@@ -2,6 +2,7 @@ const pictogramaDAO = require('../persistence/pictogramaDAO');
 const estadosRespuesta = require('../models/estados_respuesta');
 const imageUploaderService = require('./imageUploaderService');
 const { isNullOrUndefined } = require('util');
+const categoriaService = require('./categoriaService');
 
 
 const pictogramaService = {
@@ -63,6 +64,14 @@ const pictogramaService = {
 			};
 		}
 		
+		const posee = await categoriaService.poseeCategoria(usuario.id_usuario, data.categoria);
+
+		if(posee.state !== estadosRespuesta.OK){
+			return {
+				state: estadosRespuesta.FORBIDDEN,
+				response: "No puede acceder a este recurso"
+			}
+		}
 		
 		const result = await imageUploaderService.uploadImage(null, data.base64img, "png");
 		
