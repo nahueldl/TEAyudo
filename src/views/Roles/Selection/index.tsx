@@ -68,7 +68,7 @@ const RoleSelection: React.FC = () => {
         </IonRow>
         <IonRow>
           {roles.map((rol: any, index: number) => (
-            <IonCol key={rol.id_rol} size="auto" sizeSm="12" sizeMd="6">
+            <IonCol key={rol.id_rol} size="12">
               <IonCard button={true} onClick={() => handleRolSelection(rol)}>
                 <IonItem>
                   <IonLabel>{rol.descripcion}</IonLabel>
