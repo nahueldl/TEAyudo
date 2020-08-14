@@ -29,7 +29,7 @@ const Page: React.FC<PageProps> = ({ pageTitle, children, showHomeButton }) => {
       <IonContent>{children}</IonContent>
       {showHomeButton && (
         <IonFab vertical="bottom" horizontal="end" slot="fixed">
-          <IonFabButton routerLink="/page/inicio" routerDirection="back">
+          <IonFabButton routerLink="/inicio" routerDirection="back">
             <IonIcon icon={homeOutline} />
           </IonFabButton>
         </IonFab>
