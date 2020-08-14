@@ -4,7 +4,6 @@ const { isNullOrUndefined } = require('util');
 const estadosRespuesta = require('../models/estados_respuesta');
 const estadosPictograma = require('../models/estados_pictograma_personalizado');
 
-
 const pictogramaDAO = {
 
 	getById: async function (id, idPaciente = null) {
@@ -76,7 +75,7 @@ const pictogramaDAO = {
 			}
 		]
 
-		const result = await genericDAO.runQuery("select pi.id_pictograma, pi.ruta_acceso_local, pi.esquematico, pi.sexo, pi.violencia, pi.fecha_hora_alta, pi.fecha_hora_modificacion, pi.fecha_hora_baja, pp.estado, pp.nombre_personalizado, pp.favorito, (select np.id_nombre_pictograma, np.nombre, np.descripcion, np.tiene_locucion, np.tipo, np.nombre_plural from Nombre_Pictograma np where np.id_pictograma = pi.id_pictograma and np.activo = 1 FOR JSON AUTO) as nombres, (select et.id_etiqueta, et.nombre, et.fecha_hora_alta from Etiqueta et inner join Etiqueta_Pictograma ep on ep.id_etiqueta = et.id_etiqueta where ep.id_pictograma = pi.id_pictograma and et.activo = 1 FOR JSON AUTO) as etiquetas from Categoria ca inner join Categoria_Pictograma cp on cp.id_categoria = ca.id_categoria inner join pictograma pi on pi.id_pictograma = cp.id_pictograma left join Pictograma_Paciente pp on pp.id_pictograma = pi.id_pictograma where pi.activo = 1 and ca.id_categoria = @idCategoria and (pp.id_paciente = @idPaciente or pp.id_paciente is null) group by pi.id_pictograma, pi.id_picto_arasaac, pi.ruta_acceso_local, pi.esquematico, pi.sexo, pi.violencia, pi.fecha_hora_alta, pi.fecha_hora_modificacion, pi.fecha_hora_baja, pi.activo, pp.estado, pp.nombre_personalizado, pp.favorito", params);
+		const result = await genericDAO.runQuery("select pi.id_pictograma, pi.ruta_acceso_local, pi.esquematico, pi.sexo, pi.violencia, pi.fecha_hora_alta, pi.fecha_hora_modificacion, pi.fecha_hora_baja, pp.estado, pp.nombre_personalizado, pp.favorito, (select np.id_nombre_pictograma, np.nombre, np.descripcion, np.tiene_locucion, np.tipo, np.nombre_plural from Nombre_Pictograma np where np.id_pictograma = pi.id_pictograma and np.activo = 1 FOR JSON AUTO) as nombres, (select et.id_etiqueta, et.nombre, et.fecha_hora_alta from Etiqueta et inner join Etiqueta_Pictograma ep on ep.id_etiqueta = et.id_etiqueta where ep.id_pictograma = pi.id_pictograma and et.activo = 1 FOR JSON AUTO) as etiquetas from Categoria ca inner join Categoria_Pictograma cp on cp.id_categoria = ca.id_categoria inner join pictograma pi on pi.id_pictograma = cp.id_pictograma left join Pictograma_Paciente pp on pp.id_pictograma = pi.id_pictograma where pi.activo = 1 and ca.id_categoria = @idCategoria and ca.activo = 1 and (pp.id_paciente = @idPaciente or pp.id_paciente is null) group by pi.id_pictograma, pi.id_picto_arasaac, pi.ruta_acceso_local, pi.esquematico, pi.sexo, pi.violencia, pi.fecha_hora_alta, pi.fecha_hora_modificacion, pi.fecha_hora_baja, pi.activo, pp.estado, pp.nombre_personalizado, pp.favorito", params);
 	
 		if(result.state === estadosRespuesta.OK){
 			result.response.forEach(picto => picto.nombres = JSON.parse(picto.nombres));
@@ -104,7 +103,7 @@ const pictogramaDAO = {
 			}
 		]
 
-		const result = await genericDAO.runQuery("select pi.id_pictograma, pi.ruta_acceso_local, pi.esquematico, pi.sexo, pi.violencia, pi.fecha_hora_alta, pi.fecha_hora_modificacion, pi.fecha_hora_baja, (select np.id_nombre_pictograma, np.nombre, np.descripcion, np.tiene_locucion, np.tipo, np.nombre_plural from Nombre_Pictograma np where np.id_pictograma = pi.id_pictograma and np.activo = 1 FOR JSON AUTO) as nombres, (select et.id_etiqueta, et.nombre, et.fecha_hora_alta from Etiqueta et inner join Etiqueta_Pictograma ep on ep.id_etiqueta = et.id_etiqueta where ep.id_pictograma = pi.id_pictograma and et.activo = 1 FOR JSON AUTO) as etiquetas from Categoria ca inner join Categoria_Pictograma cp on cp.id_categoria = ca.id_categoria inner join pictograma pi on pi.id_pictograma = cp.id_pictograma where ca.id_categoria = @idCategoria and pi.activo = 1 group by pi.id_pictograma, pi.id_picto_arasaac, pi.ruta_acceso_local, pi.esquematico, pi.sexo, pi.violencia, pi.fecha_hora_alta, pi.fecha_hora_modificacion, pi.fecha_hora_baja, pi.activo", params);
+		const result = await genericDAO.runQuery("select pi.id_pictograma, pi.ruta_acceso_local, pi.esquematico, pi.sexo, pi.violencia, pi.fecha_hora_alta, pi.fecha_hora_modificacion, pi.fecha_hora_baja, (select np.id_nombre_pictograma, np.nombre, np.descripcion, np.tiene_locucion, np.tipo, np.nombre_plural from Nombre_Pictograma np where np.id_pictograma = pi.id_pictograma and np.activo = 1 FOR JSON AUTO) as nombres, (select et.id_etiqueta, et.nombre, et.fecha_hora_alta from Etiqueta et inner join Etiqueta_Pictograma ep on ep.id_etiqueta = et.id_etiqueta where ep.id_pictograma = pi.id_pictograma and et.activo = 1 FOR JSON AUTO) as etiquetas from Categoria ca inner join Categoria_Pictograma cp on cp.id_categoria = ca.id_categoria inner join pictograma pi on pi.id_pictograma = cp.id_pictograma where ca.id_categoria = @idCategoria and ca.activo = 1 and pi.activo = 1 group by pi.id_pictograma, pi.id_picto_arasaac, pi.ruta_acceso_local, pi.esquematico, pi.sexo, pi.violencia, pi.fecha_hora_alta, pi.fecha_hora_modificacion, pi.fecha_hora_baja, pi.activo", params);
 		if(result.state === estadosRespuesta.OK){
 			result.response.forEach(picto => picto.nombres = JSON.parse(picto.nombres));
 			result.response.forEach(picto => picto.etiquetas = JSON.parse(picto.etiquetas));
@@ -266,6 +265,7 @@ const pictogramaDAO = {
 			}
 			return result;
 		}
+
 
 		const params = [
 			{
