@@ -1,4 +1,4 @@
-name: Build and deploy TEAyudo API on Testing Srv
+name: Build and deploy TEAyudo API to Testing Srv
 
 on:
   push:
