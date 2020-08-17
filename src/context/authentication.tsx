@@ -3,7 +3,7 @@ import React, { useState } from "react";
 const AuthenticationContext = React.createContext({} as IContext);
 
 const AuthenticationProvider = (props: any) => {
-  const [authData, setContextData] = useState<Partial<IData>>({});
+  const [authData, setContextData] = useState<Partial<IData>>({username:"lilapapazian", patientName:"Nano", authenticated:true, token:"kajsldkajsldj" });
 
   const setAuthData = (data: Partial<IData>) => {
     setContextData((prevValues) => ({ ...prevValues, ...data }));
