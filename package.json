@@ -26,6 +26,7 @@
     "ionicons": "^5.0.0",
     "node-sass": "^4.14.1",
     "react": "^16.13.0",
+    "react-beautiful-dnd": "^13.0.0",
     "react-dom": "^16.13.0",
     "react-dropzone": "^11.0.3",
     "react-hook-form": "^6.1.0",
@@ -58,7 +59,8 @@
   },
   "devDependencies": {
     "@capacitor/cli": "2.2.0",
-    "@types/classnames": "^2.2.10"
+    "@types/classnames": "^2.2.10",
+    "@types/react-beautiful-dnd": "^13.0.0"
   },
   "description": "An Ionic project"
 }
