@@ -2,7 +2,6 @@ const sql = require('mssql');
 const { isNullOrUndefined } = require('util');
 const estadosRespuesta = require('../models/estados_respuesta');
 
-// const connecionUrl = `mssql://${process.env.dbuser}:${process.env.dbpass}@${process.env.dbservername}/${process.env.dbname}?encrypt=${process.env.dbencypt}`;
 const connectionConfig = {
 	user: process.env.dbuser,
 	password: process.env.dbpass,
@@ -20,11 +19,9 @@ const connectionConfig = {
 
 const genericDAO = {
 
-	runQuery: async function (query, params, options){
+	runQuery: async function (query, params = [], options = {}){
 		if(isNullOrUndefined(query)) throw 'query no ha sido definida';
-		if(isNullOrUndefined(params) || params.length < 1) throw 'no se han definido parametros';
 
-		if(isNullOrUndefined(options)) options = {};
 		options.returnOneRecorset = options.returnOneRecorset || true;
 		options.transaction = options.transaction || null;
 		
