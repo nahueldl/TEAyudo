@@ -2,9 +2,14 @@ const pictogramaDAO = require('../persistence/pictogramaDAO');
 const estadosRespuesta = require('../models/estados_respuesta');
 const imageUploaderService = require('./imageUploaderService');
 const { isNullOrUndefined } = require('util');
+const categoriaService = require('./categoriaService');
 
 
 const pictogramaService = {
+
+	getById: async function (id, idPaciente) {
+		return await pictogramaDAO.getById(id, idPaciente);
+	},
 
 	getByCategoriaAndPaciente: async function (usuario, idPaciente, idCategoria) {
 		//TODO Check que el paciente para el que se esta pidiendo pertenezca al usuario
@@ -59,6 +64,14 @@ const pictogramaService = {
 			};
 		}
 		
+		const posee = await categoriaService.poseeCategoria(usuario.id_usuario, data.categoria);
+
+		if(posee.state !== estadosRespuesta.OK){
+			return {
+				state: estadosRespuesta.FORBIDDEN,
+				response: "No puede acceder a este recurso"
+			}
+		}
 		
 		const result = await imageUploaderService.uploadImage(null, data.base64img, "png");
 		

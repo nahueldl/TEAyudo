@@ -82,7 +82,88 @@ const categoriaDAO = {
 		});
 
 		return genericDAO.insert(tablaCategoria);
+	},
+
+
+	poseeCategoria: async function(idUsuario, idCategoria){
+		if(idUsuario === null || idUsuario === undefined || idCategoria === null || idCategoria === undefined ){
+			return null;
+		}
+		const params = [
+			{
+				name: "idUsuario",
+				type: sql.Numeric(18,0),
+				value: idUsuario
+			},
+			{
+				name: "idCategoria",
+				type: sql.Numeric(18,0),
+				value: idCategoria
+			}
+		];
+
+		const result = await genericDAO.runQuery("select ur.id_usuario_rol from Categoria c inner join Usuario_Rol ur on ur.id_usuario_rol = c.id_usuario_rol where c.id_categoria = @idCategoria and c.activo = 1 and ur.id_usuario = @idUsuario", params);
+
+		if(result.state !== estadosRespuesta.OK){
+			return result;
+		}
+		else if(result.response.length < 1){
+			return {
+				state: estadosRespuesta.USERERROR,
+				response: "No existe relacion"
+			}
+		}else{
+			return result;
+		}
+	},
+
+
+	delete: async function (idCategoria){
+		if(idCategoria === null || idCategoria === undefined){
+			const result = {
+				state: estadosRespuesta.USERERROR,
+				response: 'El id no fue definido'
+			}
+			return result;
+		}
+
+		const params = [
+			{
+				name: "idCategoria",
+				type: sql.Numeric(18,0),
+				value: idCategoria
+			}
+		];
+
+		return await genericDAO.runQuery("update Categoria set activo = 0 where id_categoria = @idCategoria", params);
+	},
+
+
+	update: async function (idCategoria, nombre){
+		if(idCategoria === null || idCategoria === undefined || nombre === null || nombre === undefined){
+			const result = {
+				state: estadosRespuesta.USERERROR,
+				response: 'Algun parámetro no fue definido'
+			}
+			return result;
+		}
+
+		const params = [
+			{
+				name: "idCategoria",
+				type: sql.Numeric(18,0),
+				value: idCategoria
+			},
+			{
+				name: "nombre",
+				type: sql.NVarChar(255),
+				value: nombre
+			}
+		];
+
+		return await genericDAO.runQuery("update Categoria set nombre = @nombre where id_categoria = @idCategoria", params);
 	}
+
 };
 
 
