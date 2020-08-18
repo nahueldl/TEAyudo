@@ -1,5 +1,5 @@
 import React, { useContext, useState, useCallback } from "react";
-import { TEAyudoContext } from "../../../context";
+import { AuthenticationContext } from "../../../context/authentication";
 import {
   NavContext,
   IonGrid,
@@ -20,14 +20,18 @@ import {
   IonTitle,
   IonImg,
   IonIcon,
+  IonActionSheet,
 } from "@ionic/react";
 import "./styles.css";
+import { trash, close } from "ionicons/icons";
 import PatientServices from "../../../services/patients.service";
 
 const InfoPatient: React.FC<InfoPatientProps> = ({ title, patient }) => {
-  const { data, setData } = useContext(TEAyudoContext);
+  const { authData, setAuthData } = useContext(AuthenticationContext);
   const { navigate } = useContext(NavContext);
-
+  const [titlePatient, setTitle] = useState<string>(
+    title !== undefined ? title : ""
+  );
   const [name, setName] = useState<string>(
     patient !== undefined ? patient.name : ""
   );
@@ -37,27 +41,59 @@ const InfoPatient: React.FC<InfoPatientProps> = ({ title, patient }) => {
   const [birthday, setBirthday] = useState<string>(
     patient !== undefined ? patient.birthday : ""
   );
-  const [fase, setFase] = useState<string>(
+  const [fase, setFase] = useState<any>(
     patient !== undefined ? patient.fase : ""
   );
-  const fases = [1, 2, 3, 4];
-  const [isEdit, setIsEdit] = useState<boolean>(
-    patient !== undefined ? true : false
+  const [avatar, setAvatar] = useState<string>(
+    patient !== undefined
+      ? patient.avatar
+      : "https://api.adorable.io/avatars/50/"
   );
+  const fases = [1, 2, 3, 4];
+  const auxPatient = patient;
+  const [isEdit, setIsEdit] = useState<boolean>(false);
+  const [showActionDeletePatient, setShowActionDeletePatient] = useState(false);
 
   const handleAddPatient = () => {
-    setData({ loading: true, error: false });
-    PatientServices.postNewPatient(name, lastName, birthday, fase)
+    debugger;
+    setAuthData({ loading: true, error: false });
+    PatientServices.postNewPatient(
+      authData.token!,
+      name,
+      lastName
+      // birthday,
+      // fase,
+      //avatar
+    )
       .then((res: any) => {
-        goToListPatients();
+        debugger;
+        setAuthData({ loading: false, error: false });
+        // goToListPatients();
       })
       .catch((error: any) => {
+        debugger;
+        setAuthData({ loading: false, error: true });
         //mostrar mensaje con error
       });
   };
 
+  const editPatient = (opcion: boolean) => {
+    if (opcion) {
+      setTitle("Editar paciente");
+      setIsEdit(true);
+    } else {
+      setName(auxPatient!.name);
+      setLastName(auxPatient!.lastName);
+      setBirthday(auxPatient!.birthday);
+      setFase(auxPatient!.fase);
+      setAvatar(auxPatient!.avatar);
+      setTitle("");
+      setIsEdit(false);
+    }
+  };
+
   const handleEditPatient = () => {
-    setData({ loading: true, error: false });
+    setAuthData({ loading: true, error: false });
     PatientServices.putEditPatient(name, lastName, birthday, fase)
       .then((res: any) => {
         //mostrar datos editados
@@ -68,37 +104,32 @@ const InfoPatient: React.FC<InfoPatientProps> = ({ title, patient }) => {
   };
 
   const handleDeletePatient = () => {
-    setData({ loading: true, error: false });
+    setAuthData({ loading: true, error: false });
     PatientServices.deletePatient(name)
       .then((res: any) => {
-        goToListPatients();
+        // goToListPatients();
       })
       .catch((error: any) => {
         //mostrar mensaje con error
       });
   };
 
-  const goToListPatients = useCallback(
-    () => navigate(`/${data.patientName}/pacientes`, "forward"),
-    [navigate]
-  );
-
   return (
     <IonContent>
       <IonGrid className="container-patientAdd">
         <IonRow>
           <form className="form-no-background">
-            <h1>{title}</h1>
+            <h1>{titlePatient}</h1>
             <IonList className="mt-5">
               <IonAvatar className="avatars">
-                <img src="https://api.adorable.io/avatars/99" alt="Avatar" />
+                <img className="height-auto" src={avatar} alt="Avatar" />
               </IonAvatar>
               <IonItem className="inputMargin">
                 <IonInput
                   name="name"
                   value={name}
                   required
-                  disabled={isEdit}
+                  disabled={patient !== undefined && !isEdit}
                   clearInput
                   placeholder="Nombre"
                   onIonChange={(e) => setName(e.detail.value!)}
@@ -109,7 +140,7 @@ const InfoPatient: React.FC<InfoPatientProps> = ({ title, patient }) => {
                   name="apellido"
                   value={lastName}
                   required
-                  disabled={isEdit}
+                  disabled={patient !== undefined && !isEdit}
                   clearInput
                   placeholder="Apellido"
                   onIonChange={(e) => setLastName(e.detail.value!)}
@@ -120,6 +151,7 @@ const InfoPatient: React.FC<InfoPatientProps> = ({ title, patient }) => {
                   displayFormat="DD MM YYYY"
                   placeholder="Fecha nacimiento"
                   value={birthday}
+                  disabled={patient !== undefined && !isEdit}
                   aria-required="true"
                   onIonChange={(e) => setBirthday(e.detail.value!)}
                 ></IonDatetime>
@@ -131,7 +163,7 @@ const InfoPatient: React.FC<InfoPatientProps> = ({ title, patient }) => {
                   okText="Aceptar"
                   placeholder="Fase"
                   className="full-width"
-                  disabled={isEdit}
+                  disabled={patient !== undefined && !isEdit}
                   title={"pepe"}
                   cancelText="Cerrar"
                   onIonChange={(e) => setFase(e.detail.value)}
@@ -153,23 +185,60 @@ const InfoPatient: React.FC<InfoPatientProps> = ({ title, patient }) => {
               >
                 Agregar paciente
               </IonButton>
-            ) : (
+            ) : !isEdit ? (
               <div>
                 <IonButton
-                  type="submit"
                   className="formButton mt-5"
-                  onClick={handleEditPatient}
+                  onClick={() => editPatient(true)}
                   expand="block"
                 >
                   Editar paciente
                 </IonButton>
                 <IonButton
-                  type="submit"
                   className="formButton red-buttom mt-5"
-                  onClick={handleDeletePatient}
+                  onClick={() => setShowActionDeletePatient(true)}
                   expand="block"
                 >
                   Eliminar paciente
+                </IonButton>
+                <IonActionSheet
+                  isOpen={showActionDeletePatient}
+                  onDidDismiss={() => setShowActionDeletePatient(false)}
+                  buttons={[
+                    {
+                      text: "Eliminar",
+                      role: "destructive",
+                      icon: trash,
+                      handler: () => {
+                        console.log("Delete clicked");
+                      },
+                    },
+                    {
+                      text: "Cancelar",
+                      icon: close,
+                      role: "cancel",
+                      handler: () => {
+                        setShowActionDeletePatient(false);
+                      },
+                    },
+                  ]}
+                ></IonActionSheet>
+              </div>
+            ) : (
+              <div>
+                <IonButton
+                  className="formButton mt-5"
+                  onClick={handleEditPatient}
+                  expand="block"
+                >
+                  Acetpar
+                </IonButton>
+                <IonButton
+                  className="formButton red-buttom mt-5"
+                  onClick={() => editPatient(false)}
+                  expand="block"
+                >
+                  Cancelar
                 </IonButton>
               </div>
             )}
@@ -189,7 +258,8 @@ interface Patient {
   name: string;
   lastName: string;
   birthday: string;
-  fase: string;
+  fase: any;
+  avatar: string;
 }
 
 export default InfoPatient;

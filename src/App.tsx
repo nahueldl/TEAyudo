@@ -46,13 +46,12 @@ const App: React.FC = () => {
         ) : (
           //Si no está autenticado, debe iniciar sesión/registrarse
           <Redirect from="*" to="/login" />
-        )} */}
-        <AppPostLogin />
+        )}
+        {/* <AppPostLogin /> */}
         <Route path="/alta" component={PatientAdd} exact />
         <Route path="/login" component={LogInSignUpPage} exact />
         <Route path="/pacientes/seleccion" component={PatientSelection} exact />
         <Route path="/pacientes/principal" component={PatientPage} exact />
-        {/* <Route path="/pacientes/alta" component={} exact /> */}
         <Route path="/pacientes/alta" component={PatientSelection} exact />
         <Route path="/roles/seleccion" component={RoleSelection} exact />
       </IonReactRouter>

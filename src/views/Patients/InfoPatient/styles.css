@@ -54,3 +54,7 @@
 .red-buttom {
   --background: red !important;
 }
+
+.height-auto {
+  height: auto !important;
+}

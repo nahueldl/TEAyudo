@@ -6,25 +6,33 @@ class PatientServices {
     this.axios = new AxiosWrapper({ useErrorInterceptor: true });
   }
 
-  getPatientsFromUser(email: string) {
-    return this.axios.get("/api/usuario/pacientes", {
-      params: {
-        correo: email,
+  getPatientsFromUser(token: string): any {
+    const header = `Bearer ${token}`;
+    return this.axios.get("/api/pacientes", {
+      headers: {
+        Authorization: header,
       },
     });
   }
 
   postNewPatient(
+    token: string,
     name: string,
-    lastName: string,
-    birthday: string,
-    fase: string
+    lastName: string
+    // birthday: string,
+    // fase: string,
+    //avatar: string
   ) {
-    return this.axios.put("/api/usuario/paciente", {
+    const header = `Bearer ${token}`;
+    debugger;
+    return this.axios.put("/api/pacientes", {
       nombre: name,
       apellido: lastName,
-      fechaNac: birthday,
-      fase: fase,
+      // fechaNac: birthday,
+      // fase: fase,
+      headers: {
+        Authorization: header,
+      },
     });
   }
 
@@ -34,7 +42,7 @@ class PatientServices {
     birthday: string,
     fase: string
   ) {
-    return this.axios.put("/api/usuario/paciente", {
+    return this.axios.put("/api/paciente", {
       nombre: name,
       apellido: lastName,
       fechaNac: birthday,
@@ -43,7 +51,7 @@ class PatientServices {
   }
 
   deletePatient(name: string) {
-    return this.axios.delete("/api/usuario/paciente", {
+    return this.axios.delete("/api/paciente", {
       params: {
         nombre: name,
       },
