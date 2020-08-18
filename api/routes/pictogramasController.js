@@ -3,15 +3,14 @@ const router = express.Router();
 const pictogramaService = require('../services/pictogramaService');
 const isAuth = require('../middleware/auth').isAuth;
 const estadosRespuesta = require('../models/estados_respuesta');
-const { isNullOrUndefined } = require('util');
 
 
 //GET Pictogramas by nombre or etiqueta
 router.get('/', isAuth, async (req, res) => {
 	let result;
-	if(!isNullOrUndefined(req.query.nombre))
+	if(!(req.query.nombre === undefined || req.query.nombre === null))
 		result = await pictogramaService.getByNombre(req.query.nombre, req.query.paciente);
-	else if(!isNullOrUndefined(req.query.etiqueta))
+	else if(!(req.query.etiqueta === undefined || req.query.etiqueta === null))
 		result = await pictogramaService.getByEtiqueta(req.query.etiqueta);
 	else{
 		res.status(404).json();

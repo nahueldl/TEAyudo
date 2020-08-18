@@ -1,7 +1,6 @@
 const pacienteDAO = require('../persistence/pacienteDAO');
 const rolService = require('./rolService')
 const estadosRespuesta = require('../models/estados_respuesta');
-const { isNullOrUndefined } = require('util');
 
 
 const pacienteService = {
@@ -19,7 +18,7 @@ const pacienteService = {
 
 
 	insert: async function(paciente, usuario){
-		/*if(isNullOrUndefined(paciente.id_rol)){
+		/*if(paciente.id_rol === undefined || paciente.id_rol === null){
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'id_rol no ha sido definido'

@@ -1,6 +1,5 @@
 const sql = require('mssql');
 const genericDAO = require('./genericDAO');
-const { isNullOrUndefined } = require('util');
 const estadosRespuesta = require('../models/estados_respuesta');
 
 
@@ -30,7 +29,7 @@ const categoriaDAO = {
 
 
 	getById: async function (id){
-		if(isNullOrUndefined(id)){
+		if(id === undefined || id === null){
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'id no ha sido definido'
@@ -60,7 +59,7 @@ const categoriaDAO = {
 
 
 	insert: async function (categoria){
-		if(isNullOrUndefined(categoria)){
+		if(categoria === undefined || categoria === null){
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'categorias no esta definida o no contiene elementos'

@@ -1,5 +1,4 @@
 const estadosRespuesta = require('../models/estados_respuesta');
-const { isNullOrUndefined } = require('util');
 const axios = require('axios').default;
 const USUARIO=String(process.env.USUARIOMATRICULA);
 const CLAVE=String(process.env.CLAVEMATRICULA);

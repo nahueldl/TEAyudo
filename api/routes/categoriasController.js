@@ -3,7 +3,6 @@ const router = express.Router();
 const categoriaService = require('../services/categoriaService');
 const isAuth = require('../middleware/auth').isAuth;
 const estadosRespuesta = require('../models/estados_respuesta');
-const { isNullOrUndefined } = require('util');
 const pictogramaService = require('../services/pictogramaService')
 
 
