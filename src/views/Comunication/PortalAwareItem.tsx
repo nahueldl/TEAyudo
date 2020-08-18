@@ -24,7 +24,7 @@ class PortalAwareItem extends Component<ItemProps> {
         {...provided.draggableProps}
         {...provided.dragHandleProps}
       >
-        Lalalala
+        {this.props.item.content}
       </div>
     );
 
@@ -40,6 +40,7 @@ class PortalAwareItem extends Component<ItemProps> {
 type ItemProps = {
   provided: DraggableProvided;
   snapshot: DraggableStateSnapshot;
+  item: any
 };
 
 export default PortalAwareItem;
