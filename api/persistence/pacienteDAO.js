@@ -1,6 +1,5 @@
 const sql = require('mssql');
 const genericDAO = require('./genericDAO');
-const { isNullOrUndefined } = require('util');
 const estadosRespuesta = require('../models/estados_respuesta');
 
 
@@ -23,7 +22,7 @@ const pacienteDAO = {
 
 
 	getById: async function (id_paciente, id_usuario){
-		if(isNullOrUndefined(id_paciente)){
+		if(id_paciente === undefined || id_paciente === null){
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'id no ha sido definido'
@@ -59,7 +58,7 @@ const pacienteDAO = {
 
 
 	insert: async function (listaPacientes){
-		if(isNullOrUndefined(listaPacientes) || listaPacientes.length < 1){
+		if(listaPacientes === undefined || listaPacientes === null || listaPacientes.length < 1){
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'pacientes no esta definido o no contiene elementos'
@@ -81,7 +80,7 @@ const pacienteDAO = {
 			}
 		]
 
-		const result = await genericDAO.runQuery('INSERT INTO Paciente (nombre, apellido, activo) output inserted.id_paciente values (@nombre, @apellido, 1)', params);
+		const result = await genericDAO.runQuery('INSERT INTO Paciente (nombre, apellido, activo) OUTPUT inserted.id_paciente VALUES (@nombre, @apellido, 1)', params);
 		const idInsertado = result.response[0].id_paciente;
 		result.response = idInsertado;
 
@@ -91,7 +90,7 @@ const pacienteDAO = {
 	//Inserta en la tabla Rol_Paciente el id_paciente pasado por parametro y el id_usuario_rol del usuario
 	//que hace la petición 
 	assingRolToPaciente: async function (id_usuario, id_paciente){
-		/*if(isNullOrUndefined(listaRolPacientes) || listaRolPacientes.length < 1){
+		/*if(listaRolPacientes === undefined || listaRolPacientes === null || listaRolPacientes.length < 1){
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'pacientes no esta definido o no contiene elementos'
@@ -127,7 +126,7 @@ const pacienteDAO = {
 	},
 
 	assingProfesional: async function (listadoRequisitos,id_paciente, id_usuario){
-		if(isNullOrUndefined(listadoRequisitos) || listadoRequisitos.length < 1){
+		if(listadoRequisitos === undefined || listadoRequisitos === null || listadoRequisitos.length < 1){
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'faltan llenar uno o mas campos para asignar profesional'
@@ -164,7 +163,7 @@ const pacienteDAO = {
 		//query para ver si el usuario que hace la peticion tiene al paciente asociado y esta activo
 		//(usar id_paciente y id_usuario), no me importa lo que me devuelve la query, me importa que traiga algo
 		const result1 = await genericDAO.runQuery("select p.id_paciente from Usuario u join Usuario_Rol ur on ur.id_usuario=u.id_usuario join Rol_Paciente rp on rp.id_usuario_rol=ur.id_usuario_rol join Paciente p on p.id_paciente=rp.id_paciente where u.id_usuario=@id_usuario and p.id_paciente=@id_paciente and p.activo=1", params);
-		if(isNullOrUndefined(result1.response[0])){
+		if(result1.response[0] === undefined || result1.response[0] === null){
 			const result1 = {
 				state: estadosRespuesta.USERERROR,
 				response: 'El usuario no tiene asignado al paciente'
@@ -175,7 +174,7 @@ const pacienteDAO = {
 		//query para chequear que el nro de matricula pasado sea el mismo que tiene el id del profesional pasado
 		//(usar id_profesional y nro_matricula), no me importa lo que me devuelve la query, me importa que traiga algo
 		const result2 = await genericDAO.runQuery("select id_usuario from Usuario where id_usuario=@id_profesional and nro_matricula=@nro_matricula", params);
-		if(isNullOrUndefined(result2.response[0])){
+		if(result2.response[0] === undefined || result2.response[0] === null){
 			const result2 = {
 				state: estadosRespuesta.USERERROR,
 				response: 'El profesional no tiene la matricula asociada'
@@ -203,7 +202,7 @@ const pacienteDAO = {
 	},
 
 	delete: async function(id_paciente, id_usuario){
-		if(isNullOrUndefined(id_paciente)){
+		if(id_paciente === undefined || id_paciente === null){
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'id del paciente no ha sido definido'
@@ -238,14 +237,14 @@ const pacienteDAO = {
 	},
 
 	update: async function(id_paciente, id_usuario, listaPaciente){
-		if(isNullOrUndefined(listaPaciente) || listaPaciente.length < 1){
+		if(listaPaciente === undefined || listaPaciente === null || listaPaciente.length < 1){
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'pacientes no esta definido o no contiene elementos'
 			}
 			return result;
 		}
-		if(isNullOrUndefined(id_paciente)){
+		if(id_paciente === undefined || id_paciente === null){
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'id del paciente no ha sido definido'

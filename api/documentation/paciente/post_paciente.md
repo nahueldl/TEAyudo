@@ -27,8 +27,19 @@
 
 * **Success Response:**
 
-  * **Code:** 200 OK <br />
-    **Content:** `{ "msg": "El paciente ha sido correctamente creado"}`
+  * **Code:** 201 CREATED <br />
+    **Content:**
+    ```json
+    {
+        "id_paciente": 7,
+        "nombre": "Jose Jr.",
+        "apellido": "Perez",
+        "fecha_hora_alta": "2020-08-18T02:36:49.457Z",
+        "fecha_hora_modificacion": null,
+        "fecha_hora_baja": null,
+        "activo": true
+    }
+    ```
  
 * **Error Response:**
 

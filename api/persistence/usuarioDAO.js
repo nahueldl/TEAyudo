@@ -1,6 +1,5 @@
 const sql = require('mssql');
 const genericDAO = require('./genericDAO');
-const { isNullOrUndefined } = require('util');
 const bcrypt = require('bcrypt');
 const saltRounds = parseInt(process.env.SALTROUNDS);
 const ttlResetToken = parseInt(process.env.RESETPASSWORD_TIME);
@@ -11,7 +10,7 @@ var base62 = require('base62-random');
 const usuarioDAO = {
 
 	getById: async function(id){
-		if(isNullOrUndefined(id)){
+		if(id === undefined || id === null){
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'id no ha sido definido'
@@ -41,7 +40,7 @@ const usuarioDAO = {
 
 
 	getByEmail: async function(email){
-		if(isNullOrUndefined(email)){
+		if(email === undefined || email === null){
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'email no ha sido definido'
@@ -71,7 +70,7 @@ const usuarioDAO = {
 
 
 	getByUUID: async function(uuid){
-		if(isNullOrUndefined(uuid)){
+		if(uuid === undefined || uuid === null){
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'uuid no ha sido definido'
@@ -106,7 +105,7 @@ const usuarioDAO = {
 
 
 	insert: async function (usuario){
-		if(isNullOrUndefined(usuario)){
+		if(usuario === undefined || usuario === null){
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'usuario no esta definido'
@@ -151,7 +150,7 @@ const usuarioDAO = {
 
 
 	login: async function(email, password){
-		if(isNullOrUndefined(email)){
+		if(email === undefined || email === null || password === undefined || password === null){
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'email y/o password no estan definidas'
@@ -212,7 +211,7 @@ const usuarioDAO = {
 
 
 	generateForgotPasswordToken: async function(id){
-		if(isNullOrUndefined(id)){
+		if(id === undefined || id === null){
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'id no esta definido'
@@ -263,7 +262,7 @@ const usuarioDAO = {
 
 
 	updateForgottenPassword: async function(usuario, token, newPassword){
-		if(isNullOrUndefined(usuario) || isNullOrUndefined(token) || isNullOrUndefined(newPassword)){
+		if(usuario === undefined || usuario === null || token === undefined || token === null || newPassword === undefined || newPassword === null){
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'usuario, token o newPassword no esta definido'
@@ -279,7 +278,7 @@ const usuarioDAO = {
 		try{
 
 			
-			if(isNullOrUndefined(usuario.reset_password_token) || isNullOrUndefined(usuario.fecha_hora_reset_password)){
+			if(usuario.reset_password_token === undefined || usuario.reset_password_token === null || usuario.fecha_hora_reset_password === undefined || usuario.fecha_hora_reset_password === null){
 				res.state = estadosRespuesta.USERERROR;
 				res.response = "El token no es valido";
 				return res;
@@ -353,7 +352,7 @@ const usuarioDAO = {
 
 
 	updateUsuario: async function(usuario, data){
-		if(isNullOrUndefined(data)){
+		if(usuario === undefined || usuario === null || data === undefined || data === null){
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'No se han definido parametros'

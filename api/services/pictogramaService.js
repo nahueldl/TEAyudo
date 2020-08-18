@@ -1,7 +1,6 @@
 const pictogramaDAO = require('../persistence/pictogramaDAO');
 const estadosRespuesta = require('../models/estados_respuesta');
 const imageUploaderService = require('./imageUploaderService');
-const { isNullOrUndefined } = require('util');
 const categoriaService = require('./categoriaService');
 
 
@@ -13,7 +12,7 @@ const pictogramaService = {
 
 	getByCategoriaAndPaciente: async function (usuario, idPaciente, idCategoria) {
 		//TODO Check que el paciente para el que se esta pidiendo pertenezca al usuario
-		if(isNullOrUndefined(idPaciente))
+		if(idPaciente === undefined || idPaciente === null)
 			return await pictogramaDAO.getByCategoria(parseInt(idCategoria));
 		else
 			return await pictogramaDAO.getByCategoriaAndPaciente(parseInt(idCategoria), parseInt(idPaciente))
@@ -21,7 +20,7 @@ const pictogramaService = {
 
 
 	getByEtiqueta: async function (etiqueta) {
-		if(isNullOrUndefined(etiqueta) || etiqueta.length < 3){
+		if(etiqueta === undefined || etiqueta === null || etiqueta.length < 3){
 			return {
 				state: estadosRespuesta.USERERROR,
 				response: 'No se puede realizar una busqueda para menos de 3 caracteres'
@@ -32,13 +31,13 @@ const pictogramaService = {
 
 
 	getByNombre: async function (nombre, paciente){
-		if(isNullOrUndefined(nombre) || nombre.length < 3){
+		if(nombre === undefined || nombre === null || nombre.length < 3){
 			return {
 				state: estadosRespuesta.USERERROR,
 				response: 'No se puede realizar una busqueda para menos de 3 caracteres'
 			};
 		}
-		if(isNullOrUndefined(paciente))
+		if(paciente === undefined || paciente === null)
 			return await pictogramaDAO.findByNombre(nombre);
 		else
 			return await pictogramaDAO.findByNombre(nombre, parseInt(paciente));
@@ -46,18 +45,12 @@ const pictogramaService = {
 
 
 	customizePictograma: async function (usuario, idPictograma, infoPictograma){
-		// if(isNullOrUndefined(idPictograma) || isNullOrUndefined(infoPictograma.paciente) || (isNullOrUndefined(infoPictograma.nombre) && isNullOrUndefined(infoPictograma.favorito))){
-		// 	return {
-		// 		state: estadosRespuesta.USERERROR,
-		// 		response: 'Faltan definir datos'
-		// 	};
-		// }
 		return await pictogramaDAO.customizePictograma(idPictograma, infoPictograma.paciente, infoPictograma.nombre, infoPictograma.favorito, infoPictograma.estado);
 	},
 
 
 	addPictograma: async function(usuario, data){
-		if(isNullOrUndefined(data.categoria) || isNullOrUndefined(data.base64img) || isNullOrUndefined(data.nombres)){
+		if(data.categoria === undefined || data.categoria === null || data.base64img === undefined || data.base64img === null || data.nombres === undefined || data.nombres === null){
 			return {
 				state: estadosRespuesta.USERERROR,
 				response: 'Faltan definir parametros'

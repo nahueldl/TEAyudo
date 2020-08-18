@@ -1,6 +1,5 @@
 const sql = require('mssql');
 const genericDAO = require('./genericDAO');
-const { isNullOrUndefined } = require('util');
 const estadosRespuesta = require('../models/estados_respuesta');
 
 
@@ -30,7 +29,7 @@ const categoriaDAO = {
 
 
 	getById: async function (id){
-		if(isNullOrUndefined(id)){
+		if(id === undefined || id === null){
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'id no ha sido definido'
@@ -46,7 +45,7 @@ const categoriaDAO = {
 			}
 		]
 
-		const result = await genericDAO.runQuery("select * from Categoria where id_categoria = @id and ca.activo = 1", params);
+		const result = await genericDAO.runQuery("select * from Categoria where id_categoria = @id and activo = 1", params);
 
 		if(result.state === estadosRespuesta.OK && result.response.length < 1){
 			result.state = estadosRespuesta.USERERROR;
@@ -59,8 +58,8 @@ const categoriaDAO = {
 	},
 
 
-	insert: async function (listaCategorias){
-		if(isNullOrUndefined(listaCategorias) || listaCategorias.length < 1){
+	insert: async function (categoria){
+		if(categoria === undefined || categoria === null){
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'categorias no esta definida o no contiene elementos'
@@ -68,20 +67,29 @@ const categoriaDAO = {
 			return result;
 		}
 
-		const tablaCategoria = new sql.Table('Categoria');
-		tablaCategoria.columns.add('id_usuario_rol', sql.Numeric(18,0), {nullable: true});
-		tablaCategoria.columns.add('nombre', sql.NVarChar(255), {nullable: false});
-		tablaCategoria.columns.add('activo', sql.Bit, {nullable: false});
+		const params = [
+			{
+				name: "idUR",
+				type: sql.Numeric(18,0),
+				value: categoria.id_usuario_rol || null,
+			},
+			{
+				name: "nombre",
+				type: sql.NVarChar(255),
+				value: categoria.nombre
+			},
+			{
+				name: "activo",
+				type: sql.Bit,
+				value: categoria.activo || true
+			}
+		];
 
-		listaCategorias.forEach(categoria => {
-			tablaCategoria.rows.add(
-				categoria.id_usuario_rol || null,
-				categoria.nombre,
-				categoria.activo || true
-			);
-		});
-
-		return genericDAO.insert(tablaCategoria);
+		const insertResult = await genericDAO.runQuery("INSERT INTO Categoria (id_usuario_rol, nombre , activo) OUTPUT inserted.id_categoria VALUES (@idUR , @nombre, @activo)", params)
+		if(insertResult.state !== estadosRespuesta.OK)
+			return insertResult;
+		insertResult.response = insertResult.response[0].id_categoria;
+		return insertResult;
 	},
 
 
