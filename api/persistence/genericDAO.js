@@ -1,5 +1,4 @@
 const sql = require('mssql');
-const { isNullOrUndefined } = require('util');
 const estadosRespuesta = require('../models/estados_respuesta');
 
 const connectionConfig = {
@@ -20,7 +19,7 @@ const connectionConfig = {
 const genericDAO = {
 
 	runQuery: async function (query, params = [], options = {}){
-		if(isNullOrUndefined(query)) throw 'query no ha sido definida';
+		if(query === undefined || query === null) throw 'query no ha sido definida';
 
 		options.returnOneRecorset = options.returnOneRecorset || true;
 		options.transaction = options.transaction || null;
@@ -35,7 +34,7 @@ const genericDAO = {
 		try{
 			let request;
 
-			if(isNullOrUndefined(options.transaction)){
+			if(options.transaction === undefined || options.transaction === null){
 				pool = await sql.connect(connectionConfig);
 				request = pool.request();
 			}else{
@@ -43,7 +42,7 @@ const genericDAO = {
 			}
 
 			params.forEach(param => {
-				if(isNullOrUndefined(param.type))
+				if(param.type === undefined || param.type === null)
 					request.input(param.name, param.value)
 				else
 					request.input(param.name, param.type, param.value)
@@ -62,7 +61,7 @@ const genericDAO = {
 			console.log(err);
 		}
 		
-		if(!isNullOrUndefined(pool)) pool.close();
+		if(!(pool === undefined || pool === null)) pool.close();
 		return res;
 	},
 
@@ -71,9 +70,9 @@ const genericDAO = {
 
 
 	insert: async function (table, options){
-		if(isNullOrUndefined(table)) throw 'table no ha sido definida';
+		if(table === undefined || table === null) throw 'table no ha sido definida';
 
-		if(isNullOrUndefined(options)) options = {};
+		if(options === undefined || options === null) options = {};
 		options.transaction = options.transaction || null;
 
 		const res = {
@@ -86,7 +85,7 @@ const genericDAO = {
 		try{
 			let request;
 
-			if(isNullOrUndefined(options.transaction)){
+			if(options.transaction === undefined || options.transaction === null){
 				pool = await sql.connect(connectionConfig);
 				request = await new sql.Request();
 			}else{
@@ -102,7 +101,7 @@ const genericDAO = {
 			console.log(err);
 		}
 		
-		if(!isNullOrUndefined(pool)) sql.close();
+		if(!(pool === undefined || pool === null)) sql.close();
 		return res;
 	},
 

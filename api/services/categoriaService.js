@@ -1,7 +1,6 @@
 const categoriaDAO = require('../persistence/categoriaDAO');
 const rolService = require('./rolService')
 const estadosRespuesta = require('../models/estados_respuesta');
-const { isNullOrUndefined } = require('util');
 
 
 const categoriaService = {
@@ -19,7 +18,7 @@ const categoriaService = {
 
 
 	insert: async function(categoria, usuario){
-		if(isNullOrUndefined(categoria.id_rol)){
+		if(categoria === undefined || categoria === null || categoria.id_rol === undefined || categoria.id_rol === null){
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'id_rol no ha sido definido'

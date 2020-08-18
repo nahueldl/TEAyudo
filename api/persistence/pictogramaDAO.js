@@ -1,6 +1,5 @@
 const sql = require('mssql');
 const genericDAO = require('./genericDAO');
-const { isNullOrUndefined } = require('util');
 const estadosRespuesta = require('../models/estados_respuesta');
 const estadosPictograma = require('../models/estados_pictograma_personalizado');
 
@@ -8,7 +7,7 @@ const pictogramaDAO = {
 
 	getById: async function (id, idPaciente = null) {
 
-		if (isNullOrUndefined(id)) {
+		if (id === undefined || id === null) {
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'id no ha sido definido'
@@ -54,7 +53,7 @@ const pictogramaDAO = {
 
 	getByCategoriaAndPaciente: async function (id_categoria, id_paciente) {
 
-		if (isNullOrUndefined(id_categoria) || isNullOrUndefined(id_paciente)) {
+		if (id_categoria === undefined || id_categoria === null || id_paciente === undefined || id_paciente === null) {
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'id_categoria y/o id_paciente no han sido definidos'
@@ -87,7 +86,7 @@ const pictogramaDAO = {
 
 	getByCategoria: async function (id_categoria) {
 
-		if (isNullOrUndefined(id_categoria)) {
+		if (id_categoria === undefined || id_categoria === null) {
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'id_categoria no ha sido definido'
@@ -114,7 +113,7 @@ const pictogramaDAO = {
 
 	findByTag: async function (tag) {
 
-		if (isNullOrUndefined(tag)) {
+		if (tag === undefined || tag === null) {
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'tag no ha sido definido'
@@ -141,7 +140,7 @@ const pictogramaDAO = {
 
 	findByNombre: async function (nombre, idPaciente = null) {
 
-		if (isNullOrUndefined(nombre)) {
+		if (nombre === undefined || nombre === null) {
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'nombre no ha sido definido'
@@ -179,7 +178,7 @@ const pictogramaDAO = {
 
 	customizePictograma: async function (idPictograma, idPaciente, nombre, favorito, estado) {
 
-		if (isNullOrUndefined(idPictograma) || isNullOrUndefined(idPaciente) || (isNullOrUndefined(nombre) && isNullOrUndefined(favorito))) {
+		if (idPictograma === undefined || idPictograma === null || idPaciente === undefined || idPaciente === null || ((nombre === undefined || nombre === null) && (favorito === undefined || favorito === null))) {
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'Parametros necesarios no han sido definidos'
@@ -221,7 +220,7 @@ const pictogramaDAO = {
 
 	cambiarEstadoPictogramaParaPaciente: async function (idPictograma, idPaciente, estado) {
 
-		if (isNullOrUndefined(idPictograma) || isNullOrUndefined(idPaciente) || (isNullOrUndefined(nombre) && isNullOrUndefined(favorito) && isNullOrUndefined(estado))) {
+		if (idPictograma === undefined || idPictograma === null || idPaciente === undefined || idPaciente === null || ((nombre === undefined || nombre === null) && (favorito === undefined || favorito === null) && (estado === undefined || estado === null))) {
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'Parametros necesarios no han sido definidos'
@@ -258,7 +257,7 @@ const pictogramaDAO = {
 
 
 	createPictograma: async function (idCategoria, nombres, etiquetas, esquematico, sexo, violencia, activo, id_picto_arasaac, ruta_acceso_local){
-		if(isNullOrUndefined(idCategoria) || isNullOrUndefined(nombres) || nombres.length < 1 || isNullOrUndefined(etiquetas) || etiquetas.length < 1){
+		if(idCategoria === undefined || idCategoria === null || nombres === undefined || nombres === null || nombres.length < 1 || etiquetas === undefined || etiquetas === null || etiquetas.length < 1){
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'Parametros necesarios no han sido definidos'
