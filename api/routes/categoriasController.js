@@ -67,7 +67,7 @@ router.put('/:id', isAuth, async (req, res) => {
 router.post('/', isAuth, async (req, res) => {
 	const result = await categoriaService.insert(req.body, req.user);
 	if(result.state === estadosRespuesta.OK){
-		res.status(200).json({msg: "La categoria ha sido correctamente creada"});
+		res.status(200).json(result.response);
 	}else if(result.state === estadosRespuesta.SERVERERROR){
 		res.status(500).json({msg: "Ha ocurrido un error inesperado en el servidor"});
 	}else if(result.state === estadosRespuesta.USERERROR){

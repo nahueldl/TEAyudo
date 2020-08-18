@@ -28,12 +28,27 @@
 * **Success Response:**
 
   * **Code:** 200 OK <br />
-    **Content:** `{ "msg": "La categoria ha sido correctamente creada"}`
+    **Content:** 
+    ```json
+    {
+      "id_categoria": 385,
+      "id_usuario_rol": 2,
+      "nombre": "CategoriaEjemplo",
+      "fecha_hora_alta": "2020-08-18T01:29:43.970Z",
+      "fecha_hora_baja": null,
+      "activo": true
+  }
+    ```
  
 * **Error Response:**
 
   * **Code:** 400 BAD REQUEST <br />
     **Content:** `{ "msg": "La informacion provista no es correcta"}`
+
+  OR
+
+  * **Code:** 401 UNAUTHORIZED <br />
+    **Content:** `Unauthorized`
 
   OR
 

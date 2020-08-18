@@ -39,10 +39,10 @@ const categoriaService = {
 
 		categoria.id_usuario_rol = result.response.id_usuario_rol;
 
-		const categorias = [];
-		categorias.push(categoria);
-		
-		return await categoriaDAO.insert(categorias);
+		const insertResult = await categoriaDAO.insert(categoria);
+		if(insertResult.state !== estadosRespuesta.OK)
+			return insertResult;
+		return await this.getById(insertResult.response);
 	},
 
 
