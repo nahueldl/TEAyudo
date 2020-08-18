@@ -34,7 +34,7 @@
 
   * **Code:** 200 OK <br />
     **Content:** `El pictograma ha sido modificado con exitos`
-    ```
+
  
 * **Error Response:**
 
