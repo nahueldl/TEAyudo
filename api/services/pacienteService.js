@@ -34,13 +34,14 @@ const pacienteService = {
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'El usuario no tiene asignado el rol elegido'
-			}} else if(tieneFamiliar == false){
+			}
+		} else if(tieneFamiliar == false){
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'El usuario no tiene permisos para crear un paciente'
+			}
+			return result;
 		}
-		return result;
-	}
 		
 		const pacientes = [];
 		pacientes.push(paciente);
@@ -49,7 +50,10 @@ const pacienteService = {
 		if(result1.state !== estadosRespuesta.OK){
 			return result1;
 		}
-		return await pacienteDAO.assingRolToPaciente(usuario.id_usuario, result1.response);
+		const assignResult = await pacienteDAO.assingRolToPaciente(usuario.id_usuario, result1.response);
+		if(assignResult.state !== estadosRespuesta.OK)
+			return assignResult;
+		return await this.getById(result1.response, usuario);
 	},
 
 	//los requisitos serian el id del paciente, id del profesional y nro de matricula que escribe el usuario
