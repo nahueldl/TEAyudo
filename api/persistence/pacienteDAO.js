@@ -80,7 +80,7 @@ const pacienteDAO = {
 			}
 		]
 
-		const result = await genericDAO.runQuery('INSERT INTO Paciente (nombre, apellido, activo) output inserted.id_paciente values (@nombre, @apellido, 1)', params);
+		const result = await genericDAO.runQuery('INSERT INTO Paciente (nombre, apellido, activo) OUTPUT inserted.id_paciente VALUES (@nombre, @apellido, 1)', params);
 		const idInsertado = result.response[0].id_paciente;
 		result.response = idInsertado;
 
