@@ -24,35 +24,38 @@
     **Required:**
    * `categoria=[int]`
    * `base64img=[string]`
-   * ```
-		nombres=[
-			{
-				nombre:[string]
-			}
-		]
-  	 ```
-	* ```
-		etiquetas=[
-			{
-				nombre:[string]
-			}
-		]
-  	 ```
+   * 
+   ```
+	nombres=[
+		{
+			nombre:[string]
+		}
+	]
+   ```
+	* 
+   ```
+	etiquetas=[
+		{
+			nombre:[string]
+		}
+	]
+   ```
 
     **Optional:**
    * `esquematico=[bool]`
    * `sexo=[bool]`
    * `violencia=[bool]`
-   * ```
-		nombres=[
-			{
-				nombre_plural:[string],
-				descripcion:[string],
-				tiene_locucion:[bit],
-				tipo:[int],
-			}
-		]
-  	 ```
+   * 
+   ```
+	nombres=[
+		{
+			nombre_plural:[string],
+			descripcion:[string],
+			tiene_locucion:[bit],
+			tipo:[int],
+		}
+	]
+     ```
 
 * **Success Response:**
 
