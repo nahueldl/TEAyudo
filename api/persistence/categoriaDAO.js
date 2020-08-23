@@ -1,6 +1,5 @@
 const sql = require('mssql');
 const genericDAO = require('./genericDAO');
-const { isNullOrUndefined } = require('util');
 const estadosRespuesta = require('../models/estados_respuesta');
 
 
@@ -30,7 +29,7 @@ const categoriaDAO = {
 
 
 	getById: async function (id){
-		if(isNullOrUndefined(id)){
+		if(id === undefined || id === null){
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'id no ha sido definido'
@@ -46,7 +45,7 @@ const categoriaDAO = {
 			}
 		]
 
-		const result = await genericDAO.runQuery("select * from Categoria where id_categoria = @id and ca.activo = 1", params);
+		const result = await genericDAO.runQuery("select * from Categoria where id_categoria = @id and activo = 1", params);
 
 		if(result.state === estadosRespuesta.OK && result.response.length < 1){
 			result.state = estadosRespuesta.USERERROR;
@@ -59,8 +58,8 @@ const categoriaDAO = {
 	},
 
 
-	insert: async function (listaCategorias){
-		if(isNullOrUndefined(listaCategorias) || listaCategorias.length < 1){
+	insert: async function (categoria){
+		if(categoria === undefined || categoria === null){
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'categorias no esta definida o no contiene elementos'
@@ -68,21 +67,111 @@ const categoriaDAO = {
 			return result;
 		}
 
-		const tablaCategoria = new sql.Table('Categoria');
-		tablaCategoria.columns.add('id_usuario_rol', sql.Numeric(18,0), {nullable: true});
-		tablaCategoria.columns.add('nombre', sql.NVarChar(255), {nullable: false});
-		tablaCategoria.columns.add('activo', sql.Bit, {nullable: false});
+		const params = [
+			{
+				name: "idUR",
+				type: sql.Numeric(18,0),
+				value: categoria.id_usuario_rol || null,
+			},
+			{
+				name: "nombre",
+				type: sql.NVarChar(255),
+				value: categoria.nombre
+			},
+			{
+				name: "activo",
+				type: sql.Bit,
+				value: categoria.activo || true
+			}
+		];
 
-		listaCategorias.forEach(categoria => {
-			tablaCategoria.rows.add(
-				categoria.id_usuario_rol || null,
-				categoria.nombre,
-				categoria.activo || true
-			);
-		});
+		const insertResult = await genericDAO.runQuery("INSERT INTO Categoria (id_usuario_rol, nombre , activo) OUTPUT inserted.id_categoria VALUES (@idUR , @nombre, @activo)", params)
+		if(insertResult.state !== estadosRespuesta.OK)
+			return insertResult;
+		insertResult.response = insertResult.response[0].id_categoria;
+		return insertResult;
+	},
 
-		return genericDAO.insert(tablaCategoria);
+
+	poseeCategoria: async function(idUsuario, idCategoria){
+		if(idUsuario === null || idUsuario === undefined || idCategoria === null || idCategoria === undefined ){
+			return null;
+		}
+		const params = [
+			{
+				name: "idUsuario",
+				type: sql.Numeric(18,0),
+				value: idUsuario
+			},
+			{
+				name: "idCategoria",
+				type: sql.Numeric(18,0),
+				value: idCategoria
+			}
+		];
+
+		const result = await genericDAO.runQuery("select ur.id_usuario_rol from Categoria c inner join Usuario_Rol ur on ur.id_usuario_rol = c.id_usuario_rol where c.id_categoria = @idCategoria and c.activo = 1 and ur.id_usuario = @idUsuario", params);
+
+		if(result.state !== estadosRespuesta.OK){
+			return result;
+		}
+		else if(result.response.length < 1){
+			return {
+				state: estadosRespuesta.USERERROR,
+				response: "No existe relacion"
+			}
+		}else{
+			return result;
+		}
+	},
+
+
+	delete: async function (idCategoria){
+		if(idCategoria === null || idCategoria === undefined){
+			const result = {
+				state: estadosRespuesta.USERERROR,
+				response: 'El id no fue definido'
+			}
+			return result;
+		}
+
+		const params = [
+			{
+				name: "idCategoria",
+				type: sql.Numeric(18,0),
+				value: idCategoria
+			}
+		];
+
+		return await genericDAO.runQuery("update Categoria set activo = 0 where id_categoria = @idCategoria", params);
+	},
+
+
+	update: async function (idCategoria, nombre){
+		if(idCategoria === null || idCategoria === undefined || nombre === null || nombre === undefined){
+			const result = {
+				state: estadosRespuesta.USERERROR,
+				response: 'Algun parámetro no fue definido'
+			}
+			return result;
+		}
+
+		const params = [
+			{
+				name: "idCategoria",
+				type: sql.Numeric(18,0),
+				value: idCategoria
+			},
+			{
+				name: "nombre",
+				type: sql.NVarChar(255),
+				value: nombre
+			}
+		];
+
+		return await genericDAO.runQuery("update Categoria set nombre = @nombre where id_categoria = @idCategoria", params);
 	}
+
 };
 
 

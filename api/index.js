@@ -4,13 +4,12 @@ const express = require('express');
 const path = require('path');
 const requestLogger = require('./middleware/requestLogger');
 const BearerStrategy = require('./middleware/auth').BearerStrategy;
-const { isNullOrUndefined } = require('util');
 const passport = require('passport');
 const corsPolicy = require('./middleware/setCorsPolicy')
 
 
 //Chequea que se hayan levantado las variables de entorno sean de produccion o de desarrollo
-if(isNullOrUndefined(process.env.NODE_ENV)){
+if(process.env.NODE_ENV === undefined || process.env.NODE_ENV === null){
 	console.log("Faltan configurar las variables ambientales");
 	process.exit(1);
 };
@@ -36,6 +35,7 @@ app.use('/api/usuario', require('./routes/usuarioController'));
 app.use('/api/pacientes', require('./routes/pacienteController'));
 app.use('/api/pictogramas', require('./routes/pictogramasController'));
 app.use('/api/traducciones', require('./routes/traduccionController'));
+app.use('/api/tipoDocumento', require('./routes/tiposDocumentoController'));
 
 
 

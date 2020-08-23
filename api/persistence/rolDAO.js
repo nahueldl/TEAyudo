@@ -1,6 +1,5 @@
 const sql = require('mssql');
 const genericDAO = require('./genericDAO');
-const { isNullOrUndefined } = require('util');
 const estadosRespuesta = require('../models/estados_respuesta');
 
 
@@ -14,7 +13,7 @@ const rolDAO = {
 
 
 	getById: async function (id){
-		if(isNullOrUndefined(id)){
+		if(id === undefined || id === null){
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'id no ha sido definido'
@@ -43,7 +42,7 @@ const rolDAO = {
 
 
 	getByUsuarioId: async function (id){
-		if(isNullOrUndefined(id)) {
+		if(id === undefined || id === null) {
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'id no ha sido definido'
@@ -71,7 +70,7 @@ const rolDAO = {
 
 	//Get descripcion del rol dado un id_usuario
 	getDescripcionByUsuarioId: async function (id){
-		if(isNullOrUndefined(id)) {
+		if(id === undefined || id === null) {
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'id no ha sido definido'
@@ -98,7 +97,7 @@ const rolDAO = {
 	},
 	
 	insertUsuarioRol: async function (idUsuario, idRol){
-		if(isNullOrUndefined(idUsuario) || isNullOrUndefined(idRol)) {
+		if(idUsuario === undefined || idUsuario === null || idRol === undefined || idRol === null) {
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'idUsuario y/o idRol no estan definidos'
@@ -121,7 +120,7 @@ const rolDAO = {
 	},
 
 	getUsuarioRol: async function (idUsuario, idRol){
-		if(isNullOrUndefined(idUsuario) || isNullOrUndefined(idRol)){
+		if(idUsuario === undefined || idUsuario === null || idRol === undefined || idRol === null){
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'idUsuario y/o idRol no estan definidos'
@@ -155,7 +154,7 @@ const rolDAO = {
 	},
 
 	getDescripcionById: async function(idRol){
-		if(isNullOrUndefined(idRol)){
+		if(idRol === undefined || idRol === null){
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'idRol no estan definidos'

@@ -34,10 +34,10 @@ router.get('/:id',isAuth, async (req, res) => {
 
 
 //POST Paciente
-router.post('/nuevoPaciente', isAuth, async (req, res) => {
+router.post('/', isAuth, async (req, res) => {
 	const result = await pacienteService.insert(req.body, req.user);
 	if(result.state === estadosRespuesta.OK){
-		res.status(200).json({msg: "El paciente ha sido correctamente creado"});
+		res.status(201).json(result.response);
 	}else if(result.state === estadosRespuesta.SERVERERROR){
 		res.status(500).json({msg: "Ha ocurrido un error inesperado en el servidor"});
 	}else if(result.state === estadosRespuesta.USERERROR){

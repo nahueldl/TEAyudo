@@ -1,15 +1,13 @@
 const sql = require('mssql');
 const genericDAO = require('./genericDAO');
-const { isNullOrUndefined } = require('util');
 const estadosRespuesta = require('../models/estados_respuesta');
 const estadosPictograma = require('../models/estados_pictograma_personalizado');
-
 
 const pictogramaDAO = {
 
 	getById: async function (id, idPaciente = null) {
 
-		if (isNullOrUndefined(id)) {
+		if (id === undefined || id === null) {
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'id no ha sido definido'
@@ -55,7 +53,7 @@ const pictogramaDAO = {
 
 	getByCategoriaAndPaciente: async function (id_categoria, id_paciente) {
 
-		if (isNullOrUndefined(id_categoria) || isNullOrUndefined(id_paciente)) {
+		if (id_categoria === undefined || id_categoria === null || id_paciente === undefined || id_paciente === null) {
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'id_categoria y/o id_paciente no han sido definidos'
@@ -76,7 +74,7 @@ const pictogramaDAO = {
 			}
 		]
 
-		const result = await genericDAO.runQuery("select pi.id_pictograma, pi.ruta_acceso_local, pi.esquematico, pi.sexo, pi.violencia, pi.fecha_hora_alta, pi.fecha_hora_modificacion, pi.fecha_hora_baja, pp.estado, pp.nombre_personalizado, pp.favorito, (select np.id_nombre_pictograma, np.nombre, np.descripcion, np.tiene_locucion, np.tipo, np.nombre_plural from Nombre_Pictograma np where np.id_pictograma = pi.id_pictograma and np.activo = 1 FOR JSON AUTO) as nombres, (select et.id_etiqueta, et.nombre, et.fecha_hora_alta from Etiqueta et inner join Etiqueta_Pictograma ep on ep.id_etiqueta = et.id_etiqueta where ep.id_pictograma = pi.id_pictograma and et.activo = 1 FOR JSON AUTO) as etiquetas from Categoria ca inner join Categoria_Pictograma cp on cp.id_categoria = ca.id_categoria inner join pictograma pi on pi.id_pictograma = cp.id_pictograma left join Pictograma_Paciente pp on pp.id_pictograma = pi.id_pictograma where pi.activo = 1 and ca.id_categoria = @idCategoria and (pp.id_paciente = @idPaciente or pp.id_paciente is null) group by pi.id_pictograma, pi.id_picto_arasaac, pi.ruta_acceso_local, pi.esquematico, pi.sexo, pi.violencia, pi.fecha_hora_alta, pi.fecha_hora_modificacion, pi.fecha_hora_baja, pi.activo, pp.estado, pp.nombre_personalizado, pp.favorito", params);
+		const result = await genericDAO.runQuery("select pi.id_pictograma, pi.ruta_acceso_local, pi.esquematico, pi.sexo, pi.violencia, pi.fecha_hora_alta, pi.fecha_hora_modificacion, pi.fecha_hora_baja, pp.estado, pp.nombre_personalizado, pp.favorito, (select np.id_nombre_pictograma, np.nombre, np.descripcion, np.tiene_locucion, np.tipo, np.nombre_plural from Nombre_Pictograma np where np.id_pictograma = pi.id_pictograma and np.activo = 1 FOR JSON AUTO) as nombres, (select et.id_etiqueta, et.nombre, et.fecha_hora_alta from Etiqueta et inner join Etiqueta_Pictograma ep on ep.id_etiqueta = et.id_etiqueta where ep.id_pictograma = pi.id_pictograma and et.activo = 1 FOR JSON AUTO) as etiquetas from Categoria ca inner join Categoria_Pictograma cp on cp.id_categoria = ca.id_categoria inner join pictograma pi on pi.id_pictograma = cp.id_pictograma left join Pictograma_Paciente pp on pp.id_pictograma = pi.id_pictograma where pi.activo = 1 and ca.id_categoria = @idCategoria and ca.activo = 1 and (pp.id_paciente = @idPaciente or pp.id_paciente is null) group by pi.id_pictograma, pi.id_picto_arasaac, pi.ruta_acceso_local, pi.esquematico, pi.sexo, pi.violencia, pi.fecha_hora_alta, pi.fecha_hora_modificacion, pi.fecha_hora_baja, pi.activo, pp.estado, pp.nombre_personalizado, pp.favorito", params);
 	
 		if(result.state === estadosRespuesta.OK){
 			result.response.forEach(picto => picto.nombres = JSON.parse(picto.nombres));
@@ -88,7 +86,7 @@ const pictogramaDAO = {
 
 	getByCategoria: async function (id_categoria) {
 
-		if (isNullOrUndefined(id_categoria)) {
+		if (id_categoria === undefined || id_categoria === null) {
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'id_categoria no ha sido definido'
@@ -104,7 +102,7 @@ const pictogramaDAO = {
 			}
 		]
 
-		const result = await genericDAO.runQuery("select pi.id_pictograma, pi.ruta_acceso_local, pi.esquematico, pi.sexo, pi.violencia, pi.fecha_hora_alta, pi.fecha_hora_modificacion, pi.fecha_hora_baja, (select np.id_nombre_pictograma, np.nombre, np.descripcion, np.tiene_locucion, np.tipo, np.nombre_plural from Nombre_Pictograma np where np.id_pictograma = pi.id_pictograma and np.activo = 1 FOR JSON AUTO) as nombres, (select et.id_etiqueta, et.nombre, et.fecha_hora_alta from Etiqueta et inner join Etiqueta_Pictograma ep on ep.id_etiqueta = et.id_etiqueta where ep.id_pictograma = pi.id_pictograma and et.activo = 1 FOR JSON AUTO) as etiquetas from Categoria ca inner join Categoria_Pictograma cp on cp.id_categoria = ca.id_categoria inner join pictograma pi on pi.id_pictograma = cp.id_pictograma where ca.id_categoria = @idCategoria and pi.activo = 1 group by pi.id_pictograma, pi.id_picto_arasaac, pi.ruta_acceso_local, pi.esquematico, pi.sexo, pi.violencia, pi.fecha_hora_alta, pi.fecha_hora_modificacion, pi.fecha_hora_baja, pi.activo", params);
+		const result = await genericDAO.runQuery("select pi.id_pictograma, pi.ruta_acceso_local, pi.esquematico, pi.sexo, pi.violencia, pi.fecha_hora_alta, pi.fecha_hora_modificacion, pi.fecha_hora_baja, (select np.id_nombre_pictograma, np.nombre, np.descripcion, np.tiene_locucion, np.tipo, np.nombre_plural from Nombre_Pictograma np where np.id_pictograma = pi.id_pictograma and np.activo = 1 FOR JSON AUTO) as nombres, (select et.id_etiqueta, et.nombre, et.fecha_hora_alta from Etiqueta et inner join Etiqueta_Pictograma ep on ep.id_etiqueta = et.id_etiqueta where ep.id_pictograma = pi.id_pictograma and et.activo = 1 FOR JSON AUTO) as etiquetas from Categoria ca inner join Categoria_Pictograma cp on cp.id_categoria = ca.id_categoria inner join pictograma pi on pi.id_pictograma = cp.id_pictograma where ca.id_categoria = @idCategoria and ca.activo = 1 and pi.activo = 1 group by pi.id_pictograma, pi.id_picto_arasaac, pi.ruta_acceso_local, pi.esquematico, pi.sexo, pi.violencia, pi.fecha_hora_alta, pi.fecha_hora_modificacion, pi.fecha_hora_baja, pi.activo", params);
 		if(result.state === estadosRespuesta.OK){
 			result.response.forEach(picto => picto.nombres = JSON.parse(picto.nombres));
 			result.response.forEach(picto => picto.etiquetas = JSON.parse(picto.etiquetas));
@@ -115,7 +113,7 @@ const pictogramaDAO = {
 
 	findByTag: async function (tag) {
 
-		if (isNullOrUndefined(tag)) {
+		if (tag === undefined || tag === null) {
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'tag no ha sido definido'
@@ -142,7 +140,7 @@ const pictogramaDAO = {
 
 	findByNombre: async function (nombre, idPaciente = null) {
 
-		if (isNullOrUndefined(nombre)) {
+		if (nombre === undefined || nombre === null) {
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'nombre no ha sido definido'
@@ -180,7 +178,7 @@ const pictogramaDAO = {
 
 	customizePictograma: async function (idPictograma, idPaciente, nombre, favorito, estado) {
 
-		if (isNullOrUndefined(idPictograma) || isNullOrUndefined(idPaciente) || (isNullOrUndefined(nombre) && isNullOrUndefined(favorito))) {
+		if (idPictograma === undefined || idPictograma === null || idPaciente === undefined || idPaciente === null || ((nombre === undefined || nombre === null) && (favorito === undefined || favorito === null))) {
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'Parametros necesarios no han sido definidos'
@@ -222,7 +220,7 @@ const pictogramaDAO = {
 
 	cambiarEstadoPictogramaParaPaciente: async function (idPictograma, idPaciente, estado) {
 
-		if (isNullOrUndefined(idPictograma) || isNullOrUndefined(idPaciente) || (isNullOrUndefined(nombre) && isNullOrUndefined(favorito) && isNullOrUndefined(estado))) {
+		if (idPictograma === undefined || idPictograma === null || idPaciente === undefined || idPaciente === null || ((nombre === undefined || nombre === null) && (favorito === undefined || favorito === null) && (estado === undefined || estado === null))) {
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'Parametros necesarios no han sido definidos'
@@ -259,13 +257,14 @@ const pictogramaDAO = {
 
 
 	createPictograma: async function (idCategoria, nombres, etiquetas, esquematico, sexo, violencia, activo, id_picto_arasaac, ruta_acceso_local){
-		if(isNullOrUndefined(idCategoria) || isNullOrUndefined(nombres) || nombres.length < 1 || isNullOrUndefined(etiquetas) || etiquetas.length < 1){
+		if(idCategoria === undefined || idCategoria === null || nombres === undefined || nombres === null || nombres.length < 1 || etiquetas === undefined || etiquetas === null || etiquetas.length < 1){
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'Parametros necesarios no han sido definidos'
 			}
 			return result;
 		}
+
 
 		const params = [
 			{
