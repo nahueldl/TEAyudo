@@ -5,7 +5,7 @@ const { isNullOrUndefined } = require('util');
 
 const traduccionService = {
     insert: async function(listaPictogramas, idPaciente){
-        const pictogramas = await pictogramaService.getById(listaPictogramas, idPaciente);
+        const pictogramas = await pictogramaService.getById(listaPictogramas.id, parseInt(idPaciente));
         const result = await traduccionDAO.createTraduccion(pictogramas, idPaciente);
 
         //no seria mejor preguntar si el estado es OK justamente, para crear al otro??
