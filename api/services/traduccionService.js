@@ -10,7 +10,13 @@ const traduccionService = {
         //voy creando la frase, si tiene nombre pers. el picto meto ese, sino el generico
         for(let i = 0; i <listaPictogramas.length; i++){
         const pictogramas = await pictogramaService.getById(listaPictogramas[i].id, parseInt(idPaciente));
-            if(pictogramas.response.nombre_personalizado != null){
+        if(pictogramas.state == 0){
+			const result = {
+				state: estadosRespuesta.USERERROR,
+				response: 'No se encontro un pictograma. Revisar que paciente exista o que tenga el/los pictogramas'
+			}
+			return result;
+		}else if(pictogramas.response.nombre_personalizado != null){
                 palabra = pictogramas.response.nombre_personalizado
                 frase += palabra + ' ';
             }else{
