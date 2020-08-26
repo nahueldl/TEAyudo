@@ -81,6 +81,10 @@ const pictogramaService = {
 		else
 			return result2;
 
+	},
+
+	getPictogramaForGame: async function(){
+		return await pictogramaDAO.getForGame();
 	}
 
 }
