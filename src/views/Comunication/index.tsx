@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Page from "../../components/Page";
 import { ReactSortable } from "react-sortablejs";
 import { IonItem } from "@ionic/react";
-import "./styles.css";
+
 // fake data generator
 const getselectedItems = (count: number, offset = 0) =>
   Array.from({ length: count }, (v, k) => k).map((k) => ({
@@ -12,23 +12,25 @@ const getselectedItems = (count: number, offset = 0) =>
 
 const ComunicationPage: React.FC = () => {
   const [selectedItems, setselectedItems] = useState<Item[]>(
-    getselectedItems(5)
+    getselectedItems(15)
   );
   const [availableItems, setAvailableItems] = useState<Item[]>(
-    getselectedItems(10, 5)
+    getselectedItems(20, 30)
   );
 
   return (
     <Page pageTitle="Comunicarse" showHomeButton>
-      <div
-        style={{ display: "flex", flexDirection: "column", width: "inherit" }}
-      >
+      {/* <div style={{ display: "flex", width: "inherit" }}> */}
         <ReactSortable
           list={selectedItems}
           setList={setselectedItems}
           animation={150}
           group="shared-group-name"
-          style={{ display: "flex", flexDirection: "row" }}
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(4rem, 1fr))",
+            gap: "0.5rem",
+          }}
         >
           {selectedItems.map((item) => (
             <IonItem key={item.id}>{item.content}</IonItem>
@@ -40,13 +42,17 @@ const ComunicationPage: React.FC = () => {
           setList={setAvailableItems}
           animation={150}
           group="shared-group-name"
-          style={{ display: "flex", flexDirection: "row" }}
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(4rem, 1fr))",
+            gap: "0.5rem",
+          }}
         >
           {availableItems.map((item) => (
             <IonItem key={item.id}>{item.content}</IonItem>
           ))}
         </ReactSortable>
-      </div>
+      {/* </div> */}
     </Page>
   );
 };
