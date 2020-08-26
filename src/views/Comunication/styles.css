@@ -1,3 +1,3 @@
-.reorderContainer {
-    display: flex;
+.specialItem {
+  --color: blue;
 }
