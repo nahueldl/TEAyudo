@@ -1,3 +1,19 @@
 .specialItem {
   --color: blue;
 }
+
+.sortable {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(4rem, 1fr));
+  gap: 0.5rem;
+}
+
+.mobile {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(4rem, 1fr));
+  gap: 0.5rem;
+}
+
+.tirafrase {
+  border-bottom: 1px solid lightgray;
+}
