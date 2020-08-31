@@ -1,18 +1,7 @@
-import {
-  IonGrid,
-  IonRow,
-  IonCol,
-  IonCard,
-  IonCardTitle,
-  IonImg
-} from "@ionic/react";
+import { IonGrid, IonRow, IonCol, IonCard, IonCardTitle } from "@ionic/react";
 import React from "react";
 import styles from "./styles.module.css";
 import Page from "../../components/Page";
-
-const img: any = {
-  src: "assets/imageedit_2_6506907493.jpg",
-};
 
 const HomePage: React.FC = () => {
   return (
@@ -21,7 +10,6 @@ const HomePage: React.FC = () => {
         <IonRow>
           <IonCol size="12" sizeMd="6">
             <IonCard button className={styles.ionCard}>
-              <IonImg src={img.src} />
               <IonCardTitle className={styles.cardTitle}>
                 Comunicarse
               </IonCardTitle>
@@ -29,7 +17,6 @@ const HomePage: React.FC = () => {
           </IonCol>
           <IonCol size="12" sizeMd="6">
             <IonCard button className={styles.ionCard}>
-              <IonImg src={img.src} />
               <IonCardTitle className={styles.cardTitle}>Jugar</IonCardTitle>
             </IonCard>
           </IonCol>
@@ -37,7 +24,6 @@ const HomePage: React.FC = () => {
         <IonRow>
           <IonCol size="12" sizeMd="6">
             <IonCard button className={styles.ionCard}>
-              <IonImg src={img.src} />
               <IonCardTitle className={styles.cardTitle}>
                 Pictogramas
               </IonCardTitle>
@@ -45,7 +31,6 @@ const HomePage: React.FC = () => {
           </IonCol>
           <IonCol size="12" sizeMd="6">
             <IonCard button className={styles.ionCard}>
-              <IonImg src={img.src} />
               <IonCardTitle className={styles.cardTitle}>
                 Categorias
               </IonCardTitle>
