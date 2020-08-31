@@ -1,11 +1,8 @@
-.specialItem {
-  --color: blue;
-}
-
 .sortable {
   display: grid;
   grid-template-columns: repeat(6, minmax(4rem, 1fr));
   gap: 0.5rem;
+  height: minmax(4rem, 1fr);
 }
 
 .mobile {
@@ -15,5 +12,5 @@
 }
 
 .tirafrase {
-  border-bottom: 1px solid lightgray;
+  background-color: lightgray;
 }

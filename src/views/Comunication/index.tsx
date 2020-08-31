@@ -1,16 +1,10 @@
 import React, { useState, useContext } from "react";
 import Page from "../../components/Page";
 import { ReactSortable } from "react-sortablejs";
-import { IonItem, IonGrid, IonRow, IonCol } from "@ionic/react";
+import { IonGrid, IonRow, IonCol } from "@ionic/react";
 import "./styles.css";
 import CardWithImage from "../../components/CardWithImage";
-import { PlatformContext, PlatformProvider } from "../../context/platform";
-// fake data generator
-const getselectedItems = (count: number, offset = 0) =>
-  Array.from({ length: count }, (v, k) => k).map((k) => ({
-    id: `item-${k + offset}`,
-    content: `item ${k + offset}`,
-  }));
+import { PlatformContext } from "../../context/platform";
 
 const pictograms = [
   {
@@ -322,22 +316,24 @@ const ComunicationPage: React.FC = () => {
   return (
     <Page pageTitle="Comunicarse" showHomeButton>
       <IonGrid>
-        <IonRow style={{ minHeight: "30%" }}>
-          <ReactSortable
-            list={selectedItems}
-            setList={setselectedItems}
-            animation={150}
-            group="shared-group-name"
-            className={`sortable ${isMobile ? "mobile" : ""} tirafrase`}
-          >
-            {selectedItems.map((item) => (
-              <CardWithImage
-                img={{ src: item.ruta_acceso_local, alt: "" }}
-                touchable={false}
-                onClick={() => {}}
-              />
-            ))}
-          </ReactSortable>
+        <IonRow className="tirafrase">
+          <IonCol>
+            <ReactSortable
+              list={selectedItems}
+              setList={setselectedItems}
+              animation={150}
+              group="shared-group-name"
+              className={`sortable ${isMobile ? "mobile" : ""}`}
+            >
+              {selectedItems.map((item) => (
+                <CardWithImage
+                  img={{ src: item.ruta_acceso_local, alt: "" }}
+                  touchable={false}
+                  onClick={() => {}}
+                />
+              ))}
+            </ReactSortable>
+          </IonCol>
         </IonRow>
         <IonRow>
           <IonCol>
