@@ -65,12 +65,17 @@ const Menu: React.FC<Props> = ({ patientName }) => {
                   lines="none"
                   detail={false}
                 >
-                  <IonLabel className="centered">{appPage.title}</IonLabel>
+                  <IonLabel>{appPage.title}</IonLabel>
                 </IonItem>
               </IonMenuToggle>
             );
           })}
         </IonList>
+        <IonMenuToggle autoHide={false} className="centered">
+          <IonItem lines="none" detail={false} style={{ textAlign: "center" }}>
+            <IonLabel>Créditos</IonLabel>
+          </IonItem>
+        </IonMenuToggle>
       </IonContent>
     </IonMenu>
   );

@@ -112,10 +112,17 @@ ion-item.selected {
   --color: var(--ion-color-primary);
 } 
 
-.centered {
+.align-left {
   display: flex !important;
-  justify-content: center;
+  justify-content: left;
 }
+
+.centered {
+  position: fixed;
+  bottom: 0%;
+  width: 100%;
+}
+
 
 .title {
   text-align: center;
