@@ -253,6 +253,8 @@ CREATE TABLE [dbo].[Paciente](
 	[id_paciente] [numeric](18, 0) IDENTITY(1,1) NOT NULL,
 	[nombre] [nvarchar](255) NOT NULL,
 	[apellido] [nvarchar](255) NULL,
+	[fase] [int] NULL,
+	[avatar] [varchar](max) NULL,
 	[fecha_hora_alta] [datetime] NOT NULL,
 	[fecha_hora_modificacion] [datetime] NULL,
 	[fecha_hora_baja] [datetime] NULL,

@@ -72,15 +72,24 @@ const pacienteDAO = {
 				type: sql.NVarChar(255),//Puedo no definir type y se infiere automaticamente
 				value: listaPacientes[0].nombre
 			},
-
 			{
 				name: "apellido",
 				type: sql.NVarChar(255),//Puedo no definir type y se infiere automaticamente
-				value: listaPacientes[0].apellido
+				value: listaPacientes[0].apellido || null
+			},
+			{
+				name: "fase",
+				type: sql.Int,//Puedo no definir type y se infiere automaticamente
+				value: listaPacientes[0].fase || null
+			},
+			{
+				name: "avatar",
+				type: sql.VarChar(sql.MAX),//Puedo no definir type y se infiere automaticamente
+				value: listaPacientes[0].avatar || null
 			}
 		]
 
-		const result = await genericDAO.runQuery('INSERT INTO Paciente (nombre, apellido, activo) OUTPUT inserted.id_paciente VALUES (@nombre, @apellido, 1)', params);
+		const result = await genericDAO.runQuery('INSERT INTO Paciente (nombre, apellido, fase, avatar, activo) OUTPUT inserted.id_paciente VALUES (@nombre, @apellido, @fase, @avatar, 1)', params);
 		const idInsertado = result.response[0].id_paciente;
 		result.response = idInsertado;
 
@@ -271,7 +280,7 @@ const pacienteDAO = {
 			{
 				name: "apellido",
 				type: sql.NVarChar(255),//Puedo no definir type y se infiere automaticamente
-				value: listaPaciente.apellido
+				value: listaPaciente.apellido || null
 			},
 
 			{
@@ -281,13 +290,25 @@ const pacienteDAO = {
 			},
 
 			{
+				name: "fase",
+				type: sql.Int,//Puedo no definir type y se infiere automaticamente
+				value: listaPaciente.fase || null
+			},
+
+			{
+				name: "avatar",
+				type: sql.VarChar(sql.MAX),//Puedo no definir type y se infiere automaticamente
+				value: listaPaciente.avatar || null
+			},
+
+			{
 				name: "id_usuario",
 				type: sql.Numeric(18,0),//Puedo no definir type y se infiere automaticamente
 				value: id_usuario
 			}
 		]
 		
-		const result = await genericDAO.runQuery('update Paciente set nombre = @nombre, apellido=@apellido, fecha_hora_modificacion=GETDATE() output inserted.id_paciente from Paciente p join Rol_Paciente rp on rp.id_paciente=p.id_paciente join Usuario_Rol ur on ur.id_usuario_rol=rp.id_usuario_rol where p.id_paciente =@id_paciente and ur.id_usuario=@id_usuario', params);
+		const result = await genericDAO.runQuery('update Paciente set nombre = @nombre, apellido=@apellido, avatar=@avatar, fase=@fase, fecha_hora_modificacion=GETDATE() output inserted.id_paciente from Paciente p join Rol_Paciente rp on rp.id_paciente=p.id_paciente join Usuario_Rol ur on ur.id_usuario_rol=rp.id_usuario_rol where p.id_paciente =@id_paciente and ur.id_usuario=@id_usuario', params);
 
 		if(result.state === estadosRespuesta.OK && result.response.length < 1){
 			result.state = estadosRespuesta.USERERROR;
