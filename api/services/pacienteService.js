@@ -1,6 +1,7 @@
 const pacienteDAO = require('../persistence/pacienteDAO');
 const rolService = require('./rolService')
 const estadosRespuesta = require('../models/estados_respuesta');
+const imageUploaderService = require('./imageUploaderService');
 
 
 const pacienteService = {
@@ -43,6 +44,16 @@ const pacienteService = {
 			return result;
 		}
 		
+		const link = await imageUploaderService.uploadImage(null, paciente.base64img, "png");
+		if(link.state === estadosRespuesta.OK)
+			paciente.avatar = link.response;
+		else if(link === undefined || link == null ){
+			return {
+				state: estadosRespuesta.USERERROR,
+				response: "El formato de la imagen no es válido"
+			}
+		}else
+			return link;
 		const pacientes = [];
 		pacientes.push(paciente);
 		
@@ -82,6 +93,25 @@ const pacienteService = {
 	},
 
 	update: async function(id_paciente, usuario, paciente){
+		if(paciente.avatar !== undefined && paciente.avatar !== null)
+			delete paciente.avatar;
+		const result = await this.getById(id_paciente, usuario);
+		if(result.state !== estadosRespuesta.OK){
+			return result;
+		}else if(paciente.base64img !== undefined && paciente.base64img !== null){
+			const link = await imageUploaderService.uploadImage(null, paciente.base64img, "png");
+			if(link.state === estadosRespuesta.OK)
+				paciente.avatar = link.response;
+			else if(link === undefined || link == null ){
+				return {
+					state: estadosRespuesta.USERERROR,
+					response: "El formato de la imagen no es válido"
+				}
+			}else
+				return link;
+		}else{
+			paciente.avatar = result.response.avatar;
+		}
 		return await pacienteDAO.update(parseInt(id_paciente), usuario.id_usuario, paciente);
 	}
 	

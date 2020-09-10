@@ -28,24 +28,28 @@
     **Content:**
     ```json
     [
-        {
-            "id_paciente": 1,
-            "nombre": "Paciente",
-            "apellido": "actualizado2",
-            "fecha_hora_alta": "2020-07-15T02:23:49.880Z",
-            "fecha_hora_modificacion": "2020-07-24T23:06:48.960Z",
-            "fecha_hora_baja": null,
-            "activo": true
-        },
-        {
-            "id_paciente": 30,
-            "nombre": "Paciente",
-            "apellido": "Nuevo bb",
-            "fecha_hora_alta": "2020-08-03T06:37:36.480Z",
-            "fecha_hora_modificacion": null,
-            "fecha_hora_baja": null,
-            "activo": true
-        }
+      {
+          "id_paciente": 1,
+          "nombre": "Jose",
+          "apellido": "Perez",
+          "fase": 1,
+          "avatar": null,
+          "fecha_hora_alta": "2020-09-04T19:05:31.470Z",
+          "fecha_hora_modificacion": "2020-09-10T21:37:50.573Z",
+          "fecha_hora_baja": null,
+          "activo": true
+      },
+      {
+          "id_paciente": 2,
+          "nombre": "Jose2",
+          "apellido": "Perez",
+          "fase": 2,
+          "avatar": "https://res.cloudinary.com/teayudo/image/upload/v1599772040/if8nzhh0l6lcurcveqta.png",
+          "fecha_hora_alta": "2020-09-10T21:07:36.993Z",
+          "fecha_hora_modificacion": "2020-09-10T21:42:03.050Z",
+          "fecha_hora_baja": null,
+          "activo": true
+      }
     ]
     ```
  
