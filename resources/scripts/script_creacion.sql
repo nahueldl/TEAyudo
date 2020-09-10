@@ -254,7 +254,7 @@ CREATE TABLE [dbo].[Paciente](
 	[nombre] [nvarchar](255) NOT NULL,
 	[apellido] [nvarchar](255) NULL,
 	[fase] [int] NULL,
-	[avatar] [varchar](max) NULL,
+	[avatar] [varchar](255) NULL,
 	[fecha_hora_alta] [datetime] NOT NULL,
 	[fecha_hora_modificacion] [datetime] NULL,
 	[fecha_hora_baja] [datetime] NULL,

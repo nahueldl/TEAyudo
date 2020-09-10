@@ -297,7 +297,7 @@ const pacienteDAO = {
 
 			{
 				name: "avatar",
-				type: sql.VarChar(sql.MAX),//Puedo no definir type y se infiere automaticamente
+				type: sql.VarChar(255),//Puedo no definir type y se infiere automaticamente
 				value: listaPaciente.avatar || null
 			},
 
