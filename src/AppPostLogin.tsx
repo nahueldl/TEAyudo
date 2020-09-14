@@ -10,51 +10,24 @@ import ProfessionalsPage from "./views/Professionals";
 import ReportsPage from "./views/Reports";
 import ConfigurationPage from "./views/Configuration";
 import { AuthenticationContext } from "./context/authentication";
+import RolesPage from "./views/Roles/Page";
 
 const AppPostLogin: React.FC = () => {
+  const { authData } = useContext(AuthenticationContext);
 
-  const {authData} = useContext(AuthenticationContext);
-  
   return (
     <IonSplitPane contentId="main">
       <Menu patientName={authData.patientName!} />
       <IonRouterOutlet id="main">
-        <Route
-          path="/inicio"
-          component={HomePage}
-          exact
-        />
-        <Route
-          path="/pictogramas"
-          component={PictogramsPage}
-          exact
-        />
-        <Route
-          path="/categorias"
-          component={CategoriesPage}
-          exact
-        />
-        <Route
-          path="/pacientes"
-          component={PatientsPage}
-          exact
-        />
-        <Route
-          path="/profesionales"
-          component={ProfessionalsPage}
-          exact
-        />
-        <Route
-          path="/informes"
-          component={ReportsPage}
-          exact
-        />
-        <Route
-          path="/configuracion"
-          component={ConfigurationPage}
-          exact
-        />
-        <Redirect from="/" to="/inicio" />
+        <Route path="/inicio" component={HomePage} exact />
+        <Route path="/pictogramas" component={PictogramsPage} exact />
+        <Route path="/categorias" component={CategoriesPage} exact />
+        <Route path="/pacientes" component={PatientsPage} exact />
+        <Route path="/profesionales" component={ProfessionalsPage} exact />
+        <Route path="/roles" component={RolesPage} exact />
+        <Route path="/informes" component={ReportsPage} exact />
+        <Route path="/configuracion" component={ConfigurationPage} exact />
+        {/* <Redirect from="/" to="/inicio" /> */}
       </IonRouterOutlet>
     </IonSplitPane>
   );
