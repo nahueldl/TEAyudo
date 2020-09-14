@@ -55,7 +55,7 @@ const Menu: React.FC<Props> = ({ patientName }) => {
         <IonList id="menu-list">
           {appPages.map((appPage, index) => {
             return (
-              <IonMenuToggle key={index} autoHide={false}>
+              <IonMenuToggle key={index} autoHide={false} color="secondary">
                 <IonItem
                   className={
                     location.pathname === appPage.url ? "selected" : ""
@@ -65,12 +65,17 @@ const Menu: React.FC<Props> = ({ patientName }) => {
                   lines="none"
                   detail={false}
                 >
-                  <IonLabel className="centered">{appPage.title}</IonLabel>
+                  <IonLabel>{appPage.title}</IonLabel>
                 </IonItem>
               </IonMenuToggle>
             );
           })}
         </IonList>
+        <IonMenuToggle autoHide={false} className="centered">
+          <IonItem lines="none" detail={false} style={{ textAlign: "center" }}>
+            <IonLabel>Créditos</IonLabel>
+          </IonItem>
+        </IonMenuToggle>
       </IonContent>
     </IonMenu>
   );
