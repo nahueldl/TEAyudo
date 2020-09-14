@@ -55,7 +55,7 @@ const Menu: React.FC<Props> = ({ patientName }) => {
         <IonList id="menu-list">
           {appPages.map((appPage, index) => {
             return (
-              <IonMenuToggle key={index} autoHide={false}>
+              <IonMenuToggle key={index} autoHide={false} color="secondary">
                 <IonItem
                   className={
                     location.pathname === appPage.url ? "selected" : ""
