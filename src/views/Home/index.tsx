@@ -1,5 +1,5 @@
-import { IonGrid, IonRow, IonCol, IonCard, IonCardTitle } from "@ionic/react";
-import React from "react";
+import { IonGrid, IonRow, IonCol, IonCard, IonCardTitle, NavContext } from "@ionic/react";
+import React, { useCallback, useContext } from "react";
 import styles from "./styles.module.css";
 import Page from "../../components/Page";
 
@@ -30,28 +30,28 @@ const HomePage: React.FC = () => {
       <IonGrid>
         <IonRow>
           <IonCol size="12" sizeMd="6">
-            <IonCard button className={styles.ionCard}>
+            <IonCard button className={styles.ionCard} onClick={() => goToComunicationPage()}>
               <IonCardTitle className={styles.cardTitle}>
                 Comunicarse
               </IonCardTitle>
             </IonCard>
           </IonCol>
           <IonCol size="12" sizeMd="6">
-            <IonCard button className={styles.ionCard}>
+            <IonCard button className={styles.ionCard} onClick={() => goToGamesPage()}>
               <IonCardTitle className={styles.cardTitle}>Jugar</IonCardTitle>
             </IonCard>
           </IonCol>
         </IonRow>
         <IonRow>
           <IonCol size="12" sizeMd="6">
-            <IonCard button className={styles.ionCard}>
+            <IonCard button className={styles.ionCard} onClick={() => goToPictogramasPage()}>
               <IonCardTitle className={styles.cardTitle}>
                 Pictogramas
               </IonCardTitle>
             </IonCard>
           </IonCol>
           <IonCol size="12" sizeMd="6">
-            <IonCard button className={styles.ionCard}>
+            <IonCard button className={styles.ionCard} onClick={() => goToCategoriesPage()}>
               <IonCardTitle className={styles.cardTitle}>
                 Categorias
               </IonCardTitle>
