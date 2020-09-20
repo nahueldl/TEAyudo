@@ -18,10 +18,9 @@ class PatientServices {
   postNewPatient(
     token: string,
     name: string,
-    lastName: string
+    lastName: string,
     // birthday: string,
-    // fase: string,
-    //avatar: string
+    avatar: string
   ) {
     const header = `Bearer ${token}`;
     debugger;
@@ -29,7 +28,7 @@ class PatientServices {
       nombre: name,
       apellido: lastName,
       // fechaNac: birthday,
-      // fase: fase,
+      base64img: avatar,
       headers: {
         Authorization: header,
       },
@@ -40,13 +39,13 @@ class PatientServices {
     name: string,
     lastName: string,
     birthday: string,
-    fase: string
+    avatar: string
   ) {
     return this.axios.put("/api/paciente", {
       nombre: name,
       apellido: lastName,
       fechaNac: birthday,
-      fase: fase,
+      base64img: avatar,
     });
   }
 

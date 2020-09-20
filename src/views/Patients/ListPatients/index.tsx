@@ -1,10 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
-import { AuthenticationContext } from "../../../context/authentication";
+import React, { useContext, useCallback } from "react";
 import "../styles.css";
-import { IonGrid, IonRow, IonCol, IonIcon } from "@ionic/react";
+import { IonGrid, IonRow, IonCol, NavContext } from "@ionic/react";
 import CardWithImage from "../../../components/CardWithImage";
 import CardWithIcon from "../../../components/CardWithIcon";
 import { addCircleOutline } from "ionicons/icons";
+import { PatientContext } from "../../../context/patient";
 
 // const patients = [
 //   {
@@ -24,39 +24,27 @@ import { addCircleOutline } from "ionicons/icons";
 // ];
 
 const ListPatients: React.FC<ListPatientsProps> = (props) => {
-  const { authData, setAuthData } = useContext(AuthenticationContext);
-  // const [patients, setPatients] = useState();
+  const { patientData, setPatientData } = useContext(PatientContext);
+  const { navigate } = useContext(NavContext);
 
-  // useEffect(() => {
-  //   getPatients();
-  // });
-
-  // const getPatients = () => {
-  //   debugger;
-  //   setAuthData({ loading: true, error: false });
-  //   PatientServices.getPatientsFromUser(authData.token!)
-  //     .then((res: any) => {
-  //       debugger;
-  //       if (res.data.length) {
-  //         setPatients(res.data);
-  //       } else {
-  //         handleClick("Agregar");
-  //       }
-  //       setAuthData({ loading: false, error: false });
-  //     })
-  //     .catch((_error: any) => {
-  //       setAuthData({ loading: false, error: true });
-  //     });
-  // };
-
-  const handleClick = (option: string, patient?: Patient) => {
-    if (option == "Agregar") {
-      props.onclick("addPatient");
-    } else {
-      setAuthData({ patientName: patient?.name });
-      props.onclick("patient", patient);
-    }
+  const handleCardPatientClick = (patient: any) => {
+    setPatientData(patient);
+    goToViewPatient();
   };
+
+  const handleAddPatientClick = () => {
+    goToAddPatient();
+  };
+
+  const goToViewPatient = useCallback(
+    () => navigate("/pacientes/informacion", "forward"),
+    [navigate]
+  );
+
+  const goToAddPatient = useCallback(
+    () => navigate("/pacientes/alta", "forward"),
+    [navigate]
+  );
 
   return (
     <IonGrid className="overflow-auto">
@@ -70,7 +58,7 @@ const ListPatients: React.FC<ListPatientsProps> = (props) => {
               }}
               title={patient.name}
               touchable
-              onClick={handleClick}
+              onClick={handleCardPatientClick(patient)}
               patient={patient}
             />
           </IonCol>
@@ -81,7 +69,7 @@ const ListPatients: React.FC<ListPatientsProps> = (props) => {
           icon={addCircleOutline}
           title="Agregar"
           touchable
-          onClick={handleClick}
+          onClick={handleAddPatientClick}
         />
       </IonRow>
     </IonGrid>
@@ -89,7 +77,6 @@ const ListPatients: React.FC<ListPatientsProps> = (props) => {
 };
 
 interface ListPatientsProps {
-  onclick: any;
   patients?: [Patient];
 }
 
@@ -97,7 +84,6 @@ interface Patient {
   name: string;
   lastName: string;
   birthday: string;
-  fase: any;
   avatar: string;
 }
 

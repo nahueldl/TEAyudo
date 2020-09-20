@@ -1,0 +1,64 @@
+.inputMargin {
+  margin-bottom: 10px;
+}
+
+.p-0 {
+  --padding-start: 0;
+  padding: 0;
+}
+
+.mt-5 {
+  margin-top: 5%;
+}
+
+.full-width {
+  width: 100%;
+  max-width: 100%;
+}
+
+.container-patientAdd {
+  border-radius: 0;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  position: relative;
+  overflow: hidden;
+  min-height: 480px;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.form-no-background {
+  margin: auto;
+  background: none;
+}
+
+.avatars {
+  margin: auto !important;
+}
+
+.logo-header {
+  max-width: 50px;
+  margin: auto;
+}
+
+.icon-margin {
+  margin-top: 5%;
+  margin-left: 5%;
+}
+
+.header {
+  height: 10%;
+  align-items: center;
+}
+
+.red-buttom {
+  --background: red !important;
+}
+
+.green-buttom {
+  --background: green !important;
+}
+
+.height-auto {
+  height: auto !important;
+}

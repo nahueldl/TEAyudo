@@ -47,7 +47,6 @@ interface Patient {
   name: string;
   lastName: string;
   birthday: string;
-  fase: any;
   avatar: string;
 }
 
