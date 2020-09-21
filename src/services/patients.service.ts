@@ -7,10 +7,9 @@ class PatientServices {
   }
 
   getPatientsFromUser(token: string): any {
-    const header = `Bearer ${token}`;
     return this.axios.get("/api/pacientes", {
       headers: {
-        Authorization: header,
+        Authorization: `Bearer ${token}`,
       },
     });
   }
@@ -22,37 +21,53 @@ class PatientServices {
     // birthday: string,
     avatar: string
   ) {
-    const header = `Bearer ${token}`;
-    debugger;
-    return this.axios.put("/api/pacientes", {
-      nombre: name,
-      apellido: lastName,
-      // fechaNac: birthday,
-      base64img: avatar,
-      headers: {
-        Authorization: header,
+    return this.axios.post(
+      "/api/pacientes",
+      {
+        nombre: name,
+        apellido: lastName,
+        fase: 1,
+        // fechaNac: birthday,
+        base64img: avatar,
       },
-    });
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
   }
 
   putEditPatient(
+    token: string,
     name: string,
     lastName: string,
     birthday: string,
     avatar: string
   ) {
-    return this.axios.put("/api/paciente", {
-      nombre: name,
-      apellido: lastName,
-      fechaNac: birthday,
-      base64img: avatar,
-    });
+    return this.axios.put(
+      "/api/pacientes",
+      {
+        nombre: name,
+        apellido: lastName,
+        fechaNac: birthday,
+        base64img: avatar,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
   }
 
-  deletePatient(name: string) {
-    return this.axios.delete("/api/paciente", {
+  deletePatient(token: string, name: string) {
+    return this.axios.delete("/api/pacientes", {
       params: {
         nombre: name,
+      },
+      headers: {
+        Authorization: `Bearer ${token}`,
       },
     });
   }

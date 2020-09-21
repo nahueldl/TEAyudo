@@ -47,21 +47,14 @@ const AddPatient: React.FC<InfoPatientProps> = ({ title, patient }) => {
   const auxPatient = patient;
 
   const handleAddPatient = () => {
-    debugger;
     setAuthData({ loading: true, error: false });
-    PatientServices.postNewPatient(
-      authData.token!,
-      name,
-      lastName,
-      // birthday,
-      avatar
-    )
+    PatientServices.postNewPatient(authData.token!, name, lastName, avatar)
       .then((res: any) => {
         debugger;
         setAuthData({ loading: false, error: false });
         // goToListPatients();
       })
-      .catch((error: any) => {
+      .catch((_error: any) => {
         debugger;
         setAuthData({ loading: false, error: true });
         //mostrar mensaje con error

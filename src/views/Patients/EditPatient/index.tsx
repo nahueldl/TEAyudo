@@ -37,6 +37,7 @@ const EditPatient: React.FC = () => {
   const handleEditPatient = () => {
     setAuthData({ loading: true, error: false });
     PatientServices.putEditPatient(
+      authData.token!,
       auxName!,
       auxLastName!,
       auxBirthday!,
@@ -52,7 +53,7 @@ const EditPatient: React.FC = () => {
 
   const handleDeletePatient = () => {
     setAuthData({ loading: true, error: false });
-    PatientServices.deletePatient(auxName!)
+    PatientServices.deletePatient(authData.token!, auxName!)
       .then((res: any) => {
         // goToListPatients();
       })
