@@ -45,9 +45,9 @@ const PatientsPage: React.FC = () => {
 };
 
 interface Patient {
-  name: string;
-  lastName: string;
-  birthday: string;
+  id_paciente: any;
+  nombre: string;
+  apellido: string;
   avatar: string;
 }
 

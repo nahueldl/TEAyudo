@@ -6,25 +6,8 @@ import CardWithIcon from "../../../components/CardWithIcon";
 import { addCircleOutline } from "ionicons/icons";
 import { PatientContext } from "../../../context/patient";
 
-// const patients = [
-//   {
-//     name: "Nano",
-//     lastName: "aAaaaA",
-//     birthday: "05/05/0555",
-//     fase: 1,
-//     avatar: "https://api.adorable.io/avatars/100/",
-//   },
-//   {
-//     name: "Tomi",
-//     lastName: "aAaaaA",
-//     birthday: "05/05/0555",
-//     fase: 1,
-//     avatar: "https://api.adorable.io/avatars/1/",
-//   },
-// ];
-
 const ListPatients: React.FC<ListPatientsProps> = (props) => {
-  const { patientData, setPatientData } = useContext(PatientContext);
+  const { setPatientData } = useContext(PatientContext);
   const { navigate } = useContext(NavContext);
 
   const handleCardPatientClick = (patient: any) => {
@@ -54,11 +37,13 @@ const ListPatients: React.FC<ListPatientsProps> = (props) => {
             <CardWithImage
               img={{
                 src: `${patient.avatar}`,
-                alt: `Avatar ${patient.name}`,
+                alt: `Avatar ${patient.nombre}`,
               }}
-              title={patient.name}
+              title={patient.nombre}
               touchable
-              onClick={handleCardPatientClick(patient)}
+              onClick={() => {
+                handleCardPatientClick(patient);
+              }}
               patient={patient}
             />
           </IonCol>
@@ -81,9 +66,9 @@ interface ListPatientsProps {
 }
 
 interface Patient {
-  name: string;
-  lastName: string;
-  birthday: string;
+  id_paciente: any;
+  nombre: string;
+  apellido: string;
   avatar: string;
 }
 

@@ -5,11 +5,10 @@ import {
   IonRow,
   IonList,
   IonItem,
-  IonInput,
-  IonDatetime,
   IonButton,
   IonContent,
   IonAvatar,
+  IonLabel,
 } from "@ionic/react";
 import "./styles.css";
 import Page from "../../../components/Page";
@@ -23,7 +22,7 @@ const ViewPatient: React.FC = () => {
     goToEditPatient();
   };
   const goToEditPatient = useCallback(
-    () => navigate("/pacientes/edicion", "forward"),
+    () => navigate("/pacientes/edicion", "back"),
     [navigate]
   );
 
@@ -41,7 +40,7 @@ const ViewPatient: React.FC = () => {
         <IonGrid className="container-patientAdd">
           <IonRow>
             <form className="form-no-background">
-              <IonList className="mt-5">
+              <IonList className="mt-5 width-75">
                 <IonAvatar className="avatars">
                   <img
                     className="height-auto"
@@ -50,28 +49,25 @@ const ViewPatient: React.FC = () => {
                   />
                 </IonAvatar>
                 <IonItem className="inputMargin">
-                  <IonInput
-                    name="name"
-                    value={patientData.name}
-                    disabled={true}
-                  />
+                  <IonLabel>Nombre:</IonLabel>
+                  <IonLabel className="text-bold">
+                    {patientData.nombre}
+                  </IonLabel>
                 </IonItem>
                 <IonItem className="inputMargin">
-                  <IonInput
-                    name="apellido"
-                    value={patientData.lastName}
-                    required
-                    disabled={true}
-                  />
+                  <IonLabel>Apellido:</IonLabel>
+                  <IonLabel className="text-bold">
+                    {patientData.apellido}
+                  </IonLabel>
                 </IonItem>
-                <IonItem className="p-0">
+                {/* <IonItem className="p-0">
                   <IonDatetime
                     displayFormat="DD MM YYYY"
                     placeholder="Fecha nacimiento"
                     value={patientData.birthday}
                     disabled={true}
                   ></IonDatetime>
-                </IonItem>
+                </IonItem> */}
               </IonList>
               <div>
                 <IonButton

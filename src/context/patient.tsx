@@ -17,9 +17,9 @@ const PatientProvider = (props: any) => {
 };
 
 interface IData {
-  name: string;
-  lastName: string;
-  birthday: string;
+  id_paciente: any;
+  nombre: string;
+  apellido: string;
   avatar: string;
 }
 

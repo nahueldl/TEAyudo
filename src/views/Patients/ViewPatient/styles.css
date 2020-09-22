@@ -11,6 +11,10 @@
   margin-top: 5%;
 }
 
+.width-75 {
+  width: 75%;
+}
+
 .full-width {
   width: 100%;
   max-width: 100%;

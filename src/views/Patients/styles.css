@@ -13,3 +13,7 @@
 .overflow-auto {
   overflow-y: auto !important;
 }
+
+.text-bold {
+  font-weight: bolder;
+}

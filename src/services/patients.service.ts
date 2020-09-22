@@ -42,7 +42,7 @@ class PatientServices {
     token: string,
     name: string,
     lastName: string,
-    birthday: string,
+    // birthday: string,
     avatar: string
   ) {
     return this.axios.put(
@@ -50,7 +50,7 @@ class PatientServices {
       {
         nombre: name,
         apellido: lastName,
-        fechaNac: birthday,
+        // fechaNac: birthday,
         base64img: avatar,
       },
       {

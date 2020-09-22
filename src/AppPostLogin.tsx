@@ -10,9 +10,9 @@ import ProfessionalsPage from "./views/Professionals";
 import ReportsPage from "./views/Reports";
 import ConfigurationPage from "./views/Configuration";
 import { AuthenticationContext } from "./context/authentication";
-import AddPatient from "./views/Patients/AddPatient";
-import ViewPatient from "./views/Patients/ViewPatient";
-import EditPatient from "./views/Patients/EditPatient";
+import AddPatientPage from "./views/Patients/AddPatient";
+import ViewPatientPage from "./views/Patients/ViewPatient";
+import EditPatientPage from "./views/Patients/EditPatient";
 
 const AppPostLogin: React.FC = () => {
   const { authData } = useContext(AuthenticationContext);
@@ -28,10 +28,13 @@ const AppPostLogin: React.FC = () => {
         <Route path="/profesionales" component={ProfessionalsPage} exact />
         <Route path="/informes" component={ReportsPage} exact />
         <Route path="/configuracion" component={ConfigurationPage} exact />
-        <Route path="/pacientes/alta" component={AddPatient} exact />
-        <Route path="/pacientes/informacion" component={ViewPatient} exact />
-        <Route path="/pacientes/edicion" component={EditPatient} exact />
-        {/* <Route path={`/pacientes/${authData.patientName}`} component={verpacientito} exact /> */}
+        <Route path="/pacientes/alta" component={AddPatientPage} exact />
+        <Route
+          path="/pacientes/informacion"
+          component={ViewPatientPage}
+          exact
+        />
+        <Route path="/pacientes/edicion" component={EditPatientPage} exact />
         <Redirect from="/" to="/inicio" />
       </IonRouterOutlet>
     </IonSplitPane>

@@ -19,18 +19,13 @@ import PatientServices from "../../../services/patients.service";
 import Page from "../../../components/Page";
 import { PatientContext } from "../../../context/patient";
 
-const EditPatient: React.FC = () => {
+const EditPatient = () => {
   const { authData, setAuthData } = useContext(AuthenticationContext);
   const { patientData } = useContext(PatientContext);
   const { navigate } = useContext(NavContext);
-  const [auxName, setAuxName] = useState<string>();
-  setAuxName(patientData.name);
-  const [auxLastName, setAuxLastName] = useState<string>();
-  setAuxLastName(patientData.lastName);
-  const [auxBirthday, setAuxBirthday] = useState<string>();
-  setAuxBirthday(patientData.birthday);
-  const [auxAvatar, setAuxAvatar] = useState<string>();
-  setAuxAvatar(patientData.avatar);
+  const [auxName, setAuxName] = useState<string>(patientData.nombre!);
+  const [auxLastName, setAuxLastName] = useState<string>(patientData.apellido!);
+  const [auxAvatar, setAuxAvatar] = useState<string>(patientData.avatar!);
 
   const [showActionDeletePatient, setShowActionDeletePatient] = useState(false);
 
@@ -40,7 +35,6 @@ const EditPatient: React.FC = () => {
       authData.token!,
       auxName!,
       auxLastName!,
-      auxBirthday!,
       auxAvatar!
     )
       .then((res: any) => {
@@ -101,7 +95,7 @@ const EditPatient: React.FC = () => {
                     onIonChange={(e) => setAuxLastName(e.detail.value!)}
                   />
                 </IonItem>
-                <IonItem className="p-0">
+                {/* <IonItem className="p-0">
                   <IonDatetime
                     displayFormat="DD MM YYYY"
                     placeholder="Fecha nacimiento"
@@ -109,7 +103,7 @@ const EditPatient: React.FC = () => {
                     aria-required="true"
                     onIonChange={(e) => setAuxBirthday(e.detail.value!)}
                   ></IonDatetime>
-                </IonItem>
+                </IonItem> */}
               </IonList>
               <div>
                 <IonButton
