@@ -253,6 +253,8 @@ CREATE TABLE [dbo].[Paciente](
 	[id_paciente] [numeric](18, 0) IDENTITY(1,1) NOT NULL,
 	[nombre] [nvarchar](255) NOT NULL,
 	[apellido] [nvarchar](255) NULL,
+	[fase] [int] NULL,
+	[avatar] [varchar](255) NULL,
 	[fecha_hora_alta] [datetime] NOT NULL,
 	[fecha_hora_modificacion] [datetime] NULL,
 	[fecha_hora_baja] [datetime] NULL,
@@ -357,8 +359,9 @@ CREATE TABLE [dbo].[Jugada](
 	[id_jugada] [numeric](18, 0)  IDENTITY(1,1) NOT NULL,
 	[id_paciente] [numeric](18, 0) NOT NULL,
 	[nivel_juego] [int] NOT NULL,
-	[respondio_correctamente] [bit] NOT NULL,
-	[fecha_hora] [datetime] NOT NULL,
+	[respondio_correctamente] [bit] NULL,
+	[fecha_hora_alta] [datetime] NOT NULL,
+	[fecha_hora_respuesta] [datetime] NULL,
  CONSTRAINT [pkJugada] PRIMARY KEY CLUSTERED 
 (
 	[id_jugada] ASC
@@ -368,7 +371,7 @@ CREATE TABLE [dbo].[Jugada](
 ALTER TABLE [dbo].[Jugada]  WITH CHECK ADD  CONSTRAINT [fkJugadaPaciente] FOREIGN KEY([id_paciente])
 REFERENCES [dbo].[Paciente] ([id_paciente])
 
-ALTER TABLE [dbo].[Jugada] ADD  CONSTRAINT [defaultJugadaFecha_hora]  DEFAULT (getdate()) FOR [fecha_hora]
+ALTER TABLE [dbo].[Jugada] ADD  CONSTRAINT [defaultJugadaFecha_hora_alta]  DEFAULT (getdate()) FOR [fecha_hora_alta]
 
 
 /*

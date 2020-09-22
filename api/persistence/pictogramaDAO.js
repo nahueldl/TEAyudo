@@ -404,7 +404,19 @@ const pictogramaDAO = {
 
 		return result;
 		
-	}
+	},
+
+	getForGame: async function () {
+
+		const result = await genericDAO.runQuery("select p.id_pictograma, p.ruta_acceso_local, p.esquematico, p.sexo, p.violencia, p.fecha_hora_alta, p.fecha_hora_modificacion, p.fecha_hora_baja, (select * from (select id_nombre_pictograma, nombre, descripcion, tiene_locucion, tipo, nombre_plural, correcta from (select top(3) np.id_nombre_pictograma, np.nombre, np.descripcion, np.tiene_locucion, np.tipo, np.nombre_plural, 0 as correcta from Nombre_Pictograma np where id_pictograma != p.id_pictograma order by NEWID()) as a union select top(1) np.id_nombre_pictograma, np.nombre, np.descripcion, np.tiene_locucion, np.tipo, np.nombre_plural, 1 as correcta from Nombre_Pictograma np where np.id_pictograma = p.id_pictograma) as b FOR JSON AUTO) as nombres from pictograma p where p.id_pictograma = ( select top(1) p.id_pictograma from Pictograma p inner join Categoria_Pictograma cp on cp.id_pictograma = p.id_pictograma inner join Categoria c on c.id_categoria = cp.id_categoria where p.activo = 1 and c.activo = 1 and c.id_usuario_rol is null order by NEWID() )");
+
+		if(result.state === estadosRespuesta.OK){
+			result.response.forEach(picto => picto.nombres = JSON.parse(picto.nombres));
+			result.response = result.response[0];
+		}
+		
+		return result;
+	},
 
 }
 

@@ -5,6 +5,7 @@ const isAuth = require('../middleware/auth').isAuth;
 const estadosRespuesta = require('../models/estados_respuesta');
 const rolService = require('../services/rolService');
 const { Int } = require('mssql');
+const jugadaService = require('../services/jugadaService');
 
 
 //GET Pacientes
@@ -76,6 +77,30 @@ router.put('/:id', isAuth, async (req, res) => {
 		res.status(200).json({msg: `Se ha actualizado el paciente con id=${req.params.id}`});
 	else if(result.state === estadosRespuesta.USERERROR)
 		res.status(404).json({msg: result.response});  
+	else if(result.state === estadosRespuesta.SERVERERROR)
+		res.status(500).json({msg: "Ha ocurrido un error inesperado en el servidor"});
+});
+
+
+//GET Iniciar Juego
+router.get('/:id/jugada', isAuth, async (req, res) => {
+	const result = await jugadaService.iniciarJugada(req.params.id, req.user);
+	if(result.state === estadosRespuesta.OK)
+		res.status(200).json(result.response);
+	else if(result.state === estadosRespuesta.USERERROR)
+		res.status(400).json({msg: result.response});  
+	else if(result.state === estadosRespuesta.SERVERERROR)
+		res.status(500).json({msg: "Ha ocurrido un error inesperado en el servidor"});
+});
+
+
+//POST Resultado Juego
+router.post('/:idPaciente/jugada/:idJugada/resultado', isAuth, async (req, res) => {
+	const result = await jugadaService.finalizarJugada(req.params.idJugada, req.body.resultado, req.user);
+	if(result.state === estadosRespuesta.OK)
+		res.status(200).json({msg: "El resultado ha sido almacenado"});
+	else if(result.state === estadosRespuesta.USERERROR)
+		res.status(400).json({msg: result.response});  
 	else if(result.state === estadosRespuesta.SERVERERROR)
 		res.status(500).json({msg: "Ha ocurrido un error inesperado en el servidor"});
 });
