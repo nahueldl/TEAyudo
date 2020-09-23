@@ -1,12 +1,15 @@
 const informeDAO = {
     insert: async function (informe){
-		if(isNullOrUndefined(informe)){
+		if(informe == undefined || informe == null || informe.length < 1){
 			const result = {
+				state: estadosRespuesta.USERERROR,
 				response: 'informe no esta definido'
 			}
 			return result;
 		}
 
+
+		//Pensar como voy a hacer el INSERT, seguro lo de abajo esta mal
 		const tablaInforme = new sql.Table('Informe');
         tablaInforme.columns.add('id_usuario_rol', sql.Numeric(18,0), {nullable: true});
         // si los informes los van a hacer solo los profesionales podriamos sacarlo? POdria ir el id profesional

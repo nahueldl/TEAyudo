@@ -35,6 +35,7 @@ app.use('/api/pacientes', require('./routes/pacienteController'));
 app.use('/api/pictogramas', require('./routes/pictogramasController'));
 app.use('/api/traducciones', require('./routes/traduccionController'));
 app.use('/api/tipoDocumento', require('./routes/tiposDocumentoController'));
+app.use('/api/informes', require('./routes/informeController'));
 
 
 
