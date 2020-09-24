@@ -15,7 +15,7 @@ import {
 } from "@ionic/react";
 import "./styles.css";
 import { trash, close } from "ionicons/icons";
-import PatientServices from "../../../services/patients.service";
+import PatientServices from "../../../services/patients.services";
 import Page from "../../../components/Page";
 import { PatientContext } from "../../../context/patient";
 
