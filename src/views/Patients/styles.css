@@ -1,10 +1,19 @@
 .container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background: none !important;
 }
 
 .title {
-    text-align: center;
+  text-align: center;
+}
+
+.overflow-auto {
+  overflow-y: auto !important;
+}
+
+.text-bold {
+  font-weight: bolder;
 }

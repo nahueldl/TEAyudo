@@ -5,12 +5,15 @@ import * as serviceWorker from "./serviceWorker";
 import { AuthenticationProvider } from "./context/authentication";
 import { RegistrationProvider } from "./context/registration";
 import { PlatformProvider } from "./context/platform";
+import { PatientProvider } from "./context/patient";
 
 ReactDOM.render(
   <PlatformProvider>
     <AuthenticationProvider>
       <RegistrationProvider>
-        <App />
+        <PatientProvider>
+          <App />
+        </PatientProvider>
       </RegistrationProvider>
     </AuthenticationProvider>
   </PlatformProvider>,

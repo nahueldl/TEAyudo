@@ -24,6 +24,8 @@ import "./theme/variables.css";
 import AppPostLogin from "./AppPostLogin";
 import LogInSignUpPage from "./views/LogIn&SignUp";
 import PatientSelection from "./views/Patients/Selection";
+import PatientPage from "./views/Patients/Page";
+import PatientAdd from "./views/Patients/AddPatient";
 import { AuthenticationContext } from "./context/authentication";
 import RoleSelection from "./views/Roles/Selection";
 
@@ -38,17 +40,18 @@ const App: React.FC = () => {
             // Si ambas son verdaderas, ir a la app
             <AppPostLogin />
           ) : (
-            // Si está logueado pero no eligió paciente, debe elegir
-            <Redirect from="*" to="/pacientes/seleccion" />
+            //Está autenticado, registró cuenta nueva (faltaría elegir rol, cargar datos extra si necesario, cargar un paciente)
+            <Redirect from="*" to="/login" />
           )
         ) : (
-          //Si no está logueado, debe loguearse
+          //Si no está autenticado, debe iniciar sesión/registrarse
           <Redirect from="*" to="/login" />
         )}
-
+        {/* <AppPostLogin /> */}
+        <Route path="/alta" component={PatientAdd} exact />
         <Route path="/login" component={LogInSignUpPage} exact />
         <Route path="/pacientes/seleccion" component={PatientSelection} exact />
-        <Route path="/pacientes/alta" component={PatientSelection} exact />
+        <Route path="/pacientes/principal" component={PatientPage} exact />
         <Route path="/roles/seleccion" component={RoleSelection} exact />
       </IonReactRouter>
     </IonApp>

@@ -7,9 +7,14 @@ const CardWithImage: React.FC<CardProps> = ({
   title,
   touchable,
   onClick,
+  patient,
 }) => {
   const handleClick = () => {
-    onClick(title);
+    if (patient !== undefined) {
+      onClick("patient", patient);
+    } else {
+      onClick(title);
+    }
   };
 
   return (
@@ -30,11 +35,19 @@ interface CardProps {
   title?: string;
   touchable: boolean;
   onClick: any;
+  patient?: Patient;
 }
 
 interface IImage {
   src: string;
   alt: string;
+}
+
+interface Patient {
+  id_paciente: any;
+  nombre: string;
+  apellido: string;
+  avatar: string;
 }
 
 export default CardWithImage;

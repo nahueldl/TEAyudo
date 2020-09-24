@@ -1,0 +1,21 @@
+.card {
+  padding: 10px;
+  display: flex;
+  margin: auto;
+}
+
+.title {
+  display: flex;
+  justify-content: center;
+  padding-top: 5px;
+}
+
+.icon {
+  font-size: 3em;
+  margin: auto;
+  display: flex;
+}
+
+.mt-5p {
+  margin-top: 5% !important;
+}
