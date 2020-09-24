@@ -1,6 +1,8 @@
 const http = require('http');
 const informeDAO = require('../persistence/informeDAO');
 const estadosRespuesta = require('../models/estados_respuesta');
+const Handlebars = require("handlebars");
+
 
 const informeService = {
 
@@ -19,19 +21,26 @@ const informeService = {
         
         let data = { "name": "Alan", "hometown": "Somewhere, TX",
                     "kids": [{"name": "Jimmy", "age": "12"}, {"name": "Sally", "age": "4"}]};
-        let result = template(data);
+        let resultado = template(data);
 
-
+       
         //Renderizacion y creacion del PDF
+        let informe;
         let fs = require('fs');
         let pdf = require('html-pdf');
-        let html = fs.readFileSync('./test/businesscard.html', 'utf8'); //esto deberia tomar el result de arriba
+        let html = resultado; //esto deberia tomar el result de arriba
         let options = { format: 'Letter' };
         
-        pdf.create(html, options).toFile('./businesscard.pdf', function(err, res) {
-        if (err) return console.log(err);
-        console.log(res); // { filename: '/app/businesscard.pdf' }
-});
+        pdf.create(html).toStream(async function(err, stream) {
+            informe = stream;
+         });
+
+        const result = {
+            state: estadosRespuesta.OK,
+            response: informe
+            }
+            return result;       
+        
     }
 
 }
