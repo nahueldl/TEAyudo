@@ -6,14 +6,27 @@ class RolesService {
     this.axios = new AxiosWrapper({ useErrorInterceptor: true });
   }
 
-  handleAssignRol(idRol: number, description?: string) {
-    return this.axios.post("/api/usuario/roles", {
-      id_rol: idRol,
-      descripcion: description,
-    });
+  handleAssignRol(
+    token: string | undefined,
+    idRol: number,
+    description?: string
+  ) {
+    const header = `Bearer ${token}`;
+    return this.axios.post(
+      "/api/usuario/roles",
+      {
+        id_rol: idRol,
+        descripcion: description,
+      },
+      {
+        headers: {
+          Authorization: header,
+        },
+      }
+    );
   }
 
-  handleGetRoles(token: string):any {
+  handleGetRoles(token: string): any {
     const header = `Bearer ${token}`;
     return this.axios.get("/api/usuario/roles", {
       headers: {
