@@ -2,6 +2,7 @@ import React, { useContext, useState, useCallback } from "react";
 import { IonContent, NavContext, IonSlides, IonSlide } from "@ionic/react";
 import { AuthenticationContext } from "../../context/authentication";
 import AuthenticationService from "../../services/authentication.services";
+import RolesService from "../../services/roles.services";
 import OverlayLeft from "./OverlayLeft";
 import OverlayRight from "./OverlayRight";
 import SignInForm from "./SignInForm";
@@ -16,7 +17,7 @@ const LogInSignUpPage: React.FC = () => {
   const { registrationData, setRegistrationData } = useContext(
     RegistrationContext
   );
-  const { setAuthData } = useContext(AuthenticationContext);
+  const { authData, setAuthData } = useContext(AuthenticationContext);
   const { platformData } = useContext(PlatformContext);
   const { isMobile } = platformData;
 
@@ -79,8 +80,35 @@ const LogInSignUpPage: React.FC = () => {
       (licenseNumber as unknown) as string
     )
       .then((res: any) => {
-        setAuthData({ username: email, authenticated: true, loading: false, token: res.data.token });
-        goToAddPatient();
+        setAuthData({
+          username: email,
+          token: res.data.token,
+        });
+        if (licenseNumber) {
+          RolesService.handleAssignRol(res.data.token, 2, "Profesional")
+            .then((res: any) => {
+              setAuthData({
+                authenticated: true,
+                loading: false,
+              });
+              goToAddPatient();
+            })
+            .catch((_error: any) => {
+              setAuthData({ loading: false, error: true });
+            });
+        } else {
+          RolesService.handleAssignRol(res.data.token, 1, "Familiar")
+            .then((res: any) => {
+              setAuthData({
+                authenticated: true,
+                loading: false,
+              });
+              goToAddPatient();
+            })
+            .catch((_error: any) => {
+              setAuthData({ loading: false, error: true });
+            });
+        }
       })
       .catch((_error: any) => {
         setAuthData({ loading: false, error: true });
