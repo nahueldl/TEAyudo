@@ -40,6 +40,18 @@ const AddPatient: React.FC<InfoPatientProps> = ({ title, patient }) => {
           Math.floor(Math.random() * 200) +
           "/"
   );
+  const encodeImg = (filePath?: string) => {
+    debugger;
+    // Base64.prototype.encodeFile(filePath == undefined ? "" : filePath).then(
+    //   (base64File: string) => {
+    //     console.log(base64File);
+    //     return base64File;
+    //   },
+    //   (err: any) => {
+    //     console.log(err);
+    //   }
+    // );
+  };
 
   const handleAddPatient = () => {
     setAuthData({ loading: true, error: false });
