@@ -28,7 +28,7 @@ class PatientServices {
         apellido: lastName,
         fase: 1,
         // fechaNac: birthday,
-        base64img: avatar,
+        // base64img: avatar,
       },
       {
         headers: {
@@ -40,17 +40,17 @@ class PatientServices {
 
   putEditPatient(
     token: string,
+    id: any,
     name: string,
     lastName: string,
-    // birthday: string,
     avatar: string
   ) {
     return this.axios.put(
-      "/api/pacientes",
+      "/api/pacientes/" + id,
       {
         nombre: name,
         apellido: lastName,
-        // fechaNac: birthday,
+        fase: 1,
         base64img: avatar,
       },
       {
@@ -61,11 +61,8 @@ class PatientServices {
     );
   }
 
-  deletePatient(token: string, name: string) {
-    return this.axios.delete("/api/pacientes", {
-      params: {
-        nombre: name,
-      },
+  deletePatient(token: string, id: any) {
+    return this.axios.delete("/api/pacientes/" + id, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

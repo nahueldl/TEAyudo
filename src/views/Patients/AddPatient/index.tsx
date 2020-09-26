@@ -4,23 +4,15 @@ import {
   NavContext,
   IonGrid,
   IonRow,
-  IonCol,
   IonList,
   IonItem,
   IonInput,
   IonDatetime,
-  IonSelect,
-  IonSelectOption,
-  IonButton,
   IonContent,
-  IonLabel,
   IonAvatar,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonImg,
-  IonIcon,
-  IonActionSheet,
+  IonAlert,
+  IonLoading,
+  IonButton,
 } from "@ionic/react";
 import { Base64 } from "@ionic-native/base64/ngx";
 import "./styles.css";
@@ -30,6 +22,8 @@ import Page from "../../../components/Page";
 const AddPatient: React.FC<InfoPatientProps> = ({ title, patient }) => {
   const { authData, setAuthData } = useContext(AuthenticationContext);
   const { navigate } = useContext(NavContext);
+  const [errorMessage, setErrorMessage] = useState<string>();
+  const { error, loading } = authData;
   const [name, setName] = useState<string>(
     patient !== undefined ? patient.name : ""
   );
@@ -42,9 +36,10 @@ const AddPatient: React.FC<InfoPatientProps> = ({ title, patient }) => {
   const [avatar, setAvatar] = useState<string>(
     patient !== undefined
       ? patient.avatar
-      : "https://api.adorable.io/avatars/50/"
+      : "https://api.adorable.io/avatars/" +
+          Math.floor(Math.random() * 200) +
+          "/"
   );
-  const auxPatient = patient;
 
   const handleAddPatient = () => {
     setAuthData({ loading: true, error: false });
@@ -55,9 +50,10 @@ const AddPatient: React.FC<InfoPatientProps> = ({ title, patient }) => {
         // goToListPatients();
       })
       .catch((_error: any) => {
-        debugger;
+        setErrorMessage(
+          "Hubo un inconveniente creando al paciente, pruebe más tarde."
+        );
         setAuthData({ loading: false, error: true });
-        //mostrar mensaje con error
       });
   };
 
@@ -77,7 +73,12 @@ const AddPatient: React.FC<InfoPatientProps> = ({ title, patient }) => {
             <form className="form-no-background">
               <IonList className="mt-5">
                 <IonAvatar className="avatars">
-                  <img className="height-auto" src={avatar} alt="Avatar" />
+                  <img
+                    id="avatar"
+                    className="height-auto"
+                    src={avatar}
+                    alt="Avatar"
+                  />
                 </IonAvatar>
                 <IonItem className="inputMargin">
                   <IonInput
@@ -128,6 +129,19 @@ const AddPatient: React.FC<InfoPatientProps> = ({ title, patient }) => {
                 </IonButton>
               </div>
             </form>
+            <IonLoading
+              isOpen={loading!}
+              message={"Trabajando..."}
+              spinner="crescent"
+            />
+            <IonAlert
+              isOpen={error!}
+              animated
+              backdropDismiss
+              keyboardClose
+              message={errorMessage}
+              onDidDismiss={() => setAuthData({ error: false })}
+            />
           </IonRow>
         </IonGrid>
       </IonContent>

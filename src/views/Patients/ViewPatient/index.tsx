@@ -9,6 +9,7 @@ import {
   IonContent,
   IonAvatar,
   IonLabel,
+  IonCol,
 } from "@ionic/react";
 import "./styles.css";
 import Page from "../../../components/Page";
@@ -40,7 +41,7 @@ const ViewPatient: React.FC = () => {
         <IonGrid className="container-patientAdd">
           <IonRow>
             <form className="form-no-background">
-              <IonList className="mt-5 width-75">
+              <IonList className="mt-5">
                 <IonAvatar className="avatars">
                   <img
                     className="height-auto"
@@ -49,16 +50,20 @@ const ViewPatient: React.FC = () => {
                   />
                 </IonAvatar>
                 <IonItem className="inputMargin">
-                  <IonLabel>Nombre:</IonLabel>
-                  <IonLabel className="text-bold">
-                    {patientData.nombre}
-                  </IonLabel>
+                  <label>
+                    Nombre:{"  "}
+                    <strong className="text-bold pl-5">
+                      {patientData.nombre}
+                    </strong>
+                  </label>
                 </IonItem>
                 <IonItem className="inputMargin">
-                  <IonLabel>Apellido:</IonLabel>
-                  <IonLabel className="text-bold">
-                    {patientData.apellido}
-                  </IonLabel>
+                  <label>
+                    Apellido:{"  "}
+                    <strong className="text-bold pl-5">
+                      {patientData.apellido}
+                    </strong>
+                  </label>
                 </IonItem>
                 {/* <IonItem className="p-0">
                   <IonDatetime
@@ -82,7 +87,7 @@ const ViewPatient: React.FC = () => {
                   onClick={handleCancel}
                   expand="block"
                 >
-                  Cancelar
+                  Volver
                 </IonButton>
               </div>
             </form>

@@ -17,3 +17,7 @@
 .text-bold {
   font-weight: bolder;
 }
+
+.pl-5 {
+  padding-left: 5px;
+}

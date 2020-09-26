@@ -12,6 +12,8 @@ import {
   IonContent,
   IonAvatar,
   IonActionSheet,
+  IonLoading,
+  IonAlert,
 } from "@ionic/react";
 import "./styles.css";
 import { trash, close } from "ionicons/icons";
@@ -26,35 +28,50 @@ const EditPatient = () => {
   const [auxName, setAuxName] = useState<string>(patientData.nombre!);
   const [auxLastName, setAuxLastName] = useState<string>(patientData.apellido!);
   const [auxAvatar, setAuxAvatar] = useState<string>(patientData.avatar!);
-
+  const [errorMessage, setErrorMessage] = useState<string>();
+  const { error, loading } = authData;
   const [showActionDeletePatient, setShowActionDeletePatient] = useState(false);
 
   const handleEditPatient = () => {
     setAuthData({ loading: true, error: false });
     PatientServices.putEditPatient(
       authData.token!,
+      patientData.id_paciente,
       auxName!,
       auxLastName!,
       auxAvatar!
     )
       .then((res: any) => {
+        debugger;
         //mostrar datos editados
       })
       .catch((error: any) => {
+        setErrorMessage(
+          "Hubo un inconveniente editando al paciente, pruebe más tarde."
+        );
+        setAuthData({ loading: false, error: true });
         //mostrar mensaje con error
       });
   };
 
   const handleDeletePatient = () => {
     setAuthData({ loading: true, error: false });
-    PatientServices.deletePatient(authData.token!, auxName!)
+    PatientServices.deletePatient(authData.token!, patientData.id_paciente!)
       .then((res: any) => {
-        // goToListPatients();
+        goToListPatients();
       })
       .catch((error: any) => {
+        setErrorMessage(
+          "Hubo un inconveniente eliminando al paciente, pruebe más tarde."
+        );
+        setAuthData({ loading: false, error: true });
         //mostrar mensaje con error
       });
   };
+
+  const goToListPatients = useCallback(() => navigate("/pacientes", "back"), [
+    navigate,
+  ]);
 
   const handleCancel = () => {
     goToViewPatient();
@@ -136,7 +153,7 @@ const EditPatient = () => {
                       role: "destructive",
                       icon: trash,
                       handler: () => {
-                        console.log("Delete clicked");
+                        handleDeletePatient();
                       },
                     },
                     {
@@ -151,6 +168,19 @@ const EditPatient = () => {
                 ></IonActionSheet>
               </div>
             </form>
+            <IonLoading
+              isOpen={loading!}
+              message={"Trabajando..."}
+              spinner="crescent"
+            />
+            <IonAlert
+              isOpen={error!}
+              animated
+              backdropDismiss
+              keyboardClose
+              message={errorMessage}
+              onDidDismiss={() => setAuthData({ error: false })}
+            />
           </IonRow>
         </IonGrid>
       </IonContent>
