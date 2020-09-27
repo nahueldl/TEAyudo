@@ -28,6 +28,9 @@ const AuthenticationProvider = (props: any) => {
           : setAuthData({ role: "M" })
         : setAuthData({ role: undefined });
     });
+    Storage.get({ key: "username" }).then((res) => {
+      setAuthData({ username: res.value! });
+    });
   };
 
   useEffect(() => {
