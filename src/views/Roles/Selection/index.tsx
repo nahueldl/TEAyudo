@@ -14,6 +14,8 @@ import {
 import { AuthenticationContext } from "../../../context/authentication";
 import RolesService from "../../../services/roles.services";
 import "./styles.css";
+import { Plugins } from "@capacitor/core";
+const { Storage } = Plugins;
 
 const RoleSelection: React.FC = () => {
   const { navigate } = useContext(NavContext);
@@ -43,6 +45,7 @@ const RoleSelection: React.FC = () => {
 
   const handleRolSelection = (rol: any) => {
     setAuthData({ role: rol.id_rol });
+    Storage.set({key: "rol",value: rol.id_rol});
     goToSelectPatient();
   };
 

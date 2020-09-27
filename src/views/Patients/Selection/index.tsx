@@ -3,7 +3,8 @@ import "../styles.css";
 import { IonGrid, IonRow, IonCol, IonContent, NavContext } from "@ionic/react";
 import { AuthenticationContext } from "../../../context/authentication";
 import CardWithImage from "../../../components/CardWithImage";
-
+import { Plugins } from "@capacitor/core";
+const { Storage } = Plugins;
 const patients = [
   { name: "Nano", phase: 3 },
   { name: "Toto", phase: 1 },
@@ -15,14 +16,14 @@ const PatientSelection: React.FC = () => {
   const { navigate } = useContext(NavContext);
 
   const handleClick = (name: string) => {
-    setAuthData({patientName: name})
+    setAuthData({ patientName: name });
+    Storage.set({ key: "patientName", value: name });
     goToHome();
   };
 
-  const goToHome = useCallback(
-    () => navigate(`/inicio`, "forward"),
-    [navigate]
-  );
+  const goToHome = useCallback(() => navigate(`/inicio`, "forward"), [
+    navigate,
+  ]);
   return (
     <IonContent>
       <IonGrid className="container">
