@@ -1,317 +1,35 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Page from "../../components/Page";
 import { ReactSortable } from "react-sortablejs";
-import { IonGrid, IonRow, IonCol } from "@ionic/react";
+import { IonGrid, IonRow, IonCol, IonList, IonItem } from "@ionic/react";
 import "./styles.css";
 import CardWithImage from "../../components/CardWithImage";
 import { PlatformContext } from "../../context/platform";
-
-const pictograms = [
-  {
-    id_pictograma: 1,
-    ruta_acceso_local: "https://api.arasaac.org/api/pictograms/36864",
-    esquematico: true,
-    sexo: false,
-    violencia: false,
-    fecha_hora_alta: "2020-07-23T06:23:26.800Z",
-    fecha_hora_modificacion: null,
-    fecha_hora_baja: null,
-    estado: 1,
-    nombre_personalizado: "NombrePersonalizado1",
-    favorito: false,
-    nombres: [
-      {
-        id_nombre_pictograma: 1,
-        nombre: "persona con pantalla",
-        tiene_locucion: false,
-        tipo: 2,
-        nombre_plural: "personas con pantalla",
-      },
-      {
-        id_nombre_pictograma: 2,
-        nombre: "llevar pantalla",
-        tiene_locucion: false,
-        tipo: 3,
-      },
-    ],
-    etiquetas: null,
-  },
-  {
-    id_pictograma: 2,
-    ruta_acceso_local: "https://api.arasaac.org/api/pictograms/36865",
-    esquematico: true,
-    sexo: false,
-    violencia: false,
-    fecha_hora_alta: "2020-07-23T06:23:26.800Z",
-    fecha_hora_modificacion: null,
-    fecha_hora_baja: null,
-    estado: 1,
-    nombre_personalizado: "NombrePersonalizado1",
-    favorito: false,
-    nombres: [
-      {
-        id_nombre_pictograma: 1,
-        nombre: "persona con pantalla",
-        tiene_locucion: false,
-        tipo: 2,
-        nombre_plural: "personas con pantalla",
-      },
-      {
-        id_nombre_pictograma: 2,
-        nombre: "llevar pantalla",
-        tiene_locucion: false,
-        tipo: 3,
-      },
-    ],
-    etiquetas: null,
-  },
-  {
-    id_pictograma: 3,
-    ruta_acceso_local: "https://api.arasaac.org/api/pictograms/36866",
-    esquematico: true,
-    sexo: false,
-    violencia: false,
-    fecha_hora_alta: "2020-07-23T06:23:26.800Z",
-    fecha_hora_modificacion: null,
-    fecha_hora_baja: null,
-    estado: 1,
-    nombre_personalizado: "NombrePersonalizado1",
-    favorito: false,
-    nombres: [
-      {
-        id_nombre_pictograma: 1,
-        nombre: "persona con pantalla",
-        tiene_locucion: false,
-        tipo: 2,
-        nombre_plural: "personas con pantalla",
-      },
-      {
-        id_nombre_pictograma: 2,
-        nombre: "llevar pantalla",
-        tiene_locucion: false,
-        tipo: 3,
-      },
-    ],
-    etiquetas: null,
-  },
-  {
-    id_pictograma: 4,
-    ruta_acceso_local: "https://api.arasaac.org/api/pictograms/36867",
-    esquematico: true,
-    sexo: false,
-    violencia: false,
-    fecha_hora_alta: "2020-07-23T06:23:26.800Z",
-    fecha_hora_modificacion: null,
-    fecha_hora_baja: null,
-    estado: 1,
-    nombre_personalizado: "NombrePersonalizado1",
-    favorito: false,
-    nombres: [
-      {
-        id_nombre_pictograma: 1,
-        nombre: "persona con pantalla",
-        tiene_locucion: false,
-        tipo: 2,
-        nombre_plural: "personas con pantalla",
-      },
-      {
-        id_nombre_pictograma: 2,
-        nombre: "llevar pantalla",
-        tiene_locucion: false,
-        tipo: 3,
-      },
-    ],
-    etiquetas: null,
-  },
-  {
-    id_pictograma: 5,
-    ruta_acceso_local: "https://api.arasaac.org/api/pictograms/36868",
-    esquematico: true,
-    sexo: false,
-    violencia: false,
-    fecha_hora_alta: "2020-07-23T06:23:26.800Z",
-    fecha_hora_modificacion: null,
-    fecha_hora_baja: null,
-    estado: 1,
-    nombre_personalizado: "NombrePersonalizado1",
-    favorito: false,
-    nombres: [
-      {
-        id_nombre_pictograma: 1,
-        nombre: "persona con pantalla",
-        tiene_locucion: false,
-        tipo: 2,
-        nombre_plural: "personas con pantalla",
-      },
-      {
-        id_nombre_pictograma: 2,
-        nombre: "llevar pantalla",
-        tiene_locucion: false,
-        tipo: 3,
-      },
-    ],
-    etiquetas: null,
-  },
-  {
-    id_pictograma: 6,
-    ruta_acceso_local: "https://api.arasaac.org/api/pictograms/36869",
-    esquematico: true,
-    sexo: false,
-    violencia: false,
-    fecha_hora_alta: "2020-07-23T06:23:26.800Z",
-    fecha_hora_modificacion: null,
-    fecha_hora_baja: null,
-    estado: 1,
-    nombre_personalizado: "NombrePersonalizado1",
-    favorito: false,
-    nombres: [
-      {
-        id_nombre_pictograma: 1,
-        nombre: "persona con pantalla",
-        tiene_locucion: false,
-        tipo: 2,
-        nombre_plural: "personas con pantalla",
-      },
-      {
-        id_nombre_pictograma: 2,
-        nombre: "llevar pantalla",
-        tiene_locucion: false,
-        tipo: 3,
-      },
-    ],
-    etiquetas: null,
-  },
-  {
-    id_pictograma: 7,
-    ruta_acceso_local: "https://api.arasaac.org/api/pictograms/36870",
-    esquematico: true,
-    sexo: false,
-    violencia: false,
-    fecha_hora_alta: "2020-07-23T06:23:26.800Z",
-    fecha_hora_modificacion: null,
-    fecha_hora_baja: null,
-    estado: 1,
-    nombre_personalizado: "NombrePersonalizado1",
-    favorito: false,
-    nombres: [
-      {
-        id_nombre_pictograma: 1,
-        nombre: "persona con pantalla",
-        tiene_locucion: false,
-        tipo: 2,
-        nombre_plural: "personas con pantalla",
-      },
-      {
-        id_nombre_pictograma: 2,
-        nombre: "llevar pantalla",
-        tiene_locucion: false,
-        tipo: 3,
-      },
-    ],
-    etiquetas: null,
-  },
-  {
-    id_pictograma: 8,
-    ruta_acceso_local: "https://api.arasaac.org/api/pictograms/36871",
-    esquematico: true,
-    sexo: false,
-    violencia: false,
-    fecha_hora_alta: "2020-07-23T06:23:26.800Z",
-    fecha_hora_modificacion: null,
-    fecha_hora_baja: null,
-    estado: 1,
-    nombre_personalizado: "NombrePersonalizado1",
-    favorito: false,
-    nombres: [
-      {
-        id_nombre_pictograma: 1,
-        nombre: "persona con pantalla",
-        tiene_locucion: false,
-        tipo: 2,
-        nombre_plural: "personas con pantalla",
-      },
-      {
-        id_nombre_pictograma: 2,
-        nombre: "llevar pantalla",
-        tiene_locucion: false,
-        tipo: 3,
-      },
-    ],
-    etiquetas: null,
-  },
-  {
-    id_pictograma: 9,
-    ruta_acceso_local: "https://api.arasaac.org/api/pictograms/36872",
-    esquematico: true,
-    sexo: false,
-    violencia: false,
-    fecha_hora_alta: "2020-07-23T06:23:26.800Z",
-    fecha_hora_modificacion: null,
-    fecha_hora_baja: null,
-    estado: 1,
-    nombre_personalizado: "NombrePersonalizado1",
-    favorito: false,
-    nombres: [
-      {
-        id_nombre_pictograma: 1,
-        nombre: "persona con pantalla",
-        tiene_locucion: false,
-        tipo: 2,
-        nombre_plural: "personas con pantalla",
-      },
-      {
-        id_nombre_pictograma: 2,
-        nombre: "llevar pantalla",
-        tiene_locucion: false,
-        tipo: 3,
-      },
-    ],
-    etiquetas: null,
-  },
-  {
-    id_pictograma: 10,
-    ruta_acceso_local: "https://api.arasaac.org/api/pictograms/36873",
-    esquematico: true,
-    sexo: false,
-    violencia: false,
-    fecha_hora_alta: "2020-07-23T06:23:26.800Z",
-    fecha_hora_modificacion: null,
-    fecha_hora_baja: null,
-    estado: 1,
-    nombre_personalizado: "NombrePersonalizado1",
-    favorito: false,
-    nombres: [
-      {
-        id_nombre_pictograma: 1,
-        nombre: "persona con pantalla",
-        tiene_locucion: false,
-        tipo: 2,
-        nombre_plural: "personas con pantalla",
-      },
-      {
-        id_nombre_pictograma: 2,
-        nombre: "llevar pantalla",
-        tiene_locucion: false,
-        tipo: 3,
-      },
-    ],
-    etiquetas: null,
-  },
-];
-
-const getPictogramsLala = (result: 0 | 1) => {
-  return pictograms.filter((item) => pictograms.indexOf(item) % 2 === result);
-};
+import CategoriesServices from "../../services/categories.services";
+import { AuthenticationContext } from "../../context/authentication";
+import { PatientContext } from "../../context/patient";
 
 const ComunicationPage: React.FC = () => {
-  const [selectedItems, setselectedItems] = useState<any[]>(
-    getPictogramsLala(0)
-  );
-  const [availableItems, setAvailableItems] = useState<any[]>(
-    getPictogramsLala(1)
-  );
+  const [selectedItems, setselectedItems] = useState<any[]>([]);
+  const [availableItems, setAvailableItems] = useState<any[]>([]);
+  const [categories, setCategories] = useState<any[]>();
 
   const { isMobile } = useContext(PlatformContext).platformData;
+  const { authData, setAuthData } = useContext(AuthenticationContext);
+  const { patientData } = useContext(PatientContext);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => getCategories(), []);
+
+  const getCategories = () => {
+    setAuthData({ loading: true, error: false });
+    CategoriesServices.getCategories(authData.token!, patientData.id_paciente)
+      .then((res: any) => {
+        setCategories(res.data);
+      })
+      .catch((_error: any) => {
+        setAuthData({ loading: false, error: true });
+      });
+  };
 
   return (
     <Page pageTitle="Comunicarse" showHomeButton>
@@ -319,13 +37,13 @@ const ComunicationPage: React.FC = () => {
         <IonRow className="tirafrase">
           <IonCol>
             <ReactSortable
-              list={selectedItems}
+              list={selectedItems!}
               setList={setselectedItems}
               animation={150}
               group="shared-group-name"
               className={`sortable ${isMobile ? "mobile" : ""}`}
             >
-              {selectedItems.map((item) => (
+              {selectedItems!.map((item) => (
                 <CardWithImage
                   img={{ src: item.ruta_acceso_local, alt: "" }}
                   touchable={false}
@@ -337,7 +55,13 @@ const ComunicationPage: React.FC = () => {
         </IonRow>
         <IonRow>
           <IonCol>
-            <IonRow></IonRow>
+            <IonList>
+              {categories?.map((item) => (
+                <IonItem detail>
+                  {item.nombre}
+                </IonItem>
+              ))}
+            </IonList>
           </IonCol>
           <IonCol>
             <ReactSortable
@@ -347,7 +71,7 @@ const ComunicationPage: React.FC = () => {
               group="shared-group-name"
               className={`sortable ${isMobile ? " mobile" : ""}`}
             >
-              {availableItems.map((item) => (
+              {availableItems!.map((item) => (
                 <CardWithImage
                   img={{ src: item.ruta_acceso_local, alt: "" }}
                   touchable={false}
