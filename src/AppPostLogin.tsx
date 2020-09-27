@@ -13,6 +13,7 @@ import { AuthenticationContext } from "./context/authentication";
 import AddPatientPage from "./views/Patients/AddPatient";
 import ViewPatientPage from "./views/Patients/ViewPatient";
 import EditPatientPage from "./views/Patients/EditPatient";
+import RolesPage from "./views/Roles/Page";
 
 const AppPostLogin: React.FC = () => {
   const { authData } = useContext(AuthenticationContext);
