@@ -11,6 +11,7 @@ const PatientsPage: React.FC = () => {
   const { navigate } = useContext(NavContext);
 
   useEffect(() => getPatients(), []);
+
   const getPatients = () => {
     setAuthData({ loading: true, error: false });
     PatientServices.getPatientsFromUser(authData.token!)
@@ -36,7 +37,11 @@ const PatientsPage: React.FC = () => {
   return (
     <Page pageTitle="Pacientes" showHomeButton>
       {authData.loading ? (
-        <IonLoading isOpen={authData.loading!} message="Trabajando..." />
+        <IonLoading
+          isOpen={authData.loading!}
+          message="Trabajando..."
+          spinner="crescent"
+        />
       ) : (
         <ListPatients patients={patients}></ListPatients>
       )}
