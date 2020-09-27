@@ -1,4 +1,3 @@
-import { stringify } from "querystring";
 import AxiosWrapper from "../utils/axios";
 
 class CategoriesService {
@@ -7,7 +6,7 @@ class CategoriesService {
     this.axios = new AxiosWrapper({ useErrorInterceptor: true });
   }
 
-  getCategories(token: string, patientId: string) {
+  getCategories(token: string, patientId: string):any {
     const header = `Bearer ${token}`;
 
     return this.axios.get("/api/categorias", {
