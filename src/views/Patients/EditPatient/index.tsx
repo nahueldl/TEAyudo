@@ -23,11 +23,17 @@ import { PatientContext } from "../../../context/patient";
 
 const EditPatient = () => {
   const { authData, setAuthData } = useContext(AuthenticationContext);
-  const { patientData } = useContext(PatientContext);
+  const { patientData, setPatientData } = useContext(PatientContext);
   const { navigate } = useContext(NavContext);
-  const [auxName, setAuxName] = useState<string>(patientData.nombre!);
-  const [auxLastName, setAuxLastName] = useState<string>(patientData.apellido!);
-  const [auxAvatar, setAuxAvatar] = useState<string>(patientData.avatar!);
+  const [auxName, setAuxName] = useState<string>(
+    patientData.patientSelected?.nombre!
+  );
+  const [auxLastName, setAuxLastName] = useState<string>(
+    patientData.patientSelected?.apellido!
+  );
+  const [auxAvatar, setAuxAvatar] = useState<string>(
+    patientData.patientSelected?.avatar!
+  );
   const [errorMessage, setErrorMessage] = useState<string>();
   const { error, loading } = authData;
   const [showActionDeletePatient, setShowActionDeletePatient] = useState(false);
@@ -36,14 +42,22 @@ const EditPatient = () => {
     setAuthData({ loading: true, error: false });
     PatientServices.putEditPatient(
       authData.token!,
-      patientData.id_paciente,
+      patientData.patientSelected?.id_paciente,
       auxName!,
       auxLastName!,
       auxAvatar!
     )
       .then((res: any) => {
-        debugger;
-        //mostrar datos editados
+        setPatientData({
+          patientSelected: {
+            nombre: auxName,
+            apellido: auxLastName,
+            avatar: auxAvatar,
+          },
+        });
+        getListPatients();
+        setAuthData({ loading: false, error: false });
+        goToViewPatient();
       })
       .catch((error: any) => {
         setErrorMessage(
@@ -54,10 +68,25 @@ const EditPatient = () => {
       });
   };
 
+  const getListPatients = () => {
+    PatientServices.getPatientsFromUser(authData.token!)
+      .then((res: any) => {
+        setPatientData({ patientsList: res.data });
+      })
+      .catch((_error: any) => {
+        setAuthData({ loading: false, error: true });
+      });
+  };
+
   const handleDeletePatient = () => {
     setAuthData({ loading: true, error: false });
-    PatientServices.deletePatient(authData.token!, patientData.id_paciente!)
+    PatientServices.deletePatient(
+      authData.token!,
+      patientData.patientSelected?.id_paciente!
+    )
       .then((res: any) => {
+        getListPatients();
+        setAuthData({ loading: false, error: false });
         goToListPatients();
       })
       .catch((error: any) => {
@@ -88,6 +117,11 @@ const EditPatient = () => {
         <IonGrid className="container-patientAdd">
           <IonRow>
             <form className="form-no-background">
+              <IonLoading
+                isOpen={loading!}
+                message={"Trabajando..."}
+                spinner="crescent"
+              />
               <IonList className="mt-5">
                 <IonAvatar className="avatars">
                   <img className="height-auto" src={auxAvatar} alt="Avatar" />
@@ -168,11 +202,6 @@ const EditPatient = () => {
                 ></IonActionSheet>
               </div>
             </form>
-            <IonLoading
-              isOpen={loading!}
-              message={"Trabajando..."}
-              spinner="crescent"
-            />
             <IonAlert
               isOpen={error!}
               animated

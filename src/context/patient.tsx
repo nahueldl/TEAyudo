@@ -17,10 +17,15 @@ const PatientProvider = (props: any) => {
 };
 
 interface IData {
-  id_paciente: any;
-  nombre: string;
-  apellido: string;
-  avatar: string;
+  patientSelected: Patient;
+  patientsList: [Patient];
+}
+
+interface Patient {
+  id_paciente?: any;
+  nombre?: string;
+  apellido?: string;
+  avatar?: string;
 }
 
 interface IContext {

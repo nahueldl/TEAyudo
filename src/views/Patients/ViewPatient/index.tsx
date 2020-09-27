@@ -8,8 +8,6 @@ import {
   IonButton,
   IonContent,
   IonAvatar,
-  IonLabel,
-  IonCol,
 } from "@ionic/react";
 import "./styles.css";
 import Page from "../../../components/Page";
@@ -45,7 +43,7 @@ const ViewPatient: React.FC = () => {
                 <IonAvatar className="avatars">
                   <img
                     className="height-auto"
-                    src={patientData.avatar}
+                    src={patientData.patientSelected?.avatar}
                     alt="Avatar"
                   />
                 </IonAvatar>
@@ -53,7 +51,7 @@ const ViewPatient: React.FC = () => {
                   <label>
                     Nombre:{"  "}
                     <strong className="text-bold pl-5">
-                      {patientData.nombre}
+                      {patientData.patientSelected?.nombre}
                     </strong>
                   </label>
                 </IonItem>
@@ -61,7 +59,7 @@ const ViewPatient: React.FC = () => {
                   <label>
                     Apellido:{"  "}
                     <strong className="text-bold pl-5">
-                      {patientData.apellido}
+                      {patientData.patientSelected?.apellido}
                     </strong>
                   </label>
                 </IonItem>

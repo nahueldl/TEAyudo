@@ -44,10 +44,10 @@ interface IImage {
 }
 
 interface Patient {
-  id_paciente: any;
-  nombre: string;
-  apellido: string;
-  avatar: string;
+  id_paciente?: any;
+  nombre?: string;
+  apellido?: string;
+  avatar?: string;
 }
 
 export default CardWithImage;

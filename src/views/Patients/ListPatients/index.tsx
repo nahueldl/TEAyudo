@@ -8,13 +8,13 @@ import { PatientContext } from "../../../context/patient";
 import { AuthenticationContext } from "../../../context/authentication";
 
 const ListPatients: React.FC<ListPatientsProps> = (props) => {
-  const { setPatientData } = useContext(PatientContext);
+  const { patientData, setPatientData } = useContext(PatientContext);
   const { navigate } = useContext(NavContext);
   const { authData } = useContext(AuthenticationContext);
   const { username } = authData;
 
   const handleCardPatientClick = (patient: any) => {
-    setPatientData(patient);
+    setPatientData({ patientSelected: patient });
     goToViewPatient();
   };
 
@@ -35,14 +35,14 @@ const ListPatients: React.FC<ListPatientsProps> = (props) => {
   return (
     <IonGrid className="overflow-auto">
       <IonRow>
-        {props.patients?.map((patient, index) => (
+        {patientData.patientsList?.map((patient, index) => (
           <IonCol key={index} size="4" sizeMd="2">
             <CardWithImage
               img={{
                 src: `https://api.adorable.io/avatars/100/${username}-${patient.nombre}`,
                 alt: `Avatar des ${patient.nombre}`,
               }}
-              title={patient.nombre}
+              title={patient.nombre!}
               touchable
               onClick={() => {
                 handleCardPatientClick(patient);
@@ -69,10 +69,10 @@ interface ListPatientsProps {
 }
 
 interface Patient {
-  id_paciente: any;
-  nombre: string;
-  apellido: string;
-  avatar: string;
+  id_paciente?: any;
+  nombre?: string;
+  apellido?: string;
+  avatar?: string;
 }
 
 export default ListPatients;

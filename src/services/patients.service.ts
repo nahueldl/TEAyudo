@@ -51,7 +51,7 @@ class PatientServices {
         nombre: name,
         apellido: lastName,
         fase: 1,
-        base64img: avatar,
+        // base64img: avatar,
       },
       {
         headers: {

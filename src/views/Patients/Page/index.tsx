@@ -4,10 +4,11 @@ import { NavContext, IonLoading } from "@ionic/react";
 import ListPatients from "../ListPatients";
 import { AuthenticationContext } from "../../../context/authentication";
 import PatientServices from "../../../services/patients.service";
+import { PatientContext } from "../../../context/patient";
 
 const PatientsPage: React.FC = () => {
   const { authData, setAuthData } = useContext(AuthenticationContext);
-  const [patients, setPatients] = useState<[Patient]>();
+  const { patientData, setPatientData } = useContext(PatientContext);
   const { navigate } = useContext(NavContext);
 
   useEffect(() => getPatients(), []);
@@ -17,7 +18,7 @@ const PatientsPage: React.FC = () => {
     PatientServices.getPatientsFromUser(authData.token!)
       .then((res: any) => {
         if (res.data?.length > 0) {
-          setPatients(res.data);
+          setPatientData({ patientsList: res.data });
           setAuthData({ loading: false });
         } else {
           goToAddPatient();
@@ -43,17 +44,10 @@ const PatientsPage: React.FC = () => {
           spinner="crescent"
         />
       ) : (
-        <ListPatients patients={patients}></ListPatients>
+        <ListPatients></ListPatients>
       )}
     </Page>
   );
 };
-
-interface Patient {
-  id_paciente: any;
-  nombre: string;
-  apellido: string;
-  avatar: string;
-}
 
 export default PatientsPage;
