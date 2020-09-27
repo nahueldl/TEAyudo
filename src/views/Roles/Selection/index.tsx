@@ -31,7 +31,9 @@ const RoleSelection: React.FC = () => {
   const handleGetRoles = () => {
     RolesService.handleGetRoles(authData.token!)
       .then((res: any) =>
-        res.data.length > 1 ? setStateForView(res.data) : handleRolSelection(res.data[0])
+        res.data.length > 1
+          ? setStateForView(res.data)
+          : handleRolSelection(res.data[0])
       )
       .catch((error: any) => console.log(error));
   };
@@ -39,7 +41,7 @@ const RoleSelection: React.FC = () => {
   const setStateForView = (roles: any) => {
     setRoles(roles);
     setRender(true);
-  }
+  };
 
   const handleRolSelection = (rol: any) => {
     setAuthData({ role: rol.id_rol });
