@@ -10,7 +10,9 @@ const PatientsPage: React.FC = () => {
   const [patients, setPatients] = useState<[Patient]>();
   const { navigate } = useContext(NavContext);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => getPatients(), []);
+  
   const getPatients = () => {
     setAuthData({ loading: true, error: false });
     PatientServices.getPatientsFromUser(authData.token!)
