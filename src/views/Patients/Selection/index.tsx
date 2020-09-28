@@ -1,19 +1,30 @@
-import React, { useContext, useCallback } from "react";
+import React, { useContext, useCallback, useState, useEffect } from "react";
 import "../styles.css";
 import { IonGrid, IonRow, IonCol, IonContent, NavContext } from "@ionic/react";
 import { AuthenticationContext } from "../../../context/authentication";
 import CardWithImage from "../../../components/CardWithImage";
+import PatientsService from "../../../services/patients.services";
+
 import { Plugins } from "@capacitor/core";
 const { Storage } = Plugins;
-const patients = [
-  { name: "Nano", phase: 3 },
-  { name: "Toto", phase: 1 },
-];
 
 const PatientSelection: React.FC = () => {
   const { authData, setAuthData } = useContext(AuthenticationContext);
-  const { username } = authData;
+  const [patients, setPatients] = useState<any>([]);
+  const { username, token } = authData;
   const { navigate } = useContext(NavContext);
+
+  useEffect(() => {
+    fetchPatients();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const fetchPatients = () => {
+    PatientsService.getPatientsFromUser(token!).then((res: { data: any }) => {
+      console.log("pacientes", res.data);
+      setPatients(res.data);
+    });
+  };
 
   const handleClick = (name: string) => {
     setAuthData({ patientName: name });
@@ -33,15 +44,15 @@ const PatientSelection: React.FC = () => {
           </IonCol>
         </IonRow>
         <IonRow>
-          {patients.map((patient, index) => (
+          {patients.map((patient: any, index: number) => (
             <IonCol key={index} size="12" sizeMd="6">
               <CardWithImage
                 onClick={handleClick}
                 img={{
-                  src: `https://api.adorable.io/avatars/100/${username}-${patient.name}`,
-                  alt: `Avatar des ${patient.name}`,
+                  src: `https://api.adorable.io/avatars/100/${username}-${patient.nombre}${patient.apellido}`,
+                  alt: `Avatar des ${patient.nombre}`,
                 }}
-                title={patient.name}
+                title={`${patient.nombre} ${patient.apellido}`}
                 touchable
               />
             </IonCol>
