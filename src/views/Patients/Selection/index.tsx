@@ -26,9 +26,13 @@ const PatientSelection: React.FC = () => {
     });
   };
 
-  const handleClick = (name: string) => {
-    setAuthData({ patientName: name });
-    Storage.set({ key: "patientName", value: name });
+  const handleClick = (patient: any) => {
+    setAuthData({
+      patientName: patient.nombre,
+      patientId: patient.id_paciente,
+    });
+    Storage.set({ key: "patientName", value: patient.nombre });
+    Storage.set({ key: "patientId", value: patient.id_paciente });
     goToHome();
   };
 
