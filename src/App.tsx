@@ -40,7 +40,7 @@ const App: React.FC = () => {
             //El token es válido
             authData.role ? (
               //Eligió un rol
-              authData.patientName ? (
+              authData.patientId ? (
                 //Tiene un paciente elegido
                 <AppPostLogin />
               ) : (
