@@ -48,6 +48,7 @@ const AuthenticationProvider = (props: any) => {
 interface IData {
   username: string;
   patientName: string;
+  patientId: string;
   authenticated: boolean;
   loading: boolean;
   error: boolean;
