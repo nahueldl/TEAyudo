@@ -2,7 +2,7 @@ import React, { useContext, useCallback, useState, useEffect } from "react";
 import "../styles.css";
 import { IonGrid, IonRow, IonCol, IonContent, NavContext } from "@ionic/react";
 import { AuthenticationContext } from "../../../context/authentication";
-import CardWithImage from "../../../components/CardWithImage";
+import CardWithImage, { Patient } from "../../../components/CardWithImage";
 import PatientsService from "../../../services/patients.services";
 
 import { Plugins } from "@capacitor/core";
@@ -26,9 +26,9 @@ const PatientSelection: React.FC = () => {
     });
   };
 
-  const handleClick = (patient: any) => {
+  const handleClick = (patient: Patient) => {
     setAuthData({
-      patientName: patient.nombre,
+      patientName: `${patient.nombre} ${patient.apellido}`,
       patientId: patient.id_paciente,
     });
     Storage.set({ key: "patientName", value: patient.nombre });
@@ -58,6 +58,7 @@ const PatientSelection: React.FC = () => {
                 }}
                 title={`${patient.nombre} ${patient.apellido}`}
                 touchable
+                patient={patient}
               />
             </IonCol>
           ))}

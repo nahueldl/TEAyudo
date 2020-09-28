@@ -1,5 +1,5 @@
 import React from "react";
-import { IonButton, IonImg } from "@ionic/react";
+import { IonButton } from "@ionic/react";
 import "./styles.css";
 const OverlayRight: React.FC<Props> = ({ handleActivationChange }) => {
   return (

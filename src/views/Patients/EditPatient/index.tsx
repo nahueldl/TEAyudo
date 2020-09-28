@@ -7,7 +7,6 @@ import {
   IonList,
   IonItem,
   IonInput,
-  IonDatetime,
   IonButton,
   IonContent,
   IonAvatar,
@@ -25,6 +24,7 @@ const EditPatient = () => {
   const { navigate } = useContext(NavContext);
   const [auxName, setAuxName] = useState<string>(patientData.nombre!);
   const [auxLastName, setAuxLastName] = useState<string>(patientData.apellido!);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [auxAvatar, setAuxAvatar] = useState<string>(patientData.avatar!);
 
   const [showActionDeletePatient, setShowActionDeletePatient] = useState(false);
@@ -45,16 +45,16 @@ const EditPatient = () => {
       });
   };
 
-  const handleDeletePatient = () => {
-    setAuthData({ loading: true, error: false });
-    PatientServices.deletePatient(authData.token!, auxName!)
-      .then((res: any) => {
-        // goToListPatients();
-      })
-      .catch((error: any) => {
-        //mostrar mensaje con error
-      });
-  };
+  // const handleDeletePatient = () => {
+  //   setAuthData({ loading: true, error: false });
+  //   PatientServices.deletePatient(authData.token!, auxName!)
+  //     .then((res: any) => {
+  //       // goToListPatients();
+  //     })
+  //     .catch((error: any) => {
+  //       //mostrar mensaje con error
+  //     });
+  // };
 
   const handleCancel = () => {
     goToViewPatient();
