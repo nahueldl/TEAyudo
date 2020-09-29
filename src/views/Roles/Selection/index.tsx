@@ -31,7 +31,7 @@ const RoleSelection: React.FC = () => {
   });
 
   const handleGetRoles = () => {
-    RolesService.handleGetRoles(authData.token!)
+    RolesService.getPatientRoles(authData.token!)
       .then((res: any) =>
         res.data.length > 1
           ? setStateForView(res.data)
