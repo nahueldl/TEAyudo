@@ -33,6 +33,7 @@ const LogInSignUpPage: React.FC = () => {
         const expirationDate = calculateExpirationDate();
         setAuthData({
           token: res.data.token,
+          tokenExpirationDate: expirationDate.toJSON(),
           username: email,
           authenticated: true,
           loading: false,
