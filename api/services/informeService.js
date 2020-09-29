@@ -4,6 +4,10 @@ const estadosRespuesta = require('../models/estados_respuesta');
 const Handlebars = require("handlebars");
 const ts = require('stream').Transform();
 const pdf = require('html-pdf');
+//let inf = require('./informe.hbs');
+const fs = require('fs');
+const path = require('path');
+
 
 const informeService = {
 
@@ -15,10 +19,18 @@ const informeService = {
 	insert: async function(categoria, usuario, res){
 
 		//Utilizacion de handlebars para darle forma al PDF
+		/*
 		let source = "<p>Hello, my name is {{name}}. I am from {{hometown}}. I have " +
 					"{{kids.length}} kids:</p>" +
-					"<ul>{{#kids}}<li>{{name}} is {{age}}</li>{{/kids}}</ul>";
-		let template = Handlebars.compile(source);
+					"<ul>{{#kids}}<li>{{name}} is {{age}}</li>{{/kids}}</ul>";*/
+
+		const ruta = path.join(__dirname, '../templates/informe.hbs');
+
+		const handlebars = fs.readFileSync(path.join(__dirname, '../templates/informe.hbs'));
+		
+		let source2 = handlebars;
+
+		let template = Handlebars.compile(source2);
 		
 		let data = { "name": "Alan", "hometown": "Somewhere, TX",
 					"kids": [{"name": "Jimmy", "age": "12"}, {"name": "Sally", "age": "4"}]};
