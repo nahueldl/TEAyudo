@@ -7,7 +7,6 @@ import CardWithImage from "../../components/CardWithImage";
 import { PlatformContext } from "../../context/platform";
 import CategoriesServices from "../../services/categories.services";
 import { AuthenticationContext } from "../../context/authentication";
-import { PatientContext } from "../../context/patient";
 
 const ComunicationPage: React.FC = () => {
   const [selectedItems, setselectedItems] = useState<any[]>([]);
@@ -16,15 +15,16 @@ const ComunicationPage: React.FC = () => {
 
   const { isMobile } = useContext(PlatformContext).platformData;
   const { authData, setAuthData } = useContext(AuthenticationContext);
-  const { patientData } = useContext(PatientContext);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => getCategories(), []);
 
   const getCategories = () => {
     setAuthData({ loading: true, error: false });
-    CategoriesServices.getCategories(authData.token!, patientData.id_paciente)
+    CategoriesServices.getCategories(authData.token!, authData.patientId!)
       .then((res: any) => {
         setCategories(res.data);
+        console.log("categorias", res.data);
+        setAuthData({ loading: false });
       })
       .catch((_error: any) => {
         setAuthData({ loading: false, error: true });
@@ -57,9 +57,7 @@ const ComunicationPage: React.FC = () => {
           <IonCol>
             <IonList>
               {categories?.map((item) => (
-                <IonItem detail>
-                  {item.nombre}
-                </IonItem>
+                <IonItem detail>{item.nombre}</IonItem>
               ))}
             </IonList>
           </IonCol>
