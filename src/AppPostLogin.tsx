@@ -16,6 +16,7 @@ import AddPatientPage from "./views/Patients/AddPatient";
 import ViewPatientPage from "./views/Patients/ViewPatient";
 import EditPatientPage from "./views/Patients/EditPatient";
 import RolesPage from "./views/Roles/Page";
+import AddRolePage from "./views/Roles/Add";
 
 const AppPostLogin: React.FC = () => {
   const { authData } = useContext(AuthenticationContext);
@@ -37,6 +38,8 @@ const AppPostLogin: React.FC = () => {
           component={ViewPatientPage}
           exact
         />
+        <Route path="/roles" component={RolesPage} exact />
+        <Route path="/roles/alta" component={AddRolePage} exact />
         <Route path="/comunicacion" component={ComunicationPage}/>
         <Route path="/juegos" component={GamesPage} />
         <Route path="/pacientes/edicion" component={EditPatientPage} exact />
