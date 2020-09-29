@@ -49,17 +49,19 @@ const appPages: AppPage[] = [
   },
 ];
 
-const Menu: React.FC<Props> = ({patientName}) => {
+const Menu: React.FC<Props> = ({ patientName }) => {
   const location = useLocation();
-  
+  const buildUrl =(pageUrl: string) =>{
+    return `/${patientName}${pageUrl}`;
+  }
   return (
     <IonMenu contentId="main" type="overlay" swipeGesture>
       <IonContent>
-        <h1>{`Bienvenidx ${patientName}!`}</h1>
+        <h1 className="title">{`Bienvenidx ${patientName}!`}</h1>
         <IonList id="menu-list">
           {appPages.map((appPage, index) => {
             return (
-              <IonMenuToggle key={index} autoHide={false}>
+              <IonMenuToggle key={index} autoHide={false} color="secondary">
                 <IonItem
                   className={
                     location.pathname === appPage.url ? "selected" : ""
@@ -69,12 +71,17 @@ const Menu: React.FC<Props> = ({patientName}) => {
                   lines="none"
                   detail={false}
                 >
-                  <IonLabel className="centered">{appPage.title}</IonLabel>
+                  <IonLabel>{appPage.title}</IonLabel>
                 </IonItem>
               </IonMenuToggle>
             );
           })}
         </IonList>
+        <IonMenuToggle autoHide={false} className="centered">
+          <IonItem lines="none" detail={false} style={{ textAlign: "center" }}>
+            <IonLabel>Créditos</IonLabel>
+          </IonItem>
+        </IonMenuToggle>
       </IonContent>
     </IonMenu>
   );

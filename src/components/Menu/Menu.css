@@ -1,4 +1,4 @@
-ion-menu ion-content {
+ion-content {
   --background: var(--ion-item-background, var(--ion-background-color, #fff));
 }
 
@@ -17,7 +17,8 @@ ion-menu.md ion-note {
   margin-bottom: 30px;
 }
 
-ion-menu.md ion-list-header, ion-menu.md ion-note {
+ion-menu.md ion-list-header,
+ion-menu.md ion-note {
   padding-left: 10px;
 }
 
@@ -110,9 +111,24 @@ ion-note {
 
 ion-item.selected {
   --color: var(--ion-color-primary);
-} 
+}
+
+.align-left {
+  display: flex !important;
+  justify-content: left;
+}
 
 .centered {
-  display: flex !important;
-  justify-content: center;
+  position: fixed;
+  bottom: 0%;
+  width: 100%;
+}
+
+.text-small {
+  font-size: small !important;
+}
+
+
+.title {
+  text-align: center;
 }

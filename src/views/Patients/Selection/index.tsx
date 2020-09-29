@@ -1,28 +1,55 @@
-import React, { useContext, useCallback } from "react";
+import React, { useContext, useCallback, useState, useEffect } from "react";
 import "../styles.css";
 import { IonGrid, IonRow, IonCol, IonContent, NavContext } from "@ionic/react";
 import { AuthenticationContext } from "../../../context/authentication";
+import PatientServices from "../../../services/patients.services";
 import CardWithImage from "../../../components/CardWithImage";
 
-const patients = [
-  { name: "Nano", phase: 3 },
-  { name: "Toto", phase: 1 },
-];
+import { Plugins } from "@capacitor/core";
+const { Storage } = Plugins;
 
 const PatientSelection: React.FC = () => {
   const { authData, setAuthData } = useContext(AuthenticationContext);
-  const { username } = authData;
+  const { username, token } = authData;
   const { navigate } = useContext(NavContext);
+  const [patients, setPatients] = useState<Patient[]>([]);
 
-  const handleClick = (name: string) => {
-    setAuthData({patientName: name})
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => getPatients(), []);
+
+  const getPatients = () => {
+    PatientServices.getPatientsFromUser(token!)
+      .then((res: any) => {
+        if (res.data?.length > 0) {
+          setPatients(res.data);
+        } else {
+          goToAddPatient();
+        }
+      })
+      .catch((_error: any) => {
+        console.log(_error);
+      });
+  };
+
+  const handleClick = (patient: Patient) => {
+    setAuthData({
+      patientName: `${patient.nombre} ${patient.apellido}`,
+      patientId: patient.id_paciente,
+    });
+    Storage.set({ key: "patientName", value: patient.nombre }).then();
+    Storage.set({ key: "patientId", value: patient.id_paciente }).then();
     goToHome();
   };
 
-  const goToHome = useCallback(
-    () => navigate(`/inicio`, "forward"),
+  const goToHome = useCallback(() => navigate(`/`, "forward"), [
+    navigate,
+  ]);
+
+  const goToAddPatient = useCallback(
+    () => navigate("/pacientes/alta", "forward"),
     [navigate]
   );
+
   return (
     <IonContent>
       <IonGrid className="container">
@@ -32,16 +59,17 @@ const PatientSelection: React.FC = () => {
           </IonCol>
         </IonRow>
         <IonRow>
-          {patients.map((patient, index) => (
+          {patients!.map((patient: any, index: number) => (
             <IonCol key={index} size="12" sizeMd="6">
               <CardWithImage
                 onClick={handleClick}
                 img={{
-                  src: `https://api.adorable.io/avatars/100/${username}-${patient.name}`,
-                  alt: `Avatar des ${patient.name}`,
+                  src: `https://api.adorable.io/avatars/100/${username}-${patient.nombre}${patient.apellido}`,
+                  alt: `Avatar des ${patient.nombre}`,
                 }}
-                title={patient.name}
+                title={`${patient.nombre} ${patient.apellido}`}
                 touchable
+                patient={patient}
               />
             </IonCol>
           ))}
@@ -50,5 +78,12 @@ const PatientSelection: React.FC = () => {
     </IonContent>
   );
 };
+
+interface Patient {
+  id_paciente: any;
+  nombre: string;
+  apellido: string;
+  avatar: string;
+}
 
 export default PatientSelection;

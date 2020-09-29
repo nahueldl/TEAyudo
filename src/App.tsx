@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import React, { useContext } from "react";
 import { IonApp } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
@@ -34,21 +35,33 @@ const App: React.FC = () => {
     <IonApp>
       <IonReactRouter>
         {authData.token ? (
-          authData.patientName ? (
-            // Si ambas son verdaderas, ir a la app
-            <AppPostLogin />
+          //Existe el token
+          authData.tokenExpirationDate ? (
+            //El token es válido
+            authData.role ? (
+              //Eligió un rol
+              authData.patientId ? (
+                //Tiene un paciente elegido
+                <AppPostLogin />
+              ) : (
+                //No tiene un paciente elegido
+                <Redirect from="*" to="/pacientes/seleccion" />
+              )
+            ) : (
+              //No tiene un rol elegido
+              <Redirect from="*" to="/roles/seleccion" />
+            )
           ) : (
-            // Si está logueado pero no eligió paciente, debe elegir
-            <Redirect from="*" to="/pacientes/seleccion" />
+            //El token es inválido
+            <Redirect from="*" to="/login" />
           )
         ) : (
-          //Si no está logueado, debe loguearse
+          //No hay un token
           <Redirect from="*" to="/login" />
         )}
 
         <Route path="/login" component={LogInSignUpPage} exact />
         <Route path="/pacientes/seleccion" component={PatientSelection} exact />
-        <Route path="/pacientes/alta" component={PatientSelection} exact />
         <Route path="/roles/seleccion" component={RoleSelection} exact />
       </IonReactRouter>
     </IonApp>

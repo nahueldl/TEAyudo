@@ -1,0 +1,53 @@
+.inputMargin {
+  margin-bottom: 10px;
+}
+
+.p-0 {
+  --padding-start: 0;
+  padding: 0;
+}
+
+.mt-5 {
+  margin-top: 5%;
+}
+
+.width-75 {
+  width: 75%;
+}
+
+.full-width {
+  width: 100%;
+  max-width: 100%;
+}
+
+.form-no-background {
+  margin: auto;
+  background: none;
+}
+
+.avatars {
+  margin: auto !important;
+}
+
+.logo-header {
+  max-width: 50px;
+  margin: auto;
+}
+
+.icon-margin {
+  margin-top: 5%;
+  margin-left: 5%;
+}
+
+.header {
+  height: 10%;
+  align-items: center;
+}
+
+.red-buttom {
+  --background: red !important;
+}
+
+.height-auto {
+  height: auto !important;
+}

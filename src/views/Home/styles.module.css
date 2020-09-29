@@ -1,13 +1,10 @@
 .ionCard {
-  position: relative;
   text-align: center;
+  --background: #488AFF;
 }
 
 .cardTitle {
-  position: absolute;
-  top: 36%;
   font-size: 2em;
-  width: 100%;
-  font-weight: bold;
-  color: #fff;
+  color: white;
+  margin: 20px;
 }
