@@ -15,7 +15,7 @@ const pictogramaService = {
 		if(idPaciente === undefined || idPaciente === null)
 			return await pictogramaDAO.getByCategoria(parseInt(idCategoria));
 		else
-			return await pictogramaDAO.getByCategoriaAndPaciente(parseInt(idCategoria), parseInt(idPaciente), parseInt(offset), parseInt(limit))
+			return await pictogramaDAO.getByCategoriaAndPaciente(parseInt(idCategoria), parseInt(idPaciente), offset, limit)
 	},
 
 
