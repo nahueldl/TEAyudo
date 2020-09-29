@@ -8,7 +8,7 @@ const rolDAO = {
 	getAll: async function (){
 		//aca irian las validaciones de datos, aca no va una mierda, es para cuando hay que meter
 		//datos en la db que lleven el formato piola o devolverlos con un formato bonito
-		return await genericDAO.runSimpleQuery("select * from Rol");
+		return await genericDAO.runQuery("select * from Rol");
 	},
 
 
