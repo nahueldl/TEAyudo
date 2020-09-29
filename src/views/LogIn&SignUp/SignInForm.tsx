@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useContext } from "react";
 import {
   IonIcon,
@@ -43,6 +44,7 @@ const SignInForm: React.FC<Props> = ({ signIn }) => {
         ) : null}
         <h1>Iniciar sesión</h1>
         <div className="iconsContainer">
+          {/* TODO: Inicio de sesión con redes sociales */}
           <a href="#">
             <IonIcon className="icon" icon={logoGoogle} size="large" />
           </a>

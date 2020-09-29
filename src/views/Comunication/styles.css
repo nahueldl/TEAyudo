@@ -1,0 +1,16 @@
+.sortable {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(4rem, 1fr));
+  gap: 0.5rem;
+  height: minmax(4rem, 1fr);
+}
+
+.mobile {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(4rem, 1fr));
+  gap: 0.5rem;
+}
+
+.tirafrase {
+  background-color: lightgray;
+}

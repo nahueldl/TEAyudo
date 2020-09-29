@@ -3,14 +3,13 @@ import Page from "../../../components/Page";
 import { NavContext, IonLoading } from "@ionic/react";
 import ListPatients from "../ListPatients";
 import { AuthenticationContext } from "../../../context/authentication";
-import PatientServices from "../../../services/patients.service";
-import { PatientContext } from "../../../context/patient";
+import PatientServices from "../../../services/patients.services";
 
 const PatientsPage: React.FC = () => {
   const { authData, setAuthData } = useContext(AuthenticationContext);
-  const { patientData, setPatientData } = useContext(PatientContext);
   const { navigate } = useContext(NavContext);
-
+  const [patientData, setPatientData] = useState<any>([]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => getPatients(), []);
 
   const getPatients = () => {

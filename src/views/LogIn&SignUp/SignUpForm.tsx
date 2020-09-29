@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useContext } from "react";
 import {
   IonIcon,
@@ -19,6 +20,7 @@ const ERROR_MESSAGE =
   "Hubo un error al iniciar sesión, por favor intenta nuevamente más tarde";
 
 const SignUpForm: React.FC<Props> = ({ signUp }) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [data, setData] = useState();
 
   const { authData, setAuthData } = useContext(AuthenticationContext);
@@ -44,6 +46,7 @@ const SignUpForm: React.FC<Props> = ({ signUp }) => {
         <h1>Registrarse</h1>
         <div className="iconsContainer">
           <a href="#">
+            {/* TODO inicio de sesión con redes sociales */}
             <IonIcon className="icon" icon={logoGoogle} size="large" />
           </a>
           <a href="#">
