@@ -21,6 +21,9 @@ const AuthenticationProvider = (props: any) => {
     Storage.get({ key: "patientName" }).then((res) =>
       setAuthData({ patientName: res.value! })
     );
+    Storage.get({ key: "patientId " }).then((res) =>
+      setAuthData({ patientId: res.value! })
+    );
     Storage.get({ key: "rol" }).then((res) => {
       res.value
         ? res.value === "F"
