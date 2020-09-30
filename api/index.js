@@ -14,6 +14,7 @@ if(process.env.NODE_ENV === undefined || process.env.NODE_ENV === null){
 	process.exit(1);
 };
 
+
 //Levanta express
 const app = express();
 
