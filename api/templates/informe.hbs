@@ -1,43 +1,45 @@
-<!DOCTYPE html>
-<html lang="en"> 
-  
-<head> 
-    <meta charset="UTF-8"> 
-    <meta name="viewport" content= 
-        "width=device-width, initial-scale=1.0"> 
-  
-    <title>Pie Chart</title> 
-  
-    <style> 
-        .piechart { 
-            margin-top: 300px; 
-            display: block; 
-            position: absolute; 
-            width: 400px; 
-            height: 400px; 
-            border-radius: 50%; 
-            background-image: conic-gradient( 
-                pink 70deg,  
-                lightblue 0 235deg,  
-                orange 0); 
-        } 
-  
-        body, 
-        .piechart { 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-        } 
-    </style> 
-</head> 
-  
-<body> 
-    <h1>Pie Chart</h1> 
-    <div class="piechart"></div> 
-    <script> src="informeService.js" </script>
-    <script id="informe" type="text/x-handlebars-template">
-</body> 
-  
-</html> 
 
+
+<canvas id="myChart" width="400" height="400"></canvas>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+<script>
+var ctx = document.getElementById('myChart').getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: [{{name}}, 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        datasets: [{
+            label: '# of Votes',
+            data: [12, 19, 3, 5, 2, 3],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
+</script>
 
