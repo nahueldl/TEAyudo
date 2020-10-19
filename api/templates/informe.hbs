@@ -1,45 +1,67 @@
+<!doctype html>
+<html>
 
+<head>
+	<title>Informe medico</title>
+</head>
 
-<canvas id="myChart" width="400" height="400"></canvas>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-<script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
-<script>
-var ctx = document.getElementById('myChart').getContext('2d');
-var myChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: [{{name}}, 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-        datasets: [{
-            label: '# of Votes',
-            data: [12, 19, 3, 5, 2, 3],
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-            ],
-            borderWidth: 1
-        }]
-    },
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true
-                }
-            }]
-        }
-    }
-});
-</script>
+<body>
+	<div>
+		<h1>Informe del paciente {{nombrePaciente}}</h1>
+		<h4 style="margin-top: -20px;">Desde {{fecha}} hasta los últimos 30 días</h4>
+	</div>
+	<div>
 
+		<div style="width:380px; height: 700px; vertical-align: top; overflow: auto; display: inline-block;">
+
+			<div>
+				<h2>Pictograma más usado</h2>
+				<img height="200px" width="200px" src="{{pictogramaMasUsado}}" alt="Pictograma más usado"/>
+			</div>
+
+			<div>
+				<h4>En promedio el paciente usa</h4>
+				<h1 style="padding-left:2em">	{{cantPictogramasPromedio}}</h1>
+				<h4>pictogramas por frase</h4>
+			</div>
+
+		</div>
+
+		<div style="width:380px; height: 700px; vertical-align: top; overflow: auto; display: inline-block;">
+
+			<div>
+				<h2>Jugadas</h2>
+				<ul>
+					<li>Tiempo promedio de respuesta: {{tiempoRespuesta}}</li>
+					<li>Porcentaje de respuestas correctas: {{porcentejeRespuestas}}</li>
+					<li>Cantidad de jugadas: {{cantidadJugadas}}</li>
+				</ul>
+			</div>
+
+			<div>
+				<h2>Categorías más usadas</h2>
+				<ul>
+					{{#each categoriasMasUsadas}}
+					<li>{{pos}}°. {{nombre}}</li>
+					{{/each}}
+				</ul>
+			</div>
+
+			<div>
+				<h2>Pictogramas más usados</h2>
+				<ul>
+					{{#each pictogramasMasUsados}}
+					<li>{{pos}}°. {{nombre}}</li>
+					{{/each}}
+				</ul>
+			</div>
+
+		</div>
+
+	</div>
+	<div id="pageFooter">
+		<small>Todos los derechos reservados, TEAyudo 2020 ©</small>
+	</div>
+</body>
+
+</html>

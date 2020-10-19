@@ -14,20 +14,21 @@
 		"axios": "^0.19.2",
 		"base62-random": "^0.3.5",
 		"bcrypt": "^5.0.0",
-		"cloudinary": "^1.22.0",
+		"cloudinary": "^1.23.0",
 		"dotenv": "^8.2.0",
 		"express": "^4.17.1",
 		"handlebars": "^4.7.6",
 		"html-pdf": "^2.2.0",
 		"install": "^0.13.0",
-		"moment": "^2.27.0",
-		"mssql": "^6.2.0",
-		"nodemailer": "^6.4.10",
+		"moment": "^2.29.1",
+		"mssql": "^6.2.3",
+		"nodemailer": "^6.4.14",
 		"npm": "^6.14.7",
 		"passport": "^0.4.1",
-		"passport-http-bearer": "^1.0.1"
+		"passport-http-bearer": "^1.0.1",
+		"vega": "^5.17.0"
 	},
 	"devDependencies": {
-		"nodemon": "^2.0.4"
+		"nodemon": "^2.0.6"
 	}
 }
