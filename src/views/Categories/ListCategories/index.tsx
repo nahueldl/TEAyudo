@@ -3,8 +3,10 @@ import { IonGrid, IonRow, IonCol, NavContext, IonCard, IonImg, IonCardContent, I
 import CardWithImage from "../../../components/CardWithImage";
 import CardWithIcon from "../../../components/CardWithIcon";
 import { addCircleOutline, pin, walk, warning, wifi, wine } from "ionicons/icons";
+import { CategoryContext } from "../../../context/category";
 
 const ListCategories: React.FC<ListCategories> = () => {
+  const { categoriaData, setCategoriaData } = useContext(CategoryContext);
   const { navigate } = useContext(NavContext);
 
   const handleAddCategoriaClick = () => {
@@ -19,13 +21,13 @@ const ListCategories: React.FC<ListCategories> = () => {
   return (
     <IonGrid className="overflow-auto">
       <IonRow>
-        {/* {patientData.patientsList?.map((patient, index) => ( */}
-        <IonCol size="4" sizeMd="2">
-          <IonButton size="large" expand="block" className="">
-                COLORES
-          </IonButton>
-        </IonCol>
-        {/* ))} */}
+        {categoriaData.categoriasList?.map((categoria, index) => (
+          <IonCol key={index} size="4" sizeMd="2">
+            <IonButton size="large" expand="block" className="">
+              {categoria.nombre}
+            </IonButton>
+          </IonCol>
+        ))} 
       </IonRow>
       <IonRow>
         <CardWithIcon

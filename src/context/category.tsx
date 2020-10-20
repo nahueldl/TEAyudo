@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const CategoriaContext = React.createContext({} as IContext);
+const CategoryContext = React.createContext({} as IContext);
 
 const CategoriaProvider = (props: any) => {
   const [categoriaData, setContextData] = useState<Partial<IData>>({});
@@ -10,14 +10,15 @@ const CategoriaProvider = (props: any) => {
   };
 
   return (
-    <CategoriaContext.Provider value={{ categoriaData, setContextData }}>
+    <CategoryContext.Provider value={{ categoriaData, setCategoriaData }}>
       {props.children}
-    </CategoriaContext.Provider>
+    </CategoryContext.Provider>
   );
 };
 
 interface IData {
   categoriaSelected: Categoria;
+  categoriasList: [Categoria];
 }
 
 interface Categoria {
@@ -28,7 +29,7 @@ interface Categoria {
 
 interface IContext {
   categoriaData: Partial<IData>;
-  setContextData: (data: Partial<IData>) => void;
+  setCategoriaData: (data: Partial<IData>) => void;
 }
 
-export { CategoriaProvider, CategoriaContext };
+export { CategoriaProvider, CategoryContext };

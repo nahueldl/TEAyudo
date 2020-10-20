@@ -6,7 +6,7 @@ import { AuthenticationProvider } from "./context/authentication";
 import { RegistrationProvider } from "./context/registration";
 import { PlatformProvider } from "./context/platform";
 import { PatientProvider } from "./context/patient";
-import { CategoriaProvider } from "./context/categoria";
+import { CategoriaProvider } from "./context/category";
 
 ReactDOM.render(
   <PlatformProvider>
