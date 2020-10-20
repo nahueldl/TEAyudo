@@ -5,6 +5,7 @@ import Menu from "./components/Menu/Menu";
 import HomePage from "./views/Home";
 import PictogramsPage from "./views/Pictograms";
 import CategoriesPage from "./views/Categories";
+import CategoriesAddPage from "./views/Categories/AddCategorie";
 import PatientsPage from "./views/Patients/Page";
 import ProfessionalsPage from "./views/Professionals";
 import ReportsPage from "./views/Reports";
@@ -25,16 +26,13 @@ const AppPostLogin: React.FC = () => {
         <Route path="/inicio" component={HomePage} exact />
         <Route path="/pictogramas" component={PictogramsPage} exact />
         <Route path="/categorias" component={CategoriesPage} exact />
+        <Route path="/categorias/alta" component={CategoriesAddPage} exact />
         <Route path="/pacientes" component={PatientsPage} exact />
         <Route path="/profesionales" component={ProfessionalsPage} exact />
         <Route path="/informes" component={ReportsPage} exact />
         <Route path="/configuracion" component={ConfigurationPage} exact />
         <Route path="/pacientes/alta" component={AddPatientPage} exact />
-        <Route
-          path="/pacientes/informacion"
-          component={ViewPatientPage}
-          exact
-        />
+        <Route path="/pacientes/informacion" component={ViewPatientPage} exact />
         <Route path="/pacientes/edicion" component={EditPatientPage} exact />
         <Redirect from="/" to="/inicio" />
       </IonRouterOutlet>

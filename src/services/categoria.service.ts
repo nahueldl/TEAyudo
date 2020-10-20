@@ -1,77 +1,69 @@
 import AxiosWrapper from "../utils/axios";
 
-class PatientServices {
+class CategoriaServices {
   private axios: AxiosWrapper;
   constructor() {
     this.axios = new AxiosWrapper({ useErrorInterceptor: true });
   }
 
-  getPatientsFromUser(token: string): any {
-    return this.axios.get("/api/pacientes", {
+  getCategoriesFromUser(token: string, idPaciente: any) {
+    return this.axios.get("/api/categorias?paciente=:" + idPaciente, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
   }
 
-  postNewPatient(
+  postNewCategory(
     token: string,
     name: string,
-    lastName: string,
-    // birthday: string,
-    avatar: string
+    idRol: any
   ) {
     return this.axios.post(
-      "/api/pacientes",
+      "/api/categorias",
       {
         data: {
           nombre: name,
-          apellido: lastName,
+          id_rol: idRol,
         },
-        // fase: 1,
-        // fechaNac: birthday,
-        // base64img: avatar,
       },
       {
         headers: {
           Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json"
         },
       }
     );
   }
 
-  putEditPatient(
+  putEditCategory(
     token: string,
-    id: any,
-    name: string,
-    lastName: string,
-    avatar: string
+    idCategoria: any,
+    name: string
   ) {
     return this.axios.put(
-      "/api/pacientes/" + id,
+      "/api/categorias/:" + idCategoria,
       {
-        nombre: name,
-        apellido: lastName,
-        fase: 1,
-        // base64img: avatar,
+        nombre: name
       },
       {
         headers: {
           Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json"
         },
       }
     );
   }
 
-  deletePatient(token: string, id: any) {
-    return this.axios.delete("/api/pacientes/" + id, {
+  deleteCategory(token: string, idCategoria: any) {
+    return this.axios.delete("/api/categorias/:" + idCategoria, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
   }
 }
-const instance = new PatientServices();
+const instance = new CategoriaServices();
 Object.freeze(instance);
 
 export default instance;

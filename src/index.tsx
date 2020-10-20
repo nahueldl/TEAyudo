@@ -6,13 +6,16 @@ import { AuthenticationProvider } from "./context/authentication";
 import { RegistrationProvider } from "./context/registration";
 import { PlatformProvider } from "./context/platform";
 import { PatientProvider } from "./context/patient";
+import { CategoriaProvider } from "./context/categoria";
 
 ReactDOM.render(
   <PlatformProvider>
     <AuthenticationProvider>
       <RegistrationProvider>
         <PatientProvider>
+          <CategoriaProvider>
           <App />
+          </CategoriaProvider>
         </PatientProvider>
       </RegistrationProvider>
     </AuthenticationProvider>
