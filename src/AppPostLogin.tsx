@@ -11,6 +11,8 @@ import ProfessionalsPage from "./views/Professionals";
 import ReportsPage from "./views/Reports";
 import ConfigurationPage from "./views/Configuration";
 import { AuthenticationContext } from "./context/authentication";
+import ComunicationPage from "./views/Comunication";
+import GamesPage from "./views/Game";
 import AddPatientPage from "./views/Patients/AddPatient";
 import ViewPatientPage from "./views/Patients/ViewPatient";
 import EditPatientPage from "./views/Patients/EditPatient";
@@ -32,7 +34,13 @@ const AppPostLogin: React.FC = () => {
         <Route path="/informes" component={ReportsPage} exact />
         <Route path="/configuracion" component={ConfigurationPage} exact />
         <Route path="/pacientes/alta" component={AddPatientPage} exact />
-        <Route path="/pacientes/informacion" component={ViewPatientPage} exact />
+        <Route
+          path="/pacientes/informacion"
+          component={ViewPatientPage}
+          exact
+        />
+        <Route path="/comunicacion" component={ComunicationPage}/>
+        <Route path="/juegos" component={GamesPage} />
         <Route path="/pacientes/edicion" component={EditPatientPage} exact />
         <Redirect from="/" to="/inicio" />
       </IonRouterOutlet>

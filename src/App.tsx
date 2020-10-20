@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import React, { useContext } from "react";
 import { IonApp } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
@@ -24,8 +25,6 @@ import "./theme/variables.css";
 import AppPostLogin from "./AppPostLogin";
 import LogInSignUpPage from "./views/LogIn&SignUp";
 import PatientSelection from "./views/Patients/Selection";
-import PatientPage from "./views/Patients/Page";
-import PatientAdd from "./views/Patients/AddPatient";
 import { AuthenticationContext } from "./context/authentication";
 import RoleSelection from "./views/Roles/Selection";
 
@@ -36,22 +35,33 @@ const App: React.FC = () => {
     <IonApp>
       <IonReactRouter>
         {authData.token ? (
-          authData.patientName ? (
-            // Si ambas son verdaderas, ir a la app
-            <AppPostLogin />
+          //Existe el token
+          authData.tokenExpirationDate ? (
+            //El token es válido
+            authData.role ? (
+              //Eligió un rol
+              authData.patientId ? (
+                //Tiene un paciente elegido
+                <AppPostLogin />
+              ) : (
+                //No tiene un paciente elegido
+                <Redirect from="*" to="/pacientes/seleccion" />
+              )
+            ) : (
+              //No tiene un rol elegido
+              <Redirect from="*" to="/roles/seleccion" />
+            )
           ) : (
-            //Está autenticado, registró cuenta nueva (faltaría elegir rol, cargar datos extra si necesario, cargar un paciente)
+            //El token es inválido
             <Redirect from="*" to="/login" />
           )
         ) : (
-          //Si no está autenticado, debe iniciar sesión/registrarse
+          //No hay un token
           <Redirect from="*" to="/login" />
         )}
-        {/* <AppPostLogin /> */}
-        <Route path="/alta" component={PatientAdd} exact />
+
         <Route path="/login" component={LogInSignUpPage} exact />
         <Route path="/pacientes/seleccion" component={PatientSelection} exact />
-        <Route path="/pacientes/principal" component={PatientPage} exact />
         <Route path="/roles/seleccion" component={RoleSelection} exact />
       </IonReactRouter>
     </IonApp>

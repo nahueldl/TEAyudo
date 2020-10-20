@@ -14,12 +14,11 @@ import {
   IonLoading,
   IonButton,
 } from "@ionic/react";
-import { Base64 } from "@ionic-native/base64/ngx";
 import "./styles.css";
-import PatientServices from "../../../services/patients.service";
+import PatientServices from "../../../services/patients.services";
 import Page from "../../../components/Page";
 
-const AddPatient: React.FC<InfoPatientProps> = ({ title, patient }) => {
+const AddPatient: React.FC<InfoPatientProps> = ({ patient }) => {
   const { authData, setAuthData } = useContext(AuthenticationContext);
   const { navigate } = useContext(NavContext);
   const [errorMessage, setErrorMessage] = useState<string>();
@@ -33,7 +32,7 @@ const AddPatient: React.FC<InfoPatientProps> = ({ title, patient }) => {
   const [birthday, setBirthday] = useState<string>(
     patient !== undefined ? patient.birthday : ""
   );
-  const [avatar, setAvatar] = useState<string>(
+  const [avatar] = useState<string>(
     patient !== undefined
       ? patient.avatar
       : "https://api.adorable.io/avatars/" +
@@ -56,7 +55,7 @@ const AddPatient: React.FC<InfoPatientProps> = ({ title, patient }) => {
   const handleAddPatient = () => {
     setAuthData({ loading: true, error: false });
     PatientServices.postNewPatient(authData.token!, name, lastName, avatar)
-      .then((res: any) => {
+      .then(() => {
         debugger;
         setAuthData({ loading: false, error: false });
         // goToListPatients();
