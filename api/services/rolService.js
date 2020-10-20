@@ -5,6 +5,10 @@ const estadosRespuesta = require('../models/estados_respuesta');
 
 const rolService = {
 
+	getAll: async function(){
+		return await rolDAO.getAll();
+	},
+
 	getUsuarioRol: async function(idUsuario, idRol){
 		//Aca iría la lógia de negocio
 		return await rolDAO.getUsuarioRol(idUsuario, idRol);

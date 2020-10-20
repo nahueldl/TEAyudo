@@ -1,0 +1,34 @@
+name: Build and deploy TEAyudo API to Testing Srv
+
+on:
+  push:
+    branches:
+      - testing
+    paths:
+      - 'api/**'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@master
+
+    - name: Set up Node.js version
+      uses: actions/setup-node@v1
+      with:
+        node-version: '12.x'
+
+    - name: npm install, build, and test
+      run: |
+        cd api
+        npm install
+        npm run build --if-present
+        npm run test --if-present
+    - name: 'Deploy to Azure Web App'
+      uses: azure/webapps-deploy@v1
+      with:
+        app-name: 'teayudotestingwebapp'
+        slot-name: 'production'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_2233d2329ff340e1a857510380934dff }}
+        package: .

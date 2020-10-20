@@ -23,6 +23,8 @@
 
     **Optional:**
    * `idPaciente=[int]`
+   * `offset=[int]`
+   * `limit=[int]`
 
 * **Data Params**
 

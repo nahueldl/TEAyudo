@@ -43,17 +43,21 @@ const pacienteService = {
 			}
 			return result;
 		}
+		if(paciente.base64img !== undefined && paciente.base64img !== null){
+			const link = await imageUploaderService.uploadImage(null, paciente.base64img, "png");
+			if(link.state === estadosRespuesta.OK)
+				paciente.avatar = link.response;
+			else if(link === undefined || link == null ){
+				return {
+					state: estadosRespuesta.USERERROR,
+					response: "El formato de la imagen no es válido"
+				}
+			}else
+				return link;
+		}else{
+			paciente.avatar = null;
+		}
 		
-		const link = await imageUploaderService.uploadImage(null, paciente.base64img, "png");
-		if(link.state === estadosRespuesta.OK)
-			paciente.avatar = link.response;
-		else if(link === undefined || link == null ){
-			return {
-				state: estadosRespuesta.USERERROR,
-				response: "El formato de la imagen no es válido"
-			}
-		}else
-			return link;
 		const pacientes = [];
 		pacientes.push(paciente);
 		

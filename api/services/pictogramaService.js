@@ -10,12 +10,12 @@ const pictogramaService = {
 		return await pictogramaDAO.getById(id, idPaciente);
 	},
 
-	getByCategoriaAndPaciente: async function (usuario, idPaciente, idCategoria) {
+	getByCategoriaAndPaciente: async function (usuario, idPaciente, idCategoria, offset, limit) {
 		//TODO Check que el paciente para el que se esta pidiendo pertenezca al usuario
 		if(idPaciente === undefined || idPaciente === null)
 			return await pictogramaDAO.getByCategoria(parseInt(idCategoria));
 		else
-			return await pictogramaDAO.getByCategoriaAndPaciente(parseInt(idCategoria), parseInt(idPaciente))
+			return await pictogramaDAO.getByCategoriaAndPaciente(parseInt(idCategoria), parseInt(idPaciente), offset, limit)
 	},
 
 

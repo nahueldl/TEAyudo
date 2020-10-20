@@ -78,7 +78,7 @@ router.post('/', isAuth, async (req, res) => {
 //GET Pictogramas by idCategoria
 router.get('/:id/pictogramas', isAuth, async (req, res) => {
 	let result;
-	result = await pictogramaService.getByCategoriaAndPaciente(req.user, req.query.paciente, req.params.id)
+	result = await pictogramaService.getByCategoriaAndPaciente(req.user, req.query.paciente, req.params.id, req.query.offset, req.query.limit)
 
 	if(result.state === estadosRespuesta.OK)
 		res.status(200).json(result.response);

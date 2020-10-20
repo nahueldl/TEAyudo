@@ -65,10 +65,6 @@ const genericDAO = {
 		return res;
 	},
 
-
-	runSimpleQuery: async (query) => await this.runQuery(query),
-
-
 	insert: async function (table, options){
 		if(table === undefined || table === null) throw 'table no ha sido definida';
 

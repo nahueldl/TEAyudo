@@ -13,6 +13,7 @@ if(process.env.NODE_ENV === undefined || process.env.NODE_ENV === null){
 	process.exit(1);
 };
 
+
 //Levanta express
 const app = express();
 
@@ -36,6 +37,7 @@ app.use('/api/pictogramas', require('./routes/pictogramasController'));
 app.use('/api/traducciones', require('./routes/traduccionController'));
 app.use('/api/tipoDocumento', require('./routes/tiposDocumentoController'));
 app.use('/api/informes', require('./routes/informeController'));
+app.use('/api/roles', require('./routes/rolesController'));
 
 
 
