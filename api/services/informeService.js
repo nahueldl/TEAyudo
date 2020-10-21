@@ -1,5 +1,6 @@
 const informeDAO = require('../persistence/informeDAO');
 const estadisticaDAO = require('../persistence/estadisticaDAO');
+const pacienteService = require('../services/pacienteService')
 const imageDownloaderService = require('../services/imageDownloaderService');
 const estadosRespuesta = require('../models/estados_respuesta');
 const Handlebars = require("handlebars");
@@ -15,83 +16,92 @@ const informeService = {
 	},
 
 	//getPDF
-	insert: async function(categoria, usuario, res){
+	getPDF: async function(usuario, paciente, res){
 
-		const ruta = path.join(__dirname, '../templates/informe.hbs');
-
-		const handlebars = fs.readFileSync(path.join(__dirname, '../templates/informe.hbs'), "utf8");
+		//falta
+		//agregar la fecha para la que quiere generar el informe
+		//guardar el registro de la generacion
+		//agregar intervalo de tiempo variable
 		
-		let source2 = handlebars;
+		const hbs = fs.readFileSync(path.join(__dirname, '../templates/informe.hbs'), "utf8");
 
-		let template = Handlebars.compile(source2);
+		const template = Handlebars.compile(hbs);
 
-		let data = 
-		{
-			"nombrePaciente": "Juan Carlos",
-			"tiempoRespuesta": "16s",
-			"porcentejeRespuestas": "76.42%",
-			"cantidadJugadas": "24",
+		const data = {
+			"nombrePaciente": null,
+			"tiempoRespuesta": null,
+			"porcentejeRespuestas": null,
+			"cantidadJugadas": null,
 			"fecha": (new Date()).toLocaleDateString(),
-			"cantPictogramasPromedio": "3.26",
-			"categoriasMasUsadas": [
-				{
-					"pos": "1",
-					"nombre": "Equipo De Proteccion",
-					"algoMas": "blah"
-				},
-				{
-					"pos": "2",
-					"nombre": "Equipo Medico",
-					"algoMas": "blah"
-				},
-				{
-					"pos": "3",
-					"nombre": "Verbo",
-					"algoMas": "blah"
-				}
-			],
-			"pictogramasMasUsados": [
-				{
-					"pos": "1",
-					"nombre": "persona con pantalla",
-					"algoMas": "blah"
-				},
-				{
-					"pos": "2",
-					"nombre": "quitar el guante",
-					"algoMas": "blah"
-				},
-				{
-					"pos": "3",
-					"nombre": "quitar cubrezapatos",
-					"algoMas": "blah"
-				}
-			],
+			"cantPictogramasPromedio": null,
+			"categoriasMasUsadas": null,
+			"pictogramasMasUsados": null,
 			"pictogramaMasUsado": null
 		};
 
-	
-		const resultPictogramasMasUsados = await estadisticaDAO.getPictogramasMasUsados(1, new Date());
+		usuario = {id_usuario: 1};
+
+		//Nombre del paciente
+		const resultPaciente = await pacienteService.getById(paciente, usuario);
+
+		if(resultPaciente.state === estadosRespuesta.OK){
+			data.nombrePaciente = resultPaciente.response.nombre + " " + resultPaciente.response.apellido;
+		}else{
+			res.status(400);
+			res.end();
+			return;
+		}
+		
+
+		//Estadisticas de pictograma
+		const resultPictogramasMasUsados = await estadisticaDAO.getPictogramasMasUsados(paciente, new Date());
 
 		if(resultPictogramasMasUsados.state === estadosRespuesta.OK){
 			data.pictogramasMasUsados = resultPictogramasMasUsados.response;
 			data.pictogramaMasUsado = await imageDownloaderService.downloadBase64Img(resultPictogramasMasUsados.response[0].url);
 		}
 
-		let resultado = template(data);
+		//Estadisticas de categorias
+		const resultCategoriasMasUsadas = await estadisticaDAO.getCategoriasMasUsadas(paciente, new Date());
 
-	   
-		//Renderizacion y creacion del PDF
-		let informe = null;
-		
-		const html = resultado; //esto deberia tomar el result de arriba
+		if(resultCategoriasMasUsadas.state === estadosRespuesta.OK){
+			data.categoriasMasUsadas = resultCategoriasMasUsadas.response;
+		}
 
+		//Estadisticas de traduccion
+		const resultPromedioTraduccion = await estadisticaDAO.getPromedioTraduccion(paciente, new Date());
+
+		if(resultPromedioTraduccion.state === estadosRespuesta.OK){
+			data.cantPictogramasPromedio = (Math.round(resultPromedioTraduccion.response.promedio * 100) / 100).toFixed(2);
+		}
+
+		//Estadisticas de Juegos
+		const resultTiempoPromedioJuego = await estadisticaDAO.getTiempoPromedioJuego(paciente, new Date());
+
+		if(resultTiempoPromedioJuego.state === estadosRespuesta.OK){
+			data.tiempoRespuesta = (Math.round(resultTiempoPromedioJuego.response.promedio * 100) / 100).toFixed(2) + "s";
+		}
+
+		const resultCantidadJugadas = await estadisticaDAO.getCantidadJugadas(paciente, new Date());
+
+		if(resultCantidadJugadas.state === estadosRespuesta.OK){
+			data.cantidadJugadas = resultCantidadJugadas.response.cantidad;
+		}
+
+		const resultJugadasCorrectass = await estadisticaDAO.getJugadasCorrectas(paciente, new Date());
+
+		if(resultJugadasCorrectass.state === estadosRespuesta.OK){
+			data.porcentejeRespuestas = resultJugadasCorrectass.response.porcentaje + "%";
+		}
+
+		const html = template(data);
+
+		//Si quiero devolver un HTML (pruebas)
 		// res.status(200);
-		// res.send(resultado);
+		// res.send(html);
 
-		const options = { format: 'A4' };
-
-		pdf.create(html, options).toStream((err, stream) => {
+		//Si quiero devolver un PDF
+		pdf.create(html, { format: 'A4' }).toStream((err, stream) => {
 			if(err === undefined || err === null){
 				res.setHeader('Content-Type', 'application/pdf');
 				res.status(200);

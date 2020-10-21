@@ -1,6 +1,11 @@
+const sql = require('mssql');
+const genericDAO = require('./genericDAO');
+const estadosRespuesta = require('../models/estados_respuesta');
+
+
 const informeDAO = {
     insert: async function (informe){
-		if(informe == undefined || informe == null || informe.length < 1){
+		if(informe == undefined || informe == null || informe < 1){
 			const result = {
 				state: estadosRespuesta.USERERROR,
 				response: 'informe no esta definido'
@@ -25,3 +30,6 @@ const informeDAO = {
 		return genericDAO.insert(tablaInforme);
 	}
 }
+
+
+module.exports = informeDAO;
