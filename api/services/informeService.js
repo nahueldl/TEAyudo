@@ -69,8 +69,7 @@ const informeService = {
 		if(resultPaciente.state === estadosRespuesta.OK){
 			data.nombrePaciente = resultPaciente.response.nombre + " " + resultPaciente.response.apellido;
 		}else{
-			res.status(404);
-			res.end();
+			res.status(404).json({msg: "No se encontro un paciente con ese id asociado al usuario logueado"});
 			return;
 		}
 		
