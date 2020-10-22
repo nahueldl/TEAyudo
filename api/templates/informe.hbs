@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>Informe medico</title>
+</head>
+
+<body>
+	<div>
+		<h1>Informe del paciente {{nombrePaciente}}</h1>
+		<h4 style="margin-top: -20px;">Desde {{fecha}} hasta los últimos 30 días</h4>
+	</div>
+	<div>
+
+		<div style="width:380px; height: 700px; vertical-align: top; overflow: auto; display: inline-block;">
+
+			<div>
+				<h2>Pictograma más usado</h2>
+				<img height="200px" width="200px" src="{{pictogramaMasUsado}}" alt="Pictograma más usado"/>
+			</div>
+
+			<div>
+				<h4>En promedio el paciente usa</h4>
+				<h1 style="padding-left:2em">	{{cantPictogramasPromedio}}</h1>
+				<h4>pictogramas por frase</h4>
+			</div>
+
+		</div>
+
+		<div style="width:380px; height: 700px; vertical-align: top; overflow: auto; display: inline-block;">
+
+			<div>
+				<h2>Jugadas</h2>
+				<ul>
+					<li>Tiempo promedio de respuesta: {{tiempoRespuesta}}</li>
+					<li>Porcentaje de respuestas correctas: {{porcentejeRespuestas}}</li>
+					<li>Cantidad de jugadas: {{cantidadJugadas}}</li>
+				</ul>
+			</div>
+
+			<div>
+				<h2>Categorías más usadas</h2>
+				<ul>
+					{{#each categoriasMasUsadas}}
+					<li>{{pos}}°. {{nombre}}</li>
+					{{/each}}
+				</ul>
+			</div>
+
+			<div>
+				<h2>Pictogramas más usados</h2>
+				<ul>
+					{{#each pictogramasMasUsados}}
+					<li>{{pos}}°. {{nombre}}</li>
+					{{/each}}
+				</ul>
+			</div>
+
+		</div>
+
+	</div>
+	<div id="pageFooter">
+		<small>Todos los derechos reservados, TEAyudo 2020 ©</small>
+	</div>
+</body>
+
+</html>
