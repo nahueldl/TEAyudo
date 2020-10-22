@@ -6,7 +6,7 @@ const isAuth = require('../middleware/auth').isAuth;
 const estadosRespuesta = require('../models/estados_respuesta');
 
 
-router.get('/', async (req, res) => {
+router.get('/', isAuth, async (req, res) => {
 	const result = await informeService.getPDF(req.user, req.query.paciente, req.query.fecha, res);
 });
 
