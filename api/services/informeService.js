@@ -7,6 +7,7 @@ const Handlebars = require("handlebars");
 const pdf = require('html-pdf');
 const fs = require('fs');
 const path = require('path');
+const rolService = require('../services/rolService');
 
 const informeService = {
 
@@ -16,12 +17,35 @@ const informeService = {
 	},
 
 	//getPDF
-	getPDF: async function(usuario, paciente, res){
+	getPDF: async function(usuario, paciente, fecha, res){
 
 		//falta
 		//agregar la fecha para la que quiere generar el informe
 		//guardar el registro de la generacion
 		//agregar intervalo de tiempo variable
+
+		//TODO: BORRARR ESTOOO
+		const resultUsuarioRol = await rolService.getUsuarioRol(usuario.id_usuario, 2);
+
+		if(resultUsuarioRol.state !== estadosRespuesta.OK){
+			res.status(403).json({msg: "El usuario no tiene los permisos"});
+			return;
+		}
+
+		let date;
+		if(fecha === undefined || fecha === null)
+			date = new Date();
+		else{
+			date = new Date(fecha);
+		}
+
+		const informe = {
+			"id_paciente": paciente,
+			"id_usuario_rol": resultUsuarioRol.response.id_usuario_rol,
+			"fecha_hora": date
+		}
+
+		informeDAO.insert(informe);
 		
 		const hbs = fs.readFileSync(path.join(__dirname, '../templates/informe.hbs'), "utf8");
 
@@ -32,14 +56,12 @@ const informeService = {
 			"tiempoRespuesta": null,
 			"porcentejeRespuestas": null,
 			"cantidadJugadas": null,
-			"fecha": (new Date()).toLocaleDateString(),
+			"fecha": date.toLocaleDateString(),
 			"cantPictogramasPromedio": null,
 			"categoriasMasUsadas": null,
 			"pictogramasMasUsados": null,
 			"pictogramaMasUsado": null
 		};
-
-		usuario = {id_usuario: 1};
 
 		//Nombre del paciente
 		const resultPaciente = await pacienteService.getById(paciente, usuario);
@@ -47,7 +69,7 @@ const informeService = {
 		if(resultPaciente.state === estadosRespuesta.OK){
 			data.nombrePaciente = resultPaciente.response.nombre + " " + resultPaciente.response.apellido;
 		}else{
-			res.status(400);
+			res.status(404);
 			res.end();
 			return;
 		}

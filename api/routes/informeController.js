@@ -7,7 +7,7 @@ const estadosRespuesta = require('../models/estados_respuesta');
 
 
 router.get('/', async (req, res) => {
-	const result = await informeService.getPDF(req.user, req.query.paciente, res);
+	const result = await informeService.getPDF(req.user, req.query.paciente, req.query.fecha, res);
 });
 
 module.exports = router;

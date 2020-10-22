@@ -4,11 +4,11 @@ const estadosRespuesta = require('../models/estados_respuesta');
 
 
 const informeDAO = {
-    insert: async function (informe){
+	insert: async function (informe){
 		if(informe == undefined || informe == null || informe < 1){
 			const result = {
 				state: estadosRespuesta.USERERROR,
-				response: 'informe no esta definido'
+				response: 'El informe no esta definido'
 			}
 			return result;
 		}
@@ -16,15 +16,14 @@ const informeDAO = {
 
 		//Pensar como voy a hacer el INSERT, seguro lo de abajo esta mal
 		const tablaInforme = new sql.Table('Informe');
-        tablaInforme.columns.add('id_usuario_rol', sql.Numeric(18,0), {nullable: true});
-        // si los informes los van a hacer solo los profesionales podriamos sacarlo? POdria ir el id profesional
-        tablaInforme.columns.add('id_paciente', sql.Numeric(18,0), {nullable: true});
-		tablaInforme.columns.add('ruta_documento', sql.NVarChar(255), {nullable: false});
+		tablaInforme.columns.add('id_usuario_rol', sql.Numeric(18,0), {nullable: false});
+		tablaInforme.columns.add('id_paciente', sql.Numeric(18,0), {nullable: false});
+		tablaInforme.columns.add('fecha_hora', sql.DateTime, {nullable: true});
 
 		tablaInforme.rows.add(
-			informe.id_usuario_rol || null,
+			informe.id_usuario_rol,
 			informe.id_paciente,
-			informe.ruta_documento
+			informe.fecha_hora
 		);
 
 		return genericDAO.insert(tablaInforme);
