@@ -19,8 +19,9 @@ class CategoriesService {
     });
   }
 
-  createCategory(token: string, categoryName: string, idRol: string) {
+  createCategory(token: string, categoryName: string, idRol: any) {
     const header = `Bearer ${token}`;
+    debugger;
     return this.axios.post("/api/categorias", {
       headers: {
         Authorization: header,
@@ -32,9 +33,9 @@ class CategoriesService {
     });
   }
 
-  editCategory(token: string, categoryName: string) {
+  editCategory(token: string, categoryId: number, categoryName: string) {
     const header = `Bearer ${token}`;
-    return this.axios.put("/api/categorias", {
+    return this.axios.put("/api/categorias/:" + categoryId , {
       headers: {
         Authorization: header,
       },
@@ -44,14 +45,11 @@ class CategoriesService {
     });
   }
 
-  deleteCategory(token: string, categoryId: string) {
+  deleteCategory(token: string, categoryId: number) {
     const header = `Bearer ${token}`;
-    return this.axios.delete("/api/categorias", {
+    return this.axios.delete("/api/categorias/:" + categoryId, {
       headers: {
         Authorization: header,
-      },
-      params: {
-        id: categoryId,
       },
     });
   }

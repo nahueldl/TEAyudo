@@ -4,6 +4,7 @@ import CardWithImage from "../../../components/CardWithImage";
 import CardWithIcon from "../../../components/CardWithIcon";
 import { addCircleOutline, pin, walk, warning, wifi, wine } from "ionicons/icons";
 import { CategoryContext } from "../../../context/category";
+import { Category } from "../../../types/Categories";
 
 const ListCategories: React.FC<ListCategories> = () => {
   const { categoriaData, setCategoriaData } = useContext(CategoryContext);
@@ -18,16 +19,26 @@ const ListCategories: React.FC<ListCategories> = () => {
     [navigate]
   );
 
+  const handleButtonCategoriaClick = (categoria: Category) => {
+    setCategoriaData({ categoriaSelected: categoria });
+    goToViewEditDeleteCategory();
+  };
+
+  const goToViewEditDeleteCategory = useCallback(
+    () => navigate("/categorias/edicion", "forward"),
+    [navigate]
+  );
+
   return (
     <IonGrid className="overflow-auto">
       <IonRow>
-        {categoriaData.categoriasList?.map((categoria, index) => (
-          <IonCol key={index} size="4" sizeMd="2">
-            <IonButton size="large" expand="block" className="">
-              {categoria.nombre}
+         {categoriaData.categoriasList?.map((categoria, index) => ( 
+          <IonCol key={index}  size="4" sizeMd="2">
+            <IonButton size="large" expand="block" className="" onClick={() => {handleButtonCategoriaClick(categoria);}}>
+               {categoria.nombre} 
             </IonButton>
           </IonCol>
-        ))} 
+         ))}  
       </IonRow>
       <IonRow>
         <CardWithIcon

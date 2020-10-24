@@ -6,6 +6,7 @@ import HomePage from "./views/Home";
 import PictogramsPage from "./views/Pictograms";
 import CategoriesPage from "./views/Categories";
 import CategoriesAddPage from "./views/Categories/AddCategorie";
+import CategoriesViewEditDeleteCategoryPage from "./views/Categories/ViewEditDeleteCategory";
 import PatientsPage from "./views/Patients/Page";
 import ProfessionalsPage from "./views/Professionals";
 import ReportsPage from "./views/Reports";
@@ -29,6 +30,7 @@ const AppPostLogin: React.FC = () => {
         <Route path="/pictogramas" component={PictogramsPage} exact />
         <Route path="/categorias" component={CategoriesPage} exact />
         <Route path="/categorias/alta" component={CategoriesAddPage} exact />
+        <Route path="/categorias/edicion" component={CategoriesViewEditDeleteCategoryPage} exact />
         <Route path="/pacientes" component={PatientsPage} exact />
         <Route path="/profesionales" component={ProfessionalsPage} exact />
         <Route path="/informes" component={ReportsPage} exact />

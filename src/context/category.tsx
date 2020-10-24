@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Category } from "../types/Categories";
 
 const CategoryContext = React.createContext({} as IContext);
 
@@ -17,14 +18,8 @@ const CategoriaProvider = (props: any) => {
 };
 
 interface IData {
-  categoriaSelected: Categoria;
-  categoriasList: [Categoria];
-}
-
-interface Categoria {
-  id_categoria?: any;
-  id_usuario_rol?: string;
-  nombre?: string;
+  categoriaSelected: Category;
+  categoriasList: [Category];
 }
 
 interface IContext {

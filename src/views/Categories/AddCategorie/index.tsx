@@ -16,7 +16,8 @@ const AddCategory: React.FC<InfoCategoryProps> = ({categoria}) => {
 
     const handleAdd = () => {
         setAuthData({ loading: true, error: false });
-        CategoriesService.createCategory(authData.token!, name, authData.role == 'F'? "1" : "2")
+        debugger;
+        CategoriesService.createCategory(authData.token!, name, authData.role)
           .then(() => {
             setAuthData({ loading: false, error: false });
             goToListCategories();
@@ -53,6 +54,7 @@ const AddCategory: React.FC<InfoCategoryProps> = ({categoria}) => {
                                 <IonLabel>Nombre:</IonLabel>
                                 <IonInput
                                     name="name"
+                                    className="text-bold"
                                     value={name}
                                     required
                                     clearInput
