@@ -8,7 +8,7 @@ class CategoriesService {
 
   getCategories(token: string, patientId: string):any {
     const header = `Bearer ${token}`;
-
+debugger;
     return this.axios.get("/api/categorias", {
       headers: {
         Authorization: header,
@@ -35,7 +35,7 @@ class CategoriesService {
 
   editCategory(token: string, categoryId: number, categoryName: string) {
     const header = `Bearer ${token}`;
-    return this.axios.put("/api/categorias/:" + categoryId , {
+    return this.axios.put("/api/categorias/" + categoryId , {
       headers: {
         Authorization: header,
       },
@@ -47,7 +47,7 @@ class CategoriesService {
 
   deleteCategory(token: string, categoryId: number) {
     const header = `Bearer ${token}`;
-    return this.axios.delete("/api/categorias/:" + categoryId, {
+    return this.axios.delete("/api/categorias/" + categoryId, {
       headers: {
         Authorization: header,
       },

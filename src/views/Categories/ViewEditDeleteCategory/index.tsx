@@ -20,6 +20,7 @@ const ViewEditDeleteCategory = () => {
   
     const handleEditCategoria = () => {
         setAuthData({ loading: true, error: false });
+        debugger;
         CategoriesService.editCategory(authData.token!, categoriaData.categoriaSelected?.id_categoria!, nombreCategoriaAux)
           .then((res: any) => {
             setCategoriaData({

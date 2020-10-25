@@ -16,6 +16,7 @@ const CategoriesPage: React.FC = () => {
   useEffect(() => getCategorias(), []);
   
   const getCategorias = () => {
+    debugger;
     setAuthData({ loading: true, error: false });
     CategoriesService.getCategories(authData.token!, patientData.patientSelected?.id_paciente)
       .then((res: any) => {
