@@ -17,7 +17,7 @@ import GamesPage from "./views/Game";
 import AddPatientPage from "./views/Patients/AddPatient";
 import ViewPatientPage from "./views/Patients/ViewPatient";
 import EditPatientPage from "./views/Patients/EditPatient";
-import RolesPage from "./views/Roles/Page";
+// import RolesPage from "./views/Roles/Page";
 
 const AppPostLogin: React.FC = () => {
   const { authData } = useContext(AuthenticationContext);
@@ -44,7 +44,7 @@ const AppPostLogin: React.FC = () => {
         <Route path="/comunicacion" component={ComunicationPage}/>
         <Route path="/juegos" component={GamesPage} />
         <Route path="/pacientes/edicion" component={EditPatientPage} exact />
-        <Redirect from="/" to="/inicio" />
+        <Redirect from="*" to="/inicio" />
       </IonRouterOutlet>
     </IonSplitPane>
   );
