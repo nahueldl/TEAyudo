@@ -5,6 +5,8 @@ import Menu from "./components/Menu/Menu";
 import HomePage from "./views/Home";
 import PictogramsPage from "./views/Pictograms";
 import CategoriesPage from "./views/Categories";
+import CategoriesAddPage from "./views/Categories/AddCategorie";
+import CategoriesViewEditDeleteCategoryPage from "./views/Categories/ViewEditDeleteCategory";
 import PatientsPage from "./views/Patients/Page";
 import ProfessionalsPage from "./views/Professionals";
 import ReportsPage from "./views/Reports";
@@ -15,7 +17,7 @@ import GamesPage from "./views/Game";
 import AddPatientPage from "./views/Patients/AddPatient";
 import ViewPatientPage from "./views/Patients/ViewPatient";
 import EditPatientPage from "./views/Patients/EditPatient";
-import RolesPage from "./views/Roles/Page";
+// import RolesPage from "./views/Roles/Page";
 
 const AppPostLogin: React.FC = () => {
   const { authData } = useContext(AuthenticationContext);
@@ -27,6 +29,8 @@ const AppPostLogin: React.FC = () => {
         <Route path="/inicio" component={HomePage} exact />
         <Route path="/pictogramas" component={PictogramsPage} exact />
         <Route path="/categorias" component={CategoriesPage} exact />
+        <Route path="/categorias/alta" component={CategoriesAddPage} exact />
+        <Route path="/categorias/edicion" component={CategoriesViewEditDeleteCategoryPage} exact />
         <Route path="/pacientes" component={PatientsPage} exact />
         <Route path="/profesionales" component={ProfessionalsPage} exact />
         <Route path="/informes" component={ReportsPage} exact />
@@ -40,7 +44,7 @@ const AppPostLogin: React.FC = () => {
         <Route path="/comunicacion" component={ComunicationPage}/>
         <Route path="/juegos" component={GamesPage} />
         <Route path="/pacientes/edicion" component={EditPatientPage} exact />
-        <Redirect from="/" to="/inicio" />
+        <Redirect from="*" to="/inicio" />
       </IonRouterOutlet>
     </IonSplitPane>
   );

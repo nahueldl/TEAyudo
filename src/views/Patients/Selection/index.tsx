@@ -6,10 +6,12 @@ import PatientServices from "../../../services/patients.services";
 import CardWithImage from "../../../components/CardWithImage";
 
 import { Plugins } from "@capacitor/core";
+import { PatientContext } from "../../../context/patient";
 const { Storage } = Plugins;
 
 const PatientSelection: React.FC = () => {
   const { authData, setAuthData } = useContext(AuthenticationContext);
+  const { patientData, setPatientData } = useContext(PatientContext);
   const { username, token } = authData;
   const { navigate } = useContext(NavContext);
   const [patients, setPatients] = useState<Patient[]>([]);
@@ -36,6 +38,7 @@ const PatientSelection: React.FC = () => {
       patientName: `${patient.nombre} ${patient.apellido}`,
       patientId: patient.id_paciente,
     });
+    setPatientData({patientSelected: patient});
     Storage.set({ key: "patientName", value: patient.nombre }).then();
     Storage.set({ key: "patientId", value: patient.id_paciente }).then();
     goToHome();
