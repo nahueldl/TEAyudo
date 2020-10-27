@@ -22,7 +22,7 @@ const ListCategories: React.FC<ListCategories> = () => {
       <IonRow>
          {categoriaData.categoriasList?.map((categoria, index) => ( 
            categoria.id_usuario_rol != null ? 
-            <IonCol key={index}  size="4" sizeMd="2">
+            <IonCol key={index}  size="auto">
               <IonButton size="large" expand="block" className="" onClick={() => {handleButtonCategoriaClick(categoria);}}>
                 {categoria.nombre} 
               </IonButton>

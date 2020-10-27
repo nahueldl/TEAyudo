@@ -15,11 +15,13 @@ import {
 import React, { useContext, useState, useCallback } from "react";
 import Page from "../../../components/Page";
 import { AuthenticationContext } from "../../../context/authentication";
+import { CategoryContext } from "../../../context/category";
 import CategoriesService from "../../../services/categories.services";
 import "../styles.css";
 
 const AddCategory: React.FC<InfoCategoryProps> = ({ categoria }) => {
   const { authData, setAuthData } = useContext(AuthenticationContext);
+  const { categoriaData, setCategoriaData } = useContext(CategoryContext);
   const { navigate } = useContext(NavContext);
   const [errorMessage, setErrorMessage] = useState<string>();
   const { error, loading } = authData;
@@ -30,7 +32,9 @@ const AddCategory: React.FC<InfoCategoryProps> = ({ categoria }) => {
   const handleAdd = (e: React.MouseEvent<HTMLIonButtonElement, MouseEvent>) => {
     setAuthData({ loading: true, error: false });
     CategoriesService.createCategory(authData.token!, name, authData.role!)
-      .then(() => {
+      .then((res: any) => {
+        categoriaData.categoriasList?.push(res.data);
+        setCategoriaData({categoriasList:categoriaData.categoriasList});
         setAuthData({ loading: false, error: false });
         goToListCategories();
       })
