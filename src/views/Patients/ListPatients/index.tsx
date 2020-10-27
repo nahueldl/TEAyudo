@@ -2,8 +2,6 @@ import React, { useContext, useCallback } from "react";
 import "../styles.css";
 import { IonGrid, IonRow, IonCol, NavContext } from "@ionic/react";
 import CardWithImage from "../../../components/CardWithImage";
-import CardWithIcon from "../../../components/CardWithIcon";
-import { addCircleOutline } from "ionicons/icons";
 import { PatientContext } from "../../../context/patient";
 import { AuthenticationContext } from "../../../context/authentication";
 
@@ -18,17 +16,8 @@ const ListPatients: React.FC<ListPatientsProps> = (props) => {
     goToViewPatient();
   };
 
-  const handleAddPatientClick = () => {
-    goToAddPatient();
-  };
-
   const goToViewPatient = useCallback(
     () => navigate("/pacientes/informacion", "forward"),
-    [navigate]
-  );
-
-  const goToAddPatient = useCallback(
-    () => navigate("/pacientes/alta", "forward"),
     [navigate]
   );
 
@@ -51,14 +40,6 @@ const ListPatients: React.FC<ListPatientsProps> = (props) => {
             />
           </IonCol>
         ))}
-      </IonRow>
-      <IonRow>
-        <CardWithIcon
-          icon={addCircleOutline}
-          title="Agregar"
-          touchable
-          onClick={handleAddPatientClick}
-        />
       </IonRow>
     </IonGrid>
   );

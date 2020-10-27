@@ -18,9 +18,11 @@ import { Base64 } from "@ionic-native/base64/ngx";
 import "./styles.css";
 import PatientServices from "../../../services/patients.service";
 import Page from "../../../components/Page";
+import { PatientContext } from "../../../context/patient";
 
 const AddPatient: React.FC<InfoPatientProps> = ({ title, patient }) => {
   const { authData, setAuthData } = useContext(AuthenticationContext);
+  const { patientData, setPatientData } = useContext(PatientContext);
   const { navigate } = useContext(NavContext);
   const [errorMessage, setErrorMessage] = useState<string>();
   const { error, loading } = authData;
@@ -58,8 +60,10 @@ const AddPatient: React.FC<InfoPatientProps> = ({ title, patient }) => {
     PatientServices.postNewPatient(authData.token!, name, lastName, avatar)
       .then((res: any) => {
         debugger;
+        patientData.patientsList?.push(res.data);
+        setPatientData({patientsList: patientData.patientsList});
         setAuthData({ loading: false, error: false });
-        // goToListPatients();
+        goToListPatients();
       })
       .catch((_error: any) => {
         setErrorMessage(
@@ -124,7 +128,6 @@ const AddPatient: React.FC<InfoPatientProps> = ({ title, patient }) => {
               </IonList>
               <div>
                 <IonButton
-                  type="submit"
                   className="formButton mt-5"
                   onClick={handleAddPatient}
                   expand="block"
