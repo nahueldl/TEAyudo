@@ -36,11 +36,10 @@ class CategoriesService {
 
   editCategory(token: string, categoryId: number, categoryName: string) {
     const header = `Bearer ${token}`;
-    return this.axios.put("/api/categorias/" + categoryId, {
-      headers: {
-        Authorization: header,
-      },
-    });
+    debugger;
+    return this.axios.put("/api/categorias/" + categoryId, {nombre: categoryName},
+      {headers: {Authorization: header,},}
+    );
   }
 
   deleteCategory(token: string, categoryId: number) {
