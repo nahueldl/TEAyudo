@@ -17,9 +17,11 @@ import {
 import "./styles.css";
 import PatientServices from "../../../services/patients.services";
 import Page from "../../../components/Page";
+import { PatientContext } from "../../../context/patient";
 
 const AddPatient: React.FC<InfoPatientProps> = ({ patient }) => {
   const { authData, setAuthData } = useContext(AuthenticationContext);
+  const { patientData, setPatientData } = useContext(PatientContext);
   const { navigate } = useContext(NavContext);
   const [errorMessage, setErrorMessage] = useState<string>();
   const { error, loading } = authData;
@@ -57,8 +59,10 @@ const AddPatient: React.FC<InfoPatientProps> = ({ patient }) => {
     PatientServices.postNewPatient(authData.token!, name, lastName, avatar)
       .then(() => {
         debugger;
+        patientData.patientsList?.push(res.data);
+        setPatientData({patientsList: patientData.patientsList});
         setAuthData({ loading: false, error: false });
-        // goToListPatients();
+        goToListPatients();
       })
       .catch((_error: any) => {
         setErrorMessage(
@@ -123,7 +127,6 @@ const AddPatient: React.FC<InfoPatientProps> = ({ patient }) => {
               </IonList>
               <div>
                 <IonButton
-                  type="submit"
                   className="formButton mt-5"
                   onClick={handleAddPatient}
                   expand="block"

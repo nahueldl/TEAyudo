@@ -1,9 +1,12 @@
 import React, { useState, useContext, useEffect, useCallback } from "react";
 import Page from "../../../components/Page";
-import { NavContext, IonLoading } from "@ionic/react";
+import { NavContext, IonLoading, IonRow } from "@ionic/react";
 import ListPatients from "../ListPatients";
 import { AuthenticationContext } from "../../../context/authentication";
-import PatientServices from "../../../services/patients.services";
+import PatientServices from "../../../services/patients.service";
+import { PatientContext } from "../../../context/patient";
+import CardWithIcon from "../../../components/CardWithIcon";
+import { addCircleOutline } from "ionicons/icons";
 
 const PatientsPage: React.FC = () => {
   const { authData, setAuthData } = useContext(AuthenticationContext);
@@ -29,6 +32,10 @@ const PatientsPage: React.FC = () => {
       });
   };
 
+  const handleAddPatientClick = () => {
+    goToAddPatient();
+  };
+
   const goToAddPatient = useCallback(
     () => navigate("/pacientes/alta", "forward"),
     [navigate]
@@ -43,7 +50,17 @@ const PatientsPage: React.FC = () => {
           spinner="crescent"
         />
       ) : (
-        <ListPatients></ListPatients>
+        <>
+          <ListPatients></ListPatients>
+          <IonRow>
+            <CardWithIcon
+              icon={addCircleOutline}
+              title="Agregar"
+              touchable
+              onClick={handleAddPatientClick}
+            />
+          </IonRow>
+        </>
       )}
     </Page>
   );
