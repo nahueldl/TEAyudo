@@ -57,8 +57,7 @@ const AddPatient: React.FC<InfoPatientProps> = ({ patient }) => {
   const handleAddPatient = () => {
     setAuthData({ loading: true, error: false });
     PatientServices.postNewPatient(authData.token!, name, lastName, avatar)
-      .then(() => {
-        debugger;
+      .then((res: any) => {
         patientData.patientsList?.push(res.data);
         setPatientData({patientsList: patientData.patientsList});
         setAuthData({ loading: false, error: false });
