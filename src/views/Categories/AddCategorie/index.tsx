@@ -28,14 +28,10 @@ const AddCategory: React.FC<InfoCategoryProps> = ({ categoria }) => {
   );
 
   const handleAdd = (e: React.MouseEvent<HTMLIonButtonElement, MouseEvent>) => {
-    e.preventDefault();
-    console.log(e);
-    console.log("clicked on add!");
     setAuthData({ loading: true, error: false });
     CategoriesService.createCategory(authData.token!, name, authData.role!)
       .then(() => {
         setAuthData({ loading: false, error: false });
-        console.log("cargada!");
         goToListCategories();
       })
       .catch((_error: any) => {
@@ -43,7 +39,6 @@ const AddCategory: React.FC<InfoCategoryProps> = ({ categoria }) => {
           "Hubo un inconveniente creando la categoría, pruebe más tarde."
         );
         setAuthData({ loading: false, error: true });
-        console.log("error :(");
       });
   };
 
