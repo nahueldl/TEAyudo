@@ -33,12 +33,13 @@ const ListCategories: React.FC<ListCategories> = () => {
     <IonGrid className="overflow-auto">
       <IonRow>
          {categoriaData.categoriasList?.map((categoria, index) => ( 
-          <IonCol key={index}  size="4" sizeMd="2">
-            <IonButton size="large" expand="block" className="" onClick={() => {handleButtonCategoriaClick(categoria);}}>
-               {categoria.nombre} 
-            </IonButton>
-          </IonCol>
-         ))}  
+           categoria.id_usuario_rol != null ? 
+            <IonCol key={index}  size="4" sizeMd="2">
+              <IonButton size="large" expand="block" className="" onClick={() => {handleButtonCategoriaClick(categoria);}}>
+                {categoria.nombre} 
+              </IonButton>
+            </IonCol>
+         :null))}  
       </IonRow>
       <IonRow>
         <CardWithIcon
