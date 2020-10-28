@@ -4,75 +4,129 @@ import { IonGrid, IonRow, IonCol, NavContext } from "@ionic/react";
 import CardWithImage from "../../../components/CardWithImage";
 import CardWithIcon from "../../../components/CardWithIcon";
 import { addCircleOutline } from "ionicons/icons";
-import { PatientContext } from "../../../context/patient";
+import { pictogramContext } from "../../../context/pictogram";
 import { AuthenticationContext } from "../../../context/authentication";
 
-const ListPatients: React.FC<ListPatientsProps> = (props) => {
-  const { patientData, setPatientData } = useContext(PatientContext);
+const ListPictograms: React.FC<ListPictogramsProps> = (props) => {
+  const { pictogramData, setPictogramData } = useContext(pictogramContext);
   const { navigate } = useContext(NavContext);
   const { authData } = useContext(AuthenticationContext);
   const { username } = authData;
 
-  const handleCardPatientClick = (patient: any) => {
-    setPatientData({ patientSelected: patient });
-    goToViewPatient();
+  const handleCardpictogramClick = (pictogram: any) => {
+    setpictogramData({ pictogramSelected: pictogram });
+    goToViewpictogram();
   };
 
-  const handleAddPatientClick = () => {
-    goToAddPatient();
+  const handleAddpictogramClick = () => {
+    goToAddpictogram();
   };
 
-  const goToViewPatient = useCallback(
+  const goToViewpictogram = useCallback(
     () => navigate("/pacientes/informacion", "forward"),
     [navigate]
   );
 
-  const goToAddPatient = useCallback(
+  const goToAddpictogram = useCallback(
     () => navigate("/pacientes/alta", "forward"),
     [navigate]
   );
 
   return (
-    <IonGrid className="overflow-auto">
-      <IonRow>
-        {patientData.patientsList?.map((patient, index) => (
-          <IonCol key={index} size="4" sizeMd="2">
-            <CardWithImage
-              img={{
-                src: `https://api.adorable.io/avatars/100/${username}-${patient.nombre}`,
-                alt: `Avatar des ${patient.nombre}`,
-              }}
-              title={patient.nombre!}
-              touchable
-              onClick={() => {
-                handleCardPatientClick(patient);
-              }}
-              patient={patient}
-            />
-          </IonCol>
-        ))}
+    <IonGrid>
+      <IonRow className="tirafrase">
+        <IonCol>
+          <ReactSortable
+            list={selectedItems!}
+            setList={setselectedItems}
+            animation={150}
+            group="shared-group-name"
+            className={`sortable ${isMobile ? "mobile" : ""}`}
+          >
+            {selectedItems!.map((item) => (
+              <CardWithImage
+                img={{ src: item.ruta_acceso_local, alt: "" }}
+                touchable
+                onClick={() => {}}
+              />
+            ))}
+          </ReactSortable>
+        </IonCol>
       </IonRow>
       <IonRow>
-        <CardWithIcon
-          icon={addCircleOutline}
-          title="Agregar"
-          touchable
-          onClick={handleAddPatientClick}
-        />
+        <IonCol>
+          <IonList>
+            {categories?.map((item, index) => (
+              <IonItem
+                key={index}
+                onClick={() => fetchPictograms(item.id_categoria)}
+              >
+                {item.nombre}
+              </IonItem>
+            ))}
+          </IonList>
+        </IonCol>
+        <IonCol>
+          <ReactSortable
+            list={availableItems}
+            setList={setAvailableItems}
+            animation={150}
+            group="shared-group-name"
+            className={`sortable ${isMobile ? " mobile" : ""}`}
+          >
+            {availableItems!.map((item, index) => (
+              <CardWithImage
+                key={index}
+                img={{ src: item.ruta_acceso_local, alt: "" }}
+                touchable={false}
+                onClick={() => {}}
+              />
+            ))}
+          </ReactSortable>
+        </IonCol>
       </IonRow>
     </IonGrid>
   );
+
+
+  // return (
+  //   <IonGrid className="overflow-auto">
+  //     <IonRow>
+  //       {pictogramData.pictogramsList?.map((pictogram, index) => (
+  //         <IonCol key={index} size="4" sizeMd="2">
+  //           <CardWithImage
+  //             img={{ src: item.ruta_acceso_local, alt: "" }}
+  //             title={pictogram.nombre!}
+  //             touchable
+  //             onClick={() => {
+  //               handleCardPictogramClick(pictogram);
+  //             }}
+  //             pictogram={pictogram}
+  //           />
+  //         </IonCol>
+  //       ))}
+  //     </IonRow>
+  //     <IonRow>
+  //       <CardWithIcon
+  //         icon={addCircleOutline}
+  //         title="Agregar"
+  //         touchable
+  //         onClick={handleAddPictogramClick}
+  //       />
+  //     </IonRow>
+  //   </IonGrid>
+  // );
 };
 
-interface ListPatientsProps {
-  patients?: [Patient];
+interface ListpictogramsProps {
+  pictograms?: [pictogram];
 }
 
-interface Patient {
+interface pictogram {
   id_paciente?: any;
   nombre?: string;
   apellido?: string;
   avatar?: string;
 }
 
-export default ListPatients;
+export default Listpictograms;

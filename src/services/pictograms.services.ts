@@ -9,7 +9,7 @@ class PictogramsServices {
   getPictogramsByCategory(
     token: string,
     categoryId: number,
-    patientId?: string,
+    pictogramId?: string,
     offset?: number,
     limit?: number
   ): any {
@@ -18,7 +18,7 @@ class PictogramsServices {
         Authorization: `Bearer ${token}`,
       },
       params: {
-        ...(patientId ? { paciente: patientId } : {}),
+        ...(pictogramId ? { paciente: pictogramId } : {}),
         ...(offset ? { offset: offset } : {}),
         ...(limit ? { limit: limit } : {}),
       },
@@ -36,16 +36,20 @@ class PictogramsServices {
     });
   }
 
-  getPictogramsByName(token: string, name: string, patientId?: string): any {
+  getPictogramsByName(token: string, name: string, pictogramId?: string): any {
     return this.axios.get(`/api/pictogramas`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
       params: {
         nombre: name,
-        idPaciente: patientId,
+        idPictogram: pictogramId,
       },
     });
+  }
+
+  getPictogramsFromUser(token: string){
+    console.log(token)
   }
 }
 

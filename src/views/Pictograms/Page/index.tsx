@@ -10,22 +10,22 @@ const PictogramsPage: React.FC = () => {
   const [pictograms, setPictograms] = useState<[Pictogram]>();
   const { navigate } = useContext(NavContext);
 
-  useEffect(() => getPatients(), []);
-  const getPatients = () => {
+  useEffect(() => getpictograms(), []);
+  const getpictograms = () => {
     setAuthData({ loading: true, error: false });
     PictogramServices.getPictogramsFromUser(authData.token!)
-      .then((res: any) => {
-        if (res.data?.length > 0) {
-          setPictograms(res.data);
-          setAuthData({ loading: false });
-        } else {
-          goToAddPictogram();
-          setAuthData({ loading: false });
-        }
-      })
-      .catch((_error: any) => {
-        setAuthData({ loading: false, error: true });
-      });
+      // .then((res: any) => {
+      //   if (res.data?.length > 0) {
+      //     setPictograms(res.data);
+      //     setAuthData({ loading: false });
+      //   } else {
+      //     goToAddPictogram();
+      //     setAuthData({ loading: false });
+      //   }
+      // })
+      // .catch((_error: any) => {
+      //   setAuthData({ loading: false, error: true });
+      // });
   };
 
   const goToAddPictogram = useCallback(
@@ -38,7 +38,7 @@ const PictogramsPage: React.FC = () => {
       {authData.loading ? (
         <IonLoading isOpen={authData.loading!} message="Trabajando..." />
       ) : (
-        <ListPictograms pictograms={pictograms}></ListPictograms>
+        <ListPictograms></ListPictograms>
       )}
     </Page>
   );
