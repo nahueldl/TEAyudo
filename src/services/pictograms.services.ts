@@ -36,14 +36,14 @@ class PictogramsServices {
     });
   }
 
-  getPictogramsByName(token: string, name: string, pictogramId?: string): any {
+  getPictogramsByName(token: string, name: string, idPaciente?: string): any {
     return this.axios.get(`/api/pictogramas`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
       params: {
         nombre: name,
-        idPictogram: pictogramId,
+        idPaciente: idPaciente,
       },
     });
   }

@@ -7,8 +7,9 @@ import { ReactSortable } from "react-sortablejs";
 import CategoriesServices from "../../../services/categories.services";
 import PictogramsServices from "../../../services/pictograms.services";
 import { PlatformContext } from "../../../context/platform";
+import { Pictogram } from "../../../types/Pictograms";
 
-const ListPictograms: React.FC = () => {
+const ListPictograms: React.FC<ListPictogramsProps> = ({pictograms}) => {
   // const { pictogramData, setPictogramData } = useContext(pictogramContext);
   const { navigate } = useContext(NavContext);
   const { isMobile } = useContext(PlatformContext).platformData;
@@ -59,89 +60,25 @@ const ListPictograms: React.FC = () => {
 
   return (
     <IonGrid>
-      <IonRow className="tirafrase">
-        <IonCol>
-          <ReactSortable
-            list={selectedItems!}
-            setList={setselectedItems}
-            animation={150}
-            group="shared-group-name"
-            className={`sortable ${isMobile ? "mobile" : ""}`}
-          >
-            {selectedItems!.map((item) => (
-              <CardWithImage
-                img={{ src: item.ruta_acceso_local, alt: "" }}
-                touchable
-                onClick={() => {}}
-              />
-            ))}
-          </ReactSortable>
-        </IonCol>
-      </IonRow>
       <IonRow>
-        <IonCol>
-          <IonList>
-            {categories?.map((item, index) => (
-              <IonItem
-                key={index}
-                onClick={() => fetchPictograms(item.id_categoria)}
-              >
-                {item.nombre}
-              </IonItem>
+            {pictograms!.map((item, index) => (
+              <IonCol size="4">
+                <CardWithImage
+                  key={index}
+                  img={{ src: item.ruta_acceso_local, alt: item.nombres[0].nombre }}
+                  touchable={false}
+                  onClick={() => {}}
+                />
+              </IonCol>
             ))}
-          </IonList>
-        </IonCol>
-        <IonCol>
-          <ReactSortable
-            list={availableItems}
-            setList={setAvailableItems}
-            animation={150}
-            group="shared-group-name"
-            className={`sortable ${isMobile ? " mobile" : ""}`}
-          >
-            {availableItems!.map((item, index) => (
-              <CardWithImage
-                key={index}
-                img={{ src: item.ruta_acceso_local, alt: "" }}
-                touchable={false}
-                onClick={() => {}}
-              />
-            ))}
-          </ReactSortable>
-        </IonCol>
       </IonRow>
     </IonGrid>
   );
 
-
-  // return (
-  //   <IonGrid className="overflow-auto">
-  //     <IonRow>
-  //       {pictogramData.pictogramsList?.map((pictogram, index) => (
-  //         <IonCol key={index} size="4" sizeMd="2">
-  //           <CardWithImage
-  //             img={{ src: item.ruta_acceso_local, alt: "" }}
-  //             title={pictogram.nombre!}
-  //             touchable
-  //             onClick={() => {
-  //               handleCardPictogramClick(pictogram);
-  //             }}
-  //             pictogram={pictogram}
-  //           />
-  //         </IonCol>
-  //       ))}
-  //     </IonRow>
-  //     <IonRow>
-  //       <CardWithIcon
-  //         icon={addCircleOutline}
-  //         title="Agregar"
-  //         touchable
-  //         onClick={handleAddPictogramClick}
-  //       />
-  //     </IonRow>
-  //   </IonGrid>
-  // );
 };
 
+interface ListPictogramsProps {
+  pictograms?: [Pictogram];
+}
 
 export default ListPictograms;
