@@ -1,20 +1,25 @@
-import React, { useContext, useCallback } from "react";
+import React, { useContext, useCallback, useState } from "react";
 import "../styles.css";
-import { IonGrid, IonRow, IonCol, NavContext } from "@ionic/react";
+import { IonGrid, IonRow, IonCol, NavContext, IonList, IonItem } from "@ionic/react";
 import CardWithImage from "../../../components/CardWithImage";
-import CardWithIcon from "../../../components/CardWithIcon";
-import { addCircleOutline } from "ionicons/icons";
-import { pictogramContext } from "../../../context/pictogram";
 import { AuthenticationContext } from "../../../context/authentication";
+import { ReactSortable } from "react-sortablejs";
+import CategoriesServices from "../../../services/categories.services";
+import PictogramsServices from "../../../services/pictograms.services";
+import { PlatformContext } from "../../../context/platform";
 
-const ListPictograms: React.FC<ListPictogramsProps> = (props) => {
-  const { pictogramData, setPictogramData } = useContext(pictogramContext);
+const ListPictograms: React.FC = () => {
+  // const { pictogramData, setPictogramData } = useContext(pictogramContext);
   const { navigate } = useContext(NavContext);
+  const { isMobile } = useContext(PlatformContext).platformData;
   const { authData } = useContext(AuthenticationContext);
-  const { username } = authData;
+  const { token, patientId } = authData;
+  const [selectedItems, setselectedItems] = useState<any[]>([]);
+  const [availableItems, setAvailableItems] = useState<any[]>([]);
+  const [categories, setCategories] = useState<any[]>();
 
   const handleCardpictogramClick = (pictogram: any) => {
-    setpictogramData({ pictogramSelected: pictogram });
+    // setpictogramData({ pictogramSelected: pictogram });
     goToViewpictogram();
   };
 
@@ -31,6 +36,26 @@ const ListPictograms: React.FC<ListPictogramsProps> = (props) => {
     () => navigate("/pacientes/alta", "forward"),
     [navigate]
   );
+
+  const getCategories = () => {
+    CategoriesServices.getCategories(token!, patientId!)
+      .then((res: any) => {
+        setCategories(res.data);
+      })
+      .catch((_error: any) => {
+        console.log(_error);
+      });
+  };
+
+  const fetchPictograms = (categoryId: number) => {
+    console.log("fetch pictogramas de categoria", categoryId);
+    PictogramsServices.getPictogramsByCategory(token!, categoryId, patientId!)
+      .then((res: any) => {
+        console.log(res);
+        setAvailableItems(res.data);
+      })
+      .catch((error: any) => console.log(error));
+  };
 
   return (
     <IonGrid>
@@ -118,15 +143,5 @@ const ListPictograms: React.FC<ListPictogramsProps> = (props) => {
   // );
 };
 
-interface ListpictogramsProps {
-  pictograms?: [pictogram];
-}
 
-interface pictogram {
-  id_paciente?: any;
-  nombre?: string;
-  apellido?: string;
-  avatar?: string;
-}
-
-export default Listpictograms;
+export default ListPictograms;

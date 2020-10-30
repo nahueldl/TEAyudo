@@ -4,6 +4,7 @@ import { NavContext, IonLoading } from "@ionic/react";
 import ListPictograms from "../ListPictograms";
 import { AuthenticationContext } from "../../../context/authentication";
 import PictogramServices from "../../../services/pictograms.services";
+import { Pictogram } from "../../../types/Pictograms";
 
 const PictogramsPage: React.FC = () => {
   const { authData, setAuthData } = useContext(AuthenticationContext);
@@ -43,16 +44,5 @@ const PictogramsPage: React.FC = () => {
     </Page>
   );
 };
-
-interface Pictogram {
-  id_pictograma: any;
-  id_picto_arasaac: any;
-  ruta_acceso_local: string;
-  esquematico: boolean;
-  sexo: string;
-  violencia: boolean;
-  // foto: string;
-  // chequear este ultimo si iria y los otros el tipo
-}
 
 export default PictogramsPage;
