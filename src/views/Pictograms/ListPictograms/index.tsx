@@ -3,21 +3,19 @@ import "../styles.css";
 import { IonGrid, IonRow, IonCol, NavContext, IonList, IonItem } from "@ionic/react";
 import CardWithImage from "../../../components/CardWithImage";
 import { AuthenticationContext } from "../../../context/authentication";
-import { ReactSortable } from "react-sortablejs";
 import CategoriesServices from "../../../services/categories.services";
 import PictogramsServices from "../../../services/pictograms.services";
 import { PlatformContext } from "../../../context/platform";
 import { Pictogram } from "../../../types/Pictograms";
+import ModalPictogram from "../../../components/ModalPictogram";
 
 const ListPictograms: React.FC<ListPictogramsProps> = ({pictograms}) => {
-  // const { pictogramData, setPictogramData } = useContext(pictogramContext);
   const { navigate } = useContext(NavContext);
   const { isMobile } = useContext(PlatformContext).platformData;
   const { authData } = useContext(AuthenticationContext);
   const { token, patientId } = authData;
-  const [selectedItems, setselectedItems] = useState<any[]>([]);
-  const [availableItems, setAvailableItems] = useState<any[]>([]);
-  const [categories, setCategories] = useState<any[]>();
+  const [ showModal, setShowModal] = useState(false);
+  const [ pictogramSelected, setPictogramSelected] = useState<Pictogram>();
 
   const handleCardpictogramClick = (pictogram: any) => {
     // setpictogramData({ pictogramSelected: pictogram });
@@ -41,7 +39,7 @@ const ListPictograms: React.FC<ListPictogramsProps> = ({pictograms}) => {
   const getCategories = () => {
     CategoriesServices.getCategories(token!, patientId!)
       .then((res: any) => {
-        setCategories(res.data);
+        // setCategories(res.data);
       })
       .catch((_error: any) => {
         console.log(_error);
@@ -53,10 +51,15 @@ const ListPictograms: React.FC<ListPictogramsProps> = ({pictograms}) => {
     PictogramsServices.getPictogramsByCategory(token!, categoryId, patientId!)
       .then((res: any) => {
         console.log(res);
-        setAvailableItems(res.data);
+        // setAvailableItems(res.data);
       })
       .catch((error: any) => console.log(error));
   };
+
+  const handleClickSetShowModal = (value: boolean, pictoSelected: Pictogram) => {
+    setPictogramSelected(pictoSelected);
+    setShowModal(value);
+  }
 
   return (
     <IonGrid>
@@ -67,11 +70,12 @@ const ListPictograms: React.FC<ListPictogramsProps> = ({pictograms}) => {
                   key={index}
                   img={{ src: item.ruta_acceso_local, alt: item.nombres[0].nombre }}
                   touchable={false}
-                  onClick={() => {}}
+                  onClick={() => {handleClickSetShowModal(true, item)}}
                 />
               </IonCol>
             ))}
       </IonRow>
+      <ModalPictogram showModal={showModal} onClick={handleClickSetShowModal} pictogram={pictogramSelected}></ModalPictogram>
     </IonGrid>
   );
 
