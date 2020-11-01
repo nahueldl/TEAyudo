@@ -48,9 +48,36 @@ class PictogramsServices {
     });
   }
 
-  getPictogramsFromUser(token: string){
-    console.log(token)
+  editPictogram(token: string, idPictogram: string, idPaciente: number, estado?: number, nombre?: string, favorito?: boolean) {
+    const header = `Bearer ${token}`;
+    return this.axios.put("/api/pictogramas/" + idPictogram, {
+      headers: {
+        Authorization: header,
+      },
+      params: {
+        paciente: idPaciente,
+        estado: estado,
+        nombre: nombre,
+        favorito: favorito
+      },
+    });
   }
+
+  createPictogram(token: string, idCategoria: number, base64img: string, nombre: string, etiqueta: string) {
+    const header = `Bearer ${token}`;
+    return this.axios.post("/api/pictogramas/", {
+      headers: {
+        Authorization: header,
+      },
+      params: {
+        categoria: idCategoria,
+        base64img: base64img,
+        nombres: [{nombre: nombre}],
+        etiquetas: [{etiqueta: etiqueta}],
+      },
+    });
+  }
+
 }
 
 const instance = new PictogramsServices();
