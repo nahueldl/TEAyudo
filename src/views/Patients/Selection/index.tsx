@@ -4,15 +4,15 @@ import { IonGrid, IonRow, IonCol, IonContent, NavContext } from "@ionic/react";
 import { AuthenticationContext } from "../../../context/authentication";
 import PatientServices from "../../../services/patients.services";
 import CardWithImage from "../../../components/CardWithImage";
-
 import { Plugins } from "@capacitor/core";
+import { PatientContext } from "../../../context/patient";
 const { Storage } = Plugins;
 
 const PatientSelection: React.FC = () => {
   const { authData, setAuthData } = useContext(AuthenticationContext);
+  const { patientData, setPatientData } = useContext(PatientContext);
   const { username, token } = authData;
   const { navigate } = useContext(NavContext);
-  const [patients, setPatients] = useState<Patient[]>([]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => getPatients(), []);
@@ -21,7 +21,8 @@ const PatientSelection: React.FC = () => {
     PatientServices.getPatientsFromUser(token!)
       .then((res: any) => {
         if (res.data?.length > 0) {
-          setPatients(res.data);
+          setPatientData({patientsList: res.data});
+          // setPatients(res.data);
         } else {
           goToAddPatient();
         }
@@ -36,6 +37,7 @@ const PatientSelection: React.FC = () => {
       patientName: `${patient.nombre} ${patient.apellido}`,
       patientId: patient.id_paciente,
     });
+    setPatientData({patientSelected: patient});
     Storage.set({ key: "patientName", value: patient.nombre }).then();
     Storage.set({ key: "patientId", value: patient.id_paciente }).then();
     goToHome();
@@ -59,7 +61,7 @@ const PatientSelection: React.FC = () => {
           </IonCol>
         </IonRow>
         <IonRow>
-          {patients!.map((patient: any, index: number) => (
+          {patientData.patientsList?.map((patient: any, index: number) => (
             <IonCol key={index} size="12" sizeMd="6">
               <CardWithImage
                 onClick={handleClick}

@@ -51,17 +51,15 @@ class PictogramsServices {
 
   editPictogram(token: string, idPictogram: string, idPaciente: string, estado?: number, nombre?: string, favorito?: boolean) {
     const header = `Bearer ${token}`;
-    return this.axios.put("/api/pictogramas/" + idPictogram, {
-      headers: {
-        Authorization: header,
-      },
-      params: {
-        paciente: parseInt(idPaciente),
-        estado: estado,
-        nombre: nombre,
-        favorito: favorito
-      },
-    });
+    return this.axios.put("/api/pictogramas/" + idPictogram, 
+    {
+      paciente: parseInt(idPaciente),
+      ...(estado ? {estado: estado} : {}),
+      ...(nombre? {nombre: nombre} : {}),
+      ...(favorito? {favorito: favorito} : {})
+    },
+      {headers: {Authorization: header} },
+    );
   }
 
   createPictogram(token: string, idCategoria: number, base64img: string, nombre: string, etiqueta: string) {

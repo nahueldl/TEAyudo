@@ -10,7 +10,6 @@ import { Category } from '../../types/Categories';
 
 export const ModalPictogram: React.FC<Props> = ({showModal, onClick, pictogram}) => {
     const { authData, setAuthData } = useContext(AuthenticationContext);
-    const { patientData, setPatientData } = useContext(PatientContext);
     const { error, loading } = authData;
     const [errorMessage, setErrorMessage] = useState<string>();
     const [ favorito, setFavorito ] = useState(pictogram?.favorito);
@@ -34,19 +33,20 @@ export const ModalPictogram: React.FC<Props> = ({showModal, onClick, pictogram})
     }
     
     const marcarFavoritoPictograma = (favorito: boolean) => {
-        debugger;
-        PictogramsService.editPictogram(authData.token!, pictogram?.id_pictograma.toString()!, authData.patientId!, favorito?1:0)
-        .then((res:any) => {
-            setFavorito(favorito? true : false);
-            setAuthData({ loading: false, error: false });
-        })
-        .catch((error: any) => {
-            setErrorMessage(
-              "Hubo un problema al marcar como favorito el pictograma, por favor intente más tarde."
-            );
-            setAuthData({ loading: false, error: true });
-            //mostrar mensaje con error
-          });
+        if(favorito != undefined) {
+            PictogramsService.editPictogram(authData.token!, pictogram?.id_pictograma.toString()!, authData.patientId!, undefined, undefined, favorito)
+            .then((res:any) => {
+                setFavorito(favorito? true : false);
+                setAuthData({ loading: false, error: false });
+            })
+            .catch((error: any) => {
+                setErrorMessage(
+                "Hubo un problema al marcar como favorito el pictograma, por favor intente más tarde."
+                );
+                setAuthData({ loading: false, error: true });
+                //mostrar mensaje con error
+            });
+        }
     }
 
     const setShowModal = (value: boolean) => {
