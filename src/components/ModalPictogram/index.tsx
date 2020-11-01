@@ -10,16 +10,16 @@ import { Category } from '../../types/Categories';
 
 export const ModalPictogram: React.FC<Props> = ({showModal, onClick, pictogram}) => {
     const { authData, setAuthData } = useContext(AuthenticationContext);
-    const { patientData } = useContext(PatientContext);
+    const { patientData, setPatientData } = useContext(PatientContext);
     const { error, loading } = authData;
     const [errorMessage, setErrorMessage] = useState<string>();
-    const [ checked, setChecked ] = useState(false);
+    const [ favorito, setFavorito ] = useState(pictogram?.favorito);
     const [ categoriasPropias, setCategoriasPropias ] = useState<[Category]>();
     
     useEffect(() => obtenerCategorias(), []);
 
     const obtenerCategorias = () => {
-        CategoriesService.getCategories(authData.token!, patientData.patientSelected?.id_paciente)
+        CategoriesService.getCategories(authData.token!, authData.patientId!)
         .then((res: any) => {
             setCategoriasPropias(res.data);
             setAuthData({ loading: false, error: false });
@@ -33,8 +33,20 @@ export const ModalPictogram: React.FC<Props> = ({showModal, onClick, pictogram})
           });
     }
     
-    const marcarFavoritoPictograma = () => {
-        // PictogramsService
+    const marcarFavoritoPictograma = (favorito: boolean) => {
+        debugger;
+        PictogramsService.editPictogram(authData.token!, pictogram?.id_pictograma.toString()!, authData.patientId!, favorito?1:0)
+        .then((res:any) => {
+            setFavorito(favorito? true : false);
+            setAuthData({ loading: false, error: false });
+        })
+        .catch((error: any) => {
+            setErrorMessage(
+              "Hubo un problema al marcar como favorito el pictograma, por favor intente más tarde."
+            );
+            setAuthData({ loading: false, error: true });
+            //mostrar mensaje con error
+          });
     }
 
     const setShowModal = (value: boolean) => {
@@ -57,19 +69,19 @@ export const ModalPictogram: React.FC<Props> = ({showModal, onClick, pictogram})
                         <IonCol size="8">
                             <IonList className="mt-5">
                                 <IonImg src={pictogram!.ruta_acceso_local!} className="h-100"/>
-                                <IonItem>
+                                <IonItem key="1">
                                     <IonLabel>Pictograma favorito</IonLabel>
-                                    <IonToggle color="secondary" checked={checked} onIonChange={e => setChecked(e.detail.checked)} />
+                                    <IonToggle color="secondary" checked={favorito} onIonChange={e => marcarFavoritoPictograma(e.detail.checked)} />
                                 </IonItem>
-                                <IonItem>
+                                <IonItem key="2">
                                     <IonLabel>Personalizar nombre</IonLabel>
                                     <IonInput className="pl-5 text-align-end" placeholder={pictogram.nombres[0].nombre}></IonInput>
                                 </IonItem>
-                                <IonItem>
+                                <IonItem key="3">
                                     <IonLabel>Categoria</IonLabel>
                                     <IonSelect value="categoria" interface="action-sheet" cancelText="Cancelar">
                                         {categoriasPropias?.map((categoria, index) => (
-                                            <IonSelectOption value={categoria.id_categoria}>{categoria.nombre}</IonSelectOption>
+                                            <IonSelectOption key={index} value={categoria.id_categoria}>{categoria.nombre}</IonSelectOption>
                                         ))}
                                         <IonSelectOption value="colores">Colores</IonSelectOption>
                                     </IonSelect>

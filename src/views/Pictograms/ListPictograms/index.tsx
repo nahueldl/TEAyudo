@@ -65,9 +65,8 @@ const ListPictograms: React.FC<ListPictogramsProps> = ({pictograms}) => {
     <IonGrid>
       <IonRow>
             {pictograms!.map((item, index) => (
-              <IonCol size="4">
+              <IonCol size="4" key={index}>
                 <CardWithImage
-                  key={index}
                   img={{ src: item.ruta_acceso_local, alt: item.nombres[0].nombre }}
                   touchable={false}
                   onClick={() => {handleClickSetShowModal(true, item)}}

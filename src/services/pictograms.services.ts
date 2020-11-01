@@ -1,3 +1,4 @@
+import { logoNoSmoking } from "ionicons/icons";
 import AxiosWrapper from "../utils/axios";
 
 class PictogramsServices {
@@ -48,14 +49,14 @@ class PictogramsServices {
     });
   }
 
-  editPictogram(token: string, idPictogram: string, idPaciente: number, estado?: number, nombre?: string, favorito?: boolean) {
+  editPictogram(token: string, idPictogram: string, idPaciente: string, estado?: number, nombre?: string, favorito?: boolean) {
     const header = `Bearer ${token}`;
     return this.axios.put("/api/pictogramas/" + idPictogram, {
       headers: {
         Authorization: header,
       },
       params: {
-        paciente: idPaciente,
+        paciente: parseInt(idPaciente),
         estado: estado,
         nombre: nombre,
         favorito: favorito
