@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { IonModal, IonButton, IonContent, IonLabel, IonGrid, IonRow, IonCol, IonImg, IonThumbnail, IonTitle, IonList, IonItem, IonAvatar, IonToggle, IonInput, IonSelect, IonSelectOption, IonLoading, IonAlert } from '@ionic/react';
+import { IonModal, IonButton, IonContent, IonLabel, IonGrid, IonRow, IonCol, IonImg, IonThumbnail, IonTitle, IonList, IonItem, IonAvatar, IonToggle, IonInput, IonSelect, IonSelectOption, IonLoading, IonAlert, IonIcon } from '@ionic/react';
 import "./styles.css";
 import { Pictogram } from '../../types/Pictograms';
 import PictogramsService from "../../services/pictograms.services";
@@ -7,13 +7,15 @@ import CategoriesService from "../../services/categories.services";
 import { AuthenticationContext } from '../../context/authentication';
 import { PatientContext } from '../../context/patient';
 import { Category } from '../../types/Categories';
+import { checkmarkCircleOutline } from 'ionicons/icons';
 
-export const ModalPictogram: React.FC<Props> = ({showModal, onClick, pictogram}) => {
+export const ModalPictogram: React.FC<Props> = ({showModal, handleShowModal, pictogram}) => {
     const { authData, setAuthData } = useContext(AuthenticationContext);
     const { error, loading } = authData;
     const [errorMessage, setErrorMessage] = useState<string>();
     const [ favorito, setFavorito ] = useState(false);
     const [ categoriasPropias, setCategoriasPropias ] = useState<[Category]>();
+    const [ newName, setNewName ] = useState("");
     
     useEffect(() => obtenerCategorias(), []);
 
@@ -28,13 +30,12 @@ export const ModalPictogram: React.FC<Props> = ({showModal, onClick, pictogram})
             setErrorMessage(
               "Hubo un inconveniente, por favor intente más tarde."
             );
-            setAuthData({ loading: false, error: true });
-            //mostrar mensaje con error
           });
     }
     
     const marcarFavoritoPictograma = (favorito: boolean) => {
         if(favorito != undefined) {
+            setAuthData({ loading: true, error: false });
             PictogramsService.editPictogram(authData.token!, pictogram?.id_pictograma.toString()!, authData.patientId!, undefined, undefined, favorito)
             .then((res:any) => {
                 setFavorito(favorito);
@@ -44,15 +45,24 @@ export const ModalPictogram: React.FC<Props> = ({showModal, onClick, pictogram})
                 setErrorMessage(
                 "Hubo un problema al marcar como favorito el pictograma, por favor intente más tarde."
                 );
-                setAuthData({ loading: false, error: true });
-                //mostrar mensaje con error
             });
         }
     }
 
-    const setShowModal = (value: boolean) => {
-        onClick(value);
+    const personalizarNombrePictograma = () => {
+        PictogramsService.editPictogram(authData.token!, pictogram?.id_pictograma.toString()!, authData.patientId!, undefined, newName, undefined)
+            .then((res:any) => {
+                debugger;
+                if(pictogram != undefined)
+                    pictogram.nombres[0].nombre = newName;
+            })
+            .catch((error: any) => {
+                setErrorMessage(
+                "Hubo un problema al personalizar el nombre, por favor intente más tarde."
+                );
+            });
     }
+    
 
   return (
     <IonContent>
@@ -64,7 +74,7 @@ export const ModalPictogram: React.FC<Props> = ({showModal, onClick, pictogram})
                     spinner="crescent"
               />
                 <IonGrid className="text-black">
-                    <IonTitle className="ion-text-center text-bold">{pictogram.nombres[0].nombre}</IonTitle>
+                    <IonTitle className="ion-text-center text-bold">{pictogram.nombre_personalizado != null ? pictogram.nombre_personalizado : pictogram.nombres[0].nombre}</IonTitle>
                     <IonRow>
                         <IonCol size="2"/>
                         <IonCol size="8">
@@ -76,7 +86,13 @@ export const ModalPictogram: React.FC<Props> = ({showModal, onClick, pictogram})
                                 </IonItem>
                                 <IonItem key="2">
                                     <IonLabel>Personalizar nombre</IonLabel>
-                                    <IonInput className="pl-5 text-align-end" placeholder={pictogram.nombres[0].nombre}></IonInput>
+                                    <IonInput className="pl-5 text-align-end" placeholder={pictogram.nombre_personalizado != null ? pictogram.nombre_personalizado : pictogram.nombres[0].nombre} value={newName} onIonChange={e => setNewName(e.detail.value!)}>
+                                    {newName.length>2?   
+                                        <button icon-only onClick={personalizarNombrePictograma}>
+                                            <IonIcon  className="pl-5" slot="end" icon={checkmarkCircleOutline} color="success"></IonIcon>
+                                        </button> 
+                                    : <></>}
+                                    </IonInput>
                                 </IonItem>
                                 <IonItem key="3">
                                     <IonLabel>Categoria</IonLabel>
@@ -84,7 +100,6 @@ export const ModalPictogram: React.FC<Props> = ({showModal, onClick, pictogram})
                                         {categoriasPropias?.map((categoria, index) => (
                                             <IonSelectOption key={index} value={categoria.id_categoria}>{categoria.nombre}</IonSelectOption>
                                         ))}
-                                        <IonSelectOption value="colores">Colores</IonSelectOption>
                                     </IonSelect>
                                 </IonItem>
                             </IonList>
@@ -92,7 +107,7 @@ export const ModalPictogram: React.FC<Props> = ({showModal, onClick, pictogram})
                         <IonCol size="2"/>
                     </IonRow>
                 </IonGrid>
-                <IonButton onClick={() => setShowModal(false)}>Close Modal</IonButton>
+                <IonButton onClick={() => handleShowModal(false, undefined)}>Close Modal</IonButton>
                 <IonAlert
                     isOpen={error!}
                     animated
@@ -109,7 +124,7 @@ export const ModalPictogram: React.FC<Props> = ({showModal, onClick, pictogram})
 
 interface Props {
     showModal: any;
-    onClick: any;
+    handleShowModal:  (value: boolean, data: any) => void;
     pictogram?: Pictogram;
   }
 
