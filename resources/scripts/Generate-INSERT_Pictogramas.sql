@@ -16,7 +16,7 @@ SELECT 'INSERT INTO [dbo].[Pictograma]
       + ',' +	CAST([violencia]		 AS varchar)
       + ',' +	CAST([activo]			 AS varchar)
 	  + ')'
-  FROM [dbo].[Pictograma]
+  FROM [dbo].[Pictograma] order by id_pictograma
 
 GO
 

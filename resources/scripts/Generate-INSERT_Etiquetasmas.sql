@@ -8,7 +8,7 @@ SELECT 'INSERT INTO [dbo].[Etiqueta]
            (' + CHAR(39) + [nombre] + CHAR(39)
 		+ ',1' 
 		+ ')'
-  FROM [dbo].[Etiqueta]
+  FROM [dbo].[Etiqueta] order by id_etiqueta
 
 GO
 
