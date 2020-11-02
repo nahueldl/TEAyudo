@@ -12,12 +12,13 @@ export const ModalPictogram: React.FC<Props> = ({showModal, onClick, pictogram})
     const { authData, setAuthData } = useContext(AuthenticationContext);
     const { error, loading } = authData;
     const [errorMessage, setErrorMessage] = useState<string>();
-    const [ favorito, setFavorito ] = useState(pictogram?.favorito);
+    const [ favorito, setFavorito ] = useState(false);
     const [ categoriasPropias, setCategoriasPropias ] = useState<[Category]>();
     
     useEffect(() => obtenerCategorias(), []);
 
     const obtenerCategorias = () => {
+        setFavorito(pictogram?.favorito!);
         CategoriesService.getCategories(authData.token!, authData.patientId!)
         .then((res: any) => {
             setCategoriasPropias(res.data);
@@ -36,7 +37,7 @@ export const ModalPictogram: React.FC<Props> = ({showModal, onClick, pictogram})
         if(favorito != undefined) {
             PictogramsService.editPictogram(authData.token!, pictogram?.id_pictograma.toString()!, authData.patientId!, undefined, undefined, favorito)
             .then((res:any) => {
-                setFavorito(favorito? true : false);
+                setFavorito(favorito);
                 setAuthData({ loading: false, error: false });
             })
             .catch((error: any) => {

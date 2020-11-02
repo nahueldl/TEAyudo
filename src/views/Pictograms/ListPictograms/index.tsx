@@ -74,7 +74,9 @@ const ListPictograms: React.FC<ListPictogramsProps> = ({pictograms}) => {
               </IonCol>
             ))}
       </IonRow>
-      <ModalPictogram showModal={showModal} onClick={handleClickSetShowModal} pictogram={pictogramSelected}></ModalPictogram>
+      {showModal ? 
+        <ModalPictogram showModal={showModal} onClick={handleClickSetShowModal} pictogram={pictogramSelected}></ModalPictogram>
+      : (<></>) }
     </IonGrid>
   );
 

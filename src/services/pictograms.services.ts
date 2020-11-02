@@ -44,7 +44,7 @@ class PictogramsServices {
       },
       params: {
         nombre: name,
-        idPaciente: idPaciente,
+        paciente: idPaciente,
       },
     });
   }
@@ -56,7 +56,7 @@ class PictogramsServices {
       paciente: parseInt(idPaciente),
       ...(estado ? {estado: estado} : {}),
       ...(nombre? {nombre: nombre} : {}),
-      ...(favorito? {favorito: favorito} : {})
+      ...(favorito!=undefined ? {favorito: favorito} : {})
     },
       {headers: {Authorization: header} },
     );

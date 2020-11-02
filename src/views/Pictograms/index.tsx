@@ -18,7 +18,7 @@ const PictogramsPage: React.FC = () => {
     setSearchText(textBusqueda);
     if(textBusqueda.length > 2) {
       setAuthData({ loading: true, error: false });
-      PictogramServices.getPictogramsByName(authData.token!, textBusqueda, patientData.patientSelected?.id_paciente!)
+      PictogramServices.getPictogramsByName(authData.token!, textBusqueda, authData.patientId!)
         .then((res: any) => {
           if (res.data?.length > 0) {
             setPictograms(res.data);
