@@ -8,7 +8,7 @@ SELECT 'INSERT INTO [dbo].[Categoria]
            (' + CHAR(39) + [nombre] + CHAR(39)
       + ',' + CAST([activo] as varchar)
 	  + ')'
-  FROM [dbo].[Categoria]
+  FROM [dbo].[Categoria] order by id_categoria
 
 GO
 
