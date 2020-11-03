@@ -14,3 +14,57 @@
 .tirafrase {
   background-color: lightgray;
 }
+
+.translation {
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  height: 100%;
+}
+
+.title-col {
+  width: 75%;
+}
+
+.icon-col {
+  width: 25%;
+}
+
+.row-title {
+  border-bottom: 2px solid var(--ion-color-primary);
+}
+
+.modal-title {
+  font-weight: bold;
+}
+
+.modal {
+  width: 100%;
+}
+
+.flex-grow-5 {
+  flex-grow: 5;
+}
+
+.flex-grow-1 {
+  flex-grow: 1;
+}
+
+.icon-close {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 20px;
+  align-items: center;
+}
+
+.icon-close :hover {
+  cursor: pointer;
+}
+
+.translation-container {
+   padding: 25px 0px 0px 25px;
+}
+
+.translation {
+  font-size: x-large;
+}

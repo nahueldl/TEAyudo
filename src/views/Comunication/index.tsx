@@ -1,19 +1,29 @@
 import React, { useState, useContext, useEffect } from "react";
 import Page from "../../components/Page";
 import { ReactSortable } from "react-sortablejs";
-import { IonGrid, IonRow, IonCol, IonList, IonItem } from "@ionic/react";
+import {
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonList,
+  IonItem,
+  IonButton,
+  IonModal,
+} from "@ionic/react";
 import "./styles.css";
 import CardWithImage from "../../components/CardWithImage";
 import { PlatformContext } from "../../context/platform";
 import CategoriesServices from "../../services/categories.services";
 import { AuthenticationContext } from "../../context/authentication";
 import PictogramsServices from "../../services/pictograms.services";
+import TranslationModal from "./TranslationModal";
 
 const ComunicationPage: React.FC = () => {
   const [selectedItems, setselectedItems] = useState<any[]>([]);
   const [availableItems, setAvailableItems] = useState<any[]>([]);
   const [categories, setCategories] = useState<any[]>();
-
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [translation, setTranslation] = useState<string>("");
   const { isMobile } = useContext(PlatformContext).platformData;
   const { authData } = useContext(AuthenticationContext);
   const { token, patientId } = authData;
@@ -40,6 +50,20 @@ const ComunicationPage: React.FC = () => {
       .catch((error: any) => console.log(error));
   };
 
+  const handleTranslation = () => {
+    console.log(selectedItems);
+    const translation = selectedItems
+      .map((pictogram) => pictogram.nombres[0].nombre)
+      .join(" ");
+    setTranslation(translation);
+    setShowModal(true);
+    return;
+  };
+  
+  const handleCloseModal = () => {
+    setShowModal(false);
+  }
+
   return (
     <Page pageTitle="Comunicarse" showHomeButton>
       <IonGrid>
@@ -64,10 +88,18 @@ const ComunicationPage: React.FC = () => {
         </IonRow>
         <IonRow>
           <IonCol>
+            <IonButton disabled={selectedItems.length <= 0} onClick={(e) => handleTranslation()}>
+              Traducir!
+            </IonButton>
+          </IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>
             <IonList>
               {categories?.map((item, index) => (
                 <IonItem
                   key={index}
+                  button
                   onClick={() => fetchPictograms(item.id_categoria)}
                 >
                   {item.nombre}
@@ -95,6 +127,7 @@ const ComunicationPage: React.FC = () => {
           </IonCol>
         </IonRow>
       </IonGrid>
+      <TranslationModal isOpen={showModal} translation={translation} handleClose={handleCloseModal} />
     </Page>
   );
 };
