@@ -8,6 +8,8 @@ import { AuthenticationContext } from '../../context/authentication';
 import { PatientContext } from '../../context/patient';
 import { Category } from '../../types/Categories';
 import { checkmarkCircleOutline } from 'ionicons/icons';
+import { getBase64 } from '../encodeImg/encodeImg';
+import { getBlobFromURL } from '../encodeImg/urlToBlob';
 
 export const ModalPictogram: React.FC<Props> = ({showModal, handleShowModal, pictogram}) => {
     const { authData, setAuthData } = useContext(AuthenticationContext);
@@ -16,6 +18,7 @@ export const ModalPictogram: React.FC<Props> = ({showModal, handleShowModal, pic
     const [ favorito, setFavorito ] = useState(false);
     const [ categoriasPropias, setCategoriasPropias ] = useState<[Category]>();
     const [ newName, setNewName ] = useState("");
+    const [ categoriaValue ] = useState();
     
     useEffect(() => obtenerCategorias(), []);
 
@@ -49,6 +52,16 @@ export const ModalPictogram: React.FC<Props> = ({showModal, handleShowModal, pic
         }
     }
 
+    const crearNuevoPictogramaYAgregarACategoria = () => {
+        debugger;
+        var base64;
+        getBlobFromURL(pictogram?.ruta_acceso_local!).then(data => {
+            getBase64(data).then(encoded => {
+                base64 = encoded;
+            });
+        })
+    }
+
     const personalizarNombrePictograma = () => {
         PictogramsService.editPictogram(authData.token!, pictogram?.id_pictograma.toString()!, authData.patientId!, undefined, newName, undefined)
             .then((res:any) => {
@@ -62,7 +75,6 @@ export const ModalPictogram: React.FC<Props> = ({showModal, handleShowModal, pic
                 );
             });
     }
-    
 
   return (
     <IonContent>
@@ -96,7 +108,7 @@ export const ModalPictogram: React.FC<Props> = ({showModal, handleShowModal, pic
                                 </IonItem>
                                 <IonItem key="3">
                                     <IonLabel>Categoria</IonLabel>
-                                    <IonSelect value="categoria" interface="action-sheet" cancelText="Cancelar">
+                                    <IonSelect value={categoriaValue} interface="action-sheet" cancelText="Cancelar" onIonChange={e => crearNuevoPictogramaYAgregarACategoria()}>
                                         {categoriasPropias?.map((categoria, index) => (
                                             <IonSelectOption key={index} value={categoria.id_categoria}>{categoria.nombre}</IonSelectOption>
                                         ))}
@@ -107,7 +119,7 @@ export const ModalPictogram: React.FC<Props> = ({showModal, handleShowModal, pic
                         <IonCol size="2"/>
                     </IonRow>
                 </IonGrid>
-                <IonButton onClick={() => handleShowModal(false, undefined)}>Close Modal</IonButton>
+                <IonButton onClick={() => handleShowModal(false, undefined)}>Cerrar</IonButton>
                 <IonAlert
                     isOpen={error!}
                     animated
