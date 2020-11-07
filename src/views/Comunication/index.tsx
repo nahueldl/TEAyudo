@@ -8,7 +8,8 @@ import {
   IonList,
   IonItem,
   IonButton,
-  IonModal,
+  IonSpinner,
+  IonIcon,
 } from "@ionic/react";
 import "./styles.css";
 import CardWithImage from "../../components/CardWithImage";
@@ -17,6 +18,7 @@ import CategoriesServices from "../../services/categories.services";
 import { AuthenticationContext } from "../../context/authentication";
 import PictogramsServices from "../../services/pictograms.services";
 import TranslationModal from "./TranslationModal";
+import { trashOutline } from "ionicons/icons";
 
 const ComunicationPage: React.FC = () => {
   const [selectedItems, setselectedItems] = useState<any[]>([]);
@@ -24,6 +26,11 @@ const ComunicationPage: React.FC = () => {
   const [categories, setCategories] = useState<any[]>();
   const [showModal, setShowModal] = useState<boolean>(false);
   const [translation, setTranslation] = useState<string>("");
+  const [isLoadingCategories, setIsLoadingCategories] = useState<boolean>(true);
+  const [isLoadingPictogramas, setIsLoadingPictograms] = useState<boolean>(
+    false
+  );
+  const [categorySelectedId, setCategorySelectedId] = useState<number>(-1);
   const { isMobile } = useContext(PlatformContext).platformData;
   const { authData } = useContext(AuthenticationContext);
   const { token, patientId } = authData;
@@ -31,21 +38,25 @@ const ComunicationPage: React.FC = () => {
   useEffect(() => getCategories(), []);
 
   const getCategories = () => {
+    setIsLoadingCategories(true);
     CategoriesServices.getCategories(token!, patientId!)
       .then((res: any) => {
         setCategories(res.data);
+        setIsLoadingCategories(false);
       })
-      .catch((_error: any) => {
-        console.log(_error);
+      .catch((error: any) => {
+        console.log(error);
       });
   };
 
   const fetchPictograms = (categoryId: number) => {
-    console.log("fetch pictogramas de categoria", categoryId);
+    setIsLoadingPictograms(true);
+    setCategorySelectedId(categoryId);
     PictogramsServices.getPictogramsByCategory(token!, categoryId, patientId!)
       .then((res: any) => {
         console.log(res);
         setAvailableItems(res.data);
+        setIsLoadingPictograms(false);
       })
       .catch((error: any) => console.log(error));
   };
@@ -59,16 +70,25 @@ const ComunicationPage: React.FC = () => {
     setShowModal(true);
     return;
   };
-  
+
   const handleCloseModal = () => {
     setShowModal(false);
-  }
+  };
+
+  const cleanTirafrase = () => {
+    setselectedItems([]);
+  };
 
   return (
     <Page pageTitle="Comunicarse" showHomeButton>
       <IonGrid>
         <IonRow className="tirafrase">
           <IonCol>
+            {selectedItems!.length > 0 ? null : (
+              <div className="tirafrase-text">
+                Arrastrá tus pictogramas hasta esta zona
+              </div>
+            )}
             <ReactSortable
               list={selectedItems!}
               setList={setselectedItems}
@@ -76,8 +96,9 @@ const ComunicationPage: React.FC = () => {
               group="shared-group-name"
               className={`sortable ${isMobile ? "mobile" : ""}`}
             >
-              {selectedItems!.map((item) => (
+              {selectedItems!.map((item, index) => (
                 <CardWithImage
+                  key={index}
                   img={{ src: item.ruta_acceso_local, alt: "" }}
                   touchable={false}
                   onClick={() => {}}
@@ -88,46 +109,102 @@ const ComunicationPage: React.FC = () => {
         </IonRow>
         <IonRow>
           <IonCol>
-            <IonButton disabled={selectedItems.length <= 0} onClick={(e) => handleTranslation()}>
-              Traducir!
+            <IonButton
+              disabled={selectedItems.length <= 0}
+              onClick={(e) => handleTranslation()}
+            >
+              ¡Traducir!
+            </IonButton>
+          </IonCol>
+          <IonCol style={{ display: "flex", justifyContent: "right" }}>
+            <IonButton
+              disabled={selectedItems.length <= 0}
+              onClick={(_e) => cleanTirafrase()}
+            >
+              <IonIcon icon={trashOutline} />
             </IonButton>
           </IonCol>
         </IonRow>
         <IonRow>
           <IonCol>
-            <IonList>
-              {categories?.map((item, index) => (
-                <IonItem
-                  key={index}
-                  button
-                  onClick={() => fetchPictograms(item.id_categoria)}
+            {isLoadingCategories ? (
+              <>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
                 >
-                  {item.nombre}
-                </IonItem>
-              ))}
-            </IonList>
+                  <IonSpinner />
+                  <span style={{ paddingLeft: "20px" }}>
+                    Buscando las categorías...
+                  </span>
+                </div>
+              </>
+            ) : (
+              <IonList>
+                {categories?.map((item, index) => (
+                  <IonItem
+                    key={index}
+                    button
+                    className={
+                      categorySelectedId === item.id_categoria ? "selected" : ""
+                    }
+                    onClick={() => fetchPictograms(item.id_categoria)}
+                  >
+                    {item.nombre}
+                  </IonItem>
+                ))}
+              </IonList>
+            )}
           </IonCol>
           <IonCol>
-            <ReactSortable
-              list={availableItems}
-              setList={setAvailableItems}
-              animation={150}
-              group="shared-group-name"
-              className={`sortable ${isMobile ? " mobile" : ""}`}
-            >
-              {availableItems!.map((item, index) => (
-                <CardWithImage
-                  key={index}
-                  img={{ src: item.ruta_acceso_local, alt: "" }}
-                  touchable={false}
-                  onClick={() => {}}
-                />
-              ))}
-            </ReactSortable>
+            {categorySelectedId! === -1 ? (
+              <div className="tirafrase-text">
+                Seleccioná una categoría para mostrar sus pictogramas
+              </div>
+            ) : isLoadingPictogramas ? (
+              <>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <IonSpinner />
+                  <span style={{ paddingLeft: "20px" }}>
+                    Buscando los pictogramas...
+                  </span>
+                </div>
+              </>
+            ) : (
+              <ReactSortable
+                list={availableItems}
+                setList={setAvailableItems}
+                animation={150}
+                group="shared-group-name"
+                className={`sortable ${isMobile ? " mobile" : ""}`}
+              >
+                {availableItems!.map((item, index) => (
+                  <CardWithImage
+                    key={index}
+                    img={{ src: item.ruta_acceso_local, alt: "" }}
+                    touchable={false}
+                    onClick={() => {}}
+                  />
+                ))}
+              </ReactSortable>
+            )}
           </IonCol>
         </IonRow>
       </IonGrid>
-      <TranslationModal isOpen={showModal} translation={translation} handleClose={handleCloseModal} />
+      <TranslationModal
+        isOpen={showModal}
+        translation={translation}
+        handleClose={handleCloseModal}
+      />
     </Page>
   );
 };

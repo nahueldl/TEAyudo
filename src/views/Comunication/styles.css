@@ -12,7 +12,8 @@
 }
 
 .tirafrase {
-  background-color: lightgray;
+  background-color: #eeeeee;
+  border-radius: 5px;
 }
 
 .translation {
@@ -63,8 +64,19 @@
 
 .translation-container {
    padding: 25px 0px 0px 25px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
 }
 
 .translation {
   font-size: x-large;
+}
+
+.selected {
+  --background: #eeeeee;
+}
+
+.tirafrase-text {
+  color: var(--ion-color-primary);
 }
