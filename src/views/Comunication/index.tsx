@@ -18,7 +18,7 @@ import CategoriesServices from "../../services/categories.services";
 import { AuthenticationContext } from "../../context/authentication";
 import PictogramsServices from "../../services/pictograms.services";
 import TranslationModal from "./TranslationModal";
-import { trashOutline } from "ionicons/icons";
+import { chevronDown, chevronForward, trashOutline } from "ionicons/icons";
 
 const ComunicationPage: React.FC = () => {
   const [selectedItems, setselectedItems] = useState<any[]>([]);
@@ -82,6 +82,7 @@ const ComunicationPage: React.FC = () => {
   return (
     <Page pageTitle="Comunicarse" showHomeButton>
       <IonGrid>
+        {/* Fila del tirafrase */}
         <IonRow className="tirafrase">
           <IonCol>
             {selectedItems!.length > 0 ? null : (
@@ -107,6 +108,7 @@ const ComunicationPage: React.FC = () => {
             </ReactSortable>
           </IonCol>
         </IonRow>
+        {/* Fila de botones */}
         <IonRow>
           <IonCol>
             <IonButton
@@ -125,80 +127,167 @@ const ComunicationPage: React.FC = () => {
             </IonButton>
           </IonCol>
         </IonRow>
-        <IonRow>
-          <IonCol>
-            {isLoadingCategories ? (
-              <>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <IonSpinner />
-                  <span style={{ paddingLeft: "20px" }}>
-                    Buscando las categorías...
-                  </span>
-                </div>
-              </>
-            ) : (
-              <IonList>
-                {categories?.map((item, index) => (
-                  <IonItem
-                    key={index}
-                    button
-                    className={
-                      categorySelectedId === item.id_categoria ? "selected" : ""
-                    }
-                    onClick={() => fetchPictograms(item.id_categoria)}
+        {isMobile ? (
+          /* Fila de categorías y pictos - MOBILE*/
+          <IonRow>
+            <IonCol>
+              {isLoadingCategories ? (
+                <>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
                   >
-                    {item.nombre}
-                  </IonItem>
-                ))}
-              </IonList>
-            )}
-          </IonCol>
-          <IonCol>
-            {categorySelectedId! === -1 ? (
-              <div className="tirafrase-text">
-                Seleccioná una categoría para mostrar sus pictogramas
-              </div>
-            ) : isLoadingPictogramas ? (
-              <>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <IonSpinner />
-                  <span style={{ paddingLeft: "20px" }}>
-                    Buscando los pictogramas...
-                  </span>
+                    <IonSpinner />
+                    <span style={{ paddingLeft: "20px" }}>
+                      Buscando las categorías...
+                    </span>
+                  </div>
+                </>
+              ) : (
+                <IonList>
+                  {categories?.map((item, index) => (
+                    <>
+                      <IonItem
+                        key={index}
+                        button
+                        detail
+                        detailIcon={
+                          categorySelectedId === item.id_categoria
+                            ? chevronDown
+                            : chevronForward
+                        }
+                        className={
+                          categorySelectedId === item.id_categoria
+                            ? "selected"
+                            : ""
+                        }
+                        onClick={() => fetchPictograms(item.id_categoria)}
+                      >
+                        {item.nombre}
+                      </IonItem>
+                      {categorySelectedId === item.id_categoria ? (
+                        isLoadingPictogramas ? (
+                          <>
+                            <div
+                              style={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                              }}
+                            >
+                              <IonSpinner />
+                              <span style={{ paddingLeft: "20px" }}>
+                                Buscando los pictogramas...
+                              </span>
+                            </div>
+                          </>
+                        ) : (
+                          <ReactSortable
+                            list={availableItems}
+                            setList={setAvailableItems}
+                            animation={150}
+                            group="shared-group-name"
+                            className="sortable-mobile"
+                          >
+                            {availableItems!.map((item, index) => (
+                              <CardWithImage
+                                key={index}
+                                img={{ src: item.ruta_acceso_local, alt: "" }}
+                                touchable={false}
+                                onClick={() => {}}
+                              />
+                            ))}
+                          </ReactSortable>
+                        )
+                      ) : null}
+                    </>
+                  ))}
+                </IonList>
+              )}
+            </IonCol>
+          </IonRow>
+        ) : (
+          /* Fila de categorías y pictos - WEB*/
+          <IonRow>
+            <IonCol>
+              {isLoadingCategories ? (
+                <>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <IonSpinner />
+                    <span style={{ paddingLeft: "20px" }}>
+                      Buscando las categorías...
+                    </span>
+                  </div>
+                </>
+              ) : (
+                <IonList>
+                  {categories?.map((item, index) => (
+                    <IonItem
+                      key={index}
+                      button
+                      className={
+                        categorySelectedId === item.id_categoria
+                          ? "selected"
+                          : ""
+                      }
+                      onClick={() => fetchPictograms(item.id_categoria)}
+                    >
+                      {item.nombre}
+                    </IonItem>
+                  ))}
+                </IonList>
+              )}
+            </IonCol>
+            <IonCol>
+              {categorySelectedId! === -1 ? (
+                <div className="tirafrase-text">
+                  Seleccioná una categoría para mostrar sus pictogramas
                 </div>
-              </>
-            ) : (
-              <ReactSortable
-                list={availableItems}
-                setList={setAvailableItems}
-                animation={150}
-                group="shared-group-name"
-                className={`sortable ${isMobile ? " mobile" : ""}`}
-              >
-                {availableItems!.map((item, index) => (
-                  <CardWithImage
-                    key={index}
-                    img={{ src: item.ruta_acceso_local, alt: "" }}
-                    touchable={false}
-                    onClick={() => {}}
-                  />
-                ))}
-              </ReactSortable>
-            )}
-          </IonCol>
-        </IonRow>
+              ) : isLoadingPictogramas ? (
+                <>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <IonSpinner />
+                    <span style={{ paddingLeft: "20px" }}>
+                      Buscando los pictogramas...
+                    </span>
+                  </div>
+                </>
+              ) : (
+                <ReactSortable
+                  list={availableItems}
+                  setList={setAvailableItems}
+                  animation={150}
+                  group="shared-group-name"
+                  className={`sortable ${isMobile ? " mobile" : ""}`}
+                >
+                  {availableItems!.map((item, index) => (
+                    <CardWithImage
+                      key={index}
+                      img={{ src: item.ruta_acceso_local, alt: "" }}
+                      touchable={false}
+                      onClick={() => {}}
+                    />
+                  ))}
+                </ReactSortable>
+              )}
+            </IonCol>
+          </IonRow>
+        )}
       </IonGrid>
       <TranslationModal
         isOpen={showModal}

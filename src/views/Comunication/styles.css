@@ -1,6 +1,13 @@
 .sortable {
   display: grid;
-  grid-template-columns: repeat(6, minmax(4rem, 1fr));
+  grid-template-columns: repeat(8, minmax(4rem, 1fr));
+  gap: 0.5rem;
+  height: minmax(4rem, 1fr);
+}
+
+.sortable-mobile {
+  display: grid;
+  grid-template-columns: repeat(10, minmax(4rem, 1fr));
   gap: 0.5rem;
   height: minmax(4rem, 1fr);
 }
