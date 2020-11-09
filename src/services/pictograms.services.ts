@@ -1,3 +1,4 @@
+import { Pictogram, PictogramName, PictogramTag } from "../types/Pictograms";
 import AxiosWrapper from "../utils/axios";
 
 class PictogramsServices {
@@ -12,7 +13,7 @@ class PictogramsServices {
     patientId?: string,
     offset?: number,
     limit?: number
-  ): any {
+  ): Promise<Pictogram[]> {
     return this.axios.get(`/api/categorias/${categoryId}/pictogramas`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -25,7 +26,7 @@ class PictogramsServices {
     });
   }
 
-  getPictogramsByTag(token: string, tag: string): any {
+  getPictogramsByTag(token: string, tag: string): Promise<Pictogram> {
     return this.axios.get(`/api/pictogramas`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -36,7 +37,11 @@ class PictogramsServices {
     });
   }
 
-  getPictogramsByName(token: string, name: string, patientId?: string): any {
+  getPictogramsByName(
+    token: string,
+    name: string,
+    patientId?: string
+  ): Promise<Pictogram> {
     return this.axios.get(`/api/pictogramas`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -44,6 +49,53 @@ class PictogramsServices {
       params: {
         nombre: name,
         idPaciente: patientId,
+      },
+    });
+  }
+
+  loadPictogramToCategory(
+    token: string,
+    category: number,
+    base64img: string,
+    names: PictogramName,
+    tags: PictogramTag,
+    eschematic?: boolean,
+    sex?: boolean,
+    violence?: boolean
+  ): Promise<Pictogram> {
+    return this.axios.post(`/api/pictogramas`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params: {
+        categoria: category,
+        base64img,
+        nombres: names,
+        etiquetas: tags,
+        ...(eschematic ? { esquematico: true } : {}),
+        ...(sex ? { sexo: true } : {}),
+        ...(violence ? { violencia: true } : {}),
+      },
+    });
+  }
+
+  editPictogram(
+    token: string,
+    pictogramId: number,
+    patientId: number,
+    state?: number,
+    name?: string,
+    favorite?: boolean
+  ) {
+    return this.axios.put(`/api/pictogramas/${pictogramId}`, {
+      headers: {
+        Authorization: `Bearer ${token},`,
+      },
+      params: {
+        paciente: patientId,
+        ...(state ? { estado: state } : {}),
+        ...(name ? { nombre: name } : {}),
+        ...(favorite ? { favorito: favorite } : {}),
       },
     });
   }
