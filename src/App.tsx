@@ -31,6 +31,11 @@ import RoleSelection from "./views/Roles/Selection";
 const App: React.FC = () => {
   const { authData } = useContext(AuthenticationContext);
 
+  const isTheTokenValid = () => {
+    // TODO: revertir el token a date, y rechequearlo en primera instancia,
+    // para sumarlo al interceptor del 401
+  }
+
   return (
     <IonApp>
       <IonReactRouter>
