@@ -23,7 +23,7 @@ const RolesPage: React.FC = () => {
   });
 
   const handleGetRoles = () => {
-    RolesService.handleGetRoles(authData.token!)
+    RolesService.getPatientRoles(authData.token!)
       .then((res: any) => setStateForView(res.data))
       .catch((error: any) => console.log(error));
   };
