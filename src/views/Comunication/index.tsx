@@ -10,6 +10,7 @@ import {
   IonButton,
   IonSpinner,
   IonIcon,
+  IonModal,
 } from "@ionic/react";
 import "./styles.css";
 import CardWithImage from "../../components/CardWithImage";
@@ -19,17 +20,29 @@ import { AuthenticationContext } from "../../context/authentication";
 import PictogramsServices from "../../services/pictograms.services";
 import TranslationModal from "./TranslationModal";
 import { chevronDown, chevronForward, trashOutline } from "ionicons/icons";
+import { Pictogram } from "../../types/Pictograms";
+import { Category } from "../../types/Categories";
+
+interface PictogramWithId {
+  id: number;
+  pictogram: Pictogram;
+}
+
+const addIdForSortable = (list: any) => {
+  return list.map((item: any, index: number) => (item.id = index));
+};
 
 const ComunicationPage: React.FC = () => {
-  const [selectedItems, setselectedItems] = useState<any[]>([]);
-  const [availableItems, setAvailableItems] = useState<any[]>([]);
-  const [categories, setCategories] = useState<any[]>();
+  const [selectedItems, setselectedItems] = useState<PictogramWithId[]>([]);
+  const [availableItems, setAvailableItems] = useState<PictogramWithId[]>([]);
+  const [categories, setCategories] = useState<Category[]>();
   const [showModal, setShowModal] = useState<boolean>(false);
   const [translation, setTranslation] = useState<string>("");
   const [isLoadingCategories, setIsLoadingCategories] = useState<boolean>(true);
   const [isLoadingPictogramas, setIsLoadingPictograms] = useState<boolean>(
     false
   );
+  const [error, setError] = useState<string>("");
   const [categorySelectedId, setCategorySelectedId] = useState<number>(-1);
   const { isMobile } = useContext(PlatformContext).platformData;
   const { authData } = useContext(AuthenticationContext);
@@ -46,6 +59,7 @@ const ComunicationPage: React.FC = () => {
       })
       .catch((error: any) => {
         console.log(error);
+        setError(error.msg);
       });
   };
 
@@ -55,16 +69,19 @@ const ComunicationPage: React.FC = () => {
     PictogramsServices.getPictogramsByCategory(token!, categoryId, patientId!)
       .then((res: any) => {
         console.log(res);
-        setAvailableItems(res.data);
+        const transformedResponse = addIdForSortable(res.data);
+        setAvailableItems(transformedResponse);
         setIsLoadingPictograms(false);
       })
-      .catch((error: any) => console.log(error));
+      .catch((error: any) => {
+        console.log(error);
+        setError(error.msg);
+      });
   };
 
   const handleTranslation = () => {
-    console.log(selectedItems);
     const translation = selectedItems
-      .map((pictogram) => pictogram.nombres[0].nombre)
+      .map((item) => item.pictogram.nombres[0].nombre)
       .join(" ");
     setTranslation(translation);
     setShowModal(true);
@@ -108,8 +125,8 @@ const ComunicationPage: React.FC = () => {
             >
               {selectedItems!.map((item, index) => (
                 <CardWithImage
-                  key={index}
-                  img={{ src: item.ruta_acceso_local, alt: "" }}
+                  key={item.pictogram.id_pictograma}
+                  img={{ src: item.pictogram.ruta_acceso_local, alt: "" }}
                   touchable={false}
                   onClick={() => {}}
                 />
@@ -119,15 +136,15 @@ const ComunicationPage: React.FC = () => {
         </IonRow>
         {/* Fila de botones */}
         <IonRow>
-          <IonCol>
+          <IonCol style={{ display: "flex", justifyContent: "flex-start" }}>
             <IonButton
               disabled={selectedItems.length <= 0}
-              onClick={(e) => handleTranslation()}
+              onClick={(_e) => handleTranslation()}
             >
               ¡Traducir!
             </IonButton>
           </IonCol>
-          <IonCol style={{ display: "flex", justifyContent: "right" }}>
+          <IonCol style={{ display: "flex", justifyContent: "flex-end" }}>
             <IonButton
               disabled={selectedItems.length <= 0}
               onClick={(_e) => cleanTirafrase()}
@@ -157,9 +174,8 @@ const ComunicationPage: React.FC = () => {
                 </>
               ) : (
                 <IonList>
-                  {categories?.map((item, index) => (
+                  {categories?.map((category, index) => (
                     <>
-                      {" "}
                       <IonRow>
                         <IonCol>
                           <IonItem
@@ -167,20 +183,24 @@ const ComunicationPage: React.FC = () => {
                             button
                             detail
                             detailIcon={
-                              isSelected(item.id_categoria)
+                              isSelected(category.id_categoria)
                                 ? chevronDown
                                 : chevronForward
                             }
                             className={
-                              isSelected(item.id_categoria) ? "selected" : ""
+                              isSelected(category.id_categoria)
+                                ? "selected"
+                                : ""
                             }
-                            onClick={() => fetchPictograms(item.id_categoria)}
+                            onClick={() =>
+                              fetchPictograms(category.id_categoria)
+                            }
                           >
-                            {item.nombre}
-                          </IonItem>{" "}
+                            {category.nombre}
+                          </IonItem>
                         </IonCol>
                       </IonRow>
-                      {isSelected(item.id_categoria) ? (
+                      {isSelected(category.id_categoria) ? (
                         isLoadingPictogramas ? (
                           <>
                             <div
@@ -197,29 +217,25 @@ const ComunicationPage: React.FC = () => {
                             </div>
                           </>
                         ) : (
-                          <IonRow>
-                            <IonCol>
-                              <ReactSortable
-                                list={availableItems}
-                                setList={setAvailableItems}
-                                animation={150}
-                                group="shared-group-name"
-                                className="sortable-mobile"
-                              >
-                                {availableItems!.map((item, index) => (
-                                  <CardWithImage
-                                    key={index}
-                                    img={{
-                                      src: item.ruta_acceso_local,
-                                      alt: "",
-                                    }}
-                                    touchable={false}
-                                    onClick={() => {}}
-                                  />
-                                ))}
-                              </ReactSortable>
-                            </IonCol>
-                          </IonRow>
+                          <ReactSortable
+                            list={availableItems}
+                            setList={setAvailableItems}
+                            animation={150}
+                            group="shared-group-name"
+                            className="sortable-mobile"
+                          >
+                            {availableItems!.map((item, index) => (
+                              <CardWithImage
+                                key={item.id}
+                                img={{
+                                  src: item.pictogram.ruta_acceso_local,
+                                  alt: "",
+                                }}
+                                touchable={false}
+                                onClick={() => {}}
+                              />
+                            ))}
+                          </ReactSortable>
                         )
                       ) : null}
                     </>
@@ -249,16 +265,16 @@ const ComunicationPage: React.FC = () => {
                 </>
               ) : (
                 <IonList>
-                  {categories?.map((item, index) => (
+                  {categories?.map((category, index) => (
                     <IonItem
                       key={index}
                       button
                       className={
-                        isSelected(item.id_categoria) ? "selected" : ""
+                        isSelected(category.id_categoria) ? "selected" : ""
                       }
-                      onClick={() => fetchPictograms(item.id_categoria)}
+                      onClick={() => fetchPictograms(category.id_categoria)}
                     >
-                      {item.nombre}
+                      {category.nombre}
                     </IonItem>
                   ))}
                 </IonList>
@@ -294,8 +310,8 @@ const ComunicationPage: React.FC = () => {
                 >
                   {availableItems!.map((item, index) => (
                     <CardWithImage
-                      key={index}
-                      img={{ src: item.ruta_acceso_local, alt: "" }}
+                      key={item.id}
+                      img={{ src: item.pictogram.ruta_acceso_local, alt: "" }}
                       touchable={false}
                       onClick={() => {}}
                     />
@@ -311,13 +327,9 @@ const ComunicationPage: React.FC = () => {
         translation={translation}
         handleClose={handleCloseModal}
       />
+      <IonModal isOpen={error ? true : false} backdropDismiss={true}>{error}</IonModal>
     </Page>
   );
 };
-
-interface Item {
-  id: string;
-  content: string;
-}
 
 export default ComunicationPage;
