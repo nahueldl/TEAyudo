@@ -53,8 +53,8 @@ const ComunicationPage: React.FC = () => {
   const getCategories = () => {
     setIsLoadingCategories(true);
     CategoriesServices.getCategories(token!, patientId!)
-      .then((res: any) => {
-        setCategories(res.data);
+      .then((res: Category[]) => {
+        setCategories(res);
         setIsLoadingCategories(false);
       })
       .catch((error: any) => {
@@ -67,9 +67,9 @@ const ComunicationPage: React.FC = () => {
     setIsLoadingPictograms(true);
     setCategorySelectedId(categoryId);
     PictogramsServices.getPictogramsByCategory(token!, categoryId, patientId!)
-      .then((res: any) => {
+      .then((res: Pictogram[]) => {
         console.log(res);
-        const transformedResponse = addIdForSortable(res.data);
+        const transformedResponse = addIdForSortable(res);
         setAvailableItems(transformedResponse);
         setIsLoadingPictograms(false);
       })
