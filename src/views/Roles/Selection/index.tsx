@@ -70,26 +70,28 @@ const RoleSelection: React.FC = () => {
         message={"Trabajando..."}
         spinner="crescent"
       />
-      <IonGrid className="container">
-        <IonRow>
-          <IonCol size="12">
-            <h1 className="title">
-              Selecciona el rol que deseas usar para avanzar
-            </h1>
-          </IonCol>
-        </IonRow>
-        <IonRow>
-          {roles.map((rol: any) => (
-            <IonCol key={rol.id_rol} size="12">
-              <IonCard button={true} onClick={() => handleRolSelection(rol)}>
-                <IonItem>
-                  <IonLabel>{rol.descripcion}</IonLabel>
-                </IonItem>
-              </IonCard>
+      {loading ? null : (
+        <IonGrid className="container">
+          <IonRow>
+            <IonCol size="12">
+              <h1 className="title">
+                Selecciona el rol que deseas usar para avanzar
+              </h1>
             </IonCol>
-          ))}
-        </IonRow>
-      </IonGrid>
+          </IonRow>
+          <IonRow>
+            {roles.map((rol: any) => (
+              <IonCol key={rol.id_rol} size="12">
+                <IonCard button={true} onClick={() => handleRolSelection(rol)}>
+                  <IonItem>
+                    <IonLabel>{rol.descripcion}</IonLabel>
+                  </IonItem>
+                </IonCard>
+              </IonCol>
+            ))}
+          </IonRow>
+        </IonGrid>
+      )}
     </IonContent>
   );
 };
