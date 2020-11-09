@@ -34,7 +34,7 @@ interface CardProps {
   img: IImage;
   title?: string;
   touchable: boolean;
-  onClick: any;
+  onClick?: any;
   patient?: Patient;
 }
 
