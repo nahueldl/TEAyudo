@@ -79,6 +79,14 @@ const ComunicationPage: React.FC = () => {
     setselectedItems([]);
   };
 
+  const isSelected = (categoryId: number) => {
+    return categorySelectedId === categoryId;
+  };
+
+  const toggleCategory = () => {
+    // Agregar el poder cerrar la categoría
+  };
+
   return (
     <Page pageTitle="Comunicarse" showHomeButton>
       <IonGrid>
@@ -96,6 +104,7 @@ const ComunicationPage: React.FC = () => {
               animation={150}
               group="shared-group-name"
               className={`sortable ${isMobile ? "mobile" : ""}`}
+              swap
             >
               {selectedItems!.map((item, index) => (
                 <CardWithImage
@@ -150,25 +159,28 @@ const ComunicationPage: React.FC = () => {
                 <IonList>
                   {categories?.map((item, index) => (
                     <>
-                      <IonItem
-                        key={index}
-                        button
-                        detail
-                        detailIcon={
-                          categorySelectedId === item.id_categoria
-                            ? chevronDown
-                            : chevronForward
-                        }
-                        className={
-                          categorySelectedId === item.id_categoria
-                            ? "selected"
-                            : ""
-                        }
-                        onClick={() => fetchPictograms(item.id_categoria)}
-                      >
-                        {item.nombre}
-                      </IonItem>
-                      {categorySelectedId === item.id_categoria ? (
+                      {" "}
+                      <IonRow>
+                        <IonCol>
+                          <IonItem
+                            key={index}
+                            button
+                            detail
+                            detailIcon={
+                              isSelected(item.id_categoria)
+                                ? chevronDown
+                                : chevronForward
+                            }
+                            className={
+                              isSelected(item.id_categoria) ? "selected" : ""
+                            }
+                            onClick={() => fetchPictograms(item.id_categoria)}
+                          >
+                            {item.nombre}
+                          </IonItem>{" "}
+                        </IonCol>
+                      </IonRow>
+                      {isSelected(item.id_categoria) ? (
                         isLoadingPictogramas ? (
                           <>
                             <div
@@ -185,22 +197,29 @@ const ComunicationPage: React.FC = () => {
                             </div>
                           </>
                         ) : (
-                          <ReactSortable
-                            list={availableItems}
-                            setList={setAvailableItems}
-                            animation={150}
-                            group="shared-group-name"
-                            className="sortable-mobile"
-                          >
-                            {availableItems!.map((item, index) => (
-                              <CardWithImage
-                                key={index}
-                                img={{ src: item.ruta_acceso_local, alt: "" }}
-                                touchable={false}
-                                onClick={() => {}}
-                              />
-                            ))}
-                          </ReactSortable>
+                          <IonRow>
+                            <IonCol>
+                              <ReactSortable
+                                list={availableItems}
+                                setList={setAvailableItems}
+                                animation={150}
+                                group="shared-group-name"
+                                className="sortable-mobile"
+                              >
+                                {availableItems!.map((item, index) => (
+                                  <CardWithImage
+                                    key={index}
+                                    img={{
+                                      src: item.ruta_acceso_local,
+                                      alt: "",
+                                    }}
+                                    touchable={false}
+                                    onClick={() => {}}
+                                  />
+                                ))}
+                              </ReactSortable>
+                            </IonCol>
+                          </IonRow>
                         )
                       ) : null}
                     </>
@@ -235,9 +254,7 @@ const ComunicationPage: React.FC = () => {
                       key={index}
                       button
                       className={
-                        categorySelectedId === item.id_categoria
-                          ? "selected"
-                          : ""
+                        isSelected(item.id_categoria) ? "selected" : ""
                       }
                       onClick={() => fetchPictograms(item.id_categoria)}
                     >
@@ -273,7 +290,7 @@ const ComunicationPage: React.FC = () => {
                   setList={setAvailableItems}
                   animation={150}
                   group="shared-group-name"
-                  className={`sortable ${isMobile ? " mobile" : ""}`}
+                  className="sortable"
                 >
                   {availableItems!.map((item, index) => (
                     <CardWithImage
