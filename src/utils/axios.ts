@@ -9,12 +9,15 @@ const __API_BASE_URL__ = "https://api.teayudo.tk";
 export default class AxiosWrapper {
   private instance: AxiosInstance;
   private defaultConfig: ICustomAxiosConfig = {
-    useErrorInterceptor: false,
+    useErrorInterceptor: true,
   };
 
   constructor(options?: ICustomAxiosConfig) {
     const customConfig = Object.assign(this.defaultConfig, options);
+    const errorInterceptor = this.errorInterceptor;
+    const successInterceptor = (res:AxiosResponse) => res;
     this.instance = axios.create(this.getConfig(customConfig));
+    this.instance.interceptors.response.use(successInterceptor, errorInterceptor);
 
   }
   get<T>(url: string, config?: AxiosRequestConfig): T {
@@ -52,6 +55,7 @@ export default class AxiosWrapper {
     }
 
     const { url } = error.response.data;
+    localStorage.clear();
     this.redirectToLogin(url);
   };
 
