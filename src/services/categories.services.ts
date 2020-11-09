@@ -1,3 +1,4 @@
+import { Category } from "../types/Categories";
 import AxiosWrapper from "../utils/axios";
 
 class CategoriesService {
@@ -6,7 +7,7 @@ class CategoriesService {
     this.axios = new AxiosWrapper({ useErrorInterceptor: true });
   }
 
-  getCategories(token: string, patientId: string):any {
+  getCategories(token: string, patientId: string):Promise<Category[]> {
     const header = `Bearer ${token}`;
 
     return this.axios.get("/api/categorias", {
@@ -19,7 +20,7 @@ class CategoriesService {
     });
   }
 
-  createCategory(token: string, categoryName: string, idRol: string) {
+  createCategory(token: string, categoryName: string, idRol: string):Promise<Category> {
     const header = `Bearer ${token}`;
     return this.axios.post("/api/categorias", {
       headers: {
