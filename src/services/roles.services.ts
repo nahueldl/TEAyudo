@@ -1,3 +1,4 @@
+import { Rol } from "../types/Roles";
 import AxiosWrapper from "../utils/axios";
 
 class RolesService {
@@ -6,7 +7,7 @@ class RolesService {
     this.axios = new AxiosWrapper({ useErrorInterceptor: true });
   }
 
-  handleAssignRol(
+  assignRol(
     token: string | undefined,
     idRol: number,
     description?: string
@@ -26,7 +27,7 @@ class RolesService {
     );
   }
 
-  getPatientRoles(token: string): any {
+  getPatientRoles(token: string): Promise<Rol[]> {
     const header = `Bearer ${token}`;
     return this.axios.get("/api/usuario/roles", {
       headers: {
@@ -35,7 +36,7 @@ class RolesService {
     });
   }
 
-  getAllRoles(): any {
+  getAllRoles(): Promise<Rol[]> {
     return this.axios.get("/api/roles");
   }
 }
