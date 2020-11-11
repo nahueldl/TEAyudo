@@ -18,7 +18,10 @@ const AddRole: React.FC = () => {
   const { authData, setAuthData } = useContext(AuthenticationContext);
   const [roles, setRoles] = useState<any>();
   const [loading, isLoading] = useState<boolean>(true);
-  const [error, hasError] = useState<boolean>(false);
+  const [error, hasError] = useState<{ status: boolean; msg: string }>({
+    status: false,
+    msg: "",
+  });
   useEffect(() => {
     handleGetRoles();
   }, []);
@@ -33,19 +36,22 @@ const AddRole: React.FC = () => {
       })
       .catch((error) => {
         console.log(error);
-        hasError(true);
+        hasError({ status: true, msg: error.msg });
         isLoading(false);
       });
   };
 
   const assignRol = (newRol: number, description: string) => {
+    isLoading(true);
     RolesService.assignRol(authData.token, newRol, description)
       .then((res: any) => {
+        isLoading(false);
         goToHome();
       })
       .catch((error: any) => {
-        setAuthData({ role: "F" });
-        goToHome();
+        console.log(error);
+        isLoading(false);
+        hasError({ status: true, msg: error });
       });
   };
 
@@ -55,12 +61,13 @@ const AddRole: React.FC = () => {
 
   return (
     <IonContent>
-      <IonLoading
-        isOpen={loading}
-        message={"Trabajando..."}
-        spinner="crescent"
-      />
-      {loading ? null : (
+      {loading ? (
+        <IonLoading
+          isOpen={loading}
+          message={"Trabajando..."}
+          spinner="crescent"
+        />
+      ) : (
         <IonGrid className="container">
           <IonRow>
             <IonCol size="12">
@@ -80,13 +87,13 @@ const AddRole: React.FC = () => {
           </IonRow>
         </IonGrid>
       )}
-      {error ? (
+      {error.status ? (
         <IonAlert
-          isOpen={error!}
+          isOpen={error!.status}
           animated
           backdropDismiss
           keyboardClose
-          message={"Algún error!"}
+          message={error!.msg}
         />
       ) : null}
     </IonContent>
