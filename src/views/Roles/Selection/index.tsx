@@ -28,10 +28,11 @@ const RoleSelection: React.FC = () => {
 
   useEffect(() => {
     handleGetRoles();
-  });
+  }, []);
 
   const handleGetRoles = () => {
-    setLoading(false);
+    console.log("rol selection")
+    setLoading(true);
     RolesService.getPatientRoles(authData.token!)
       .then((res: any) => {
         if (res.data.length > 1) {
@@ -42,9 +43,9 @@ const RoleSelection: React.FC = () => {
         }
       })
       .catch((error: any) => {
-        if (error.status === 400) {
-          goToAddRole();
-        }
+        console.log(error);
+        setLoading(false);
+        goToAddRole();
       });
   };
 
