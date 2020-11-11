@@ -15,21 +15,25 @@ const PatientSelection: React.FC = () => {
   const { username, token } = authData;
   const { navigate } = useContext(NavContext);
   const [patients, setPatients] = useState<Patient[]>([]);
+  const [loading, isLoading] = useState<boolean>(true);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => getPatients(), []);
 
   const getPatients = () => {
+    isLoading(true);
     PatientServices.getPatientsFromUser(token!)
       .then((res: any) => {
         if (res.data?.length > 0) {
           setPatients(res.data);
+          isLoading(false);
         } else {
           goToAddPatient();
         }
       })
       .catch((_error: any) => {
         console.log(_error);
+        isLoading(false);
       });
   };
 
