@@ -11,6 +11,8 @@ import "./styles.css";
 import { PlatformContext } from "../../context/platform";
 import ChooseRoleModal from "./ChooseRoleModal";
 import { RegistrationContext } from "../../context/registration";
+import { Plugins } from "@capacitor/core";
+const { Storage } = Plugins;
 
 const LogInSignUpPage: React.FC = () => {
   const { navigate } = useContext(NavContext);
@@ -28,12 +30,20 @@ const LogInSignUpPage: React.FC = () => {
     setAuthData({ loading: true, error: false });
     AuthenticationService.handleLogIn(email, password)
       .then((res: any) => {
+        const expirationDate = calculateExpirationDate();
         setAuthData({
           token: res.data.token,
+          tokenExpirationDate: expirationDate.toJSON(),
           username: email,
           authenticated: true,
           loading: false,
         });
+        Storage.set({ key: "token", value: res.data.token });
+        Storage.set({
+          key: "tokenExpirationDate",
+          value: expirationDate.toJSON(),
+        });
+        Storage.set({ key: "username", value: email });
         goToSelectRole();
       })
       .catch((_error: any) => {
@@ -82,33 +92,11 @@ const LogInSignUpPage: React.FC = () => {
       .then((res: any) => {
         setAuthData({
           username: email,
+          authenticated: true,
+          loading: false,
           token: res.data.token,
         });
-        if (licenseNumber) {
-          RolesService.handleAssignRol(res.data.token, 2, "Profesional")
-            .then((res: any) => {
-              setAuthData({
-                authenticated: true,
-                loading: false,
-              });
-              goToAddPatient();
-            })
-            .catch((_error: any) => {
-              setAuthData({ loading: false, error: true });
-            });
-        } else {
-          RolesService.handleAssignRol(res.data.token, 1, "Familiar")
-            .then((res: any) => {
-              setAuthData({
-                authenticated: true,
-                loading: false,
-              });
-              goToAddPatient();
-            })
-            .catch((_error: any) => {
-              setAuthData({ loading: false, error: true });
-            });
-        }
+        goToAddPatient();
       })
       .catch((_error: any) => {
         setAuthData({ loading: false, error: true });
@@ -124,6 +112,14 @@ const LogInSignUpPage: React.FC = () => {
     () => navigate("/roles/seleccion", "forward"),
     [navigate]
   );
+
+  const calculateExpirationDate = () => {
+    const currentDate = new Date();
+    const currentHours = currentDate.getHours();
+    const expirationHours = currentHours + 1;
+    currentDate.setHours(expirationHours);
+    return currentDate;
+  };
 
   const classRightPanelActive = showSignIn ? "rightPanelActive" : "";
 

@@ -2,40 +2,48 @@ import React, { useContext, useCallback, useState, useEffect } from "react";
 import "../styles.css";
 import { IonGrid, IonRow, IonCol, IonContent, NavContext } from "@ionic/react";
 import { AuthenticationContext } from "../../../context/authentication";
+import PatientServices from "../../../services/patients.services";
 import CardWithImage from "../../../components/CardWithImage";
-import PatientServices from "../../../services/patients.service";
+import { Plugins } from "@capacitor/core";
+import { PatientContext } from "../../../context/patient";
+const { Storage } = Plugins;
 
 const PatientSelection: React.FC = () => {
   const { authData, setAuthData } = useContext(AuthenticationContext);
-  const { username } = authData;
+  const { patientData, setPatientData } = useContext(PatientContext);
+  const { username, token } = authData;
   const { navigate } = useContext(NavContext);
-  const [patients, setPatients] = useState<[Patient]>();
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => getPatients(), []);
 
   const getPatients = () => {
-    setAuthData({ loading: true, error: false });
-    PatientServices.getPatientsFromUser(authData.token!)
+    PatientServices.getPatientsFromUser(token!)
       .then((res: any) => {
         if (res.data?.length > 0) {
-          setPatients(res.data);
-          setAuthData({ loading: false });
+          setPatientData({patientsList: res.data});
+          // setPatients(res.data);
         } else {
           goToAddPatient();
-          setAuthData({ loading: false });
         }
       })
       .catch((_error: any) => {
-        setAuthData({ loading: false, error: true });
+        console.log(_error);
       });
   };
 
-  const handleClick = (name: string) => {
-    setAuthData({ patientName: name });
+  const handleClick = (patient: Patient) => {
+    setAuthData({
+      patientName: `${patient.nombre} ${patient.apellido}`,
+      patientId: patient.id_paciente,
+    });
+    setPatientData({patientSelected: patient});
+    Storage.set({ key: "patientName", value: patient.nombre }).then();
+    Storage.set({ key: "patientId", value: patient.id_paciente }).then();
     goToHome();
   };
 
-  const goToHome = useCallback(() => navigate(`/inicio`, "forward"), [
+  const goToHome = useCallback(() => navigate(`/`, "forward"), [
     navigate,
   ]);
 
@@ -53,21 +61,20 @@ const PatientSelection: React.FC = () => {
           </IonCol>
         </IonRow>
         <IonRow>
-          {patients != undefined
-            ? patients.map((patient, index) => (
-                <IonCol key={index} size="12" sizeMd="6">
-                  <CardWithImage
-                    onClick={handleClick}
-                    img={{
-                      src: `https://api.adorable.io/avatars/100/${username}-${patient.nombre}`,
-                      alt: `Avatar des ${patient.nombre}`,
-                    }}
-                    title={patient.nombre}
-                    touchable
-                  />
-                </IonCol>
-              ))
-            : () => goToAddPatient}
+          {patientData.patientsList?.map((patient: any, index: number) => (
+            <IonCol key={index} size="12" sizeMd="6">
+              <CardWithImage
+                onClick={handleClick}
+                img={{
+                  src: `https://api.adorable.io/avatars/100/${username}-${patient.nombre}${patient.apellido}`,
+                  alt: `Avatar des ${patient.nombre}`,
+                }}
+                title={`${patient.nombre} ${patient.apellido}`}
+                touchable
+                patient={patient}
+              />
+            </IonCol>
+          ))}
         </IonRow>
       </IonGrid>
     </IonContent>
