@@ -31,7 +31,7 @@ const RoleSelection: React.FC = () => {
   }, []);
 
   const handleGetRoles = () => {
-    console.log("rol selection")
+    console.log("rol selection");
     setLoading(true);
     RolesService.getPatientRoles(authData.token!)
       .then((res: any) => {
@@ -66,12 +66,13 @@ const RoleSelection: React.FC = () => {
 
   return (
     <IonContent>
-      <IonLoading
-        isOpen={loading}
-        message={"Trabajando..."}
-        spinner="crescent"
-      />
-      {loading ? null : (
+      {loading ? (
+        <IonLoading
+          isOpen={loading}
+          message={"Trabajando..."}
+          spinner="crescent"
+        />
+      ) : (
         <IonGrid className="container">
           <IonRow>
             <IonCol size="12">
