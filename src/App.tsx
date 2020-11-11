@@ -27,6 +27,9 @@ import LogInSignUpPage from "./views/LogIn&SignUp";
 import PatientSelection from "./views/Patients/Selection";
 import { AuthenticationContext } from "./context/authentication";
 import RoleSelection from "./views/Roles/Selection";
+import AddRole from "./views/Roles/Add";
+import AddPatientPage from "./views/Patients/AddPatient";
+
 
 const App: React.FC = () => {
   const { authData } = useContext(AuthenticationContext);
@@ -67,7 +70,11 @@ const App: React.FC = () => {
 
         <Route path="/login" component={LogInSignUpPage} exact />
         <Route path="/pacientes/seleccion" component={PatientSelection} exact />
+        <Route path="/pacientes/alta" component={AddPatientPage} exact />
+
         <Route path="/roles/seleccion" component={RoleSelection} exact />
+        <Route path="/roles/alta" component={AddRole} exact />
+        {/* <AppPostLogin /> */}
       </IonReactRouter>
     </IonApp>
   );
