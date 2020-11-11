@@ -4,6 +4,8 @@ import { NavContext, IonLoading } from "@ionic/react";
 import ListPatients from "../ListPatients";
 import { AuthenticationContext } from "../../../context/authentication";
 import PatientServices from "../../../services/patients.services";
+import { getBase64 } from "../../../components/encodeImg/encodeImg";
+import { getBlobFromURL } from "../../../components/encodeImg/urlToBlob";
 
 const PatientsPage: React.FC = () => {
   const { authData, setAuthData } = useContext(AuthenticationContext);
