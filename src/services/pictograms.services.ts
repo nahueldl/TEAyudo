@@ -13,7 +13,7 @@ class PictogramsServices {
     patientId?: string,
     offset?: number,
     limit?: number
-  ): Promise<Pictogram[]> {
+  ): Promise<any> {
     return this.axios.get(`/api/categorias/${categoryId}/pictogramas`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -26,7 +26,7 @@ class PictogramsServices {
     });
   }
 
-  getPictogramsByTag(token: string, tag: string): Promise<Pictogram> {
+  getPictogramsByTag(token: string, tag: string): Promise<any> {
     return this.axios.get(`/api/pictogramas`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -62,7 +62,7 @@ class PictogramsServices {
     eschematic?: boolean,
     sex?: boolean,
     violence?: boolean
-  ): Promise<Pictogram> {
+  ): Promise<any> {
     return this.axios.post(`/api/pictogramas`, {
       headers: {
         Authorization: `Bearer ${token}`,

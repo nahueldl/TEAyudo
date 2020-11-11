@@ -1,4 +1,3 @@
-import { Rol } from "../types/Roles";
 import AxiosWrapper from "../utils/axios";
 
 class RolesService {
@@ -10,7 +9,7 @@ class RolesService {
   assignRol(
     token: string | undefined,
     idRol: number,
-    description?: string
+    description: string
   ) {
     const header = `Bearer ${token}`;
     return this.axios.post(
@@ -27,7 +26,7 @@ class RolesService {
     );
   }
 
-  getPatientRoles(token: string): Promise<Rol[]> {
+  getPatientRoles(token: string): Promise<any> {
     const header = `Bearer ${token}`;
     return this.axios.get("/api/usuario/roles", {
       headers: {
@@ -36,7 +35,7 @@ class RolesService {
     });
   }
 
-  getAllRoles(): Promise<Rol[]> {
+  getAllRoles(): Promise<any> {
     return this.axios.get("/api/roles");
   }
 }

@@ -19,7 +19,7 @@ class PatientServices {
     name: string,
     lastName: string,
     // birthday: string,
-    avatar: string
+    avatar?: string
   ) {
     return this.axios.post(
       "/api/pacientes",{
