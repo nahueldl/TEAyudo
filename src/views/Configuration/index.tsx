@@ -5,7 +5,7 @@ const ConfigurationPage: React.FC = () => {
 
   const { navigate } = useContext(NavContext);
 
-  const goToLoginPage = useCallback(() => navigate("/login", "forward"), [navigate])
+  const goToLoginPage = useCallback(() => navigate("/login"), [navigate])
 
   const logout = () => {
     localStorage.clear();
@@ -15,7 +15,6 @@ const ConfigurationPage: React.FC = () => {
   return (
     <Page pageTitle="Configuración" showHomeButton>
       <div>
-        <div>Configuracion</div>
         {/* TODO: Cambio de paciente, cambio de rol, cierre de sesión */}
         <IonButton onClick={() => logout()}>Cerrar sesión</IonButton>
       </div>
