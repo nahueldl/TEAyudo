@@ -29,7 +29,10 @@ interface PictogramWithId {
 }
 
 const addIdForSortable = (list: any) => {
-  return list.map((item: any, index: number) => (item.id = index));
+  const response: PictogramWithId[] = list.map((item: any, index: number) => {
+    return { id: index, pictogram: item };
+  });
+  return response;
 };
 
 const ComunicationPage: React.FC = () => {
@@ -53,13 +56,15 @@ const ComunicationPage: React.FC = () => {
   const getCategories = () => {
     setIsLoadingCategories(true);
     CategoriesServices.getCategories(token!, patientId!)
-      .then((res: Category[]) => {
-        setCategories(res);
+      .then((res: any) => {
+        console.log(res);
+        setCategories(res.data);
         setIsLoadingCategories(false);
       })
       .catch((error: any) => {
         console.log(error);
         setError(error.msg);
+        setIsLoadingCategories(false);
       });
   };
 
@@ -67,15 +72,17 @@ const ComunicationPage: React.FC = () => {
     setIsLoadingPictograms(true);
     setCategorySelectedId(categoryId);
     PictogramsServices.getPictogramsByCategory(token!, categoryId, patientId!)
-      .then((res: Pictogram[]) => {
-        console.log(res);
-        const transformedResponse = addIdForSortable(res);
+      .then((res: any) => {
+        const transformedResponse = addIdForSortable(res.data);
+        console.log(transformedResponse);
+
         setAvailableItems(transformedResponse);
         setIsLoadingPictograms(false);
       })
       .catch((error: any) => {
         console.log(error);
         setError(error.msg);
+        setIsLoadingPictograms(false);
       });
   };
 
@@ -123,7 +130,7 @@ const ComunicationPage: React.FC = () => {
               className={`sortable ${isMobile ? "mobile" : ""}`}
               swap
             >
-              {selectedItems!.map((item, index) => (
+              {selectedItems!.map((item: PictogramWithId, index: number) => (
                 <CardWithImage
                   key={item.pictogram.id_pictograma}
                   img={{ src: item.pictogram.ruta_acceso_local, alt: "" }}
@@ -174,7 +181,7 @@ const ComunicationPage: React.FC = () => {
                 </>
               ) : (
                 <IonList>
-                  {categories?.map((category, index) => (
+                  {categories!.map((category, index) => (
                     <>
                       <IonRow>
                         <IonCol>
@@ -223,6 +230,9 @@ const ComunicationPage: React.FC = () => {
                             animation={150}
                             group="shared-group-name"
                             className="sortable mobile"
+                            // bubbleScroll={true}
+                            invertSwap={true}
+                            invertedSwapThreshold={0.65}
                           >
                             {availableItems!.map((item, index) => (
                               <CardWithImage
@@ -265,7 +275,7 @@ const ComunicationPage: React.FC = () => {
                 </>
               ) : (
                 <IonList>
-                  {categories?.map((category, index) => (
+                  {categories!.map((category, index) => (
                     <IonItem
                       key={index}
                       button
@@ -327,7 +337,9 @@ const ComunicationPage: React.FC = () => {
         translation={translation}
         handleClose={handleCloseModal}
       />
-      <IonModal isOpen={error ? true : false} backdropDismiss={true}>{error}</IonModal>
+      <IonModal isOpen={error ? true : false} backdropDismiss={true}>
+        {error}
+      </IonModal>
     </Page>
   );
 };
