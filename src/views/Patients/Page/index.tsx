@@ -6,6 +6,8 @@ import { AuthenticationContext } from "../../../context/authentication";
 import PatientServices from "../../../services/patients.services";
 import { getBase64 } from "../../../components/encodeImg/encodeImg";
 import { getBlobFromURL } from "../../../components/encodeImg/urlToBlob";
+import CardWithIcon from "../../../components/CardWithIcon";
+import { addCircleOutline } from "ionicons/icons";
 
 const PatientsPage: React.FC = () => {
   const { authData, setAuthData } = useContext(AuthenticationContext);
