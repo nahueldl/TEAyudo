@@ -13,11 +13,15 @@ import {
   IonAlert,
   IonLoading,
   IonButton,
+  IonIcon,
 } from "@ionic/react";
 import "./styles.css";
 import PatientServices from "../../../services/patients.services";
 import Page from "../../../components/Page";
 import { PatientContext } from "../../../context/patient";
+import { getBase64 } from "../../../components/encodeImg/encodeImg";
+import { getBlobFromURL } from "../../../components/encodeImg/urlToBlob";
+import { refreshOutline } from "ionicons/icons";
 
 const AddPatient: React.FC<InfoPatientProps> = ({ patient }) => {
   const { authData, setAuthData } = useContext(AuthenticationContext);
@@ -34,42 +38,35 @@ const AddPatient: React.FC<InfoPatientProps> = ({ patient }) => {
   const [birthday, setBirthday] = useState<string>(
     patient !== undefined ? patient.birthday : ""
   );
-  const [avatar] = useState<string>(
+  const [avatar, setAvatar] = useState<string>(
     patient !== undefined
       ? patient.avatar
-      : "https://api.adorable.io/avatars/" +
+      : "https://avatars.dicebear.com/api/bottts/" +
           Math.floor(Math.random() * 200) +
-          "/"
+          ".svg"
   );
-  const encodeImg = (filePath?: string) => {
-    debugger;
-    // Base64.prototype.encodeFile(filePath == undefined ? "" : filePath).then(
-    //   (base64File: string) => {
-    //     console.log(base64File);
-    //     return base64File;
-    //   },
-    //   (err: any) => {
-    //     console.log(err);
-    //   }
-    // );
-  };
 
   const handleAddPatient = () => {
     setAuthData({ loading: true, error: false });
-    PatientServices.postNewPatient(authData.token!, name, lastName, avatar)
-      .then((res:any) => {
-        debugger;
-        patientData.patientsList?.push(res.data);
-        setPatientData({patientsList: patientData.patientsList});
-        setAuthData({ loading: false, error: false });
-        goToListPatients();
+    var blob = getBlobFromURL(avatar);
+    blob.then((blobRes:any) => {
+      var base64 = getBase64(blobRes);
+      base64.then((base64res: any) => {
+        PatientServices.postNewPatient(authData.token!, name, lastName, base64res)
+          .then((res: any) => {
+            patientData.patientsList?.push(res.data);
+            setPatientData({patientsList: patientData.patientsList});
+            setAuthData({ loading: false, error: false });
+            goToListPatients();
+          })
+          .catch((_error: any) => {
+            setErrorMessage(
+              "Hubo un inconveniente creando al paciente, pruebe más tarde."
+            );
+            setAuthData({ loading: false, error: true });
+          });
       })
-      .catch((_error: any) => {
-        setErrorMessage(
-          "Hubo un inconveniente creando al paciente, pruebe más tarde."
-        );
-        setAuthData({ loading: false, error: true });
-      });
+    })
   };
 
   const handleCancel = () => {
@@ -95,6 +92,9 @@ const AddPatient: React.FC<InfoPatientProps> = ({ patient }) => {
                     alt="Avatar"
                   />
                 </IonAvatar>
+                <button icon-only onClick={() => setAvatar("https://avatars.dicebear.com/api/bottts/"+Math.floor(Math.random() * 200)+".svg")}>
+                  <IonIcon  className="pl-5" slot="end" icon={refreshOutline}></IonIcon>
+                </button> 
                 <IonItem className="inputMargin">
                   <IonInput
                     name="name"
