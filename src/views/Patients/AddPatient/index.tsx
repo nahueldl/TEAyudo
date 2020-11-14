@@ -92,9 +92,9 @@ const AddPatient: React.FC<InfoPatientProps> = ({ patient }) => {
                     alt="Avatar"
                   />
                 </IonAvatar>
-                <button icon-only onClick={() => setAvatar("https://avatars.dicebear.com/api/bottts/"+Math.floor(Math.random() * 200)+".svg")}>
-                  <IonIcon  className="pl-5" slot="end" icon={refreshOutline}></IonIcon>
-                </button> 
+                <IonButton color="tertiary" size="small" onClick={() => setAvatar("https://avatars.dicebear.com/api/bottts/"+Math.floor(Math.random() * 200)+".svg")}>
+                  <IonIcon className="pl-5" slot="end" icon={refreshOutline}></IonIcon> Cambiar
+                </IonButton> 
                 <IonItem className="inputMargin">
                   <IonInput
                     name="name"
