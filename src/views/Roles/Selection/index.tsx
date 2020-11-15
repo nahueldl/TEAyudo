@@ -21,17 +21,13 @@ const RoleSelection: React.FC = () => {
   const { navigate } = useContext(NavContext);
   const { authData, setAuthData } = useContext(AuthenticationContext);
   const [loading, setLoading] = useState<boolean>(true);
-  const [roles, setRoles] = useState<any>([
-    { descripcion: "Familiar", id_rol: "F" },
-    { descripcion: "Medicx", id_rol: "M" },
-  ]);
+  const [roles, setRoles] = useState<any>([]);
 
   useEffect(() => {
     handleGetRoles();
-  }, []);
+  }, [roles]);
 
   const handleGetRoles = () => {
-    console.log("rol selection");
     setLoading(true);
     RolesService.getPatientRoles(authData.token!)
       .then((res: any) => {
