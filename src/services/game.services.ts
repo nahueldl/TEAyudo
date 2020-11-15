@@ -1,4 +1,3 @@
-import { Move } from "../types/Game";
 import AxiosWrapper from "../utils/axios";
 
 class GameServices {
@@ -7,7 +6,7 @@ class GameServices {
     this.axios = new AxiosWrapper({ useErrorInterceptor: true });
   }
 
-  getMove(token: string, patientId: string): Promise<Move> {
+  getMove(token: string, patientId: string): Promise<any> {
     const header = `Bearer ${token}`;
     return this.axios.get(`/api/${patientId}/jugada`, {
       headers: {
