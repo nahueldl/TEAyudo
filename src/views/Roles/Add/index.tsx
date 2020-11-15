@@ -23,19 +23,21 @@ const AddRole: React.FC = () => {
     msg: "",
   });
   useEffect(() => {
+    let unmounted = false;
     handleGetRoles();
-  }, []);
+    return () => {
+      unmounted = true;
+    };
+  }, [roles]);
 
   const handleGetRoles = () => {
     isLoading(true);
     RolesService.getAllRoles()
       .then((res) => {
-        console.log(res.data);
         setRoles(res.data);
         isLoading(false);
       })
       .catch((error) => {
-        console.log(error);
         hasError({ status: true, msg: error.msg });
         isLoading(false);
       });
