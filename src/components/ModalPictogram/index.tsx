@@ -119,7 +119,7 @@ export const ModalPictogram: React.FC<Props> = ({showModal, handleShowModal, pic
                         <IonCol size="2"/>
                     </IonRow>
                 </IonGrid>
-                <IonButton onClick={() => handleShowModal(false, undefined)}>Cerrar</IonButton>
+                <IonButton color="danger" onClick={() => handleShowModal(false, undefined)}>Cerrar</IonButton>
                 <IonAlert
                     isOpen={error!}
                     animated
