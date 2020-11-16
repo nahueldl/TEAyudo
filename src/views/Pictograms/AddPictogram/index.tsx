@@ -60,15 +60,15 @@ return (
                                     <IonIcon icon={camera}></IonIcon>
                                 </IonButton>
                             <IonItem>
-                                <IonLabel>Nombre</IonLabel>
+                                <IonLabel className="text-bold">Nombre</IonLabel>
                                 <IonInput className="pl-5 text-align-end" placeholder="Ingrese el nombre" value={nombrePictograma}  onIonChange={e => setNombrePictograma(e.detail.value!)}/>
                             </IonItem>
                             <IonItem>
-                                <IonLabel>Etiqueta</IonLabel>
+                                <IonLabel className="text-bold">Etiqueta</IonLabel>
                                 <IonInput className="pl-5 text-align-end" placeholder="Ingrese la etiqueta" value={etiquetaPictograma}  onIonChange={e => setEtiquetaPictograma(e.detail.value!)}/>
                             </IonItem>
                             <IonItem>
-                                <IonLabel>Categoria</IonLabel>
+                                <IonLabel className="text-bold">Categoria</IonLabel>
                                 <IonSelect value={categoriaValue} interface="action-sheet" cancelText="Cancelar" placeholder="Seleccione la categoria">
                                         {categoriasPropias?.map((categoria, index) => (
                                             <IonSelectOption key={index} value={categoria.id_categoria}>{categoria.nombre}</IonSelectOption>
