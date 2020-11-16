@@ -6,6 +6,8 @@ import HomePage from "./views/Home";
 import PictogramsPage from "./views/Pictograms";
 import AddPictogramPage from "./views/Pictograms/AddPictogram";
 import CategoriesPage from "./views/Categories";
+import CategoriesAddPage from "./views/Categories/AddCategorie";
+import CategoriesViewEditDeleteCategoryPage from "./views/Categories/ViewEditDeleteCategory";
 import PatientsPage from "./views/Patients/Page";
 import ProfessionalsPage from "./views/Professionals";
 import ReportsPage from "./views/Reports";
@@ -17,6 +19,8 @@ import AddPatientPage from "./views/Patients/AddPatient";
 import ViewPatientPage from "./views/Patients/ViewPatient";
 import EditPatientPage from "./views/Patients/EditPatient";
 import RolesPage from "./views/Roles/Page";
+import AddRole from "./views/Roles/Add";
+import RoleSelection from "./views/Roles/Selection";
 
 const AppPostLogin: React.FC = () => {
   const { authData } = useContext(AuthenticationContext);
@@ -29,6 +33,8 @@ const AppPostLogin: React.FC = () => {
         <Route path="/pictogramas" component={PictogramsPage} exact />
         <Route path="/pictograma/alta" component={AddPictogramPage} exact />
         <Route path="/categorias" component={CategoriesPage} exact />
+        <Route path="/categorias/alta" component={CategoriesAddPage} exact />
+        <Route path="/categorias/edicion" component={CategoriesViewEditDeleteCategoryPage} exact />
         <Route path="/pacientes" component={PatientsPage} exact />
         <Route path="/profesionales" component={ProfessionalsPage} exact />
         <Route path="/informes" component={ReportsPage} exact />
@@ -39,10 +45,13 @@ const AppPostLogin: React.FC = () => {
           component={ViewPatientPage}
           exact
         />
+        <Route path="/roles" component={RolesPage} exact />
+        <Route path="/roles/alta" component={AddRole} exact />
+        <Route path="/roles/seleccion" component={RoleSelection} exact />
         <Route path="/comunicacion" component={ComunicationPage}/>
         <Route path="/juegos" component={GamesPage} />
         <Route path="/pacientes/edicion" component={EditPatientPage} exact />
-        <Redirect from="/" to="/inicio" />
+        <Redirect from="*" to="/inicio" />
       </IonRouterOutlet>
     </IonSplitPane>
   );

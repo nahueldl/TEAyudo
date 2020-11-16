@@ -1,17 +1,18 @@
 import React, { useState, useContext, useEffect, useCallback } from "react";
 import Page from "../../../components/Page";
-import { NavContext, IonLoading } from "@ionic/react";
+import { NavContext, IonLoading, IonRow } from "@ionic/react";
 import ListPatients from "../ListPatients";
 import { AuthenticationContext } from "../../../context/authentication";
 import PatientServices from "../../../services/patients.services";
-import { getBase64 } from "../../../components/encodeImg/encodeImg";
-import { getBlobFromURL } from "../../../components/encodeImg/urlToBlob";
+import { PatientContext } from "../../../context/patient";
+import CardWithIcon from "../../../components/CardWithIcon";
+import { addCircleOutline } from "ionicons/icons";
 
 const PatientsPage: React.FC = () => {
   const { authData, setAuthData } = useContext(AuthenticationContext);
+  const { patientData, setPatientData } = useContext(PatientContext);
   const { navigate } = useContext(NavContext);
-  const [patientData, setPatientData] = useState<any>([]);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  
   useEffect(() => getPatients(), []);
 
   const getPatients = () => {
@@ -31,6 +32,10 @@ const PatientsPage: React.FC = () => {
       });
   };
 
+  const handleAddPatientClick = () => {
+    goToAddPatient();
+  };
+
   const goToAddPatient = useCallback(
     () => navigate("/pacientes/alta", "forward"),
     [navigate]
@@ -45,7 +50,17 @@ const PatientsPage: React.FC = () => {
           spinner="crescent"
         />
       ) : (
-        <ListPatients></ListPatients>
+        <>
+          <ListPatients/>
+          <IonRow>
+            <CardWithIcon
+              icon={addCircleOutline}
+              title="Agregar"
+              touchable
+              onClick={handleAddPatientClick}
+            />
+          </IonRow>
+        </>
       )}
     </Page>
   );

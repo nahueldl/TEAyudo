@@ -1,3 +1,4 @@
+import { Category } from "../types/Categories";
 import AxiosWrapper from "../utils/axios";
 
 class CategoriesService {
@@ -6,52 +7,41 @@ class CategoriesService {
     this.axios = new AxiosWrapper({ useErrorInterceptor: true });
   }
 
-  getCategories(token: string, patientId: string):any {
+  getCategories(token: string, patientId: string):Promise<any> {
     const header = `Bearer ${token}`;
-
     return this.axios.get("/api/categorias", {
       headers: {
         Authorization: header,
       },
-      params: {
-        paciente: patientId,
+      params: {        paciente: patientId,
       },
     });
   }
 
-  createCategory(token: string, categoryName: string, idRol: string) {
+  createCategory(token: string, categoryName: string, idRol: string):Promise<any> {
     const header = `Bearer ${token}`;
-    return this.axios.post("/api/categorias", {
-      headers: {
-        Authorization: header,
-      },
-      params: {
+    return this.axios.post(
+      "/api/categorias",
+      {
         nombre: categoryName,
         id_rol: idRol,
       },
-    });
+      { headers: { Authorization: header } }
+    );
   }
 
-  editCategory(token: string, categoryName: string) {
+  editCategory(token: string, categoryId: number, categoryName: string) {
     const header = `Bearer ${token}`;
-    return this.axios.put("/api/categorias", {
-      headers: {
-        Authorization: header,
-      },
-      params: {
-        nombre: categoryName,
-      },
-    });
+    return this.axios.put("/api/categorias/" + categoryId, {nombre: categoryName},
+      {headers: {Authorization: header,},}
+    );
   }
 
-  deleteCategory(token: string, categoryId: string) {
+  deleteCategory(token: string, categoryId: number) {
     const header = `Bearer ${token}`;
-    return this.axios.delete("/api/categorias", {
+    return this.axios.delete("/api/categorias/" + categoryId.toString(), {
       headers: {
         Authorization: header,
-      },
-      params: {
-        id: categoryId,
       },
     });
   }

@@ -13,8 +13,8 @@ const CardWithIcon: React.FC<CardProps> = ({
   };
 
   return (
-    <IonCard button={touchable} className="card mt-5p">
-      <IonIcon className="icon" icon={icon} onClick={handleClick} />
+    <IonCard button={touchable} className="card mt-5p" onClick={handleClick} >
+      <IonIcon className="icon" icon={icon} />
       <IonCardTitle className="title">{title}</IonCardTitle>
     </IonCard>
   );

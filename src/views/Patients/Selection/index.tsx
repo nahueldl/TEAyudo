@@ -13,22 +13,32 @@ const PatientSelection: React.FC = () => {
   const { patientData, setPatientData } = useContext(PatientContext);
   const { username, token } = authData;
   const { navigate } = useContext(NavContext);
+  const [patients, setPatients] = useState<Patient[]>([]);
+  const [loading, isLoading] = useState<boolean>(true);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => getPatients(), []);
+  useEffect(() => {
+    let unmounted = false;
+    getPatients();
+    return () => {
+      unmounted = true;
+    };
+  }, []);
 
   const getPatients = () => {
+    isLoading(true);
     PatientServices.getPatientsFromUser(token!)
       .then((res: any) => {
         if (res.data?.length > 0) {
-          setPatientData({patientsList: res.data});
-          // setPatients(res.data);
+          setPatients(res.data);
+          isLoading(false);
         } else {
           goToAddPatient();
         }
       })
       .catch((_error: any) => {
         console.log(_error);
+        isLoading(false);
       });
   };
 
@@ -37,15 +47,13 @@ const PatientSelection: React.FC = () => {
       patientName: `${patient.nombre} ${patient.apellido}`,
       patientId: patient.id_paciente,
     });
-    setPatientData({patientSelected: patient});
+    setPatientData({ patientSelected: patient });
     Storage.set({ key: "patientName", value: patient.nombre }).then();
     Storage.set({ key: "patientId", value: patient.id_paciente }).then();
     goToHome();
   };
 
-  const goToHome = useCallback(() => navigate(`/`, "forward"), [
-    navigate,
-  ]);
+  const goToHome = useCallback(() => navigate(`/`, "forward"), [navigate]);
 
   const goToAddPatient = useCallback(
     () => navigate("/pacientes/alta", "forward"),
