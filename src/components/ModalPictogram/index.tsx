@@ -14,7 +14,7 @@ import { getBlobFromURL } from '../encodeImg/urlToBlob';
 export const ModalPictogram: React.FC<Props> = ({showModal, handleShowModal, pictogram}) => {
     const { authData, setAuthData } = useContext(AuthenticationContext);
     const { error, loading } = authData;
-    const [errorMessage, setErrorMessage] = useState<string>();
+    const [ errorMessage, setErrorMessage ] = useState<string>();
     const [ favorito, setFavorito ] = useState(false);
     const [ categoriasPropias, setCategoriasPropias ] = useState<[Category]>();
     const [ newName, setNewName ] = useState("");
@@ -33,13 +33,13 @@ export const ModalPictogram: React.FC<Props> = ({showModal, handleShowModal, pic
             setErrorMessage(
               "Hubo un inconveniente, por favor intente más tarde."
             );
-          });
+        });
     }
     
     const marcarFavoritoPictograma = (favorito: boolean) => {
         if(favorito != undefined) {
             setAuthData({ loading: true, error: false });
-            PictogramsService.editPictogram(authData.token!, pictogram?.id_pictograma.toString()!, authData.patientId!, undefined, undefined, favorito)
+            PictogramsService.editPictogram(authData.token!, pictogram?.id_pictograma!, parseInt(authData.patientId!), undefined, undefined, favorito)
             .then((res:any) => {
                 setFavorito(favorito);
                 setAuthData({ loading: false, error: false });
@@ -63,7 +63,7 @@ export const ModalPictogram: React.FC<Props> = ({showModal, handleShowModal, pic
     }
 
     const personalizarNombrePictograma = () => {
-        PictogramsService.editPictogram(authData.token!, pictogram?.id_pictograma.toString()!, authData.patientId!, undefined, newName, undefined)
+        PictogramsService.editPictogram(authData.token!, pictogram?.id_pictograma!, parseInt(authData.patientId!), undefined, newName, undefined)
             .then((res:any) => {
                 debugger;
                 if(pictogram != undefined)
