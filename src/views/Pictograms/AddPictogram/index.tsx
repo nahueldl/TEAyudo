@@ -1,10 +1,12 @@
-import { IonAlert, IonButton, IonContent, IonGrid, IonImg, IonInput, IonItem, IonLabel, IonList, IonLoading, IonRow, IonSelect, IonSelectOption, NavContext } from "@ionic/react";
+import { IonAlert, IonAvatar, IonButton, IonContent, IonFab, IonFabButton, IonGrid, IonIcon, IonImg, IonInput, IonItem, IonLabel, IonList, IonLoading, IonRow, IonSelect, IonSelectOption, IonThumbnail, NavContext } from "@ionic/react";
 import React, { useState, useContext, useEffect, useCallback } from "react";
 import Page from "../../../components/Page";
 import CategoriesService from "../../../services/categories.services";
 import { AuthenticationContext } from "../../../context/authentication";
 import { Category } from "../../../types/Categories";
 import { Pictogram } from "../../../types/Pictograms";
+import { usePhotoGallery } from '../../../hooks/usePhotoGallery';
+import { camera } from "ionicons/icons";
 
 const AddPictogram: React.FC = () => {
     const { authData, setAuthData } = useContext(AuthenticationContext);
@@ -12,8 +14,10 @@ const AddPictogram: React.FC = () => {
     const [errorMessage, setErrorMessage] = useState<string>();
     const [ categoriasPropias, setCategoriasPropias ] = useState<[Category]>();
     const { error, loading } = authData;
+    const { photos, takePhoto } = usePhotoGallery();
+    const [ nombrePictograma, setNombrePictograma ] = useState<string>();
+    const [ etiquetaPictograma, setEtiquetaPictograma ] = useState<string>();
     const [ categoriaValue ] = useState();
-    const [ pictograma, setPictograma ] = useState<Pictogram>();
 
     useEffect(() => obtenerCategorias(), []);
 
@@ -45,36 +49,41 @@ const AddPictogram: React.FC = () => {
 return (
     <Page pageTitle="Crear pictograma" showHomeButton>
         <IonContent>
-            <IonGrid className="container">
+            <IonGrid className="container-addPictogram">
                 <IonRow>
                     <form className="form-no-background">
                         <IonList className="mt-5">
-                            <IonItem>
-                                <IonImg src="" className="h-100"/>
-                            </IonItem>
+                                {photos.length ? (
+                                    <IonImg src={photos[0].webviewPath} className="h-100 max-width-150 margin-auto"/>
+                                ): (<></>)}
+                                <IonButton onClick={() => takePhoto()} size="large" shape="round" color="tertiary">
+                                    <IonIcon icon={camera}></IonIcon>
+                                </IonButton>
                             <IonItem>
                                 <IonLabel>Nombre</IonLabel>
-                                {/* <IonInput className="pl-5 text-align-end" placeholder="Ingrese el nombre del pictograma" value={pictograma.n} onIonChange={e => setNewName(e.detail.value!)}> */}
+                                <IonInput className="pl-5 text-align-end" placeholder="Ingrese el nombre" value={nombrePictograma}  onIonChange={e => setNombrePictograma(e.detail.value!)}/>
                             </IonItem>
                             <IonItem>
                                 <IonLabel>Etiqueta</IonLabel>
-                                <IonInput></IonInput>
+                                <IonInput className="pl-5 text-align-end" placeholder="Ingrese la etiqueta" value={etiquetaPictograma}  onIonChange={e => setEtiquetaPictograma(e.detail.value!)}/>
                             </IonItem>
                             <IonItem>
                                 <IonLabel>Categoria</IonLabel>
-                                <IonSelect value={categoriaValue} interface="action-sheet" cancelText="Cancelar">
+                                <IonSelect value={categoriaValue} interface="action-sheet" cancelText="Cancelar" placeholder="Seleccione la categoria">
                                         {categoriasPropias?.map((categoria, index) => (
                                             <IonSelectOption key={index} value={categoria.id_categoria}>{categoria.nombre}</IonSelectOption>
                                         ))}
                                     </IonSelect>
                             </IonItem>
                         </IonList>
-                        <IonButton className="formButton mt-5" onClick={handleAddPictogram} expand="block">
-                            Crear pictograma
-                        </IonButton>
-                        <IonButton className="formButton red-buttom mt-5" onClick={handleCancel} expand="block">
-                            Cancelar
-                        </IonButton>
+                        <div>
+                            <IonButton className="formButton mt-5" onClick={handleAddPictogram} expand="block">
+                                Crear pictograma
+                            </IonButton>
+                            <IonButton className="formButton red-buttom mt-5" onClick={handleCancel} expand="block">
+                                Cancelar
+                            </IonButton>
+                        </div>
                     </form>
                     <IonLoading
                         isOpen={loading!}
