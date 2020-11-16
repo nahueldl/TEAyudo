@@ -7,6 +7,9 @@ import { Category } from "../../../types/Categories";
 import { Pictogram } from "../../../types/Pictograms";
 import { usePhotoGallery } from '../../../hooks/usePhotoGallery';
 import { camera } from "ionicons/icons";
+import { getBlobFromURL } from "../../../utils/urlToBlob";
+import { getBase64 } from "../../../utils/encodeImg";
+import PictogramsServices from "../../../services/pictograms.services";
 
 const AddPictogram: React.FC = () => {
     const { authData, setAuthData } = useContext(AuthenticationContext);
@@ -17,7 +20,7 @@ const AddPictogram: React.FC = () => {
     const { photos, takePhoto } = usePhotoGallery();
     const [ nombrePictograma, setNombrePictograma ] = useState<string>();
     const [ etiquetaPictograma, setEtiquetaPictograma ] = useState<string>();
-    const [ categoriaValue ] = useState();
+    const [ categoriaValue ] = useState<number>();
 
     useEffect(() => obtenerCategorias(), []);
 
@@ -35,7 +38,23 @@ const AddPictogram: React.FC = () => {
     }
 
     const handleAddPictogram = () => {
-        
+        var base64;
+        getBlobFromURL(photos[0].webviewPath!).then(data => {
+            getBase64(data).then(encoded => {
+                base64 = encoded;
+                PictogramsServices.loadPictogramToCategory(authData.token!, categoriaValue!, base64, {nombre: nombrePictograma!}, {nombre: etiquetaPictograma!})
+                    .then((res:any) => {
+                        setAuthData({ loading: false, error: false });
+                        goToPictogramsPage();
+                    })
+                    .catch(error => {
+                        setErrorMessage(
+                            "Hubo un inconveniente creando el pictograma, pruebe más tarde."
+                          );
+                          setAuthData({ loading: false, error: true });
+                    })
+            });
+        })
     }
 
     const handleCancel = () => {

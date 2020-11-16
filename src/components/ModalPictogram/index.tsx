@@ -53,11 +53,20 @@ export const ModalPictogram: React.FC<Props> = ({showModal, handleShowModal, pic
     }
 
     const crearNuevoPictogramaYAgregarACategoria = () => {
-        debugger;
         var base64;
         getBlobFromURL(pictogram?.ruta_acceso_local!).then(data => {
             getBase64(data).then(encoded => {
                 base64 = encoded;
+                PictogramsService.loadPictogramToCategory(authData.token!, categoriaValue!, base64, pictogram!.nombres[0], pictogram!.etiquetas[0])
+                    .then((res:any) => {
+                        setAuthData({ loading: false, error: false });
+                    })
+                    .catch(error => {
+                        setErrorMessage(
+                            "Hubo un inconveniente agregando el pictograma a la categoria, pruebe más tarde."
+                          );
+                          setAuthData({ loading: false, error: true });
+                    })
             });
         })
     }
@@ -65,7 +74,6 @@ export const ModalPictogram: React.FC<Props> = ({showModal, handleShowModal, pic
     const personalizarNombrePictograma = () => {
         PictogramsService.editPictogram(authData.token!, pictogram?.id_pictograma!, parseInt(authData.patientId!), undefined, newName, undefined)
             .then((res:any) => {
-                debugger;
                 if(pictogram != undefined)
                     pictogram.nombres[0].nombre = newName;
             })

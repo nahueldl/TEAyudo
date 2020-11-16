@@ -15,14 +15,14 @@ export type Pictogram = {
 };
 
 export type PictogramName = {
-    id_nombre_pictograma: number;
+    id_nombre_pictograma?: number;
     nombre: string;
-    tiene_locucion: boolean;
-    tipo: number;
-    nombre_plural: string;
+    tiene_locucion?: boolean;
+    tipo?: number;
+    nombre_plural?: string;
 }
 
 export type PictogramTag = {
     nombre: string;
-    fecha_hora_alta: string;
+    fecha_hora_alta?: string;
 }
