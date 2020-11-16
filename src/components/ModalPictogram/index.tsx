@@ -8,8 +8,8 @@ import { AuthenticationContext } from '../../context/authentication';
 import { PatientContext } from '../../context/patient';
 import { Category } from '../../types/Categories';
 import { checkmarkCircleOutline } from 'ionicons/icons';
-import { getBase64 } from '../encodeImg/encodeImg';
-import { getBlobFromURL } from '../encodeImg/urlToBlob';
+import { getBase64 } from '../../utils/encodeImg';
+import { getBlobFromURL } from '../../utils/urlToBlob';
 
 export const ModalPictogram: React.FC<Props> = ({showModal, handleShowModal, pictogram}) => {
     const { authData, setAuthData } = useContext(AuthenticationContext);

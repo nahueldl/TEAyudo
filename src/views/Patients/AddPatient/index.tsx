@@ -19,8 +19,8 @@ import "./styles.css";
 import PatientServices from "../../../services/patients.services";
 import Page from "../../../components/Page";
 import { PatientContext } from "../../../context/patient";
-import { getBase64 } from "../../../components/encodeImg/encodeImg";
-import { getBlobFromURL } from "../../../components/encodeImg/urlToBlob";
+import { getBase64 } from "../../../utils/encodeImg";
+import { getBlobFromURL } from "../../../utils/urlToBlob";
 import { refreshOutline } from "ionicons/icons";
 
 const AddPatient: React.FC<InfoPatientProps> = ({ patient }) => {
