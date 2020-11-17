@@ -12,10 +12,12 @@ import React, { useContext, useEffect, useState } from "react";
 import { useCallback } from "react";
 import { AuthenticationContext } from "../../../context/authentication";
 import RolesService from "../../../services/roles.services";
+import { Plugins } from "@capacitor/core";
+const { Storage } = Plugins;
 
 const AddRole: React.FC = () => {
   const { navigate } = useContext(NavContext);
-  const { authData } = useContext(AuthenticationContext);
+  const { authData, setAuthData } = useContext(AuthenticationContext);
   const [roles, setRoles] = useState<any>();
   const [loading, isLoading] = useState<boolean>(true);
   const [error, hasError] = useState<{ status: boolean; msg: string }>({
@@ -49,6 +51,8 @@ const AddRole: React.FC = () => {
     RolesService.assignRol(authData.token, newRol, description)
       .then((res: any) => {
         isLoading(false);
+        setAuthData({role: newRol})
+        Storage.set({key: "role", value:newRol.toString()})
         goToHome();
       })
       .catch((error: any) => {
