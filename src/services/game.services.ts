@@ -8,7 +8,7 @@ class GameServices {
 
   getMove(token: string, patientId: string): Promise<any> {
     const header = `Bearer ${token}`;
-    return this.axios.get(`/api/${patientId}/jugada`, {
+    return this.axios.get(`/api/pacientes/${patientId}/jugada`, {
       headers: {
         Authorization: header,
       },
