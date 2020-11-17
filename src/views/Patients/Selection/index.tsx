@@ -66,8 +66,8 @@ const PatientSelection: React.FC = () => {
               <CardWithImage
                 onClick={handleClick}
                 img={{
-                  src: `https://api.adorable.io/avatars/100/${username}-${patient.nombre}${patient.apellido}`,
-                  alt: `Avatar des ${patient.nombre}`,
+                  src: `${patient.avatar}`,
+                  alt: `Avatar de ${patient.nombre}`,
                 }}
                 title={`${patient.nombre} ${patient.apellido}`}
                 touchable

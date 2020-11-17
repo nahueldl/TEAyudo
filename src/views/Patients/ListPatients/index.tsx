@@ -28,8 +28,8 @@ const ListPatients: React.FC<ListPatientsProps> = (props) => {
           <IonCol key={index} size="4" sizeMd="2">
             <CardWithImage
               img={{
-                src: `https://api.adorable.io/avatars/100/${username}-${patient.nombre}`,
-                alt: `Avatar des ${patient.nombre}`,
+                src: `${patient.avatar}`,
+                alt: `Avatar de ${patient.nombre}`,
               }}
               title={patient.nombre!}
               touchable
