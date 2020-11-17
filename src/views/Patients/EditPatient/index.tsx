@@ -13,12 +13,15 @@ import {
   IonActionSheet,
   IonLoading,
   IonAlert,
+  IonIcon,
 } from "@ionic/react";
 import "./styles.css";
-import { trash, close } from "ionicons/icons";
+import { trash, close, refreshOutline } from "ionicons/icons";
 import PatientServices from "../../../services/patients.services";
 import Page from "../../../components/Page";
 import { PatientContext } from "../../../context/patient";
+import { getBlobFromURL } from "../../../components/encodeImg/urlToBlob";
+import { getBase64 } from "../../../components/encodeImg/encodeImg";
 
 const EditPatient = () => {
   const { token } = useContext(AuthenticationContext).authData;
@@ -42,12 +45,16 @@ const EditPatient = () => {
   const handleEditPatient = () => {
     isLoading(true);
     hasError(false);
+    var blob = getBlobFromURL(auxAvatar);
+    blob.then((blobRes:any) => {
+      var base64 = getBase64(blobRes);
+      base64.then((base64res: any) => {
     PatientServices.putEditPatient(
       token!,
       patientData.patientSelected?.id_paciente,
       auxName!,
       auxLastName!,
-      auxAvatar!
+      base64res!
     )
       .then((res: any) => {
         setPatientData({
@@ -68,6 +75,8 @@ const EditPatient = () => {
         isLoading(false);
         hasError(true); //mostrar mensaje con error
       });
+    });
+  })
   };
 
   const getListPatients = () => {
@@ -133,6 +142,9 @@ const EditPatient = () => {
                 <IonAvatar className="avatars">
                   <img className="height-auto" src={auxAvatar} alt="Avatar" />
                 </IonAvatar>
+                <IonButton color="tertiary" size="small" onClick={() => setAuxAvatar("https://avatars.dicebear.com/api/bottts/"+Math.floor(Math.random() * 200)+".svg")}>
+                  <IonIcon className="pl-5" slot="end" icon={refreshOutline}></IonIcon> Cambiar
+                </IonButton> 
                 <IonItem className="inputMargin">
                   <IonInput
                     name="name"
