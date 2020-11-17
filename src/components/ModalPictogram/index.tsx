@@ -53,7 +53,6 @@ export const ModalPictogram: React.FC<Props> = ({showModal, handleShowModal, pic
     }
 
     const crearNuevoPictogramaYAgregarACategoria = () => {
-        debugger;
         var base64;
         getBlobFromURL(pictogram?.ruta_acceso_local!).then(data => {
             getBase64(data).then(encoded => {
@@ -65,7 +64,6 @@ export const ModalPictogram: React.FC<Props> = ({showModal, handleShowModal, pic
     const personalizarNombrePictograma = () => {
         PictogramsService.editPictogram(authData.token!, pictogram?.id_pictograma!, parseInt(authData.patientId!), undefined, newName, undefined)
             .then((res:any) => {
-                debugger;
                 if(pictogram != undefined)
                     pictogram.nombres[0].nombre = newName;
             })
