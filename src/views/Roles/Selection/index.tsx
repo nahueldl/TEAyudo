@@ -53,7 +53,7 @@ const RoleSelection: React.FC = () => {
 
   const handleRolSelection = (rol: any) => {
     setAuthData({ role: rol.id_rol });
-    Storage.set({ key: "rol", value: rol.id_rol });
+    Storage.set({ key: "role", value: rol.id_rol });
     goToSelectPatient();
   };
 
