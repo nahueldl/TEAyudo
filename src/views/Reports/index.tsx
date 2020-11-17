@@ -11,12 +11,14 @@ import {
   IonItem,
   IonLabel,
   IonDatetime,
+  IonCol,
+  IonGrid,
+  IonRow,
 } from "@ionic/react";
 import ReportsService from "../../services/reports.services";
 import PatientServices from "../../services/patients.services";
 import { PatientContext } from "../../context/patient";
 import { Patient } from "../../components/CardWithImage";
-
 
 const todayDate = new Date();
 const todayDateISOFormat = todayDate.toISOString();
@@ -84,54 +86,74 @@ const ReportsPage: React.FC = () => {
           />
         ) : (
           <>
-            <div style={{ textAlign: "justify", padding: "10px" }}>
-              {/* TODO: texto alternativo en caso de que haya un sólo paciente */}
-              {patients.length > 1 ? "Seleccioná un paciente para poder generar el informe correspondiente" : `Se generará el informe correspondiente a ${patientSelected!.nombre!}`}
-              ; si además querés que se genere a partir de una
-              fecha en particular, por favor seleccionala. De lo contrario, se
-              generará el informe de los pasados 30 días a partir de este
-              momento.
-            </div>
-            {patients.length > 1 ? (
-              <>
-                <IonItem>
-                  <IonLabel>Seleccioná un paciente</IonLabel>
+            <IonGrid>
+              <IonRow>
+                <IonCol>
+                  <div style={{ textAlign: "justify", padding: "10px" }}>
+                    {/* TODO: texto alternativo en caso de que haya un sólo paciente */}
+                    {patients.length > 1
+                      ? "Seleccioná un paciente para poder generar el informe correspondiente"
+                      : `Se generará el informe correspondiente a ${patientSelected!
+                          .nombre!}`}
+                    ; si además querés que se genere a partir de una fecha en
+                    particular, por favor seleccionala. De lo contrario, se
+                    generará el informe de los pasados 30 días a partir de este
+                    momento.
+                  </div>
+                </IonCol>
+              </IonRow>
+              <IonRow>
+                <IonCol>
+                  {patients.length > 1 ? (
+                    <>
+                      <IonItem>
+                        <IonLabel>Seleccioná un paciente</IonLabel>
 
-                  <IonSelect
-                    value={patientSelectedInOption}
-                    defaultChecked
-                    // defaultValue
-                    onIonChange={(e) =>
-                      setPatientSelectedInOption(e.detail.value)
-                    }
-                    placeholder="Seleccione uno"
-                  >
-                    {patients!.map((patient) => (
-                      <IonSelectOption
-                        key={patient.id_paciente}
-                        value={patient}
-                      >
-                        {patient.nombre}
-                      </IonSelectOption>
-                    ))}
-                  </IonSelect>
-                </IonItem>
-              </>
-            ) : null}
+                        <IonSelect
+                          value={patientSelectedInOption}
+                          defaultChecked
+                          // defaultValue
+                          onIonChange={(e) =>
+                            setPatientSelectedInOption(e.detail.value)
+                          }
+                          placeholder="Seleccione uno"
+                        >
+                          {patients!.map((patient) => (
+                            <IonSelectOption
+                              key={patient.id_paciente}
+                              value={patient}
+                            >
+                              {patient.nombre}
+                            </IonSelectOption>
+                          ))}
+                        </IonSelect>
+                      </IonItem>
+                    </>
+                  ) : null}
+                </IonCol>
+              </IonRow>
+              <IonRow>
+                <IonCol>
+                  <IonItem>
+                    <IonLabel>Seleccioná la fecha deseada</IonLabel>
+                    <IonDatetime
+                      displayFormat="DD MM YYYY"
+                      placeholder="Seleccione una fecha"
+                      value={selectedDate}
+                      onIonChange={(e) => setSelectedDate(e.detail.value!)}
+                    ></IonDatetime>
+                  </IonItem>
+                </IonCol>
+              </IonRow>
+              <IonRow>
+                <IonCol style={{ display: "flex", justifyContent: "center" }}>
+                  <IonButton onClick={() => handleGenerate()}>
+                    Generar Informe
+                  </IonButton>
+                </IonCol>
+              </IonRow>
+            </IonGrid>
 
-            <IonItem>
-              <IonLabel>Seleccioná la fecha deseada</IonLabel>
-              <IonDatetime
-                displayFormat="DD MM YYYY"
-                placeholder="Seleccione una fecha"
-                value={selectedDate}
-                onIonChange={(e) => setSelectedDate(e.detail.value!)}
-              ></IonDatetime>
-            </IonItem>
-
-            <IonButton onClick={() => handleGenerate()}>
-              Generar Informe
-            </IonButton>
             {loadingReport ? (
               <IonLoading
                 isOpen={loading!}
