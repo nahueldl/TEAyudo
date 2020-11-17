@@ -17,7 +17,7 @@ class CategoriesService {
     });
   }
 
-  createCategory(token: string, categoryName: string, idRol: string):Promise<any> {
+  createCategory(token: string, categoryName: string, idRol: number):Promise<any> {
     const header = `Bearer ${token}`;
     return this.axios.post(
       "/api/categorias",
