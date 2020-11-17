@@ -1,6 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import Page from "../../components/Page";
-import { IonContent, IonButton, IonHeader, IonPage, IonTitle, IonToolbar, IonListHeader, IonSelect, IonSelectOption, IonCheckbox, IonList, IonItem, IonLabel, IonItemDivider } from '@ionic/react';
+import { AuthenticationContext } from "../../context/authentication";
+import { IonLoading, IonAlert, IonContent, IonButton, IonHeader, IonPage, IonTitle, IonToolbar, IonListHeader, IonSelect, IonSelectOption, IonCheckbox, IonList, IonItem, IonLabel, IonItemDivider } from '@ionic/react';
+import ReportsService from "../../services/reports.services";
+import PatientServices from "../../services/patients.services";
+import { PatientContext } from "../../context/patient";
 
 const checkboxList = [
   { val: 'Pictograma mas usado', isChecked: true },
@@ -9,23 +13,44 @@ const checkboxList = [
   { val: 'Tipos de atributos mas usados en pictogramas', isChecked: false }
 ];
 
-const patients = [
-  {
-    id: 1,
-    name: 'Nano'
-  },
-  {
-    id: 2,
-    name: 'Toto'
-  }
-];
-
-type Patient = typeof patients[number];
-
 const ReportsPage: React.FC = () => {
+  let patientSelected = {};
+  const { authData, setAuthData } = useContext(AuthenticationContext);
+  const [errorMessage, setErrorMessage] = useState<string>();
+  const { error, loading } = authData;
+  const [patients, setPatients] = useState<any[]>([]);
 
-  const [patient, setPatient] = useState<string>();
-  // ver como poner un patient default, el primero
+  const handleGenerate = (e: React.MouseEvent<HTMLIonButtonElement, MouseEvent>) => {
+    setAuthData({ loading: true, error: false });
+    ReportsService.getReport(authData.token!, authData.patientId!
+      // , Date.prototype.toISOString()!
+      )
+      .then((res: any) => {
+        setAuthData({ loading: false, error: false });
+        // agregar logica para ver que hacer con el pdf
+      })
+      .catch((_error: any) => {
+        setErrorMessage(
+          "Hubo un inconveniente obteniendo el informe, pruebe más tarde."
+        );
+        setAuthData({ loading: false, error: true });
+      });
+  };
+
+  useEffect(() => getPatients(), []);
+
+  const getPatients = () => {
+    setAuthData({ loading: true, error: false });
+    PatientServices.getPatientsFromUser(authData.token!)
+      .then((res: any) => {
+        debugger
+        setPatients(res.data)
+        setAuthData({ loading: false });
+      })
+      .catch((_error: any) => {
+        setAuthData({ loading: false, error: true });
+      });
+  };
 
   return (
     <Page pageTitle="Informes" showHomeButton>
@@ -39,12 +64,10 @@ const ReportsPage: React.FC = () => {
 
           <IonItem>
             <IonLabel>Nombre</IonLabel>
-            <IonSelect value={patient} placeholder="Seleccione uno" onIonChange={e => setPatient(e.detail.value)}>
-              {/* <IonSelectOption value="nano">Nano</IonSelectOption>
-              <IonSelectOption value="toto">Toto</IonSelectOption> */}
-              {patients.map(patient => (
-                <IonSelectOption key={patient.id} value={patient}>
-                  {patient.name}
+            <IonSelect value={patients[0]} placeholder="Seleccione uno" >
+              {patients?.map(patient => (
+                <IonSelectOption key={patient.id_paciente} onIonChange={() => handleGenerate(patient)} value={patient}>
+                  {patient.nombre}
                 </IonSelectOption>
               ))}
             </IonSelect>
@@ -59,7 +82,20 @@ const ReportsPage: React.FC = () => {
             </IonItem>
           ))}
         </IonList>
-        <IonButton expand="block">Generar Informe</IonButton>
+        <IonButton expand="block" onClick={(e) => handleGenerate(e)}>Generar Informe</IonButton>
+        {/* <IonLoading
+          isOpen={loading!}
+          message={"Trabajando..."}
+          spinner="crescent"
+        />
+        <IonAlert
+          isOpen={error!}
+          animated
+          backdropDismiss
+          keyboardClose
+          message={errorMessage}
+          onDidDismiss={() => setAuthData({ error: false })}
+        /> */}
       </IonContent>
     </Page>
   );
