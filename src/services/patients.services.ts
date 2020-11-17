@@ -28,7 +28,7 @@ class PatientServices {
         apellido: lastName,
         fase: 1,
         // fechaNac: birthday,
-        // base64img: avatar,
+        base64img: avatar,
       },
       {
         headers: {
