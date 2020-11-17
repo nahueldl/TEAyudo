@@ -49,13 +49,13 @@ const AddPatient: React.FC<InfoPatientProps> = ({ patient }) => {
 
   const handleAddPatient = (e:any) => {
     e.preventDefault();
-    isLoading(false);
+    isLoading(true);
     hasError(false);
     var blob = getBlobFromURL(avatar);
     blob.then((blobRes:any) => {
       var base64 = getBase64(blobRes);
       base64.then((base64res: any) => {
-        PatientServices.postNewPatient(authData.token!, name, lastName, base64res)
+        PatientServices.postNewPatient(token!, name, lastName, base64res)
           .then((res: any) => {
             patientData.patientsList?.push(res.data);
             setPatientData({patientsList: patientData.patientsList});
@@ -69,6 +69,8 @@ const AddPatient: React.FC<InfoPatientProps> = ({ patient }) => {
         isLoading(false);
         hasError(true);
       });
+    });
+  })
   };
 
   const handleCancel = () => {

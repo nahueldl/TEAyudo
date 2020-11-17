@@ -48,7 +48,7 @@ class PictogramsServices {
       },
       params: {
         nombre: name,
-        paciente: idPaciente,
+        paciente: patientId,
       },
     });
   }

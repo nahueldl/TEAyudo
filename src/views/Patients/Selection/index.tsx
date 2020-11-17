@@ -69,7 +69,7 @@ const PatientSelection: React.FC = () => {
           </IonCol>
         </IonRow>
         <IonRow>
-          {patientData.patientsList?.map((patient: any, index: number) => (
+          {patients?.map((patient: any, index: number) => (
             <IonCol key={index} size="12" sizeMd="6">
               <CardWithImage
                 onClick={handleClick}
