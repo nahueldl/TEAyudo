@@ -1,8 +1,9 @@
 import React, { useState, useContext, useEffect, useCallback } from "react";
 import Page from "../../components/Page";
-import { NavContext, IonLoading, IonGrid, IonRow, IonCol, IonLabel, IonSearchbar, IonButton, IonIcon } from "@ionic/react";
+import { NavContext, IonLoading, IonGrid, IonRow, IonCol, IonLabel, IonSearchbar, IonButton, IonIcon, IonAlert } from "@ionic/react";
 import { AuthenticationContext } from "../../context/authentication";
 import PictogramServices from "../../services/pictograms.services";
+import CategoriesService from "../../services/categories.services";
 import { Pictogram } from "../../types/Pictograms";
 import { PatientContext } from "../../context/patient";
 import ListPictograms from "./ListPictograms";
@@ -10,6 +11,8 @@ import { addOutline } from "ionicons/icons";
 
 const PictogramsPage: React.FC = () => {
   const { authData, setAuthData } = useContext(AuthenticationContext);
+  const [errorMessage, setErrorMessage] = useState<string>();
+  const { error, loading } = authData;
   const { patientData, setPatientData } = useContext(PatientContext);
   const [pictograms, setPictograms] = useState<[Pictogram]>();
   const { navigate } = useContext(NavContext);
@@ -36,6 +39,29 @@ const PictogramsPage: React.FC = () => {
     } 
   };
 
+  const handleClickAddPictogarm = () => {
+    setAuthData({ loading: true, error: false });
+    CategoriesService.getCategories(authData.token!)
+        .then((res: any) => {
+          if(res.data.length) {
+            setAuthData({ loading: false, error: false });
+            goToAddPictogram();
+          } else {
+            setErrorMessage(
+              "Debe crear una categoria antes de crear un pictograma."
+            );
+            setAuthData({ loading: false, error: true });
+          }
+            
+        })
+        .catch((error: any) => {
+            setErrorMessage(
+              "Hubo un inconveniente, por favor intente mas tarde."
+            );
+            setAuthData({ loading: false, error: true });
+        });
+  }
+
   const goToAddPictogram = useCallback(
     () => navigate("/pictograma/alta", "forward"),
     [navigate]
@@ -54,7 +80,7 @@ const PictogramsPage: React.FC = () => {
             </IonCol>
             <IonCol size="12">
               <IonLabel>Crear un nuevo pictograma</IonLabel>
-              <IonButton color="tertiary" onClick={goToAddPictogram}>Crear pictograma <IonIcon  className="pl-5" slot="end" icon={addOutline}></IonIcon></IonButton>
+              <IonButton color="tertiary" onClick={handleClickAddPictogarm}>Crear pictograma <IonIcon  className="pl-5" slot="end" icon={addOutline}></IonIcon></IonButton>
             </IonCol>
           </IonCol>
           <IonCol size="8">
@@ -72,6 +98,14 @@ const PictogramsPage: React.FC = () => {
           </IonCol>
         </IonRow>
       </IonGrid>
+      <IonAlert
+          isOpen={error!}
+          animated
+          backdropDismiss
+          keyboardClose
+          message={errorMessage}
+          onDidDismiss={() => setAuthData({ error: false })}
+      />
     </Page>
   );
 };

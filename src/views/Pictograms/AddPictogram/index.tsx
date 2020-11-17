@@ -25,7 +25,7 @@ const AddPictogram: React.FC = () => {
     useEffect(() => obtenerCategorias(), []);
 
     const obtenerCategorias = () => {
-        CategoriesService.getCategories(authData.token!, authData.patientId!)
+        CategoriesService.getCategories(authData.token!)
         .then((res: any) => {
             setCategoriasPropias(res.data);
             setAuthData({ loading: false, error: false });
