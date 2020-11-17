@@ -21,7 +21,7 @@ import Page from "../../../components/Page";
 import { PatientContext } from "../../../context/patient";
 
 const EditPatient = () => {
-  const { authData, setAuthData } = useContext(AuthenticationContext);
+  const { token } = useContext(AuthenticationContext).authData;
   const { patientData, setPatientData } = useContext(PatientContext);
   const { navigate } = useContext(NavContext);
   const [auxName, setAuxName] = useState<string>(
@@ -34,13 +34,16 @@ const EditPatient = () => {
     patientData.patientSelected?.avatar!
   );
   const [errorMessage, setErrorMessage] = useState<string>();
-  const { error, loading } = authData;
+
   const [showActionDeletePatient, setShowActionDeletePatient] = useState(false);
+  const [loading, isLoading] = useState<boolean>(true);
+  const [error, hasError] = useState<boolean>(false);
 
   const handleEditPatient = () => {
-    setAuthData({ loading: true, error: false });
+    isLoading(false);
+    hasError(false);
     PatientServices.putEditPatient(
-      authData.token!,
+      token!,
       patientData.patientSelected?.id_paciente,
       auxName!,
       auxLastName!,
@@ -55,45 +58,50 @@ const EditPatient = () => {
           },
         });
         getListPatients();
-        setAuthData({ loading: false, error: false });
+        isLoading(false);
         goToViewPatient();
       })
       .catch((error: any) => {
         setErrorMessage(
           "Hubo un inconveniente editando al paciente, pruebe más tarde."
         );
-        setAuthData({ loading: false, error: true });
-        //mostrar mensaje con error
+        isLoading(false);
+        hasError(true); //mostrar mensaje con error
       });
   };
 
   const getListPatients = () => {
-    PatientServices.getPatientsFromUser(authData.token!)
+    isLoading(true);
+    hasError(false);
+    PatientServices.getPatientsFromUser(token!)
       .then((res: any) => {
+        isLoading(false);
         setPatientData({ patientsList: res.data });
       })
       .catch((_error: any) => {
-        setAuthData({ loading: false, error: true });
+        isLoading(false);
+        hasError(true);
       });
   };
 
   const handleDeletePatient = () => {
-    setAuthData({ loading: true, error: false });
+    isLoading(true);
+    hasError(false);
     PatientServices.deletePatient(
-      authData.token!,
+      token!,
       patientData.patientSelected?.id_paciente!
     )
       .then((res: any) => {
         getListPatients();
-        setAuthData({ loading: false, error: false });
+        isLoading(false);
         goToListPatients();
       })
       .catch((error: any) => {
         setErrorMessage(
           "Hubo un inconveniente eliminando al paciente, pruebe más tarde."
         );
-        setAuthData({ loading: false, error: true });
-        //mostrar mensaje con error
+        isLoading(false);
+        hasError(true); //mostrar mensaje con error
       });
   };
 
@@ -207,7 +215,6 @@ const EditPatient = () => {
               backdropDismiss
               keyboardClose
               message={errorMessage}
-              onDidDismiss={() => setAuthData({ error: false })}
             />
           </IonRow>
         </IonGrid>

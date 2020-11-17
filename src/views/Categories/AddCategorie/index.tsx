@@ -19,29 +19,32 @@ import CategoriesService from "../../../services/categories.services";
 import "../styles.css";
 
 const AddCategory: React.FC<InfoCategoryProps> = ({ categoria }) => {
-  const { authData, setAuthData } = useContext(AuthenticationContext);
+  const { token, role } = useContext(AuthenticationContext).authData;
   const { categoriaData, setCategoriaData } = useContext(CategoryContext);
   const { navigate } = useContext(NavContext);
   const [errorMessage, setErrorMessage] = useState<string>();
-  const { error, loading } = authData;
+  const [loading, isLoading] = useState<boolean>(true);
+  const [error, hasError] = useState<boolean>(false);
   const [name, setName] = useState<string>(
     categoria !== undefined ? categoria.nombre! : ""
   );
 
   const handleAdd = (e: React.MouseEvent<HTMLIonButtonElement, MouseEvent>) => {
-    setAuthData({ loading: true, error: false });
-    CategoriesService.createCategory(authData.token!, name, authData.role!)
+    isLoading(true);
+    hasError(false);
+    CategoriesService.createCategory(token!, name, role!)
       .then((res: any) => {
         categoriaData.categoriasList?.push(res.data);
-        setCategoriaData({categoriasList:categoriaData.categoriasList});
-        setAuthData({ loading: false, error: false });
+        setCategoriaData({ categoriasList: categoriaData.categoriasList });
+        isLoading(false);
         goToListCategories();
       })
       .catch((_error: any) => {
         setErrorMessage(
           "Hubo un inconveniente creando la categoría, pruebe más tarde."
         );
-        setAuthData({ loading: false, error: true });
+        isLoading(false);
+        hasError(true);
       });
   };
 
@@ -108,9 +111,7 @@ const AddCategory: React.FC<InfoCategoryProps> = ({ categoria }) => {
               backdropDismiss
               keyboardClose
               message={errorMessage}
-              onDidDismiss={() => setAuthData({ error: false })}
             />
-            {/* </IonCol> */}
           </IonRow>
         </IonGrid>
       </IonContent>

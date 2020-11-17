@@ -20,11 +20,12 @@ import Page from "../../../components/Page";
 import { PatientContext } from "../../../context/patient";
 
 const AddPatient: React.FC<InfoPatientProps> = ({ patient }) => {
-  const { authData, setAuthData } = useContext(AuthenticationContext);
+  const { token } = useContext(AuthenticationContext).authData;
   const { patientData, setPatientData } = useContext(PatientContext);
   const { navigate } = useContext(NavContext);
   const [errorMessage, setErrorMessage] = useState<string>();
-  const { error, loading } = authData;
+  const [loading, isLoading] = useState<boolean>(true);
+  const [error, hasError] = useState<boolean>(false);
   const [name, setName] = useState<string>(
     patient !== undefined ? patient.name : ""
   );
@@ -55,19 +56,21 @@ const AddPatient: React.FC<InfoPatientProps> = ({ patient }) => {
   };
 
   const handleAddPatient = () => {
-    setAuthData({ loading: true, error: false });
-    PatientServices.postNewPatient(authData.token!, name, lastName, avatar)
+    isLoading(false);
+    hasError(false);
+    PatientServices.postNewPatient(token!, name, lastName, avatar)
       .then((res: any) => {
         patientData.patientsList?.push(res.data);
-        setPatientData({patientsList: patientData.patientsList});
-        setAuthData({ loading: false, error: false });
+        setPatientData({ patientsList: patientData.patientsList });
+        isLoading(false);
         goToListPatients();
       })
       .catch((_error: any) => {
         setErrorMessage(
           "Hubo un inconveniente creando al paciente, pruebe más tarde."
         );
-        setAuthData({ loading: false, error: true });
+        isLoading(false);
+        hasError(true);
       });
   };
 
@@ -153,7 +156,6 @@ const AddPatient: React.FC<InfoPatientProps> = ({ patient }) => {
               backdropDismiss
               keyboardClose
               message={errorMessage}
-              onDidDismiss={() => setAuthData({ error: false })}
             />
           </IonRow>
         </IonGrid>
