@@ -1,4 +1,3 @@
-import { Category } from "../types/Categories";
 import AxiosWrapper from "../utils/axios";
 
 class CategoriesService {

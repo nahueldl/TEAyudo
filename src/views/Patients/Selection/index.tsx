@@ -17,13 +17,14 @@ const PatientSelection: React.FC = () => {
   const [patients, setPatients] = useState<Patient[]>([]);
   const [loading, isLoading] = useState<boolean>(true);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     let unmounted = false;
     getPatients();
     return () => {
       unmounted = true;
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getPatients = () => {

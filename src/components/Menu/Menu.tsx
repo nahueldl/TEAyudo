@@ -51,9 +51,6 @@ const appPages: AppPage[] = [
 
 const Menu: React.FC<Props> = ({ patientName }) => {
   const location = useLocation();
-  const buildUrl =(pageUrl: string) =>{
-    return `/${patientName}${pageUrl}`;
-  }
   return (
     <IonMenu contentId="main" type="overlay" swipeGesture>
       <IonContent>

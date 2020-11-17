@@ -1,7 +1,6 @@
 import React from "react";
 import {
   IonCol,
-  IonContent,
   IonGrid,
   IonIcon,
   IonModal,
@@ -35,7 +34,7 @@ const TranslationModal: React.FC<Props> = ({
         </IonRow>
         <IonRow>
           <IonCol className="translation-container">
-         <p className="translation">{translation}</p>
+            <p className="translation">{translation}</p>
           </IonCol>
         </IonRow>
       </IonGrid>

@@ -54,7 +54,7 @@ const SignUpForm: React.FC<Props> = ({ signUp }) => {
             <IonIcon className="icon" icon={logoFacebook} size="large" />
           </a>
         </div> */}
-        <span>O utiliza tu email</span>
+        {/* <span>O utiliza tu email</span> */}
         <IonList>
           <IonItem className="inputMargin">
             <Controller

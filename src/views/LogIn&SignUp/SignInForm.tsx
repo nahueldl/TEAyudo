@@ -52,7 +52,7 @@ const SignInForm: React.FC<Props> = ({ signIn }) => {
             <IonIcon className="icon" icon={logoFacebook} size="large" />
           </a>
         </div> */}
-        <span>O utiliza tu cuenta</span>
+        {/* <span>O utiliza tu cuenta</span> */}
         <IonList>
           <IonItem className="inputMargin">
             <Controller
