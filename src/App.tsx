@@ -31,16 +31,16 @@ import AddRole from "./views/Roles/Add";
 import AddPatientPage from "./views/Patients/AddPatient";
 
 const App: React.FC = () => {
-  const { authData } = useContext(AuthenticationContext);
+  const { token, role, patientId } = useContext(AuthenticationContext).authData
 
   return (
     <IonApp>
       <IonReactRouter>
-        {authData.token ? (
+        {token ? (
           //El token es válido
-          authData.role ? (
+          role ? (
             //Eligió un rol
-            authData.patientId ? (
+            patientId ? (
               //Tiene un paciente elegido
               <AppPostLogin />
             ) : (
@@ -62,7 +62,6 @@ const App: React.FC = () => {
 
         <Route path="/roles/seleccion" component={RoleSelection} exact />
         <Route path="/roles/alta" component={AddRole} exact />
-        {/* <AppPostLogin /> */}
       </IonReactRouter>
     </IonApp>
   );
