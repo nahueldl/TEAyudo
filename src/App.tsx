@@ -30,38 +30,26 @@ import RoleSelection from "./views/Roles/Selection";
 import AddRole from "./views/Roles/Add";
 import AddPatientPage from "./views/Patients/AddPatient";
 
-
 const App: React.FC = () => {
   const { authData } = useContext(AuthenticationContext);
-
-  const isTheTokenValid = () => {
-    // TODO: revertir el token a date, y rechequearlo en primera instancia,
-    // para sumarlo al interceptor del 401
-  }
 
   return (
     <IonApp>
       <IonReactRouter>
         {authData.token ? (
-          //Existe el token
-          authData.tokenExpirationDate ? (
-            //El token es válido
-            authData.role ? (
-              //Eligió un rol
-              authData.patientId ? (
-                //Tiene un paciente elegido
-                <AppPostLogin />
-              ) : (
-                //No tiene un paciente elegido
-                <Redirect from="*" to="/pacientes/seleccion" />
-              )
+          //El token es válido
+          authData.role ? (
+            //Eligió un rol
+            authData.patientId ? (
+              //Tiene un paciente elegido
+              <AppPostLogin />
             ) : (
-              //No tiene un rol elegido
-              <Redirect from="*" to="/roles/seleccion" />
+              //No tiene un paciente elegido
+              <Redirect from="*" to="/pacientes/seleccion" />
             )
           ) : (
-            //El token es inválido
-            <Redirect from="*" to="/login" />
+            //No tiene un rol elegido
+            <Redirect from="*" to="/roles/seleccion" />
           )
         ) : (
           //No hay un token
