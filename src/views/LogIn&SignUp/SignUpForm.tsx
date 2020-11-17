@@ -44,15 +44,16 @@ const SignUpForm: React.FC<Props> = ({ signUp }) => {
           <img src="assets/icon/icon.png" alt="TEAyudo logo" />
         ) : null}
         <h1>Registrarse</h1>
-        <div className="iconsContainer">
+        {/* TODO inicio de sesión con redes sociales */}
+        {/* <div className="iconsContainer">
           <a href="#">
-            {/* TODO inicio de sesión con redes sociales */}
+        
             <IonIcon className="icon" icon={logoGoogle} size="large" />
           </a>
           <a href="#">
             <IonIcon className="icon" icon={logoFacebook} size="large" />
           </a>
-        </div>
+        </div> */}
         <span>O utiliza tu email</span>
         <IonList>
           <IonItem className="inputMargin">

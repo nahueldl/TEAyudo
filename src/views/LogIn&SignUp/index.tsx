@@ -2,7 +2,6 @@ import React, { useContext, useState, useCallback } from "react";
 import { IonContent, NavContext, IonSlides, IonSlide } from "@ionic/react";
 import { AuthenticationContext } from "../../context/authentication";
 import AuthenticationService from "../../services/authentication.services";
-import RolesService from "../../services/roles.services";
 import OverlayLeft from "./OverlayLeft";
 import OverlayRight from "./OverlayRight";
 import SignInForm from "./SignInForm";
@@ -19,7 +18,7 @@ const LogInSignUpPage: React.FC = () => {
   const { registrationData, setRegistrationData } = useContext(
     RegistrationContext
   );
-  const { authData, setAuthData } = useContext(AuthenticationContext);
+  const { setAuthData } = useContext(AuthenticationContext);
   const { platformData } = useContext(PlatformContext);
   const { isMobile } = platformData;
 
