@@ -39,7 +39,6 @@ const PatientSelection: React.FC = () => {
         }
       })
       .catch((_error: any) => {
-        console.log(_error);
         isLoading(false);
       });
   };

@@ -45,7 +45,6 @@ const RoleSelection: React.FC = () => {
         }
       })
       .catch((error: any) => {
-        console.log(error);
         setLoading(false);
         goToAddRole();
       });

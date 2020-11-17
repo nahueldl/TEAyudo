@@ -72,13 +72,11 @@ const ComunicationPage: React.FC = () => {
     PictogramsServices.getPictogramsByCategory(token!, categoryId, patientId!)
       .then((res: any) => {
         const transformedResponse = addIdForSortable(res.data);
-        console.log(transformedResponse);
 
         setAvailableItems(transformedResponse);
         setIsLoadingPictograms(false);
       })
       .catch((error: any) => {
-        console.log(error);
         setError(error.msg);
         setIsLoadingPictograms(false);
       });

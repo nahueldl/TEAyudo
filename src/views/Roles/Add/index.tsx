@@ -56,7 +56,6 @@ const AddRole: React.FC = () => {
         goToHome();
       })
       .catch((error: any) => {
-        console.log(error);
         isLoading(false);
         hasError({ status: true, msg: error });
       });

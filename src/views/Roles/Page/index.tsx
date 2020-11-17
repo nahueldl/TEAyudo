@@ -40,7 +40,6 @@ const RolesPage: React.FC = () => {
         isLoading(false);
       })
       .catch((error: any) => {
-        console.log(error);
         hasError(true);
         isLoading(true);
       });

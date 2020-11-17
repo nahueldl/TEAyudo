@@ -41,7 +41,6 @@ const GamesPage: React.FC = () => {
       })
       .catch((error) => {
         setLoadingMove(false);
-        console.log(error);
         setErrorMsg(
           "Hubo un error inesperado; por favor intente nuevamente más tarde."
         );
