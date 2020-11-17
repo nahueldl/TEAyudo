@@ -6,18 +6,14 @@ class ReportServices {
     this.axios = new AxiosWrapper({ useErrorInterceptor: true });
   }
 
-  getReport(
-    token: string,
-    patientId?: string,
-    // date?: string,
-  ): Promise<any> {
-    return this.axios.get(`/api/informe`, {
+  getReport(token: string, patientId: string, date?: any): Promise<any> {
+    return this.axios.get("/api/informe", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
       params: {
-        ...(patientId ? { paciente: patientId } : {}),
-        // ...(date ? { date: date } : {})
+        paciente: patientId,
+        ...(date ? { fecha: date } : {}),
       },
     });
   }

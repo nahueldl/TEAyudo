@@ -1,101 +1,155 @@
 import React, { useContext, useState, useEffect } from "react";
 import Page from "../../components/Page";
 import { AuthenticationContext } from "../../context/authentication";
-import { IonLoading, IonAlert, IonContent, IonButton, IonHeader, IonPage, IonTitle, IonToolbar, IonListHeader, IonSelect, IonSelectOption, IonCheckbox, IonList, IonItem, IonLabel, IonItemDivider } from '@ionic/react';
+import {
+  IonLoading,
+  IonAlert,
+  IonContent,
+  IonButton,
+  IonSelect,
+  IonSelectOption,
+  IonItem,
+  IonLabel,
+  IonDatetime,
+} from "@ionic/react";
 import ReportsService from "../../services/reports.services";
 import PatientServices from "../../services/patients.services";
 import { PatientContext } from "../../context/patient";
+import { Patient } from "../../components/CardWithImage";
 
-const checkboxList = [
-  { val: 'Pictograma mas usado', isChecked: true },
-  { val: 'Porcentaje de respuestas correctas en Juegos', isChecked: false },
-  { val: 'Cantidad de pictogramas que usa para armar una frase', isChecked: false },
-  { val: 'Tipos de atributos mas usados en pictogramas', isChecked: false }
-];
+
+const todayDate = new Date();
+const todayDateISOFormat = todayDate.toISOString();
 
 const ReportsPage: React.FC = () => {
-  let patientSelected = {};
-  const { authData, setAuthData } = useContext(AuthenticationContext);
+  const { authData } = useContext(AuthenticationContext);
+  const { patientData } = useContext(PatientContext);
+  const { patientSelected } = patientData;
+  const [loading, isLoading] = useState<boolean>(false);
+  const [loadingReport, isLoadingReport] = useState<boolean>(false);
+  const [error, hasError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>();
-  const { error, loading } = authData;
-  const [patients, setPatients] = useState<any[]>([]);
+  const [patients, setPatients] = useState<Patient[]>([]);
+  const [patientSelectedInOption, setPatientSelectedInOption] = useState<
+    Patient
+  >(patientSelected!);
+  const [selectedDate, setSelectedDate] = useState<any>(todayDateISOFormat);
 
-  const handleGenerate = (e: React.MouseEvent<HTMLIonButtonElement, MouseEvent>) => {
-    setAuthData({ loading: true, error: false });
-    ReportsService.getReport(authData.token!, authData.patientId!
-      // , Date.prototype.toISOString()!
-      )
-      .then((res: any) => {
-        setAuthData({ loading: false, error: false });
-        // agregar logica para ver que hacer con el pdf
-      })
-      .catch((_error: any) => {
-        setErrorMessage(
-          "Hubo un inconveniente obteniendo el informe, pruebe más tarde."
-        );
-        setAuthData({ loading: false, error: true });
-      });
-  };
-
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => getPatients(), []);
 
   const getPatients = () => {
-    setAuthData({ loading: true, error: false });
+    isLoading(true);
+    hasError(false);
     PatientServices.getPatientsFromUser(authData.token!)
       .then((res: any) => {
-        debugger
-        setPatients(res.data)
-        setAuthData({ loading: false });
+        setPatients(res.data);
+        isLoading(false);
+      })
+      .catch(() => {
+        isLoading(false);
+        hasError(true);
+      });
+  };
+
+  const handleGenerate = () => {
+    isLoadingReport(true);
+    hasError(false);
+    ReportsService.getReport(
+      authData.token!,
+      patientSelectedInOption!.id_paciente,
+      selectedDate
+    )
+      .then((res: any) => {
+        isLoadingReport(false);
+        console.log(res);
       })
       .catch((_error: any) => {
-        setAuthData({ loading: false, error: true });
+        setErrorMessage(
+          "Hubo un inconveniente obteniendo el informe, intente nuevamente más tarde."
+        );
+        isLoadingReport(false);
+        hasError(true);
       });
   };
 
   return (
     <Page pageTitle="Informes" showHomeButton>
       <IonContent>
-        <IonList>
-        <IonListHeader>
-            <IonLabel>
-              Seleccione un Paciente
-            </IonLabel>
-          </IonListHeader>
+        {loading ? (
+          <IonLoading
+            isOpen={loading!}
+            message={"Trabajando..."}
+            spinner="crescent"
+          />
+        ) : (
+          <>
+            <div style={{ textAlign: "justify", padding: "10px" }}>
+              {/* TODO: texto alternativo en caso de que haya un sólo paciente */}
+              {patients.length > 1 ? "Seleccioná un paciente para poder generar el informe correspondiente" : `Se generará el informe correspondiente a ${patientSelected!.nombre!}`}
+              ; si además querés que se genere a partir de una
+              fecha en particular, por favor seleccionala. De lo contrario, se
+              generará el informe de los pasados 30 días a partir de este
+              momento.
+            </div>
+            {patients.length > 1 ? (
+              <>
+                <IonItem>
+                  <IonLabel>Seleccioná un paciente</IonLabel>
 
-          <IonItem>
-            <IonLabel>Nombre</IonLabel>
-            <IonSelect value={patients[0]} placeholder="Seleccione uno" >
-              {patients?.map(patient => (
-                <IonSelectOption key={patient.id_paciente} onIonChange={() => handleGenerate(patient)} value={patient}>
-                  {patient.nombre}
-                </IonSelectOption>
-              ))}
-            </IonSelect>
-          </IonItem>
+                  <IonSelect
+                    value={patientSelectedInOption}
+                    defaultChecked
+                    // defaultValue
+                    onIonChange={(e) =>
+                      setPatientSelectedInOption(e.detail.value)
+                    }
+                    placeholder="Seleccione uno"
+                  >
+                    {patients!.map((patient) => (
+                      <IonSelectOption
+                        key={patient.id_paciente}
+                        value={patient}
+                      >
+                        {patient.nombre}
+                      </IonSelectOption>
+                    ))}
+                  </IonSelect>
+                </IonItem>
+              </>
+            ) : null}
 
-          <IonItemDivider>Estadísticas a generar</IonItemDivider>
-
-          {checkboxList.map(({ val, isChecked }, i) => (
-            <IonItem key={i}>
-              <IonLabel>{val}</IonLabel>
-              <IonCheckbox slot="end" value={val} checked={isChecked} />
+            <IonItem>
+              <IonLabel>Seleccioná la fecha deseada</IonLabel>
+              <IonDatetime
+                displayFormat="DD MM YYYY"
+                placeholder="Seleccione una fecha"
+                value={selectedDate}
+                onIonChange={(e) => setSelectedDate(e.detail.value!)}
+              ></IonDatetime>
             </IonItem>
-          ))}
-        </IonList>
-        <IonButton expand="block" onClick={(e) => handleGenerate(e)}>Generar Informe</IonButton>
-        {/* <IonLoading
-          isOpen={loading!}
-          message={"Trabajando..."}
-          spinner="crescent"
-        />
-        <IonAlert
-          isOpen={error!}
-          animated
-          backdropDismiss
-          keyboardClose
-          message={errorMessage}
-          onDidDismiss={() => setAuthData({ error: false })}
-        /> */}
+
+            <IonButton onClick={() => handleGenerate()}>
+              Generar Informe
+            </IonButton>
+            {loadingReport ? (
+              <IonLoading
+                isOpen={loading!}
+                message={"Generando reporte..."}
+                spinner="crescent"
+              />
+            ) : null}
+            {error ? (
+              <IonAlert
+                isOpen={error!}
+                animated
+                backdropDismiss
+                keyboardClose
+                message={errorMessage}
+              />
+            ) : null}
+          </>
+        )}
       </IonContent>
     </Page>
   );
