@@ -4,7 +4,6 @@ import { IonGrid, IonRow, IonCol, IonContent, NavContext } from "@ionic/react";
 import { AuthenticationContext } from "../../../context/authentication";
 import PatientServices from "../../../services/patients.services";
 import CardWithImage from "../../../components/CardWithImage";
-
 import { Plugins } from "@capacitor/core";
 import { PatientContext } from "../../../context/patient";
 const { Storage } = Plugins;
@@ -70,13 +69,13 @@ const PatientSelection: React.FC = () => {
           </IonCol>
         </IonRow>
         <IonRow>
-          {patients!.map((patient: any, index: number) => (
+          {patients?.map((patient: any, index: number) => (
             <IonCol key={index} size="12" sizeMd="6">
               <CardWithImage
                 onClick={handleClick}
                 img={{
-                  src: `https://api.adorable.io/avatars/100/${username}-${patient.nombre}${patient.apellido}`,
-                  alt: `Avatar des ${patient.nombre}`,
+                  src: `${patient.avatar}`,
+                  alt: `Avatar de ${patient.nombre}`,
                 }}
                 title={`${patient.nombre} ${patient.apellido}`}
                 touchable

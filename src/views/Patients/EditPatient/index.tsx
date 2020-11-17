@@ -40,7 +40,7 @@ const EditPatient = () => {
   const [error, hasError] = useState<boolean>(false);
 
   const handleEditPatient = () => {
-    isLoading(false);
+    isLoading(true);
     hasError(false);
     PatientServices.putEditPatient(
       token!,

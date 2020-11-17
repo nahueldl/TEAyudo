@@ -22,7 +22,15 @@ class PatientServices {
     avatar?: string
   ) {
     return this.axios.post(
-      "/api/pacientes",{
+      "/api/pacientes",
+      {
+        nombre: name,
+        apellido: lastName,
+        fase: 1,
+        // fechaNac: birthday,
+        base64img: avatar,
+      },
+      {
         headers: {
           Authorization: `Bearer ${token}`,
         },

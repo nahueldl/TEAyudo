@@ -10,7 +10,7 @@ class PictogramsServices {
   getPictogramsByCategory(
     token: string,
     categoryId: number,
-    patientId?: string,
+    pictogramId?: string,
     offset?: number,
     limit?: number
   ): Promise<any> {
@@ -19,7 +19,7 @@ class PictogramsServices {
         Authorization: `Bearer ${token}`,
       },
       params: {
-        ...(patientId ? { paciente: patientId } : {}),
+        ...(pictogramId ? { paciente: pictogramId } : {}),
         ...(offset ? { offset: offset } : {}),
         ...(limit ? { limit: limit } : {}),
       },
@@ -48,7 +48,7 @@ class PictogramsServices {
       },
       params: {
         nombre: name,
-        idPaciente: patientId,
+        paciente: patientId,
       },
     });
   }
