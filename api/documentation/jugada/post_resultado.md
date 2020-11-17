@@ -4,7 +4,7 @@
 
 * **URL**
 
-  /api/:idPaciente/jugada/:idJugada/resultado
+  /api/pacientes/:idPaciente/jugada/:idJugada/resultado
 
 * **Method:**
 
