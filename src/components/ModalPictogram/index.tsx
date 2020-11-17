@@ -24,7 +24,7 @@ export const ModalPictogram: React.FC<Props> = ({showModal, handleShowModal, pic
 
     const obtenerCategorias = () => {
         setFavorito(pictogram?.favorito!);
-        CategoriesService.getCategories(authData.token!, authData.patientId!)
+        CategoriesService.getCategories(authData.token!)
         .then((res: any) => {
             setCategoriasPropias(res.data);
             setAuthData({ loading: false, error: false });
