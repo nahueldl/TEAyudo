@@ -55,21 +55,19 @@ const AddPatient: React.FC<InfoPatientProps> = ({ patient }) => {
     // );
   };
 
-  const handleAddPatient = (e:any) => {
+  const handleAddPatient = (e: any) => {
     e.preventDefault();
     isLoading(false);
     hasError(false);
-    debugger;
     PatientServices.postNewPatient(token!, name, lastName)
       .then((res: any) => {
-        debugger;
-        patientData.patientsList?.push(res.data);
-        setPatientData({ patientsList: patientData.patientsList });
+        // patientData.patientsList?.push(res.data);
+        // setPatientData({ patientsList: patientData.patientsList });
         isLoading(false);
-        goToListPatients();
+        console.log(res.data);
+        // goToListPatients();
       })
       .catch((_error: any) => {
-        debugger;
         setErrorMessage(
           "Hubo un inconveniente creando al paciente, pruebe más tarde."
         );
@@ -135,7 +133,7 @@ const AddPatient: React.FC<InfoPatientProps> = ({ patient }) => {
                 <IonButton
                   type="button"
                   className="formButton mt-5"
-                  onClick={e => handleAddPatient(e)}
+                  onClick={(e) => handleAddPatient(e)}
                   expand="block"
                 >
                   Agregar paciente

@@ -32,7 +32,7 @@ const ViewEditDeleteCategory = () => {
   const [nombreCategoriaAux, setNombreCategoriaAux] = useState<string>(
     categoriaData.categoriaSelected?.nombre!
   );
-  const [loading, isLoading] = useState<boolean>(true);
+  const [loading, isLoading] = useState<boolean>(false);
   const [error, hasError] = useState<boolean>(false);
 
   const handleEditCategoria = () => {

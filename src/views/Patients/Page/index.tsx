@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useCallback } from "react";
 import Page from "../../../components/Page";
-import { NavContext, IonLoading, IonRow } from "@ionic/react";
+import { NavContext, IonLoading, IonRow, IonAlert } from "@ionic/react";
 import ListPatients from "../ListPatients";
 import { AuthenticationContext } from "../../../context/authentication";
 import PatientServices from "../../../services/patients.services";
@@ -67,6 +67,17 @@ const PatientsPage: React.FC = () => {
           </IonRow>
         </>
       )}
+      {error ? (
+        <IonAlert
+          isOpen={error!}
+          animated
+          backdropDismiss
+          keyboardClose
+          message={
+            "Hubo un error inesperado, por favor intente nuevamente más tarde."
+          }
+        />
+      ) : null}
     </Page>
   );
 };

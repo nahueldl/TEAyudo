@@ -23,13 +23,14 @@ const AddCategory: React.FC<InfoCategoryProps> = ({ categoria }) => {
   const { categoriaData, setCategoriaData } = useContext(CategoryContext);
   const { navigate } = useContext(NavContext);
   const [errorMessage, setErrorMessage] = useState<string>();
-  const [loading, isLoading] = useState<boolean>(true);
+  const [loading, isLoading] = useState<boolean>(false);
   const [error, hasError] = useState<boolean>(false);
   const [name, setName] = useState<string>(
     categoria !== undefined ? categoria.nombre! : ""
   );
 
   const handleAdd = (e: React.MouseEvent<HTMLIonButtonElement, MouseEvent>) => {
+    e.preventDefault();
     isLoading(true);
     hasError(false);
     CategoriesService.createCategory(token!, name, role!)
@@ -61,12 +62,6 @@ const AddCategory: React.FC<InfoCategoryProps> = ({ categoria }) => {
       <IonContent>
         <IonGrid className="container-categorieAdd">
           <IonRow>
-            {/* <IonCol size="3">
-                        <IonButton size="large" expand="block" className="">
-                            {!name.length? "Nueva Categoría": name}
-                        </IonButton>
-                    </IonCol> */}
-            {/* <IonCol size="6"> */}
             <form className="form-no-background">
               <IonList className="mt-5">
                 <IonItem className="inputMargin">
