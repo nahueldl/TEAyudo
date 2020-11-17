@@ -29,7 +29,7 @@ const AddRole: React.FC = () => {
     return () => {
       unmounted = true;
     };
-  }, [roles]);
+  }, []);
 
   const handleGetRoles = () => {
     isLoading(true);

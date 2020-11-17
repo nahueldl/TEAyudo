@@ -24,8 +24,13 @@ const RoleSelection: React.FC = () => {
   const [roles, setRoles] = useState<any>([]);
 
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    let unmounted = false;
     handleGetRoles();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    return () => {
+      unmounted = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleGetRoles = () => {
