@@ -12,6 +12,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { useCallback } from "react";
 import { AuthenticationContext } from "../../../context/authentication";
 import RolesService from "../../../services/roles.services";
+import { Plugins } from "@capacitor/core";
+const { Storage } = Plugins;
 
 const AddRole: React.FC = () => {
   const { navigate } = useContext(NavContext);
@@ -23,12 +25,13 @@ const AddRole: React.FC = () => {
     msg: "",
   });
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     let unmounted = false;
     handleGetRoles();
     return () => {
       unmounted = true;
     };
-  }, [roles]);
+  }, []);
 
   const handleGetRoles = () => {
     isLoading(true);
@@ -48,10 +51,11 @@ const AddRole: React.FC = () => {
     RolesService.assignRol(authData.token, newRol, description)
       .then((res: any) => {
         isLoading(false);
+        setAuthData({role: newRol})
+        Storage.set({key: "role", value:newRol.toString()})
         goToHome();
       })
       .catch((error: any) => {
-        console.log(error);
         isLoading(false);
         hasError({ status: true, msg: error });
       });

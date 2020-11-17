@@ -4,6 +4,8 @@ import axios, {
   AxiosError,
   AxiosResponse,
 } from "axios";
+import { Plugins } from "@capacitor/core";
+const { Storage } = Plugins;
 const __API_BASE_URL__ = "https://api.teayudo.tk";
 
 export default class AxiosWrapper {
@@ -55,10 +57,7 @@ export default class AxiosWrapper {
     if (error.response?.status !== 401) {
       return Promise.reject(error);
     }
-
-    const { url } = error.response.data;
-    localStorage.clear();
-    this.redirectToLogin("/login");
+    Storage.clear().then((res) => this.redirectToLogin("/login"));
   };
 
   private redirectToLogin = (url: string) => {

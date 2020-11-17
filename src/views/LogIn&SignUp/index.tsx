@@ -2,7 +2,6 @@ import React, { useContext, useState, useCallback } from "react";
 import { IonContent, NavContext, IonSlides, IonSlide } from "@ionic/react";
 import { AuthenticationContext } from "../../context/authentication";
 import AuthenticationService from "../../services/authentication.services";
-import RolesService from "../../services/roles.services";
 import OverlayLeft from "./OverlayLeft";
 import OverlayRight from "./OverlayRight";
 import SignInForm from "./SignInForm";
@@ -19,15 +18,18 @@ const LogInSignUpPage: React.FC = () => {
   const { registrationData, setRegistrationData } = useContext(
     RegistrationContext
   );
-  const { authData, setAuthData } = useContext(AuthenticationContext);
+  const { setAuthData } = useContext(AuthenticationContext);
   const { platformData } = useContext(PlatformContext);
   const { isMobile } = platformData;
 
   const [showSignIn, setShowSignIn] = useState<boolean>(false);
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [loading, isLoading] = useState<boolean>(false);
+  const [error, hasError] = useState<boolean>(false);
 
   const handleSignIn = ({ email, password }: any) => {
-    setAuthData({ loading: true, error: false });
+    isLoading(true);
+    hasError(false);
     AuthenticationService.handleLogIn(email, password)
       .then((res: any) => {
         const expirationDate = calculateExpirationDate();
@@ -36,7 +38,6 @@ const LogInSignUpPage: React.FC = () => {
           tokenExpirationDate: expirationDate.toJSON(),
           username: email,
           authenticated: true,
-          loading: false,
         });
         Storage.set({ key: "token", value: res.data.token });
         Storage.set({
@@ -44,13 +45,12 @@ const LogInSignUpPage: React.FC = () => {
           value: expirationDate.toJSON(),
         });
         Storage.set({ key: "username", value: email });
+        isLoading(false);
         goToSelectRole();
       })
       .catch((_error: any) => {
-        setAuthData({
-          loading: false,
-          error: true,
-        });
+        isLoading(false);
+        hasError(true);
       });
   };
 
@@ -78,7 +78,8 @@ const LogInSignUpPage: React.FC = () => {
     idNumber?: number,
     licenseNumber?: number
   ) => {
-    setAuthData({ loading: true, error: false });
+    isLoading(true);
+    hasError(false);
     const { name, lastname, email, password } = registrationData;
     AuthenticationService.handleSignUp(
       name!,
@@ -90,16 +91,25 @@ const LogInSignUpPage: React.FC = () => {
       (licenseNumber as unknown) as string
     )
       .then((res: any) => {
+        const expirationDate = calculateExpirationDate();
         setAuthData({
+          token: res.data.token,
+          tokenExpirationDate: expirationDate.toJSON(),
           username: email,
           authenticated: true,
-          loading: false,
-          token: res.data.token,
         });
+        Storage.set({ key: "token", value: res.data.token });
+        Storage.set({
+          key: "tokenExpirationDate",
+          value: expirationDate.toJSON(),
+        });
+        Storage.set({ key: "username", value: email! });
+        isLoading(false);
         goToAddPatient();
       })
       .catch((_error: any) => {
-        setAuthData({ loading: false, error: true });
+        isLoading(false);
+        hasError(true);
       });
   };
 
@@ -128,19 +138,27 @@ const LogInSignUpPage: React.FC = () => {
       {isMobile ? (
         <IonSlides className="slides">
           <IonSlide>
-            <SignInForm signIn={handleSignIn} />
+            <SignInForm signIn={handleSignIn} loading={loading} error={error} />
           </IonSlide>
           <IonSlide>
-            <SignUpForm signUp={handleSignUpForm} />
+            <SignUpForm
+              signUp={handleSignUpForm}
+              loading={loading}
+              error={error}
+            />
           </IonSlide>
         </IonSlides>
       ) : (
         <div className={`container ${classRightPanelActive}`}>
           <div className="formContainer signUpContainer">
-            <SignUpForm signUp={handleSignUpForm} />
+            <SignUpForm
+              signUp={handleSignUpForm}
+              loading={loading}
+              error={error}
+            />
           </div>
           <div className="formContainer signInContainer">
-            <SignInForm signIn={handleSignIn} />
+            <SignInForm signIn={handleSignIn} loading={loading} error={error} />
           </div>
           <div className="overlayContainer">
             <div className="overlay">

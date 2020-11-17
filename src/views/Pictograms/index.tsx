@@ -11,30 +11,34 @@ import { addOutline } from "ionicons/icons";
 
 const PictogramsPage: React.FC = () => {
   const { authData, setAuthData } = useContext(AuthenticationContext);
-  const [errorMessage, setErrorMessage] = useState<string>();
-  const { error, loading } = authData;
+  // const { patientData, setPatientData } = useContext(PatientContext);
   const { patientData, setPatientData } = useContext(PatientContext);
   const [pictograms, setPictograms] = useState<[Pictogram]>();
   const { navigate } = useContext(NavContext);
   const [searchText, setSearchText] = useState('');
+  const [errorMessage, setErrorMessage] = useState<string>();
+  const [loading, isLoading] = useState<boolean>(false);
+  const [error, hasError] = useState<boolean>(false);
   const [ showModal, setShowModal] = useState(false);
 
   const getPictogramSearchText = (textBusqueda: string) => {
     setSearchText(textBusqueda);
     if(textBusqueda.length > 2) {
-      setAuthData({ loading: true, error: false });
+      isLoading(true);
+      hasError(false);
       PictogramServices.getPictogramsByName(authData.token!, textBusqueda, authData.patientId!)
         .then((res: any) => {
           if (res.data?.length > 0) {
             setPictograms(res.data);
-            setAuthData({ loading: false });
+            isLoading(false);
           } else {
             goToAddPictogram();
-            setAuthData({ loading: false });
+            isLoading(false);
           }
         })
         .catch((_error: any) => {
-          setAuthData({ loading: false, error: true });
+          isLoading(false);
+          hasError(true);
         });
     } 
   };
@@ -84,9 +88,9 @@ const PictogramsPage: React.FC = () => {
             </IonCol>
           </IonCol>
           <IonCol size="8">
-            {authData.loading ? (
+            {loading ? (
               <IonLoading
-                isOpen={authData.loading!}
+                isOpen={loading!}
                 message="Trabajando..."
                 spinner="crescent"
               />

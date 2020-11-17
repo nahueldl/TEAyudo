@@ -13,8 +13,9 @@ import { getBlobFromURL } from '../../utils/urlToBlob';
 
 export const ModalPictogram: React.FC<Props> = ({showModal, handleShowModal, pictogram}) => {
     const { authData, setAuthData } = useContext(AuthenticationContext);
-    const { error, loading } = authData;
-    const [ errorMessage, setErrorMessage ] = useState<string>();
+    const [errorMessage, setErrorMessage] = useState<string>();
+    const [loading, isLoading] = useState<boolean>(false);
+    const [error, hasError] = useState<boolean>(false);
     const [ favorito, setFavorito ] = useState(false);
     const [ categoriasPropias, setCategoriasPropias ] = useState<[Category]>();
     const [ newName, setNewName ] = useState("");
@@ -27,27 +28,26 @@ export const ModalPictogram: React.FC<Props> = ({showModal, handleShowModal, pic
         CategoriesService.getCategories(authData.token!)
         .then((res: any) => {
             setCategoriasPropias(res.data);
-            setAuthData({ loading: false, error: false });
         })
         .catch((error: any) => {
             setErrorMessage(
               "Hubo un inconveniente, por favor intente más tarde."
             );
-        });
+            hasError(true);
+          });
     }
     
     const marcarFavoritoPictograma = (favorito: boolean) => {
         if(favorito != undefined) {
-            setAuthData({ loading: true, error: false });
             PictogramsService.editPictogram(authData.token!, pictogram?.id_pictograma!, parseInt(authData.patientId!), undefined, undefined, favorito)
             .then((res:any) => {
                 setFavorito(favorito);
-                setAuthData({ loading: false, error: false });
             })
             .catch((error: any) => {
                 setErrorMessage(
                 "Hubo un problema al marcar como favorito el pictograma, por favor intente más tarde."
                 );
+                hasError(true);
             });
         }
     }
@@ -135,7 +135,6 @@ export const ModalPictogram: React.FC<Props> = ({showModal, handleShowModal, pic
                     backdropDismiss
                     keyboardClose
                     message={errorMessage}
-                    onDidDismiss={() => setAuthData({ error: false })}
                 />
             </IonModal>
         ): (<></>)}

@@ -10,19 +10,20 @@ const { Storage } = Plugins;
 
 const PatientSelection: React.FC = () => {
   const { authData, setAuthData } = useContext(AuthenticationContext);
-  const { patientData, setPatientData } = useContext(PatientContext);
+  const { setPatientData } = useContext(PatientContext);
   const { username, token } = authData;
   const { navigate } = useContext(NavContext);
   const [patients, setPatients] = useState<Patient[]>([]);
   const [loading, isLoading] = useState<boolean>(true);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     let unmounted = false;
     getPatients();
     return () => {
       unmounted = true;
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getPatients = () => {
@@ -37,7 +38,6 @@ const PatientSelection: React.FC = () => {
         }
       })
       .catch((_error: any) => {
-        console.log(_error);
         isLoading(false);
       });
   };
@@ -74,8 +74,8 @@ const PatientSelection: React.FC = () => {
               <CardWithImage
                 onClick={handleClick}
                 img={{
-                  src: `https://api.adorable.io/avatars/100/${username}-${patient.nombre}${patient.apellido}`,
-                  alt: `Avatar des ${patient.nombre}`,
+                  src: `${patient.avatar}`,
+                  alt: `Avatar de ${patient.nombre}`,
                 }}
                 title={`${patient.nombre} ${patient.apellido}`}
                 touchable

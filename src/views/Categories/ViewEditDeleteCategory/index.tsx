@@ -23,21 +23,23 @@ import CategoriesService from "../../../services/categories.services";
 import { PatientContext } from "../../../context/patient";
 
 const ViewEditDeleteCategory = () => {
-  const { authData, setAuthData } = useContext(AuthenticationContext);
+  const { token } = useContext(AuthenticationContext).authData;
   const { categoriaData, setCategoriaData } = useContext(CategoryContext);
   const { patientData } = useContext(PatientContext);
   const { navigate } = useContext(NavContext);
   const [errorMessage, setErrorMessage] = useState<string>();
-  const { error, loading } = authData;
   const [showActionDeletePatient, setShowActionDeletePatient] = useState(false);
   const [nombreCategoriaAux, setNombreCategoriaAux] = useState<string>(
     categoriaData.categoriaSelected?.nombre!
   );
+  const [loading, isLoading] = useState<boolean>(false);
+  const [error, hasError] = useState<boolean>(false);
 
   const handleEditCategoria = () => {
-    setAuthData({ loading: true, error: false });
+    isLoading(true);
+    hasError(false);
     CategoriesService.editCategory(
-      authData.token!,
+      token!,
       categoriaData.categoriaSelected?.id_categoria!,
       nombreCategoriaAux
     )
@@ -50,49 +52,53 @@ const ViewEditDeleteCategory = () => {
           },
         });
         getListCategorias();
-        setAuthData({ loading: false, error: false });
+        isLoading(false);
         goToListCategories();
       })
       .catch((error: any) => {
         setErrorMessage(
           "Hubo un inconveniente editando la categoria, pruebe más tarde."
         );
-        setAuthData({ loading: false, error: true });
-        //mostrar mensaje con error
+        isLoading(false);
+        hasError(true);
       });
   };
 
   const getListCategorias = () => {
+    isLoading(true);
+    hasError(false);
     CategoriesService.getCategories(
-      authData.token!,
+      token!,
       patientData.patientSelected?.id_paciente
     )
       .then((res: any) => {
         setCategoriaData({ categoriasList: res.data });
-        setAuthData({ loading: false });
+        isLoading(false);
       })
       .catch((_error: any) => {
-        setAuthData({ loading: false, error: true });
+        isLoading(false);
+        hasError(true);
       });
   };
 
   const handleDeleteCategoria = () => {
-    setAuthData({ loading: true, error: false });
+    isLoading(true);
+    hasError(false);
     CategoriesService.deleteCategory(
-      authData.token!,
+      token!,
       categoriaData.categoriaSelected?.id_categoria!
     )
       .then((res: any) => {
         getListCategorias();
-        setAuthData({ loading: false, error: false });
+        isLoading(false);
         goToListCategories();
       })
       .catch((error: any) => {
         setErrorMessage(
           "Hubo un inconveniente eliminando la categoria, pruebe más tarde."
         );
-        setAuthData({ loading: false, error: true });
-        //mostrar mensaje con error
+        isLoading(false);
+        hasError(true);
       });
   };
 
@@ -182,7 +188,6 @@ const ViewEditDeleteCategory = () => {
               backdropDismiss
               keyboardClose
               message={errorMessage}
-              onDidDismiss={() => setAuthData({ error: false })}
             />
           </IonRow>
         </IonGrid>

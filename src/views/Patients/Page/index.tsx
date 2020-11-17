@@ -1,34 +1,39 @@
-import React, { useState, useContext, useEffect, useCallback } from "react";
+import React, { useContext, useEffect, useCallback } from "react";
 import Page from "../../../components/Page";
-import { NavContext, IonLoading, IonRow } from "@ionic/react";
+import { NavContext, IonLoading, IonRow, IonAlert } from "@ionic/react";
 import ListPatients from "../ListPatients";
 import { AuthenticationContext } from "../../../context/authentication";
 import PatientServices from "../../../services/patients.services";
 import { PatientContext } from "../../../context/patient";
 import CardWithIcon from "../../../components/CardWithIcon";
 import { addCircleOutline } from "ionicons/icons";
+import { useState } from "react";
 
 const PatientsPage: React.FC = () => {
-  const { authData, setAuthData } = useContext(AuthenticationContext);
-  const { patientData, setPatientData } = useContext(PatientContext);
+  const { token } = useContext(AuthenticationContext).authData;
+  const { setPatientData } = useContext(PatientContext);
   const { navigate } = useContext(NavContext);
-  
+  const [loading, isLoading] = useState<boolean>(true);
+  const [error, hasError] = useState<boolean>(false);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => getPatients(), []);
 
   const getPatients = () => {
-    setAuthData({ loading: true, error: false });
-    PatientServices.getPatientsFromUser(authData.token!)
+    isLoading(true);
+    hasError(false);
+    PatientServices.getPatientsFromUser(token!)
       .then((res: any) => {
         if (res.data?.length > 0) {
           setPatientData({ patientsList: res.data });
-          setAuthData({ loading: false });
+          isLoading(false);
         } else {
           goToAddPatient();
-          setAuthData({ loading: false });
+          isLoading(false);
         }
       })
       .catch((_error: any) => {
-        setAuthData({ loading: false, error: true });
+        isLoading(false);
+        hasError(true);
       });
   };
 
@@ -43,15 +48,15 @@ const PatientsPage: React.FC = () => {
 
   return (
     <Page pageTitle="Pacientes" showHomeButton>
-      {authData.loading ? (
+      {loading ? (
         <IonLoading
-          isOpen={authData.loading!}
+          isOpen={loading!}
           message="Trabajando..."
           spinner="crescent"
         />
       ) : (
         <>
-          <ListPatients/>
+          <ListPatients />
           <IonRow>
             <CardWithIcon
               icon={addCircleOutline}
@@ -62,6 +67,17 @@ const PatientsPage: React.FC = () => {
           </IonRow>
         </>
       )}
+      {error ? (
+        <IonAlert
+          isOpen={error!}
+          animated
+          backdropDismiss
+          keyboardClose
+          message={
+            "Hubo un error inesperado, por favor intente nuevamente más tarde."
+          }
+        />
+      ) : null}
     </Page>
   );
 };

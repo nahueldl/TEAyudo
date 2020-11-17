@@ -24,8 +24,14 @@ const RoleSelection: React.FC = () => {
   const [roles, setRoles] = useState<any>([]);
 
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    let unmounted = false;
     handleGetRoles();
-  }, [roles]);
+    return () => {
+      unmounted = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleGetRoles = () => {
     setLoading(true);
@@ -39,7 +45,6 @@ const RoleSelection: React.FC = () => {
         }
       })
       .catch((error: any) => {
-        console.log(error);
         setLoading(false);
         goToAddRole();
       });
@@ -47,7 +52,7 @@ const RoleSelection: React.FC = () => {
 
   const handleRolSelection = (rol: any) => {
     setAuthData({ role: rol.id_rol });
-    Storage.set({ key: "rol", value: rol.id_rol });
+    Storage.set({ key: "role", value: rol.id_rol });
     goToSelectPatient();
   };
 

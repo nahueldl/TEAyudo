@@ -36,12 +36,11 @@ const GamesPage: React.FC = () => {
     hasError(false);
     GameServices.getMove(token!, patientId!)
       .then((res) => {
-        setMove(res);
+        setMove(res.data);
         setLoadingMove(false);
       })
       .catch((error) => {
         setLoadingMove(false);
-        console.log(error);
         setErrorMsg(
           "Hubo un error inesperado; por favor intente nuevamente más tarde."
         );

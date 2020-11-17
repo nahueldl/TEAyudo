@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useContext } from "react";
 import {
-  IonIcon,
   IonList,
   IonItem,
   IonInput,
@@ -10,8 +9,6 @@ import {
   IonAlert,
   IonLabel,
 } from "@ionic/react";
-import { logoGoogle, logoFacebook } from "ionicons/icons";
-import { AuthenticationContext } from "../../context/authentication";
 import { PlatformContext } from "../../context/platform";
 import { useForm, Controller } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
@@ -19,12 +16,9 @@ import { ErrorMessage } from "@hookform/error-message";
 const ERROR_MESSAGE =
   "Hubo un error al iniciar sesión, por favor intenta nuevamente más tarde";
 
-const SignInForm: React.FC<Props> = ({ signIn }) => {
+const SignInForm: React.FC<Props> = ({ signIn, loading, error }) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [data, setData] = useState();
-
-  const { authData, setAuthData } = useContext(AuthenticationContext);
-  const { error, loading } = authData;
   const { isMobile } = useContext(PlatformContext).platformData;
   const { control, handleSubmit, formState, errors } = useForm({
     defaultValues: {},
@@ -43,16 +37,6 @@ const SignInForm: React.FC<Props> = ({ signIn }) => {
           <img src="assets/icon/icon.png" alt="TEAyudo logo" />
         ) : null}
         <h1>Iniciar sesión</h1>
-        <div className="iconsContainer">
-          {/* TODO: Inicio de sesión con redes sociales */}
-          <a href="#">
-            <IonIcon className="icon" icon={logoGoogle} size="large" />
-          </a>
-          <a href="#">
-            <IonIcon className="icon" icon={logoFacebook} size="large" />
-          </a>
-        </div>
-        <span>O utiliza tu cuenta</span>
         <IonList>
           <IonItem className="inputMargin">
             <Controller
@@ -130,13 +114,14 @@ const SignInForm: React.FC<Props> = ({ signIn }) => {
         backdropDismiss
         keyboardClose
         message={ERROR_MESSAGE}
-        onDidDismiss={() => setAuthData({ error: false })}
       />
     </>
   );
 };
 
 interface Props {
-  signIn: (data:any) => void;
+  signIn: (data: any) => void;
+  loading: boolean;
+  error: boolean;
 }
 export default SignInForm;

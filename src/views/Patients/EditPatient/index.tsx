@@ -13,15 +13,18 @@ import {
   IonActionSheet,
   IonLoading,
   IonAlert,
+  IonIcon,
 } from "@ionic/react";
 import "./styles.css";
-import { trash, close } from "ionicons/icons";
+import { trash, close, refreshOutline } from "ionicons/icons";
 import PatientServices from "../../../services/patients.services";
 import Page from "../../../components/Page";
 import { PatientContext } from "../../../context/patient";
+import { getBlobFromURL } from "../../../components/encodeImg/urlToBlob";
+import { getBase64 } from "../../../components/encodeImg/encodeImg";
 
 const EditPatient = () => {
-  const { authData, setAuthData } = useContext(AuthenticationContext);
+  const { token } = useContext(AuthenticationContext).authData;
   const { patientData, setPatientData } = useContext(PatientContext);
   const { navigate } = useContext(NavContext);
   const [auxName, setAuxName] = useState<string>(
@@ -34,17 +37,24 @@ const EditPatient = () => {
     patientData.patientSelected?.avatar!
   );
   const [errorMessage, setErrorMessage] = useState<string>();
-  const { error, loading } = authData;
+
   const [showActionDeletePatient, setShowActionDeletePatient] = useState(false);
+  const [loading, isLoading] = useState<boolean>(false);
+  const [error, hasError] = useState<boolean>(false);
 
   const handleEditPatient = () => {
-    setAuthData({ loading: true, error: false });
+    isLoading(true);
+    hasError(false);
+    var blob = getBlobFromURL(auxAvatar);
+    blob.then((blobRes:any) => {
+      var base64 = getBase64(blobRes);
+      base64.then((base64res: any) => {
     PatientServices.putEditPatient(
-      authData.token!,
+      token!,
       patientData.patientSelected?.id_paciente,
       auxName!,
       auxLastName!,
-      auxAvatar!
+      base64res!
     )
       .then((res: any) => {
         setPatientData({
@@ -55,45 +65,52 @@ const EditPatient = () => {
           },
         });
         getListPatients();
-        setAuthData({ loading: false, error: false });
+        isLoading(false);
         goToViewPatient();
       })
       .catch((error: any) => {
         setErrorMessage(
           "Hubo un inconveniente editando al paciente, pruebe más tarde."
         );
-        setAuthData({ loading: false, error: true });
-        //mostrar mensaje con error
+        isLoading(false);
+        hasError(true); //mostrar mensaje con error
       });
+    });
+  })
   };
 
   const getListPatients = () => {
-    PatientServices.getPatientsFromUser(authData.token!)
+    isLoading(true);
+    hasError(false);
+    PatientServices.getPatientsFromUser(token!)
       .then((res: any) => {
+        isLoading(false);
         setPatientData({ patientsList: res.data });
       })
       .catch((_error: any) => {
-        setAuthData({ loading: false, error: true });
+        isLoading(false);
+        hasError(true);
       });
   };
 
   const handleDeletePatient = () => {
-    setAuthData({ loading: true, error: false });
+    isLoading(true);
+    hasError(false);
     PatientServices.deletePatient(
-      authData.token!,
+      token!,
       patientData.patientSelected?.id_paciente!
     )
       .then((res: any) => {
         getListPatients();
-        setAuthData({ loading: false, error: false });
+        isLoading(false);
         goToListPatients();
       })
       .catch((error: any) => {
         setErrorMessage(
           "Hubo un inconveniente eliminando al paciente, pruebe más tarde."
         );
-        setAuthData({ loading: false, error: true });
-        //mostrar mensaje con error
+        isLoading(false);
+        hasError(true); //mostrar mensaje con error
       });
   };
 
@@ -125,6 +142,9 @@ const EditPatient = () => {
                 <IonAvatar className="avatars">
                   <img className="height-auto" src={auxAvatar} alt="Avatar" />
                 </IonAvatar>
+                <IonButton color="tertiary" size="small" onClick={() => setAuxAvatar("https://avatars.dicebear.com/api/bottts/"+Math.floor(Math.random() * 200)+".svg")}>
+                  <IonIcon className="pl-5" slot="end" icon={refreshOutline}></IonIcon> Cambiar
+                </IonButton> 
                 <IonItem className="inputMargin">
                   <IonInput
                     name="name"
@@ -207,7 +227,6 @@ const EditPatient = () => {
               backdropDismiss
               keyboardClose
               message={errorMessage}
-              onDidDismiss={() => setAuthData({ error: false })}
             />
           </IonRow>
         </IonGrid>

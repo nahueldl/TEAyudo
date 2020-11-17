@@ -21,37 +21,58 @@ import EditPatientPage from "./views/Patients/EditPatient";
 import RolesPage from "./views/Roles/Page";
 import AddRole from "./views/Roles/Add";
 import RoleSelection from "./views/Roles/Selection";
+import LogInSignUpPage from "./views/LogIn&SignUp";
+import AddRolePage from "./views/Roles/Page/AddRolePage";
 
 const AppPostLogin: React.FC = () => {
-  const { authData } = useContext(AuthenticationContext);
+  const { token, patientName } = useContext(AuthenticationContext).authData;
 
   return (
     <IonSplitPane contentId="main">
-      <Menu patientName={authData.patientName!} />
+      <Menu patientName={patientName!} />
       <IonRouterOutlet id="main">
         <Route path="/inicio" component={HomePage} exact />
+        <Route path="/login" component={LogInSignUpPage} exact />
+
         <Route path="/pictogramas" component={PictogramsPage} exact />
         <Route path="/pictograma/alta" component={AddPictogramPage} exact />
         <Route path="/categorias" component={CategoriesPage} exact />
         <Route path="/categorias/alta" component={CategoriesAddPage} exact />
-        <Route path="/categorias/edicion" component={CategoriesViewEditDeleteCategoryPage} exact />
-        <Route path="/pacientes" component={PatientsPage} exact />
+        <Route
+          path="/categorias/edicion"
+          component={CategoriesViewEditDeleteCategoryPage}
+          exact
+        />
+
         <Route path="/profesionales" component={ProfessionalsPage} exact />
+
         <Route path="/informes" component={ReportsPage} exact />
+
         <Route path="/configuracion" component={ConfigurationPage} exact />
+
+        <Route path="/pacientes" component={PatientsPage} exact />
         <Route path="/pacientes/alta" component={AddPatientPage} exact />
+        <Route path="/pacientes/edicion" component={EditPatientPage} exact />
         <Route
           path="/pacientes/informacion"
           component={ViewPatientPage}
           exact
         />
+
         <Route path="/roles" component={RolesPage} exact />
-        <Route path="/roles/alta" component={AddRole} exact />
+        <Route path="/roles/alta" component={AddRolePage} exact />
         <Route path="/roles/seleccion" component={RoleSelection} exact />
-        <Route path="/comunicacion" component={ComunicationPage}/>
+
+        <Route path="/comunicacion" component={ComunicationPage} />
+
         <Route path="/juegos" component={GamesPage} />
-        <Route path="/pacientes/edicion" component={EditPatientPage} exact />
-        <Redirect from="*" to="/inicio" />
+
+ 
+        {token ? (
+          <Redirect from="*" to="/inicio" />
+        ) : (
+          <Redirect from="*" to="/login" />
+        )}
       </IonRouterOutlet>
     </IonSplitPane>
   );

@@ -57,12 +57,10 @@ const ComunicationPage: React.FC = () => {
     setIsLoadingCategories(true);
     CategoriesServices.getCategories(token!, patientId!)
       .then((res: any) => {
-        console.log(res);
         setCategories(res.data);
         setIsLoadingCategories(false);
       })
       .catch((error: any) => {
-        console.log(error);
         setError(error.msg);
         setIsLoadingCategories(false);
       });
@@ -74,13 +72,11 @@ const ComunicationPage: React.FC = () => {
     PictogramsServices.getPictogramsByCategory(token!, categoryId, patientId!)
       .then((res: any) => {
         const transformedResponse = addIdForSortable(res.data);
-        console.log(transformedResponse);
 
         setAvailableItems(transformedResponse);
         setIsLoadingPictograms(false);
       })
       .catch((error: any) => {
-        console.log(error);
         setError(error.msg);
         setIsLoadingPictograms(false);
       });
@@ -107,9 +103,9 @@ const ComunicationPage: React.FC = () => {
     return categorySelectedId === categoryId;
   };
 
-  const toggleCategory = () => {
-    // Agregar el poder cerrar la categoría
-  };
+  // const toggleCategory = () => {
+  //   // Agregar el poder cerrar la categoría
+  // };
 
   return (
     <Page pageTitle="Comunicarse" showHomeButton>

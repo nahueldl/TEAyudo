@@ -29,39 +29,28 @@ import { AuthenticationContext } from "./context/authentication";
 import RoleSelection from "./views/Roles/Selection";
 import AddRole from "./views/Roles/Add";
 import AddPatientPage from "./views/Patients/AddPatient";
-
+import AddRolePage from "./views/Roles/Page/AddRolePage";
 
 const App: React.FC = () => {
-  const { authData } = useContext(AuthenticationContext);
-
-  const isTheTokenValid = () => {
-    // TODO: revertir el token a date, y rechequearlo en primera instancia,
-    // para sumarlo al interceptor del 401
-  }
+  const { token, role, patientId } = useContext(AuthenticationContext).authData;
 
   return (
     <IonApp>
       <IonReactRouter>
-        {authData.token ? (
-          //Existe el token
-          authData.tokenExpirationDate ? (
-            //El token es válido
-            authData.role ? (
-              //Eligió un rol
-              authData.patientId ? (
-                //Tiene un paciente elegido
-                <AppPostLogin />
-              ) : (
-                //No tiene un paciente elegido
-                <Redirect from="*" to="/pacientes/seleccion" />
-              )
+        {token ? (
+          //El token es válido
+          role ? (
+            //Eligió un rol
+            patientId ? (
+              //Tiene un paciente elegido
+              <AppPostLogin />
             ) : (
-              //No tiene un rol elegido
-              <Redirect from="*" to="/roles/seleccion" />
+              //No tiene un paciente elegido
+              <Redirect from="*" to="/pacientes/seleccion" />
             )
           ) : (
-            //El token es inválido
-            <Redirect from="*" to="/login" />
+            //No tiene un rol elegido
+            <Redirect from="*" to="/roles/seleccion" />
           )
         ) : (
           //No hay un token
@@ -70,11 +59,7 @@ const App: React.FC = () => {
 
         <Route path="/login" component={LogInSignUpPage} exact />
         <Route path="/pacientes/seleccion" component={PatientSelection} exact />
-        <Route path="/pacientes/alta" component={AddPatientPage} exact />
-
         <Route path="/roles/seleccion" component={RoleSelection} exact />
-        <Route path="/roles/alta" component={AddRole} exact />
-        {/* <AppPostLogin /> */}
       </IonReactRouter>
     </IonApp>
   );

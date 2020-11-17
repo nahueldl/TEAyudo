@@ -19,16 +19,17 @@ import "./styles.css";
 import PatientServices from "../../../services/patients.services";
 import Page from "../../../components/Page";
 import { PatientContext } from "../../../context/patient";
-import { getBase64 } from "../../../utils/encodeImg";
-import { getBlobFromURL } from "../../../utils/urlToBlob";
+import { getBase64 } from "../../../components/encodeImg/encodeImg";
+import { getBlobFromURL } from "../../../components/encodeImg/urlToBlob";
 import { refreshOutline } from "ionicons/icons";
 
 const AddPatient: React.FC<InfoPatientProps> = ({ patient }) => {
-  const { authData, setAuthData } = useContext(AuthenticationContext);
+  const { token } = useContext(AuthenticationContext).authData;
   const { patientData, setPatientData } = useContext(PatientContext);
   const { navigate } = useContext(NavContext);
   const [errorMessage, setErrorMessage] = useState<string>();
-  const { error, loading } = authData;
+  const [loading, isLoading] = useState<boolean>(false);
+  const [error, hasError] = useState<boolean>(false);
   const [name, setName] = useState<string>(
     patient !== undefined ? patient.name : ""
   );
@@ -46,27 +47,31 @@ const AddPatient: React.FC<InfoPatientProps> = ({ patient }) => {
           ".svg"
   );
 
-  const handleAddPatient = () => {
-    setAuthData({ loading: true, error: false });
+  const handleAddPatient = (e: any) => {
+    e.preventDefault();
+    isLoading(true);
+    hasError(false);
     var blob = getBlobFromURL(avatar);
     blob.then((blobRes:any) => {
       var base64 = getBase64(blobRes);
       base64.then((base64res: any) => {
-        PatientServices.postNewPatient(authData.token!, name, lastName, base64res)
+        PatientServices.postNewPatient(token!, name, lastName, base64res)
           .then((res: any) => {
             patientData.patientsList?.push(res.data);
             setPatientData({patientsList: patientData.patientsList});
-            setAuthData({ loading: false, error: false });
+            isLoading(false);
+        console.log(res.data);
             goToListPatients();
-          })
-          .catch((_error: any) => {
-            setErrorMessage(
-              "Hubo un inconveniente creando al paciente, pruebe más tarde."
-            );
-            setAuthData({ loading: false, error: true });
-          });
       })
-    })
+      .catch((_error: any) => {
+        setErrorMessage(
+          "Hubo un inconveniente creando al paciente, pruebe más tarde."
+        );
+        isLoading(false);
+        hasError(true);
+      });
+    });
+  })
   };
 
   const handleCancel = () => {
@@ -92,9 +97,9 @@ const AddPatient: React.FC<InfoPatientProps> = ({ patient }) => {
                     alt="Avatar"
                   />
                 </IonAvatar>
-                <button icon-only onClick={() => setAvatar("https://avatars.dicebear.com/api/bottts/"+Math.floor(Math.random() * 200)+".svg")}>
-                  <IonIcon  className="pl-5" slot="end" icon={refreshOutline}></IonIcon>
-                </button> 
+                <IonButton color="tertiary" size="small" onClick={() => setAvatar("https://avatars.dicebear.com/api/bottts/"+Math.floor(Math.random() * 200)+".svg")}>
+                  <IonIcon className="pl-5" slot="end" icon={refreshOutline}></IonIcon> Cambiar
+                </IonButton> 
                 <IonItem className="inputMargin">
                   <IonInput
                     name="name"
@@ -127,14 +132,16 @@ const AddPatient: React.FC<InfoPatientProps> = ({ patient }) => {
               </IonList>
               <div>
                 <IonButton
+                  type="button"
                   className="formButton mt-5"
-                  onClick={handleAddPatient}
+                  onClick={(e) => handleAddPatient(e)}
                   expand="block"
                 >
                   Agregar paciente
                 </IonButton>
 
                 <IonButton
+                  type="button"
                   className="formButton red-buttom mt-5"
                   onClick={handleCancel}
                   expand="block"
@@ -154,7 +161,6 @@ const AddPatient: React.FC<InfoPatientProps> = ({ patient }) => {
               backdropDismiss
               keyboardClose
               message={errorMessage}
-              onDidDismiss={() => setAuthData({ error: false })}
             />
           </IonRow>
         </IonGrid>
