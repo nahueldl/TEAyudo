@@ -36,7 +36,7 @@ const EditPatient = () => {
   const [errorMessage, setErrorMessage] = useState<string>();
 
   const [showActionDeletePatient, setShowActionDeletePatient] = useState(false);
-  const [loading, isLoading] = useState<boolean>(true);
+  const [loading, isLoading] = useState<boolean>(false);
   const [error, hasError] = useState<boolean>(false);
 
   const handleEditPatient = () => {

@@ -24,7 +24,7 @@ const AddPatient: React.FC<InfoPatientProps> = ({ patient }) => {
   const { patientData, setPatientData } = useContext(PatientContext);
   const { navigate } = useContext(NavContext);
   const [errorMessage, setErrorMessage] = useState<string>();
-  const [loading, isLoading] = useState<boolean>(true);
+  const [loading, isLoading] = useState<boolean>(false);
   const [error, hasError] = useState<boolean>(false);
   const [name, setName] = useState<string>(
     patient !== undefined ? patient.name : ""
@@ -55,17 +55,21 @@ const AddPatient: React.FC<InfoPatientProps> = ({ patient }) => {
     // );
   };
 
-  const handleAddPatient = () => {
+  const handleAddPatient = (e:any) => {
+    e.preventDefault();
     isLoading(false);
     hasError(false);
-    PatientServices.postNewPatient(token!, name, lastName, avatar)
+    debugger;
+    PatientServices.postNewPatient(token!, name, lastName)
       .then((res: any) => {
+        debugger;
         patientData.patientsList?.push(res.data);
         setPatientData({ patientsList: patientData.patientsList });
         isLoading(false);
         goToListPatients();
       })
       .catch((_error: any) => {
+        debugger;
         setErrorMessage(
           "Hubo un inconveniente creando al paciente, pruebe más tarde."
         );
@@ -129,14 +133,16 @@ const AddPatient: React.FC<InfoPatientProps> = ({ patient }) => {
               </IonList>
               <div>
                 <IonButton
+                  type="button"
                   className="formButton mt-5"
-                  onClick={handleAddPatient}
+                  onClick={e => handleAddPatient(e)}
                   expand="block"
                 >
                   Agregar paciente
                 </IonButton>
 
                 <IonButton
+                  type="button"
                   className="formButton red-buttom mt-5"
                   onClick={handleCancel}
                   expand="block"
