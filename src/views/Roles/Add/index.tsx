@@ -15,7 +15,7 @@ import RolesService from "../../../services/roles.services";
 
 const AddRole: React.FC = () => {
   const { navigate } = useContext(NavContext);
-  const { authData, setAuthData } = useContext(AuthenticationContext);
+  const { authData } = useContext(AuthenticationContext);
   const [roles, setRoles] = useState<any>();
   const [loading, isLoading] = useState<boolean>(true);
   const [error, hasError] = useState<{ status: boolean; msg: string }>({
@@ -23,6 +23,7 @@ const AddRole: React.FC = () => {
     msg: "",
   });
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     let unmounted = false;
     handleGetRoles();
     return () => {

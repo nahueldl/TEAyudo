@@ -1,7 +1,6 @@
 import {
   IonAlert,
   IonButton,
-  IonCol,
   IonContent,
   IonGrid,
   IonInput,

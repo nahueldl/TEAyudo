@@ -28,6 +28,7 @@ const RolesPage: React.FC = () => {
 
   useEffect(() => {
     handleGetRoles();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleGetRoles = () => {

@@ -11,7 +11,7 @@ const { Storage } = Plugins;
 
 const PatientSelection: React.FC = () => {
   const { authData, setAuthData } = useContext(AuthenticationContext);
-  const { patientData, setPatientData } = useContext(PatientContext);
+  const { setPatientData } = useContext(PatientContext);
   const { username, token } = authData;
   const { navigate } = useContext(NavContext);
   const [patients, setPatients] = useState<Patient[]>([]);

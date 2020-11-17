@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useCallback } from "react";
+import React, { useContext, useEffect, useCallback } from "react";
 import Page from "../../../components/Page";
 import { NavContext, IonLoading, IonRow } from "@ionic/react";
 import ListPatients from "../ListPatients";
@@ -10,9 +10,10 @@ import { addCircleOutline } from "ionicons/icons";
 
 const PatientsPage: React.FC = () => {
   const { authData, setAuthData } = useContext(AuthenticationContext);
-  const { patientData, setPatientData } = useContext(PatientContext);
+  const { setPatientData } = useContext(PatientContext);
   const { navigate } = useContext(NavContext);
   
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => getPatients(), []);
 
   const getPatients = () => {

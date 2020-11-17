@@ -107,9 +107,9 @@ const ComunicationPage: React.FC = () => {
     return categorySelectedId === categoryId;
   };
 
-  const toggleCategory = () => {
-    // Agregar el poder cerrar la categoría
-  };
+  // const toggleCategory = () => {
+  //   // Agregar el poder cerrar la categoría
+  // };
 
   return (
     <Page pageTitle="Comunicarse" showHomeButton>
