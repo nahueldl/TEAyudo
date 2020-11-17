@@ -19,7 +19,7 @@ class PatientServices {
     name: string,
     lastName: string,
     // birthday: string,
-    avatar: string
+    avatar?: string
   ) {
     return this.axios.post(
       "/api/pacientes",
@@ -34,8 +34,14 @@ class PatientServices {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }
-    );
+        params: {
+          nombre: name,
+          apellido: lastName,
+        },
+        // fase: 1,
+        // fechaNac: birthday,
+        // base64img: avatar,
+      });
   }
 
   putEditPatient(

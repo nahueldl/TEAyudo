@@ -1,6 +1,6 @@
 .sortable {
   display: grid;
-  grid-template-columns: repeat(6, minmax(4rem, 1fr));
+  grid-template-columns: repeat(8, minmax(4rem, 1fr));
   gap: 0.5rem;
   height: minmax(4rem, 1fr);
 }
@@ -12,5 +12,71 @@
 }
 
 .tirafrase {
-  background-color: lightgray;
+  background-color: #eeeeee;
+  border-radius: 5px;
+}
+
+.translation {
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  height: 100%;
+}
+
+.title-col {
+  width: 75%;
+}
+
+.icon-col {
+  width: 25%;
+}
+
+.row-title {
+  border-bottom: 2px solid var(--ion-color-primary);
+}
+
+.modal-title {
+  font-weight: bold;
+}
+
+.modal {
+  width: 100%;
+}
+
+.flex-grow-5 {
+  flex-grow: 5;
+}
+
+.flex-grow-1 {
+  flex-grow: 1;
+}
+
+.icon-close {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 20px;
+  align-items: center;
+}
+
+.icon-close :hover {
+  cursor: pointer;
+}
+
+.translation-container {
+   padding: 25px 0px 0px 25px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+
+.translation {
+  font-size: x-large;
+}
+
+.selected {
+  --background: #eeeeee;
+}
+
+.tirafrase-text {
+  color: var(--ion-color-primary);
 }

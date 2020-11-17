@@ -1,82 +1,79 @@
-import React, { useContext, useState, useCallback } from "react";
-import { AuthenticationContext } from "../../../context/authentication";
 import {
-  NavContext,
-  IonGrid,
-  IonRow,
-  IonList,
-  IonItem,
-  IonInput,
+  IonActionSheet,
+  IonAlert,
   IonButton,
   IonContent,
-  IonAvatar,
-  IonActionSheet,
+  IonGrid,
+  IonInput,
+  IonItem,
+  IonLabel,
+  IonList,
   IonLoading,
-  IonAlert,
+  IonRow,
+  IonTitle,
+  NavContext,
 } from "@ionic/react";
-import "./styles.css";
-import { trash, close } from "ionicons/icons";
-import PatientServices from "../../../services/patients.services";
+import React, { useContext, useState, useCallback } from "react";
 import Page from "../../../components/Page";
+import "../styles.css";
+import { trash, close } from "ionicons/icons";
+import { AuthenticationContext } from "../../../context/authentication";
+import { CategoryContext } from "../../../context/category";
+import CategoriesService from "../../../services/categories.services";
 import { PatientContext } from "../../../context/patient";
 
-const EditPatient = () => {
+const ViewEditDeleteCategory = () => {
   const { token } = useContext(AuthenticationContext).authData;
-  const { patientData, setPatientData } = useContext(PatientContext);
+  const { categoriaData, setCategoriaData } = useContext(CategoryContext);
+  const { patientData } = useContext(PatientContext);
   const { navigate } = useContext(NavContext);
-  const [auxName, setAuxName] = useState<string>(
-    patientData.patientSelected?.nombre!
-  );
-  const [auxLastName, setAuxLastName] = useState<string>(
-    patientData.patientSelected?.apellido!
-  );
-  const [auxAvatar, setAuxAvatar] = useState<string>(
-    patientData.patientSelected?.avatar!
-  );
   const [errorMessage, setErrorMessage] = useState<string>();
-
   const [showActionDeletePatient, setShowActionDeletePatient] = useState(false);
-  const [loading, isLoading] = useState<boolean>(false);
+  const [nombreCategoriaAux, setNombreCategoriaAux] = useState<string>(
+    categoriaData.categoriaSelected?.nombre!
+  );
+  const [loading, isLoading] = useState<boolean>(true);
   const [error, hasError] = useState<boolean>(false);
 
-  const handleEditPatient = () => {
-    isLoading(false);
+  const handleEditCategoria = () => {
+    isLoading(true);
     hasError(false);
-    PatientServices.putEditPatient(
+    CategoriesService.editCategory(
       token!,
-      patientData.patientSelected?.id_paciente,
-      auxName!,
-      auxLastName!,
-      auxAvatar!
+      categoriaData.categoriaSelected?.id_categoria!,
+      nombreCategoriaAux
     )
       .then((res: any) => {
-        setPatientData({
-          patientSelected: {
-            nombre: auxName,
-            apellido: auxLastName,
-            avatar: auxAvatar,
+        setCategoriaData({
+          categoriaSelected: {
+            nombre: nombreCategoriaAux,
+            id_categoria: categoriaData.categoriaSelected?.id_categoria!,
+            id_usuario_rol: categoriaData.categoriaSelected?.id_usuario_rol!,
           },
         });
-        getListPatients();
+        getListCategorias();
         isLoading(false);
-        goToViewPatient();
+        goToListCategories();
       })
       .catch((error: any) => {
         setErrorMessage(
-          "Hubo un inconveniente editando al paciente, pruebe más tarde."
+          "Hubo un inconveniente editando la categoria, pruebe más tarde."
         );
         isLoading(false);
-        hasError(true); //mostrar mensaje con error
+        hasError(true);
       });
   };
 
-  const getListPatients = () => {
+  const getListCategorias = () => {
     isLoading(true);
     hasError(false);
-    PatientServices.getPatientsFromUser(token!)
+    CategoriesService.getCategories(
+      token!,
+      patientData.patientSelected?.id_paciente
+    )
       .then((res: any) => {
+        setCategoriaData({ categoriasList: res.data });
         isLoading(false);
-        setPatientData({ patientsList: res.data });
       })
       .catch((_error: any) => {
         isLoading(false);
@@ -84,42 +81,37 @@ const EditPatient = () => {
       });
   };
 
-  const handleDeletePatient = () => {
+  const handleDeleteCategoria = () => {
     isLoading(true);
     hasError(false);
-    PatientServices.deletePatient(
+    CategoriesService.deleteCategory(
       token!,
-      patientData.patientSelected?.id_paciente!
+      categoriaData.categoriaSelected?.id_categoria!
     )
       .then((res: any) => {
-        getListPatients();
+        getListCategorias();
         isLoading(false);
-        goToListPatients();
+        goToListCategories();
       })
       .catch((error: any) => {
         setErrorMessage(
-          "Hubo un inconveniente eliminando al paciente, pruebe más tarde."
+          "Hubo un inconveniente eliminando la categoria, pruebe más tarde."
         );
         isLoading(false);
-        hasError(true); //mostrar mensaje con error
+        hasError(true);
       });
   };
 
-  const goToListPatients = useCallback(() => navigate("/pacientes", "back"), [
-    navigate,
-  ]);
-
-  const handleCancel = () => {
-    goToViewPatient();
-  };
-
-  const goToViewPatient = useCallback(
-    () => navigate("/pacientes/informacion", "back"),
+  const goToListCategories = useCallback(
+    () => navigate("/categorias", "back"),
     [navigate]
   );
 
   return (
-    <Page pageTitle="Editar paciente" showHomeButton>
+    <Page
+      pageTitle={`Categoria ${categoriaData.categoriaSelected?.nombre}`}
+      showHomeButton
+    >
       <IonContent>
         <IonGrid className="container-patientAdd">
           <IonRow>
@@ -130,60 +122,41 @@ const EditPatient = () => {
                 spinner="crescent"
               />
               <IonList className="mt-5">
-                <IonAvatar className="avatars">
-                  <img className="height-auto" src={auxAvatar} alt="Avatar" />
-                </IonAvatar>
+                <IonTitle>Edicion de categoria</IonTitle>
                 <IonItem className="inputMargin">
+                  <IonLabel>Nombre:</IonLabel>
                   <IonInput
                     name="name"
-                    value={auxName}
+                    className="text-bold"
+                    value={nombreCategoriaAux}
                     required
                     clearInput
                     placeholder="Nombre"
-                    onIonChange={(e) => setAuxName(e.detail.value!)}
+                    onIonChange={(e) => setNombreCategoriaAux(e.detail.value!)}
                   />
                 </IonItem>
-                <IonItem className="inputMargin">
-                  <IonInput
-                    name="apellido"
-                    value={auxLastName}
-                    required
-                    clearInput
-                    placeholder="Apellido"
-                    onIonChange={(e) => setAuxLastName(e.detail.value!)}
-                  />
-                </IonItem>
-                {/* <IonItem className="p-0">
-                  <IonDatetime
-                    displayFormat="DD MM YYYY"
-                    placeholder="Fecha nacimiento"
-                    value={auxBirthday}
-                    aria-required="true"
-                    onIonChange={(e) => setAuxBirthday(e.detail.value!)}
-                  ></IonDatetime>
-                </IonItem> */}
               </IonList>
               <div>
                 <IonButton
                   className="formButton green-buttom mt-5"
-                  onClick={() => handleEditPatient()}
+                  onClick={() => handleEditCategoria()}
                   expand="block"
                 >
-                  Aceptar
+                  Aceptar edicion
                 </IonButton>
                 <IonButton
                   className="formButton mt-5"
-                  onClick={handleCancel}
+                  onClick={goToListCategories}
                   expand="block"
                 >
-                  Cancelar
+                  Volver
                 </IonButton>
                 <IonButton
                   className="formButton red-buttom mt-5"
                   onClick={() => setShowActionDeletePatient(true)}
                   expand="block"
                 >
-                  Eliminar paciente
+                  Eliminar
                 </IonButton>
                 <IonActionSheet
                   isOpen={showActionDeletePatient}
@@ -194,7 +167,7 @@ const EditPatient = () => {
                       role: "destructive",
                       icon: trash,
                       handler: () => {
-                        handleDeletePatient();
+                        handleDeleteCategoria();
                       },
                     },
                     {
@@ -223,4 +196,4 @@ const EditPatient = () => {
   );
 };
 
-export default EditPatient;
+export default ViewEditDeleteCategory;
