@@ -24,11 +24,9 @@ const AuthenticationProvider = (props: any) => {
     Storage.get({ key: "patientId" }).then((res) =>
       setAuthData({ patientId: res.value! })
     );
-    Storage.get({ key: "rol" }).then((res) => {
+    Storage.get({ key: "role" }).then((res) => {
       res.value
-        ? res.value === "F"
-          ? setAuthData({ role: "F" })
-          : setAuthData({ role: "M" })
+        ? setAuthData({role: parseInt(res.value)})
         : setAuthData({ role: undefined });
     });
     Storage.get({ key: "username" }).then((res) => {
@@ -53,11 +51,9 @@ interface IData {
   patientName: string;
   patientId: string;
   authenticated: boolean;
-  loading: boolean;
-  error: boolean;
   token: string;
   tokenExpirationDate: string;
-  role: "F" | "M";
+  role: number;
 }
 
 interface IContext {
