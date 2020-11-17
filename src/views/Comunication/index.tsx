@@ -57,12 +57,10 @@ const ComunicationPage: React.FC = () => {
     setIsLoadingCategories(true);
     CategoriesServices.getCategories(token!, patientId!)
       .then((res: any) => {
-        console.log(res);
         setCategories(res.data);
         setIsLoadingCategories(false);
       })
       .catch((error: any) => {
-        console.log(error);
         setError(error.msg);
         setIsLoadingCategories(false);
       });
