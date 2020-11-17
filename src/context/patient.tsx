@@ -18,7 +18,7 @@ const PatientProvider = (props: any) => {
 
 interface IData {
   patientSelected: Patient;
-  patientsList: [Patient];
+  patientsList: Patient[];
 }
 
 interface Patient {
