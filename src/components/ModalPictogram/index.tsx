@@ -81,6 +81,7 @@ export const ModalPictogram: React.FC<Props> = ({showModal, handleShowModal, pic
                 setErrorMessage(
                 "Hubo un problema al personalizar el nombre, por favor intente más tarde."
                 );
+                setAuthData({ error: true });
             });
     }
 
