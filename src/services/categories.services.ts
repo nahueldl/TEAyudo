@@ -6,7 +6,7 @@ class CategoriesService {
     this.axios = new AxiosWrapper({ useErrorInterceptor: true });
   }
 
-  getCategories(token: string, patientId: string):Promise<any> {
+  getCategories(token: string, patientId?: string):Promise<any> {
     const header = `Bearer ${token}`;
     return this.axios.get("/api/categorias", {
       headers: {

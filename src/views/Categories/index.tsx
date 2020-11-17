@@ -23,8 +23,9 @@ const CategoriesPage: React.FC = () => {
     isLoading(true);
     hasError(false);
     CategoriesService.getCategories(
-      token!,
-      patientData.patientSelected?.id_paciente
+      token!
+      // ,
+      // patientData.patientSelected?.id_paciente
     )
       .then((res: any) => {
         setCategoriaData({ categoriasList: res.data });

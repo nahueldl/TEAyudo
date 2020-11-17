@@ -59,9 +59,9 @@ const AddPatient: React.FC<InfoPatientProps> = ({ patient }) => {
           .then((res: any) => {
             patientData.patientsList?.push(res.data);
             setPatientData({patientsList: patientData.patientsList});
-        isLoading(false);
+            isLoading(false);
         console.log(res.data);
-        // goToListPatients();
+            goToListPatients();
       })
       .catch((_error: any) => {
         setErrorMessage(
