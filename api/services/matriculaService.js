@@ -17,7 +17,7 @@ const matriculaService = {
             nrodoc: datosProfesional.dni
         }
         })
-       console.log((await response).data);
+       //console.log(response.data);
        const resultadoConsulta = (await response).data.resultado;
        
        if(resultadoConsulta=='REGISTRO_NO_ENCONTRADO'){
@@ -31,14 +31,15 @@ const matriculaService = {
 
       let matriculaProf=-1;
       let estado='No encontrado';
-
-      for(let i = 0; i <response.data.matriculas.length; i++){
-        if(datosProfesional.matricula == parseInt(response.data.matriculas[i].matricula)){
-          matriculaProf = parseInt(response.data.matriculas[i].matricula);
-          estado = response.data.matriculas[i].estado; 
-          break;
-        }
-      }    
+      if(!(response.data === undefined || response.data === null || response.data.matriculas === undefined || response.data.matriculas === null)){
+        for(let i = 0; i <response.data.matriculas.length; i++){
+          if(datosProfesional.matricula == parseInt(response.data.matriculas[i].matricula)){
+            matriculaProf = parseInt(response.data.matriculas[i].matricula);
+            estado = response.data.matriculas[i].estado; 
+            break;
+          }
+        }   
+      }
       //const matriculaProf = parseInt((await response).data.matriculas[0].matricula);
       //la posicion del array del estado deberia ser la misma a la de la matricula encontrada  
       //const estado = (await response).data.matriculas[0].estado; 
@@ -52,7 +53,7 @@ const matriculaService = {
         }else if(matriculaProf != datosProfesional.matricula){
           const result = {
             state: estadosRespuesta.USERERROR,
-            response: 'La matricula ingresada es distinta a la que tiene asignada el profesional, pruebe ingresarla nuevamente'
+            response: 'La matricula ingresada es distinta a la que tiene asignada el profesional, o no es valida, pruebe ingresarla nuevamente'
             }
           return result;
         }else if(estado != 'Habilitado'){
