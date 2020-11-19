@@ -18,7 +18,7 @@ const matriculaService = {
         }
         })
        //console.log(response.data);
-       const resultadoConsulta = (await response).data.resultado;
+       const resultadoConsulta = response.data.resultado;
        
        if(resultadoConsulta=='REGISTRO_NO_ENCONTRADO'){
         const result = {
