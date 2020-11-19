@@ -44,17 +44,20 @@ const PictogramsPage: React.FC = () => {
   };
 
   const handleClickAddPictogarm = () => {
-    setAuthData({ loading: true, error: false });
+    isLoading(true);
+    hasError(false);
     CategoriesService.getCategories(authData.token!)
         .then((res: any) => {
           if(res.data.length) {
-            setAuthData({ loading: false, error: false });
+            isLoading(false);
+            hasError(false);
             goToAddPictogram();
           } else {
             setErrorMessage(
               "Debe crear una categoria antes de crear un pictograma."
             );
-            setAuthData({ loading: false, error: true });
+            isLoading(false);
+            hasError(true);
           }
             
         })
@@ -62,7 +65,8 @@ const PictogramsPage: React.FC = () => {
             setErrorMessage(
               "Hubo un inconveniente, por favor intente mas tarde."
             );
-            setAuthData({ loading: false, error: true });
+            isLoading(false);
+            hasError(true);
         });
   }
 
@@ -108,7 +112,6 @@ const PictogramsPage: React.FC = () => {
           backdropDismiss
           keyboardClose
           message={errorMessage}
-          onDidDismiss={() => setAuthData({ error: false })}
       />
     </Page>
   );

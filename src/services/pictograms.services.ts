@@ -87,14 +87,13 @@ class PictogramsServices {
     favorite?: boolean
   ) {
     return this.axios.put(`/api/pictogramas/${pictogramId}`, {
-      headers: {
-        Authorization: `Bearer ${token},`,
-      },
-      params: {
         paciente: patientId,
         ...(state ? { estado: state } : {}),
         ...(name ? { nombre: name } : {}),
         ...(favorite ? { favorito: favorite } : {}),
+    }, {
+      headers: {
+        Authorization: `Bearer ${token},`,
       },
     });
   }
