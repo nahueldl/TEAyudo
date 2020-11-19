@@ -49,7 +49,7 @@ const ChooseRoleModal: React.FC<Props> = ({isOpen, handleSelection}) => {
               </IonLabel>
             </IonItem>
             <IonItem onClick={() => setRolSelected("M")}>
-              <IonRadio value="medico" />
+              <IonRadio value="profesional" />
               <IonLabel>
                 <h2 className="itemTitle">Médicx</h2>
                 <h3>
