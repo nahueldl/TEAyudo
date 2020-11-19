@@ -6,9 +6,9 @@ const estadosRespuesta = require('../models/estados_respuesta');
 const { Int } = require('mssql');
 
 //POST Traduccion
-router.post('/nuevaTraduccion', isAuth, async (req, res) => {
+router.post('/', isAuth, async (req, res) => {
     //Los parametros que toma el service no son esos, fijarse bien que onda
-	const result = await traduccionService.insert(req.body, req.query.paciente);
+	const result = await traduccionService.insert(req.body.pictogramas, req.query.paciente);
 	if(result.state === estadosRespuesta.OK){
 		res.status(200).json({msg: "La traduccion ha sido correctamente creada"});
 	}else if(result.state === estadosRespuesta.SERVERERROR){
