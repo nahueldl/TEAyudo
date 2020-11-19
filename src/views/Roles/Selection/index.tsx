@@ -13,9 +13,14 @@ import {
   IonPage,
   IonAlert,
   IonButton,
+  IonInput,
+  IonList,
+  IonRadio,
+  IonRadioGroup,
 } from "@ionic/react";
 import { AuthenticationContext } from "../../../context/authentication";
 import RolesService from "../../../services/roles.services";
+import UserService from "../../../services/user.services";
 import "./styles.css";
 import { Plugins } from "@capacitor/core";
 const { Storage } = Plugins;
@@ -33,6 +38,8 @@ const RoleSelection: React.FC = () => {
   const [errorMsg, setErrorMsg] = useState<string>("");
   const [selection, isSelection] = useState<boolean>();
   const [addition, isAddition] = useState<boolean>();
+  const [licenseNumber, setLicenseNumber] = useState<number>();
+  const [roleSelected, setRoleSelected] = useState<number>();
 
   useEffect(() => {
     handleGetRoles();
@@ -74,7 +81,17 @@ const RoleSelection: React.FC = () => {
     goToSelectPatient();
   };
 
-  const assignRol = (newRol: number, description: string) => {
+  const assignRol = () => {
+    if (roleSelected === 1) {
+      assignFamilyRol(1, "Familiar");
+    } else {
+      if (roleSelected === 2) {
+        assignMedicxRol(2, "Profesional");
+      }
+    }
+  };
+
+  const assignFamilyRol = (newRol: number, description: string) => {
     setLoading(true);
     RolesService.assignRol(authData.token, newRol, description)
       .then((res: any) => {
@@ -88,6 +105,47 @@ const RoleSelection: React.FC = () => {
         hasError(true);
         setErrorMsg(error.response.data.msg);
       });
+  };
+
+  const assignMedicxRol = (newRole: number, descripction: string) => {
+    setLoading(true);
+    UserService.patchUsuario(
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      licenseNumber!.toString()
+    )
+      .then((res) => {
+        RolesService.assignRol(authData.token!, newRole, descripction)
+          .then((res: any) => {
+            setLoading(false);
+            setAuthData({ role: newRole });
+            Storage.set({ key: "role", value: newRole.toString() });
+            console.log("rol assigned!");
+          })
+          .catch((error: any) => {
+            setLoading(false);
+            hasError(true);
+            setErrorMsg(error.response.data.msg);
+          });
+      })
+      .catch((error: any) => {
+        setLoading(false);
+        hasError(true);
+        setErrorMsg(error.response.data.msg);
+      });
+  };
+
+  const showSubmitButton = () => {
+    switch (roleSelected) {
+      case 1:
+        return true;
+      case 2:
+        return licenseNumber;
+    }
   };
 
   const goToSelectPatient = useCallback(
@@ -137,24 +195,54 @@ const RoleSelection: React.FC = () => {
             </IonRow>
           </IonGrid>
         ) : addition ? (
-          <IonGrid className="container">
-            <IonRow>
-              <IonCol size="12">
-                <h1 className="title">Da de alta un rol para poder avanzar</h1>
-              </IonCol>
-              {defaultRoles!.map((rol: any, index: any) => {
-                return (
-                  <IonCol key={index}>
-                    <IonButton
-                      onClick={() => assignRol(rol.id_rol, rol.descripcion)}
-                    >
-                      {rol.descripcion}
-                    </IonButton>
-                  </IonCol>
-                );
-              })}
-            </IonRow>
-          </IonGrid>
+          <>
+            <IonList inset={true}>
+              <IonRadioGroup>
+                <IonItem onClick={() => setRoleSelected(1)}>
+                  <IonRadio value="familiar" />
+                  <IonLabel>
+                    <h2 className="itemTitle">Familiar</h2>
+                    <h3 style={{ paddingLeft: "10px" }}>
+                      Elegí este rol si sos el familiar de un paciente con TEA
+                    </h3>
+                  </IonLabel>
+                </IonItem>
+                <IonItem onClick={() => setRoleSelected(2)}>
+                  <IonRadio value="profesional" />
+                  <IonLabel>
+                    <h2 className="itemTitle">Profesional</h2>
+                    <h3 style={{ paddingLeft: "10px" }}>
+                      Elegí este rol si sos le médicx tratante de un paciente
+                      con TEA
+                    </h3>
+                  </IonLabel>
+                </IonItem>
+              </IonRadioGroup>
+            </IonList>
+            {roleSelected! === 2 ? (
+              <div className="doctorData">
+                <h4 className="title">
+                  Necesitamos verificar tu matrícula para continuar
+                </h4>
+                <IonItem>
+                  <IonInput
+                    value={licenseNumber}
+                    placeholder="Número de matrícula"
+                    onIonChange={(e) =>
+                      setLicenseNumber(parseInt(e.detail.value!, 10))
+                    }
+                    clearInput
+                  ></IonInput>
+                </IonItem>
+              </div>
+            ) : null}
+            <IonButton
+              disabled={!showSubmitButton()}
+              onClick={() => assignRol()}
+            >
+              Siguiente
+            </IonButton>
+          </>
         ) : null}
       </IonContent>
     </IonPage>
