@@ -7,6 +7,7 @@ class UserServices {
   }
 
   patchUsuario(
+    token: string,
     nombre?: string,
     apellido?: string,
     correo?: string,
@@ -15,7 +16,11 @@ class UserServices {
     nro_doc?: string,
     nro_matricula?: string
   ) {
+    const header = `Bearer ${token}`;
     return this.axios.patch("/api/usuario", {
+      headers: {
+        Authorization: header,
+      },
       data: {
         ...(nombre ? { nombre: nombre } : {}),
         ...(apellido ? { apellido: apellido } : {}),

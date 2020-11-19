@@ -8,29 +8,24 @@ import {
 } from "@ionic/react";
 import { AuthenticationContext } from "../../context/authentication";
 import AuthenticationService from "../../services/authentication.services";
-import RoleService from "../../services/roles.services";
 import OverlayLeft from "./OverlayLeft";
 import OverlayRight from "./OverlayRight";
 import SignInForm from "./SignInForm";
 import SignUpForm from "./SignUpForm";
 import "./styles.css";
 import { PlatformContext } from "../../context/platform";
-import ChooseRoleModal from "./ChooseRoleModal";
 import { RegistrationContext } from "../../context/registration";
 import { Plugins } from "@capacitor/core";
 const { Storage } = Plugins;
 
 const LogInSignUpPage: React.FC = () => {
   const { navigate } = useContext(NavContext);
-  const { registrationData, setRegistrationData } = useContext(
-    RegistrationContext
-  );
+  const { setRegistrationData } = useContext(RegistrationContext);
   const { setAuthData } = useContext(AuthenticationContext);
   const { platformData } = useContext(PlatformContext);
   const { isMobile } = platformData;
 
   const [showSignIn, setShowSignIn] = useState<boolean>(false);
-  const [showModal, setShowModal] = useState<boolean>(false);
   const [loading, isLoading] = useState<boolean>(false);
   const [error, hasError] = useState<boolean>(false);
 
@@ -64,12 +59,8 @@ const LogInSignUpPage: React.FC = () => {
   const handleSignUpForm = ({ name, lastname, email, password }: any) => {
     isLoading(true);
     hasError(false);
-    AuthenticationService.handleSignUp(
-      name,
-      lastname,
-      email,
-      password,
-    )
+    setRegistrationData({ name: name, lastname: lastname, email: email });
+    AuthenticationService.handleSignUp(name, lastname, email, password)
       .then((res: any) => {
         const expirationDate = calculateExpirationDate();
         setAuthData({

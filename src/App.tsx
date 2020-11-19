@@ -27,9 +27,7 @@ import LogInSignUpPage from "./views/LogIn&SignUp";
 import PatientSelection from "./views/Patients/Selection";
 import { AuthenticationContext } from "./context/authentication";
 import RoleSelection from "./views/Roles/Selection";
-import AddRole from "./views/Roles/Add";
-import AddPatientPage from "./views/Patients/AddPatient";
-import AddRolePage from "./views/Roles/Page/AddRolePage";
+
 
 const App: React.FC = () => {
   const { token, role, patientId } = useContext(AuthenticationContext).authData;
