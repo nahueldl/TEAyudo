@@ -1,21 +1,25 @@
 import React, { useState, useContext, useEffect, useCallback } from "react";
 import Page from "../../components/Page";
-import { NavContext, IonLoading, IonGrid, IonRow, IonCol, IonLabel, IonSearchbar } from "@ionic/react";
+import { NavContext, IonLoading, IonGrid, IonRow, IonCol, IonLabel, IonSearchbar, IonButton, IonIcon, IonAlert } from "@ionic/react";
 import { AuthenticationContext } from "../../context/authentication";
 import PictogramServices from "../../services/pictograms.services";
+import CategoriesService from "../../services/categories.services";
 import { Pictogram } from "../../types/Pictograms";
 import { PatientContext } from "../../context/patient";
 import ListPictograms from "./ListPictograms";
+import { addOutline } from "ionicons/icons";
 
 const PictogramsPage: React.FC = () => {
   const { authData, setAuthData } = useContext(AuthenticationContext);
   // const { patientData, setPatientData } = useContext(PatientContext);
+  const { patientData, setPatientData } = useContext(PatientContext);
   const [pictograms, setPictograms] = useState<[Pictogram]>();
   const { navigate } = useContext(NavContext);
   const [searchText, setSearchText] = useState('');
   const [errorMessage, setErrorMessage] = useState<string>();
   const [loading, isLoading] = useState<boolean>(false);
   const [error, hasError] = useState<boolean>(false);
+  const [ showModal, setShowModal] = useState(false);
 
   const getPictogramSearchText = (textBusqueda: string) => {
     setSearchText(textBusqueda);
@@ -39,8 +43,35 @@ const PictogramsPage: React.FC = () => {
     } 
   };
 
+  const handleClickAddPictogarm = () => {
+    isLoading(true);
+    hasError(false);
+    CategoriesService.getCategories(authData.token!)
+        .then((res: any) => {
+          if(res.data.length) {
+            isLoading(false);
+            hasError(false);
+            goToAddPictogram();
+          } else {
+            setErrorMessage(
+              "Debe crear una categoria antes de crear un pictograma."
+            );
+            isLoading(false);
+            hasError(true);
+          }
+            
+        })
+        .catch((error: any) => {
+            setErrorMessage(
+              "Hubo un inconveniente, por favor intente mas tarde."
+            );
+            isLoading(false);
+            hasError(true);
+        });
+  }
+
   const goToAddPictogram = useCallback(
-    () => navigate("/pictogram/alta", "forward"),
+    () => navigate("/pictograma/alta", "forward"),
     [navigate]
   );
 
@@ -50,10 +81,14 @@ const PictogramsPage: React.FC = () => {
         <IonRow>
           <IonCol size="4">
             <IonCol size="12">
-              <IonLabel>Buscar un pictograma:</IonLabel>
+              <IonLabel>Buscar un pictograma</IonLabel>
             </IonCol>
             <IonCol size="12">
               <IonSearchbar value={searchText} placeholder="Buscar..." onIonChange={e => getPictogramSearchText(e.detail.value!)} showCancelButton="never"></IonSearchbar>
+            </IonCol>
+            <IonCol size="12">
+              <IonLabel>Crear un nuevo pictograma</IonLabel>
+              <IonButton color="tertiary" onClick={handleClickAddPictogarm}>Crear pictograma <IonIcon  className="pl-5" slot="end" icon={addOutline}></IonIcon></IonButton>
             </IonCol>
           </IonCol>
           <IonCol size="8">
@@ -71,6 +106,13 @@ const PictogramsPage: React.FC = () => {
           </IonCol>
         </IonRow>
       </IonGrid>
+      <IonAlert
+          isOpen={error!}
+          animated
+          backdropDismiss
+          keyboardClose
+          message={errorMessage}
+      />
     </Page>
   );
 };

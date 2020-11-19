@@ -7,6 +7,7 @@ import { RegistrationProvider } from "./context/registration";
 import { PlatformProvider } from "./context/platform";
 import { PatientProvider } from "./context/patient";
 import { CategoriaProvider } from "./context/category";
+import { defineCustomElements } from '@ionic/pwa-elements/loader';
 
 ReactDOM.render(
   <PlatformProvider>
@@ -22,6 +23,7 @@ ReactDOM.render(
   </PlatformProvider>,
   document.getElementById("root")
 );
+defineCustomElements(window);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

@@ -8,14 +8,14 @@ import { AuthenticationContext } from '../../context/authentication';
 import { PatientContext } from '../../context/patient';
 import { Category } from '../../types/Categories';
 import { checkmarkCircleOutline } from 'ionicons/icons';
-import { getBase64 } from '../encodeImg/encodeImg';
-import { getBlobFromURL } from '../encodeImg/urlToBlob';
+import { getBase64 } from '../../utils/encodeImg';
+import { getBlobFromURL } from '../../utils/urlToBlob';
 
 export const ModalPictogram: React.FC<Props> = ({showModal, handleShowModal, pictogram}) => {
     const { authData, setAuthData } = useContext(AuthenticationContext);
-    const [errorMessage, setErrorMessage] = useState<string>();
-    const [loading, isLoading] = useState<boolean>(false);
-    const [error, hasError] = useState<boolean>(false);
+    const [ errorMessage, setErrorMessage ] = useState<string>();
+    const [ loading, isLoading ] = useState<boolean>(false);
+    const [ error, hasError ] = useState<boolean>(false);
     const [ favorito, setFavorito ] = useState(false);
     const [ categoriasPropias, setCategoriasPropias ] = useState<[Category]>();
     const [ newName, setNewName ] = useState("");
@@ -25,7 +25,7 @@ export const ModalPictogram: React.FC<Props> = ({showModal, handleShowModal, pic
 
     const obtenerCategorias = () => {
         setFavorito(pictogram?.favorito!);
-        CategoriesService.getCategories(authData.token!, authData.patientId!)
+        CategoriesService.getCategories(authData.token!)
         .then((res: any) => {
             setCategoriasPropias(res.data);
         })
@@ -38,6 +38,7 @@ export const ModalPictogram: React.FC<Props> = ({showModal, handleShowModal, pic
     }
     
     const marcarFavoritoPictograma = (favorito: boolean) => {
+        debugger;
         if(favorito != undefined) {
             PictogramsService.editPictogram(authData.token!, pictogram?.id_pictograma!, parseInt(authData.patientId!), undefined, undefined, favorito)
             .then((res:any) => {
@@ -57,6 +58,16 @@ export const ModalPictogram: React.FC<Props> = ({showModal, handleShowModal, pic
         getBlobFromURL(pictogram?.ruta_acceso_local!).then(data => {
             getBase64(data).then(encoded => {
                 base64 = encoded;
+                PictogramsService.loadPictogramToCategory(authData.token!, categoriaValue!, base64, pictogram!.nombres[0], pictogram!.etiquetas[0])
+                    .then((res:any) => {
+                        // setAuthData({ loading: false, error: false });
+                    })
+                    .catch(error => {
+                        setErrorMessage(
+                            "Hubo un inconveniente agregando el pictograma a la categoria, pruebe más tarde."
+                          );
+                          hasError(true);
+                    })
             });
         })
     }
@@ -71,6 +82,7 @@ export const ModalPictogram: React.FC<Props> = ({showModal, handleShowModal, pic
                 setErrorMessage(
                 "Hubo un problema al personalizar el nombre, por favor intente más tarde."
                 );
+                hasError(true);
             });
     }
 
@@ -98,9 +110,9 @@ export const ModalPictogram: React.FC<Props> = ({showModal, handleShowModal, pic
                                     <IonLabel>Personalizar nombre</IonLabel>
                                     <IonInput className="pl-5 text-align-end" placeholder={pictogram.nombre_personalizado != null ? pictogram.nombre_personalizado : pictogram.nombres[0].nombre} value={newName} onIonChange={e => setNewName(e.detail.value!)}>
                                     {newName.length>2?   
-                                        <button icon-only onClick={personalizarNombrePictograma}>
-                                            <IonIcon  className="pl-5" slot="end" icon={checkmarkCircleOutline} color="success"></IonIcon>
-                                        </button> 
+                                        <IonButton fill="clear" onClick={personalizarNombrePictograma}>
+                                            <IonIcon className="" slot="end" icon={checkmarkCircleOutline} color="success"></IonIcon>
+                                        </IonButton> 
                                     : <></>}
                                     </IonInput>
                                 </IonItem>
@@ -117,7 +129,7 @@ export const ModalPictogram: React.FC<Props> = ({showModal, handleShowModal, pic
                         <IonCol size="2"/>
                     </IonRow>
                 </IonGrid>
-                <IonButton onClick={() => handleShowModal(false, undefined)}>Cerrar</IonButton>
+                <IonButton color="danger" onClick={() => handleShowModal(false, undefined)}>Cerrar</IonButton>
                 <IonAlert
                     isOpen={error!}
                     animated
