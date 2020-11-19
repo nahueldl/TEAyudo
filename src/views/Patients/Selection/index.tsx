@@ -160,63 +160,67 @@ const PatientSelection: React.FC = () => {
               ))}
             </IonRow>
           </IonGrid>
-        ) : (
-          <IonGrid>
-            <IonRow>
-              <IonCol>
-                <h1 className="title">Agrega un paciente para avanzar</h1>
-              </IonCol>
-            </IonRow>
-            <IonRow>
-              <IonCol>
-                <IonAvatar>
-                  <img src={avatar} alt="avatar" />
-                </IonAvatar>
-              </IonCol>
-            </IonRow>
-            <IonRow>
-              <IonCol>
-                <IonLabel>Nombre</IonLabel>
-                <IonInput
-                  value={name}
-                  placeholder="Ingrese el nombre"
-                  onIonChange={(e) => setName(e.detail.value!)}
-                ></IonInput>
-              </IonCol>
-            </IonRow>
-            <IonRow>
-              <IonCol>
-                <IonLabel>Apellido</IonLabel>
-                <IonInput
-                  value={lastName}
-                  placeholder="Ingrese el apellido"
-                  onIonChange={(e) => setLastName(e.detail.value!)}
-                ></IonInput>
-              </IonCol>
-            </IonRow>
-            <IonRow>
-              <IonCol>
-                <IonLabel>Fecha de nacimiento</IonLabel>
-                <IonDatetime
-                  displayFormat="DD MM YYYY"
-                  placeholder="Fecha de nacimiento"
-                  value={birthday}
-                  onIonChange={(e) => setBirthday(e.detail.value!)}
-                ></IonDatetime>
-              </IonCol>
-            </IonRow>
-            <IonRow>
-              <IonCol>
-                <IonButton
-                  disabled={disableButton()}
-                  onClick={() => addPatient()}
-                >
-                  Aceptar
-                </IonButton>
-              </IonCol>
-            </IonRow>
-          </IonGrid>
-        )}
+        ) : addition ? (
+          <>
+            <IonGrid
+             className="container"
+            >
+              <IonRow>
+                <IonCol>
+                  <h1 className="title">Agrega un paciente para avanzar</h1>
+                </IonCol>
+              </IonRow>
+              <IonRow>
+                <IonCol>
+                  <IonAvatar>
+                    <img src={avatar} alt="avatar" />
+                  </IonAvatar>
+                </IonCol>
+              </IonRow>
+              <IonRow>
+                <IonCol>
+                  <IonLabel>Nombre</IonLabel>
+                  <IonInput
+                    value={name}
+                    placeholder="Ingrese el nombre"
+                    onIonChange={(e) => setName(e.detail.value!)}
+                  ></IonInput>
+                </IonCol>
+              </IonRow>
+              <IonRow>
+                <IonCol>
+                  <IonLabel>Apellido</IonLabel>
+                  <IonInput
+                    value={lastName}
+                    placeholder="Ingrese el apellido"
+                    onIonChange={(e) => setLastName(e.detail.value!)}
+                  ></IonInput>
+                </IonCol>
+              </IonRow>
+              <IonRow>
+                <IonCol>
+                  <IonLabel>Fecha de nacimiento</IonLabel>
+                  <IonDatetime
+                    displayFormat="DD MM YYYY"
+                    placeholder="Fecha de nacimiento"
+                    value={birthday}
+                    onIonChange={(e) => setBirthday(e.detail.value!)}
+                  ></IonDatetime>
+                </IonCol>
+              </IonRow>
+              <IonRow>
+                <IonCol>
+                  <IonButton
+                    disabled={disableButton()}
+                    onClick={() => addPatient()}
+                  >
+                    Aceptar
+                  </IonButton>
+                </IonCol>
+              </IonRow>
+            </IonGrid>
+          </>
+        ) : null}
       </IonContent>
     </IonPage>
   );
