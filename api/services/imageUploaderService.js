@@ -21,7 +21,10 @@ const imageUploaderService = {
 				response: response.secure_url
 			};
 		}catch(e){
-			return null;
+			return {
+				state: estadosRespuesta.USERERROR,
+				response: "La imagen no está, o no ha sido subida en el formato correspondiente"
+			};
 		}
 	}
 
