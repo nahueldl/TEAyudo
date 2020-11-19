@@ -66,12 +66,6 @@ const AppPostLogin: React.FC = () => {
 
         <Route path="/juegos" component={GamesPage} />
 
- 
-        {token ? (
-          <Redirect from="/" to="/inicio" />
-        ) : (
-          <Redirect from="*" to="/login" />
-        )}
       </IonRouterOutlet>
     </IonSplitPane>
   );
