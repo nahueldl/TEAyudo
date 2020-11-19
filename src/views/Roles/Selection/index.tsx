@@ -23,22 +23,23 @@ import RolesService from "../../../services/roles.services";
 import UserService from "../../../services/user.services";
 import "./styles.css";
 import { Plugins } from "@capacitor/core";
+import { RegistrationContext } from "../../../context/registration";
 const { Storage } = Plugins;
 
 const RoleSelection: React.FC = () => {
   const { navigate } = useContext(NavContext);
   const { authData, setAuthData } = useContext(AuthenticationContext);
+  const { name, lastname, email } = useContext(
+    RegistrationContext
+  ).registrationData;
   const [loading, setLoading] = useState<boolean>(true);
-  const [defaultRoles] = useState<any[]>([
-    { id_rol: 1, descripcion: "Familiar" },
-    { id_rol: 2, descripcion: "Profesional" },
-  ]);
   const [roles, setRoles] = useState<any>([]);
   const [error, hasError] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string>("");
   const [selection, isSelection] = useState<boolean>();
   const [addition, isAddition] = useState<boolean>();
   const [licenseNumber, setLicenseNumber] = useState<number>();
+  const [dni, setDni] = useState<number>();
   const [roleSelected, setRoleSelected] = useState<number>();
 
   useEffect(() => {
@@ -110,12 +111,13 @@ const RoleSelection: React.FC = () => {
   const assignMedicxRol = (newRole: number, descripction: string) => {
     setLoading(true);
     UserService.patchUsuario(
+      authData.token!,
+      name,
+      lastname,
+      email,
       undefined,
       undefined,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
+      dni!.toString(),
       licenseNumber!.toString()
     )
       .then((res) => {
@@ -144,7 +146,7 @@ const RoleSelection: React.FC = () => {
       case 1:
         return true;
       case 2:
-        return licenseNumber;
+        return licenseNumber && dni;
     }
   };
 
@@ -196,52 +198,96 @@ const RoleSelection: React.FC = () => {
           </IonGrid>
         ) : addition ? (
           <>
-            <IonList inset={true}>
-              <IonRadioGroup>
-                <IonItem onClick={() => setRoleSelected(1)}>
-                  <IonRadio value="familiar" />
-                  <IonLabel>
-                    <h2 className="itemTitle">Familiar</h2>
-                    <h3 style={{ paddingLeft: "10px" }}>
-                      Elegí este rol si sos el familiar de un paciente con TEA
-                    </h3>
-                  </IonLabel>
-                </IonItem>
-                <IonItem onClick={() => setRoleSelected(2)}>
-                  <IonRadio value="profesional" />
-                  <IonLabel>
-                    <h2 className="itemTitle">Profesional</h2>
-                    <h3 style={{ paddingLeft: "10px" }}>
-                      Elegí este rol si sos le médicx tratante de un paciente
-                      con TEA
-                    </h3>
-                  </IonLabel>
-                </IonItem>
-              </IonRadioGroup>
-            </IonList>
-            {roleSelected! === 2 ? (
-              <div className="doctorData">
-                <h4 className="title">
-                  Necesitamos verificar tu matrícula para continuar
-                </h4>
-                <IonItem>
-                  <IonInput
-                    value={licenseNumber}
-                    placeholder="Número de matrícula"
-                    onIonChange={(e) =>
-                      setLicenseNumber(parseInt(e.detail.value!, 10))
-                    }
-                    clearInput
-                  ></IonInput>
-                </IonItem>
-              </div>
-            ) : null}
-            <IonButton
-              disabled={!showSubmitButton()}
-              onClick={() => assignRol()}
+            <IonGrid
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+              }}
             >
-              Siguiente
-            </IonButton>
+              <IonRow>
+                <IonCol size="12">
+                  <h1 className="title">
+                    Para continuar, necesitamos que des de alta un rol
+                  </h1>
+                </IonCol>
+              </IonRow>
+              <IonRow>
+                <IonCol>
+                  <IonList inset={true}>
+                    <IonRadioGroup>
+                      <IonItem onClick={() => setRoleSelected(1)}>
+                        <IonRadio value="familiar" />
+                        <IonLabel>
+                          <h2
+                            style={{ paddingLeft: "10px" }}
+                            className="itemTitle"
+                          >
+                            Familiar
+                          </h2>
+                          <h3 style={{ paddingLeft: "10px" }}>
+                            Elegí este rol si sos el familiar de un paciente con
+                            TEA
+                          </h3>
+                        </IonLabel>
+                      </IonItem>
+                      <IonItem onClick={() => setRoleSelected(2)}>
+                        <IonRadio value="profesional" />
+                        <IonLabel>
+                          <h2
+                            style={{ paddingLeft: "10px" }}
+                            className="itemTitle"
+                          >
+                            Profesional
+                          </h2>
+                          <h3 style={{ paddingLeft: "10px" }}>
+                            Elegí este rol si sos le médicx tratante de un
+                            paciente con TEA
+                          </h3>
+                        </IonLabel>
+                      </IonItem>
+                    </IonRadioGroup>
+                  </IonList>
+                  {roleSelected! === 2 ? (
+                    <div className="doctorData">
+                      <h4 className="title">
+                        Necesitamos algunos datos extra para continuar
+                      </h4>
+                      <IonItem>
+                        <IonInput
+                          value={licenseNumber}
+                          placeholder="Número de matrícula"
+                          onIonChange={(e) =>
+                            setLicenseNumber(parseInt(e.detail.value!, 10))
+                          }
+                          clearInput
+                        ></IonInput>
+                      </IonItem>
+                      <IonItem>
+                        <IonInput
+                          value={dni}
+                          placeholder="Número de documento"
+                          onIonChange={(e) =>
+                            setDni(parseInt(e.detail.value!, 10))
+                          }
+                          clearInput
+                        ></IonInput>
+                      </IonItem>
+                    </div>
+                  ) : null}
+                </IonCol>
+              </IonRow>
+              <IonRow>
+                <IonCol style={{ display: "flex", justifyContent: "center" }}>
+                  <IonButton
+                    disabled={!showSubmitButton()}
+                    onClick={() => assignRol()}
+                  >
+                    Siguiente
+                  </IonButton>
+                </IonCol>
+              </IonRow>
+            </IonGrid>
           </>
         ) : null}
       </IonContent>
