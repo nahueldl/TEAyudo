@@ -7,8 +7,9 @@ import {
   IonMenuToggle,
 } from "@ionic/react";
 
-import React from "react";
+import React, { useContext } from "react";
 import { useLocation } from "react-router-dom";
+import { AuthenticationContext } from "../../context/authentication";
 import "./Menu.css";
 
 interface AppPage {
@@ -18,7 +19,7 @@ interface AppPage {
   title: string;
 }
 
-const appPages: AppPage[] = [
+const appPagesFamiliar: AppPage[] = [
   {
     title: "Pictogramas",
     url: `/pictogramas`,
@@ -40,8 +41,27 @@ const appPages: AppPage[] = [
     url: "/roles",
   },
   {
-    title: "Informes",
-    url: "/informes",
+    title: "Configuración",
+    url: "/configuracion",
+  },
+];
+
+const appPageMedicx: AppPage[] = [
+  {
+    title: "Pictogramas",
+    url: `/pictogramas`,
+  },
+  {
+    title: "Categorías",
+    url: "/categorias",
+  },
+  {
+    title: "Pacientes",
+    url: "/pacientes",
+  },
+  {
+    title: "Roles",
+    url: "/roles",
   },
   {
     title: "Configuración",
@@ -51,28 +71,47 @@ const appPages: AppPage[] = [
 
 const Menu: React.FC<Props> = ({ patientName }) => {
   const location = useLocation();
+  const { role } = useContext(AuthenticationContext).authData;
   return (
     <IonMenu contentId="main" type="overlay" swipeGesture>
       <IonContent>
         <h1 className="title">{`Bienvenidx ${patientName}!`}</h1>
         <IonList id="menu-list">
-          {appPages.map((appPage, index) => {
-            return (
-              <IonMenuToggle key={index} autoHide={false} color="secondary">
-                <IonItem
-                  className={
-                    location.pathname === appPage.url ? "selected" : ""
-                  }
-                  routerLink={appPage.url}
-                  routerDirection="none"
-                  lines="none"
-                  detail={false}
-                >
-                  <IonLabel>{appPage.title}</IonLabel>
-                </IonItem>
-              </IonMenuToggle>
-            );
-          })}
+          {role === 1
+            ? appPagesFamiliar.map((appPage, index) => {
+                return (
+                  <IonMenuToggle key={index} autoHide={false} color="secondary">
+                    <IonItem
+                      className={
+                        location.pathname === appPage.url ? "selected" : ""
+                      }
+                      routerLink={appPage.url}
+                      routerDirection="none"
+                      lines="none"
+                      detail={false}
+                    >
+                      <IonLabel>{appPage.title}</IonLabel>
+                    </IonItem>
+                  </IonMenuToggle>
+                );
+              })
+            : appPageMedicx.map((appPage, index) => {
+                return (
+                  <IonMenuToggle key={index} autoHide={false} color="secondary">
+                    <IonItem
+                      className={
+                        location.pathname === appPage.url ? "selected" : ""
+                      }
+                      routerLink={appPage.url}
+                      routerDirection="none"
+                      lines="none"
+                      detail={false}
+                    >
+                      <IonLabel>{appPage.title}</IonLabel>
+                    </IonItem>
+                  </IonMenuToggle>
+                );
+              })}
         </IonList>
         <IonMenuToggle autoHide={false} className="centered">
           <IonItem lines="none" detail={false} style={{ textAlign: "center" }}>
