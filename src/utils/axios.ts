@@ -6,7 +6,8 @@ import axios, {
 } from "axios";
 import { Plugins } from "@capacitor/core";
 const { Storage } = Plugins;
-const __API_BASE_URL__ = "https://api.teayudo.tk";
+// const __API_BASE_URL__ = "https://api.teayudo.tk";
+const __API_BASE_URL__ = "http://200.123.150.57:62999"
 
 export default class AxiosWrapper {
   private instance: AxiosInstance;
