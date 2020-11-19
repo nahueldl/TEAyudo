@@ -1,8 +1,8 @@
-.container {
-  display: flex;
+.container-addPictogram {
+  display: block;
+  position: relative;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
   background: none !important;
 }
 
@@ -20,4 +20,16 @@
 
 .pl-5 {
   padding-left: 5px;
+}
+
+.avatars {
+  margin: auto !important;
+}
+
+.margin-auto {
+  margin: auto;
+}
+
+.max-width-150 {
+  max-width: 150px !important;
 }

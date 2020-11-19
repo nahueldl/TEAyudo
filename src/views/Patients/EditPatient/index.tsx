@@ -20,8 +20,8 @@ import { trash, close, refreshOutline } from "ionicons/icons";
 import PatientServices from "../../../services/patients.services";
 import Page from "../../../components/Page";
 import { PatientContext } from "../../../context/patient";
-import { getBlobFromURL } from "../../../components/encodeImg/urlToBlob";
-import { getBase64 } from "../../../components/encodeImg/encodeImg";
+import { getBlobFromURL } from "../../../utils/urlToBlob";
+import { getBase64 } from "../../../utils/encodeImg";
 
 const EditPatient = () => {
   const { token } = useContext(AuthenticationContext).authData;

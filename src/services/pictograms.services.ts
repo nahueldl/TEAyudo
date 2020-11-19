@@ -64,10 +64,6 @@ class PictogramsServices {
     violence?: boolean
   ): Promise<any> {
     return this.axios.post(`/api/pictogramas`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      params: {
         categoria: category,
         base64img,
         nombres: names,
@@ -75,7 +71,10 @@ class PictogramsServices {
         ...(eschematic ? { esquematico: true } : {}),
         ...(sex ? { sexo: true } : {}),
         ...(violence ? { violencia: true } : {}),
-      },
+    }, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
     });
   }
 
@@ -88,14 +87,13 @@ class PictogramsServices {
     favorite?: boolean
   ) {
     return this.axios.put(`/api/pictogramas/${pictogramId}`, {
-      headers: {
-        Authorization: `Bearer ${token},`,
-      },
-      params: {
         paciente: patientId,
         ...(state ? { estado: state } : {}),
         ...(name ? { nombre: name } : {}),
         ...(favorite ? { favorito: favorite } : {}),
+    }, {
+      headers: {
+        Authorization: `Bearer ${token},`,
       },
     });
   }
