@@ -10,7 +10,7 @@ router.post('/', isAuth, async (req, res) => {
     //Los parametros que toma el service no son esos, fijarse bien que onda
 	const result = await traduccionService.insert(req.body.pictogramas, req.query.paciente);
 	if(result.state === estadosRespuesta.OK){
-		res.status(200).json({msg: "La traduccion ha sido correctamente creada"});
+		res.status(200).json({traduccion: result.response});
 	}else if(result.state === estadosRespuesta.SERVERERROR){
 		res.status(500).json({msg: "Ha ocurrido un error inesperado en el servidor"});
 	}else if(result.state === estadosRespuesta.USERERROR){
