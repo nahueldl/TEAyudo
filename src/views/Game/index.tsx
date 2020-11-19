@@ -36,7 +36,7 @@ const GamesPage: React.FC = () => {
     hasError(false);
     GameServices.getMove(token!, patientId!)
       .then((res) => {
-        setMove(res);
+        setMove(res.data);
         setLoadingMove(false);
       })
       .catch((error) => {

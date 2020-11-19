@@ -47,7 +47,7 @@ const AddPatient: React.FC<InfoPatientProps> = ({ patient }) => {
           ".svg"
   );
 
-  const handleAddPatient = (e:any) => {
+  const handleAddPatient = (e: any) => {
     e.preventDefault();
     isLoading(true);
     hasError(false);
@@ -59,8 +59,9 @@ const AddPatient: React.FC<InfoPatientProps> = ({ patient }) => {
           .then((res: any) => {
             patientData.patientsList?.push(res.data);
             setPatientData({patientsList: patientData.patientsList});
-        isLoading(false);
-        goToListPatients();
+            isLoading(false);
+        console.log(res.data);
+            goToListPatients();
       })
       .catch((_error: any) => {
         setErrorMessage(
@@ -133,7 +134,7 @@ const AddPatient: React.FC<InfoPatientProps> = ({ patient }) => {
                 <IonButton
                   type="button"
                   className="formButton mt-5"
-                  onClick={e => handleAddPatient(e)}
+                  onClick={(e) => handleAddPatient(e)}
                   expand="block"
                 >
                   Agregar paciente

@@ -3,7 +3,7 @@ import Page from "../../components/Page";
 import ListCategories from "./ListCategories";
 import CategoriesService from "../../services/categories.services";
 import { AuthenticationContext } from "../../context/authentication";
-import { IonLoading, IonRow, NavContext } from "@ionic/react";
+import { IonAlert, IonLoading, IonRow, NavContext } from "@ionic/react";
 import { PatientContext } from "../../context/patient";
 import { CategoryContext } from "../../context/category";
 import { addCircleOutline } from "ionicons/icons";
@@ -23,8 +23,9 @@ const CategoriesPage: React.FC = () => {
     isLoading(true);
     hasError(false);
     CategoriesService.getCategories(
-      token!,
-      patientData.patientSelected?.id_paciente
+      token!
+      // ,
+      // patientData.patientSelected?.id_paciente
     )
       .then((res: any) => {
         setCategoriaData({ categoriasList: res.data });
@@ -66,6 +67,17 @@ const CategoriesPage: React.FC = () => {
           </IonRow>
         </>
       )}
+      {error ? (
+        <IonAlert
+          isOpen={error!}
+          animated
+          backdropDismiss
+          keyboardClose
+          message={
+            "Hubo un error inesperado, por favor intente nuevamente más tarde."
+          }
+        />
+      ) : null}
     </Page>
   );
 };
