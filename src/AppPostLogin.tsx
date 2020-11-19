@@ -19,7 +19,6 @@ import AddPatientPage from "./views/Patients/AddPatient";
 import ViewPatientPage from "./views/Patients/ViewPatient";
 import EditPatientPage from "./views/Patients/EditPatient";
 import RolesPage from "./views/Roles/Page";
-import AddRole from "./views/Roles/Add";
 import RoleSelection from "./views/Roles/Selection";
 import LogInSignUpPage from "./views/LogIn&SignUp";
 import AddRolePage from "./views/Roles/Page/AddRolePage";

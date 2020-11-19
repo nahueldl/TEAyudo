@@ -90,7 +90,6 @@ const ReportsPage: React.FC = () => {
               <IonRow>
                 <IonCol>
                   <div style={{ textAlign: "justify", padding: "10px" }}>
-                    {/* TODO: texto alternativo en caso de que haya un sólo paciente */}
                     {patients.length > 1
                       ? "Seleccioná un paciente para poder generar el informe correspondiente"
                       : `Se generará el informe correspondiente a ${patientSelected!

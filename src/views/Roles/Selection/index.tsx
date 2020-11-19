@@ -95,11 +95,6 @@ const RoleSelection: React.FC = () => {
     [navigate]
   );
 
-  const goToAddRole = useCallback(
-    () => navigate("/roles/alta", "forward", "push"),
-    [navigate]
-  );
-
   return (
     <IonPage>
       <IonContent>
