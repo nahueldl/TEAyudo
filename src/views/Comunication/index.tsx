@@ -18,6 +18,7 @@ import { PlatformContext } from "../../context/platform";
 import CategoriesServices from "../../services/categories.services";
 import { AuthenticationContext } from "../../context/authentication";
 import PictogramsServices from "../../services/pictograms.services";
+import TranslateServices from "../../services/translate.services";
 import TranslationModal from "./TranslationModal";
 import { chevronDown, chevronForward, trashOutline } from "ionicons/icons";
 import { Pictogram } from "../../types/Pictograms";
@@ -86,8 +87,18 @@ const ComunicationPage: React.FC = () => {
     const translation = selectedItems
       .map((item) => item.pictogram.nombres[0].nombre)
       .join(" ");
-    setTranslation(translation);
-    setShowModal(true);
+      const listPictograms: any[] = [];
+      selectedItems.map(item => {
+        listPictograms?.push({id: item.pictogram.id_pictograma!})
+      })
+      TranslateServices.postTranslate(token!, patientId!, listPictograms)
+      .then((res:any)=> {
+        setTranslation(translation);
+        setShowModal(true);
+      })
+      .catch((error: any) => {
+        setError(error.msg);
+      });
     return;
   };
 
