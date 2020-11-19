@@ -17,11 +17,10 @@ class UserServices {
     nro_matricula?: string
   ) {
     const header = `Bearer ${token}`;
-    return this.axios.patch("/api/usuario", {
-      headers: {
-        Authorization: header,
-      },
-      data: {
+    return this.axios.patch(
+      "/api/usuario",
+
+      {
         ...(nombre ? { nombre: nombre } : {}),
         ...(apellido ? { apellido: apellido } : {}),
         ...(correo ? { correo: correo } : {}),
@@ -30,7 +29,12 @@ class UserServices {
         ...(nro_doc ? { nro_doc: nro_doc } : {}),
         ...(nro_matricula ? { nro_matricula: nro_matricula } : {}),
       },
-    });
+      {
+        headers: {
+          Authorization: header,
+        },
+      }
+    );
   }
 }
 const instance = new UserServices();
