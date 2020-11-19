@@ -99,7 +99,6 @@ const RoleSelection: React.FC = () => {
         setLoading(false);
         setAuthData({ role: newRol });
         Storage.set({ key: "role", value: newRol.toString() });
-        console.log("rol assigned!");
       })
       .catch((error: any) => {
         setLoading(false);
@@ -109,6 +108,7 @@ const RoleSelection: React.FC = () => {
   };
 
   const assignMedicxRol = (newRole: number, descripction: string) => {
+    debugger;
     setLoading(true);
     UserService.patchUsuario(
       authData.token!,
@@ -126,7 +126,6 @@ const RoleSelection: React.FC = () => {
             setLoading(false);
             setAuthData({ role: newRole });
             Storage.set({ key: "role", value: newRole.toString() });
-            console.log("rol assigned!");
           })
           .catch((error: any) => {
             setLoading(false);
@@ -254,6 +253,7 @@ const RoleSelection: React.FC = () => {
                         Necesitamos algunos datos extra para continuar
                       </h4>
                       <IonItem>
+                        <IonLabel>Número de matrícula</IonLabel>
                         <IonInput
                           value={licenseNumber}
                           placeholder="Número de matrícula"
@@ -264,6 +264,7 @@ const RoleSelection: React.FC = () => {
                         ></IonInput>
                       </IonItem>
                       <IonItem>
+                        <IonLabel>Número de documento</IonLabel>
                         <IonInput
                           value={dni}
                           placeholder="Número de documento"
