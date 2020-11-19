@@ -1,7 +1,14 @@
 import React, { useContext, useState, useCallback } from "react";
-import { IonContent, NavContext, IonSlides, IonSlide } from "@ionic/react";
+import {
+  IonContent,
+  NavContext,
+  IonSlides,
+  IonSlide,
+  IonPage,
+} from "@ionic/react";
 import { AuthenticationContext } from "../../context/authentication";
 import AuthenticationService from "../../services/authentication.services";
+import RoleService from "../../services/roles.services";
 import OverlayLeft from "./OverlayLeft";
 import OverlayRight from "./OverlayRight";
 import SignInForm from "./SignInForm";
@@ -55,40 +62,13 @@ const LogInSignUpPage: React.FC = () => {
   };
 
   const handleSignUpForm = ({ name, lastname, email, password }: any) => {
-    setRegistrationData({
-      name: name,
-      lastname: lastname,
-      email: email,
-      password: password,
-    });
-    setShowModal(true);
-  };
-
-  const handleRolSelection = (
-    idType?: string,
-    idNumber?: number,
-    licenseNumber?: number
-  ) => {
-    setShowModal(false);
-    handleSignUp(idType, idNumber, licenseNumber);
-  };
-
-  const handleSignUp = (
-    idType?: string,
-    idNumber?: number,
-    licenseNumber?: number
-  ) => {
     isLoading(true);
     hasError(false);
-    const { name, lastname, email, password } = registrationData;
     AuthenticationService.handleSignUp(
-      name!,
-      lastname!,
-      email!,
-      password!,
-      idType,
-      (idNumber as unknown) as string,
-      (licenseNumber as unknown) as string
+      name,
+      lastname,
+      email,
+      password,
     )
       .then((res: any) => {
         const expirationDate = calculateExpirationDate();
@@ -105,6 +85,7 @@ const LogInSignUpPage: React.FC = () => {
         });
         Storage.set({ key: "username", value: email! });
         isLoading(false);
+
         goToAddPatient();
       })
       .catch((_error: any) => {
@@ -134,45 +115,51 @@ const LogInSignUpPage: React.FC = () => {
   const classRightPanelActive = showSignIn ? "rightPanelActive" : "";
 
   return (
-    <IonContent>
-      {isMobile ? (
-        <IonSlides className="slides">
-          <IonSlide>
-            <SignInForm signIn={handleSignIn} loading={loading} error={error} />
-          </IonSlide>
-          <IonSlide>
-            <SignUpForm
-              signUp={handleSignUpForm}
-              loading={loading}
-              error={error}
-            />
-          </IonSlide>
-        </IonSlides>
-      ) : (
-        <div className={`container ${classRightPanelActive}`}>
-          <div className="formContainer signUpContainer">
-            <SignUpForm
-              signUp={handleSignUpForm}
-              loading={loading}
-              error={error}
-            />
-          </div>
-          <div className="formContainer signInContainer">
-            <SignInForm signIn={handleSignIn} loading={loading} error={error} />
-          </div>
-          <div className="overlayContainer">
-            <div className="overlay">
-              <OverlayLeft handleActivationChange={setShowSignIn} />
-              <OverlayRight handleActivationChange={setShowSignIn} />
+    <IonPage>
+      <IonContent>
+        {isMobile ? (
+          <IonSlides className="slides">
+            <IonSlide>
+              <SignInForm
+                signIn={handleSignIn}
+                loading={loading}
+                error={error}
+              />
+            </IonSlide>
+            <IonSlide>
+              <SignUpForm
+                signUp={handleSignUpForm}
+                loading={loading}
+                error={error}
+              />
+            </IonSlide>
+          </IonSlides>
+        ) : (
+          <div className={`container ${classRightPanelActive}`}>
+            <div className="formContainer signUpContainer">
+              <SignUpForm
+                signUp={handleSignUpForm}
+                loading={loading}
+                error={error}
+              />
+            </div>
+            <div className="formContainer signInContainer">
+              <SignInForm
+                signIn={handleSignIn}
+                loading={loading}
+                error={error}
+              />
+            </div>
+            <div className="overlayContainer">
+              <div className="overlay">
+                <OverlayLeft handleActivationChange={setShowSignIn} />
+                <OverlayRight handleActivationChange={setShowSignIn} />
+              </div>
             </div>
           </div>
-        </div>
-      )}
-      <ChooseRoleModal
-        isOpen={showModal}
-        handleSelection={handleRolSelection}
-      />
-    </IonContent>
+        )}
+      </IonContent>
+    </IonPage>
   );
 };
 

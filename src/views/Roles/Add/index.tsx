@@ -5,6 +5,7 @@ import {
   IonContent,
   IonGrid,
   IonLoading,
+  IonPage,
   IonRow,
   NavContext,
 } from "@ionic/react";
@@ -66,6 +67,7 @@ const AddRole: React.FC = () => {
   ]);
 
   return (
+    <IonPage>
     <IonContent>
       {loading ? (
         <IonLoading
@@ -103,6 +105,7 @@ const AddRole: React.FC = () => {
         />
       ) : null}
     </IonContent>
+    </IonPage>
   );
 };
 
