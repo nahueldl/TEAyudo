@@ -117,7 +117,7 @@ const PatientSelection: React.FC = () => {
     return !(name && lastName && birthday);
   };
 
-  const goToHome = useCallback(() => navigate(`/`, "forward"), [navigate]);
+  const goToHome = useCallback(() => navigate(`/inicio`, "forward"), [navigate]);
 
   return (
     <IonPage>
