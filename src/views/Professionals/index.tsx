@@ -5,7 +5,7 @@ import CardWithImage from "../../components/CardWithImage";
 // import { PatientContext } from "../../context/patient";
 import { AuthenticationContext } from "../../context/authentication";
 import ProfessionalServices from "../../services/professionals.services";
-import { Professional } from "../../components/CardWithImage";
+import { Professional } from "../../types/Professionals";
 
 const ProfessionalsPage: React.FC = () => {
   // const { patientData, setPatientData } = useContext(PatientContext);
@@ -35,7 +35,7 @@ const ProfessionalsPage: React.FC = () => {
   };
 
   const handleCardProfessionalClick = (value: boolean, professionalSelected: any) => {
-    setProfessionalData({ professionalSelected: professional });
+    setProfessionalSelected( professionalSelected );
     if(value){
       setProfessionalSelected(professionalSelected);
       setShowModal(value);
@@ -49,7 +49,7 @@ const ProfessionalsPage: React.FC = () => {
     <Page pageTitle="Profesionales" showHomeButton>
       <IonGrid className="overflow-auto">
       <IonRow>
-        {professionalData.professionalsList?.map((professional, index) => (
+        {professionals?.map((professional, index) => (
           <IonCol key={index} size="4" sizeMd="2">
             <CardWithImage
               img={{
@@ -61,7 +61,6 @@ const ProfessionalsPage: React.FC = () => {
               onClick={() => {
                 handleCardProfessionalClick(true, professional);
               }}
-              professional={professional}
             />
           </IonCol>
         ))}

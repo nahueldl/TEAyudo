@@ -50,11 +50,4 @@ export interface Patient {
   avatar?: string;
 }
 
-export interface Professional {
-  id_profesional?: any;
-  nombre?: string;
-  apellido?: string;
-  avatar?: string;
-}
-
 export default CardWithImage;
