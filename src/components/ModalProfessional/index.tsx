@@ -1,17 +1,14 @@
 import React, { useState } from 'react';
-import { IonModal, IonButton, IonContent, IonLabel, IonGrid, IonRow, IonCol, IonTitle, IonIcon } from '@ionic/react';
+import { IonModal, IonButton, IonLabel, IonGrid, IonRow, IonCol, IonTitle, IonIcon } from '@ionic/react';
 import "./styles.css";
 import { closeOutline } from 'ionicons/icons';
 import { Professional } from '../../types/Professionals';
 import { Patient } from '../CardWithImage';
 
 export const ModalProfessional: React.FC<Props> = ({showModal, handleShowModal, handleAsignProfessional, profesional, patient}) => {
-    const [ errorMessage, setErrorMessage ] = useState<string>();
-    const [ loading, isLoading ] = useState<boolean>(false);
-    const [ error, hasError ] = useState<boolean>(false);
     
   return (
-    <IonModal isOpen={showModal} cssClass="max-height-100">
+    <IonModal isOpen={showModal} cssClass="h-300">
         <IonGrid className="modal">
             <IonRow className="row-title">
                 <IonCol className="flex-grow-5">

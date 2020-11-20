@@ -22,8 +22,8 @@
   padding-left: 5px;
 }
 
-.max-height-100 > modal-wrapper {
-  --max-height: 300px;
+.h-300 > div {
+  height: 300px !important;
 }
 
 .pt-5 {
