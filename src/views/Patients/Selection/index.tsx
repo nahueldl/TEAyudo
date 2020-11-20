@@ -70,6 +70,7 @@ const PatientSelection: React.FC = () => {
             isLoading(false);
             handlePatientSelection(res.data[0]);
           } else {
+            setPatients(res.data);
             isLoading(false);
             isSelection(true);
           }
@@ -92,7 +93,6 @@ const PatientSelection: React.FC = () => {
   };
 
   const addPatient = () => {
-    debugger;
     isLoading(true);
     var blob = getBlobFromURL(avatar);
     blob.then((blobRes: any) => {

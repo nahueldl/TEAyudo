@@ -7,7 +7,7 @@ import CategoriesService from "../../services/categories.services";
 import { AuthenticationContext } from '../../context/authentication';
 import { PatientContext } from '../../context/patient';
 import { Category } from '../../types/Categories';
-import { checkmarkCircleOutline } from 'ionicons/icons';
+import { checkmarkCircleOutline, closeOutline } from 'ionicons/icons';
 import { getBase64 } from '../../utils/encodeImg';
 import { getBlobFromURL } from '../../utils/urlToBlob';
 
@@ -96,7 +96,21 @@ export const ModalPictogram: React.FC<Props> = ({showModal, handleShowModal, pic
                     spinner="crescent"
               />
                 <IonGrid className="text-black">
-                    <IonTitle className="ion-text-center text-bold">{pictogram.nombre_personalizado != null ? pictogram.nombre_personalizado : pictogram.nombres[0].nombre}</IonTitle>
+                    <IonRow className="row-title">
+                        <IonCol className="flex-grow-5">
+                            <IonTitle color="primary">
+                            <h3 className="ion-text-uppercase modal-title">{pictogram.nombre_personalizado != null ? pictogram.nombre_personalizado : pictogram.nombres[0].nombre}</h3>
+                            </IonTitle>
+                        </IonCol>
+                        <IonCol className="flex-grow-1 icon-close">
+                            <IonIcon
+                            onClick={(_e) => handleShowModal(false, undefined)}
+                            icon={closeOutline}
+                            size="large"
+                            color="primary"
+                            />
+                        </IonCol>
+                    </IonRow>
                     <IonRow>
                         <IonCol size="2"/>
                         <IonCol size="8">
