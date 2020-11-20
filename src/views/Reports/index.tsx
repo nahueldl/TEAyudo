@@ -22,7 +22,6 @@ import { Patient } from "../../components/CardWithImage";
 
 const todayDate = new Date();
 const todayDateISOFormat = todayDate.toISOString();
-var fileDownload = require('js-file-download');
 
 const ReportsPage: React.FC = () => {
   const { authData } = useContext(AuthenticationContext);
@@ -65,7 +64,12 @@ const ReportsPage: React.FC = () => {
     )
       .then((res: any) => {
         isLoadingReport(false);
-        fileDownload(res.data, 'informe.pdf');
+        const file = new Blob([res.data], {type: 'application/pdf'});
+        const fileURL = URL.createObjectURL(file);
+        const link = document.createElement('a');
+        link.href = fileURL;
+        link.download = "FileName" + new Date() + ".pdf";
+        link.click();
         console.log(res);
       })
       .catch((_error: any) => {
@@ -96,6 +100,7 @@ const ReportsPage: React.FC = () => {
                       ? "Seleccioná un paciente para poder generar el informe correspondiente"
                       // : `Se generará el informe correspondiente a ${patientSelected!
                       //     .nombre!}`}
+                      // comento esto porque el patientSelected me esta rompiendo
                       : `Se generará el informe correspondiente a`}
                     ; si además querés que se genere a partir de una fecha en
                     particular, por favor seleccionala. De lo contrario, se
