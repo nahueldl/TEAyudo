@@ -6,6 +6,7 @@ import CardWithImage from "../../components/CardWithImage";
 import { AuthenticationContext } from "../../context/authentication";
 import ProfessionalServices from "../../services/professionals.services";
 import { Professional } from "../../types/Professionals";
+import { ModalProfessional } from "../../components/ModalProfessional";
 
 const ProfessionalsPage: React.FC = () => {
   // const { patientData, setPatientData } = useContext(PatientContext);
@@ -34,7 +35,7 @@ const ProfessionalsPage: React.FC = () => {
       });
   };
 
-  const handleCardProfessionalClick = (value: boolean, professionalSelected: any) => {
+  const handleClickSetShowModal = (value: boolean, professionalSelected: any) => {
     setProfessionalSelected( professionalSelected );
     if(value){
       setProfessionalSelected(professionalSelected);
@@ -59,11 +60,25 @@ const ProfessionalsPage: React.FC = () => {
               title={professional.nombre!}
               touchable
               onClick={() => {
-                handleCardProfessionalClick(true, professional);
+                handleClickSetShowModal(true, professional);
               }}
             />
           </IonCol>
         ))}
+        <IonCol size="4" sizeMd="2">
+            <CardWithImage
+              img={{
+                src: "https://avatars.dicebear.com/api/bottts/"+Math.floor(Math.random() * 200)+".svg",
+                alt: `Avatar de `,
+              }}
+              title="Pepe"
+              touchable
+              onClick={() => {
+                handleClickSetShowModal(true, null);
+              }}
+            />
+          </IonCol>
+          <ModalProfessional showModal={showModal} handleShowModal={handleClickSetShowModal} profesional={professionalSelected!} patient={undefined}></ModalProfessional>
       </IonRow>
     </IonGrid>
     </Page>

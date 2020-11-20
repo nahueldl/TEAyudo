@@ -70,6 +70,7 @@ const PatientSelection: React.FC = () => {
             isLoading(false);
             handlePatientSelection(res.data[0]);
           } else {
+            setPatients(res.data);
             isLoading(false);
             isSelection(true);
           }
