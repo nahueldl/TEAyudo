@@ -1,6 +1,7 @@
 export type Professional = {
-    id_profesional?: any;
+    id_usuario?: number;
     nombre?: string;
     apellido?: string;
-    avatar?: string;
+    nro_doc?: string;
+    nro_matricula?: string;
 }

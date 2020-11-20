@@ -1,26 +1,14 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { IonModal, IonButton, IonContent, IonLabel, IonGrid, IonRow, IonCol, IonImg, IonThumbnail, IonTitle, IonList, IonItem, IonAvatar, IonToggle, IonInput, IonSelect, IonSelectOption, IonLoading, IonAlert, IonIcon } from '@ionic/react';
+import React, { useState } from 'react';
+import { IonModal, IonButton, IonContent, IonLabel, IonGrid, IonRow, IonCol, IonTitle, IonIcon } from '@ionic/react';
 import "./styles.css";
-import { Pictogram } from '../../types/Pictograms';
-import PictogramsService from "../../services/pictograms.services";
-import CategoriesService from "../../services/categories.services";
-import { AuthenticationContext } from '../../context/authentication';
-import { Category } from '../../types/Categories';
-import { checkmarkCircleOutline, closeOutline } from 'ionicons/icons';
-import { getBase64 } from '../../utils/encodeImg';
-import { getBlobFromURL } from '../../utils/urlToBlob';
+import { closeOutline } from 'ionicons/icons';
 import { Professional } from '../../types/Professionals';
 import { Patient } from '../CardWithImage';
 
-export const ModalProfessional: React.FC<Props> = ({showModal, handleShowModal, profesional, patient}) => {
-    const { authData, setAuthData } = useContext(AuthenticationContext);
+export const ModalProfessional: React.FC<Props> = ({showModal, handleShowModal, handleAsignProfessional, profesional, patient}) => {
     const [ errorMessage, setErrorMessage ] = useState<string>();
     const [ loading, isLoading ] = useState<boolean>(false);
     const [ error, hasError ] = useState<boolean>(false);
-    const [ favorito, setFavorito ] = useState(false);
-    const [ categoriasPropias, setCategoriasPropias ] = useState<[Category]>();
-    const [ newName, setNewName ] = useState("");
-    const [ categoriaValue ] = useState();
     
   return (
     <IonModal isOpen={showModal} cssClass="max-height-100">
@@ -33,7 +21,7 @@ export const ModalProfessional: React.FC<Props> = ({showModal, handleShowModal, 
                 </IonCol>
                 <IonCol className="flex-grow-1 icon-close">
                     <IonIcon
-                    onClick={(_e) => handleShowModal(false,null)}
+                    onClick={(_e) => handleShowModal(false)}
                     icon={closeOutline}
                     size="large"
                     color="primary"
@@ -42,21 +30,22 @@ export const ModalProfessional: React.FC<Props> = ({showModal, handleShowModal, 
             </IonRow>
             <IonRow className="container-asign-professional text-black ">
                 <IonLabel color="margin-auto pt-5">
-                    ¿Esta segurx que desea asignar el profesional {} al paciente {}?
+  ¿Esta segurx que desea asignar el profesional <b>{profesional.apellido} {profesional.nombre}</b> al paciente <b>{patient.nombre}</b>?
                 </IonLabel>
             </IonRow>
         </IonGrid>
-        <IonButton color="success" onClick={() => handleShowModal(false, undefined)}>Si, estoy segurx</IonButton>
-        <IonButton color="danger" onClick={() => handleShowModal(false, undefined)}>No</IonButton>
+        <IonButton color="success" onClick={() => handleAsignProfessional()}>Si, estoy segurx</IonButton>
+        <IonButton color="danger" onClick={() => handleShowModal(false)}>No</IonButton>
     </IonModal>
   );
 };
 
 interface Props {
     showModal: any;
-    handleShowModal:  (value: boolean, data: any) => void;
+    handleShowModal:  (value: boolean) => void;
+    handleAsignProfessional: () => void;
     profesional: Professional;
-    patient?: Patient;
+    patient: Patient;
   }
 
   export default ModalProfessional;
