@@ -493,7 +493,7 @@ const usuarioDAO = {
 			}
 		];
 
-		const result = await genericDAO.runQuery("delete from Usuario_Rol where id_usuario_rol = (select ur.id_usuario_rol from Usuario_Rol ur inner join Rol_Paciente rp on rp.id_usuario_rol = ur.id_usuario_rol where ur.id_rol = 2 and rp.id_paciente = @id)", params);
+		const result = await genericDAO.runQuery("delete from Rol_Paciente where id_rol_paciente = (select rp.id_rol_paciente from Usuario_Rol ur inner join Rol_Paciente rp on rp.id_usuario_rol = ur.id_usuario_rol where ur.id_rol = 2 and rp.id_paciente = @id)", params);
 
 		return result;
 	}

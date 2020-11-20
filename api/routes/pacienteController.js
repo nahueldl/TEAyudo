@@ -70,7 +70,7 @@ router.delete('/:id/profesional', isAuth, async (req, res) => {
 	}
 });
 
-//Eliminar Paciente a profesional
+//Obtener profesional del paciente
 router.get('/:id/profesional', isAuth, async (req, res) => {
 	const result = await pacienteService.getProfesional(req.params.id, req.user);
 	if(result.state === estadosRespuesta.OK){
