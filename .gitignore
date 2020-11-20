@@ -255,3 +255,5 @@ lint/outputs/
 lint/tmp/
 # lint/reports/
 
+
+.vs/
