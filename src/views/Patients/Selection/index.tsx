@@ -93,7 +93,6 @@ const PatientSelection: React.FC = () => {
   };
 
   const addPatient = () => {
-    debugger;
     isLoading(true);
     var blob = getBlobFromURL(avatar);
     blob.then((blobRes: any) => {
