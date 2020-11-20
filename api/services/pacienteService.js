@@ -2,6 +2,7 @@ const pacienteDAO = require('../persistence/pacienteDAO');
 const rolService = require('./rolService')
 const estadosRespuesta = require('../models/estados_respuesta');
 const imageUploaderService = require('./imageUploaderService');
+const usuarioDAO = require('../persistence/usuarioDAO');
 
 
 const pacienteService = {
@@ -117,6 +118,20 @@ const pacienteService = {
 			paciente.avatar = result.response.avatar;
 		}
 		return await pacienteDAO.update(parseInt(id_paciente), usuario.id_usuario, paciente);
+	},
+
+	deleteProfesional: async function (id_paciente, usuario){
+		const paciente = getById(id_paciente, usuario);
+		if(paciente.state !== estadosRespuesta.OK) return paciente;
+		const result = await usuarioDAO.deleteProfesionalByPaciente(parseInt(id_paciente));
+		return result;
+	},
+
+	getProfesional: async function (id_paciente, usuario){
+		const paciente = getById(id_paciente, usuario);
+		if(paciente.state !== estadosRespuesta.OK) return paciente;
+		const result = await usuarioDAO.getProfesionalByPaciente(parseInt(id_paciente));
+		return result;
 	}
 	
 };

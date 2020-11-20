@@ -47,11 +47,36 @@ router.post('/', isAuth, async (req, res) => {
 });
 
 //Asignar Paciente a profesional
-//Agregar el /:id
-router.post('/:id/asignarProfesional', isAuth, async (req, res) => {
+router.post('/:id/profesional', isAuth, async (req, res) => {
 	const result = await pacienteService.assignProfesional(req.body, req.params.id, req.user);
 	if(result.state === estadosRespuesta.OK){
 		res.status(200).json({msg: "El profesional ha sido asignado al paciente"});
+	}else if(result.state === estadosRespuesta.SERVERERROR){
+		res.status(500).json({msg: "Ha ocurrido un error inesperado en el servidor"});
+	}else if(result.state === estadosRespuesta.USERERROR){
+		res.status(400).json({msg: result.response});
+	}
+});
+
+//Eliminar Paciente a profesional
+router.delete('/:id/profesional', isAuth, async (req, res) => {
+	const result = await pacienteService.deleteProfesional(req.params.id, req.user);
+	if(result.state === estadosRespuesta.OK){
+		res.status(200).json({msg: "El profesional ha sido desasignado"});
+	}else if(result.state === estadosRespuesta.SERVERERROR){
+		res.status(500).json({msg: "Ha ocurrido un error inesperado en el servidor"});
+	}else if(result.state === estadosRespuesta.USERERROR){
+		res.status(400).json({msg: result.response});
+	}
+});
+
+//Eliminar Paciente a profesional
+router.get('/:id/profesional', isAuth, async (req, res) => {
+	const result = await pacienteService.getProfesional(req.params.id, req.user);
+	if(result.state === estadosRespuesta.OK){
+		res.status(200).json(result.response);
+	}else if(result.state === estadosRespuesta.NOCONTENT){
+		res.status(204).json({msg: "No hay ningún profesional asociado"});
 	}else if(result.state === estadosRespuesta.SERVERERROR){
 		res.status(500).json({msg: "Ha ocurrido un error inesperado en el servidor"});
 	}else if(result.state === estadosRespuesta.USERERROR){

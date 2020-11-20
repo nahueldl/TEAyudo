@@ -3,7 +3,8 @@ const respuestas = {
 	OK: 1,
 	SERVERERROR: 2,
 	CONFLICT: 3,
-	FORBIDDEN: 4
+	FORBIDDEN: 4,
+	NOCONTENT: 5
 }
 
 

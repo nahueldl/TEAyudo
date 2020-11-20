@@ -446,6 +446,58 @@ const usuarioDAO = {
 		return result;
 	},
 
+
+	getProfesionalByPaciente: async function(id){
+		if(id === undefined || id === null){
+			const result = {
+				state: estadosRespuesta.USERERROR,
+				response: 'id no ha sido definido'
+			}
+			return result;
+		}
+
+		const params = [
+			{
+				name: "id",
+				type: sql.Numeric(18,0),
+				value: id
+			}
+		];
+
+		const result = await genericDAO.runQuery("select u.nombre, u.apellido, u.correo, u.nro_doc, u.nro_matricula, u.fecha_hora_alta from Usuario u inner join Usuario_Rol ur on ur.id_usuario = u.id_usuario inner join Rol_Paciente rp on rp.id_usuario_rol = ur.id_usuario_rol where ur.id_rol = 2 and u.activo = 1 and rp.id_paciente = @id", params);
+
+		if(result.state === estadosRespuesta.OK && result.response.length < 1){
+			result.state = estadosRespuesta.NOCONTENT;
+			result.response = "No se encontro ningún profesional asociado";
+		}else if(result.state === estadosRespuesta.OK){
+			result.response = result.response[0];
+		}
+		
+		return result;
+	},
+
+	deleteProfesionalByPaciente: async function(id){
+		if(id === undefined || id === null){
+			const result = {
+				state: estadosRespuesta.USERERROR,
+				response: 'id no ha sido definido'
+			}
+			return result;
+		}
+
+		const params = [
+			{
+				name: "id",
+				type: sql.Numeric(18,0),
+				value: id
+			}
+		];
+
+		const result = await genericDAO.runQuery("delete from Usuario_Rol where id_usuario_rol = (select ur.id_usuario_rol from Usuario_Rol ur inner join Rol_Paciente rp on rp.id_usuario_rol = ur.id_usuario_rol where ur.id_rol = 2 and rp.id_paciente = @id)", params);
+
+		return result;
+	}
+
 };
 
 
