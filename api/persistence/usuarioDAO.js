@@ -430,8 +430,23 @@ const usuarioDAO = {
 
 		return res;
 
-	}
+	},
+
+
+	getProfesionales: async function(){
+		const params = []
+
+		const result = await genericDAO.runQuery("select u.nombre, u.apellido, u.correo, u.nro_doc, u.nro_matricula, u.fecha_hora_alta from Usuario u inner join Usuario_Rol ur on ur.id_usuario = u.id_usuario where ur.id_rol = 2 and u.activo = 1", params);
+
+		if(result.state === estadosRespuesta.OK && result.response.length < 1){
+			result.state = estadosRespuesta.USERERROR;
+			result.response = "No se encontro ningún usuario profesional";
+		}
+		
+		return result;
+	},
 
 };
+
 
 module.exports = usuarioDAO;

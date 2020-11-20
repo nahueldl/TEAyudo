@@ -38,6 +38,7 @@ app.use('/api/traducciones', require('./routes/traduccionController'));
 app.use('/api/tipoDocumento', require('./routes/tiposDocumentoController'));
 app.use('/api/informes', require('./routes/informeController'));
 app.use('/api/roles', require('./routes/rolesController'));
+app.use('/api/profesionales', require('./routes/profesionalesController'));
 
 
 

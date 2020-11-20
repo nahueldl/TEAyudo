@@ -104,6 +104,10 @@ const usuarioService = {
 			state: estadosRespuesta.OK,
 			response: resultUser
 		};
+	},
+
+	getProfesionales: async function(){
+		return await usuarioDAO.getProfesionales();
 	}
 
 };
