@@ -16,16 +16,15 @@ import {
   IonInput,
   IonItem,
   IonList,
-  IonLabel,
 } from "@ionic/react";
 import { AuthenticationContext } from "../../../context/authentication";
 import PatientServices from "../../../services/patients.services";
 import CardWithImage from "../../../components/CardWithImage";
 import { Plugins } from "@capacitor/core";
 import { PatientContext } from "../../../context/patient";
-import AddPatient from "../AddPatient";
 import { getBase64 } from "../../../utils/encodeImg";
 import { getBlobFromURL } from "../../../utils/urlToBlob";
+import { refreshOutline } from "ionicons/icons";
 const { Storage } = Plugins;
 
 const PatientSelection: React.FC = () => {
@@ -88,7 +87,7 @@ const PatientSelection: React.FC = () => {
     setAuthData({ patientName: patient.nombre });
     Storage.set({ key: "patientId", value: patient.id_paciente.toString() });
     Storage.set({ key: "patientName", value: patient.nombre });
-    console.log("done");
+    setPatientData({ patientSelected: patient });
     goToHome();
   };
 
@@ -113,11 +112,13 @@ const PatientSelection: React.FC = () => {
     });
   };
 
-  const disableButton = () => {
-    return !(name && lastName && birthday);
+  const enableSubmitButton = () => {
+    return name && lastName && birthday;
   };
 
-  const goToHome = useCallback(() => navigate(`/inicio`, "forward"), [navigate]);
+  const goToHome = useCallback(() => navigate(`/inicio`, "forward"), [
+    navigate,
+  ]);
 
   return (
     <IonPage>
@@ -162,61 +163,95 @@ const PatientSelection: React.FC = () => {
           </IonGrid>
         ) : addition ? (
           <>
-            <IonGrid
-             className="container"
-            >
+            <IonGrid className="container-patientAdd">
               <IonRow>
-                <IonCol>
-                  <h1 className="title">Agrega un paciente para avanzar</h1>
+                <IonCol size="12">
+                  <h1 className="title">Da de alta un paciente para avanzar</h1>
                 </IonCol>
               </IonRow>
               <IonRow>
-                <IonCol>
-                  <IonAvatar>
-                    <img src={avatar} alt="avatar" />
-                  </IonAvatar>
-                </IonCol>
-              </IonRow>
-              <IonRow>
-                <IonCol>
-                  <IonLabel>Nombre</IonLabel>
-                  <IonInput
-                    value={name}
-                    placeholder="Ingrese el nombre"
-                    onIonChange={(e) => setName(e.detail.value!)}
-                  ></IonInput>
-                </IonCol>
-              </IonRow>
-              <IonRow>
-                <IonCol>
-                  <IonLabel>Apellido</IonLabel>
-                  <IonInput
-                    value={lastName}
-                    placeholder="Ingrese el apellido"
-                    onIonChange={(e) => setLastName(e.detail.value!)}
-                  ></IonInput>
-                </IonCol>
-              </IonRow>
-              <IonRow>
-                <IonCol>
-                  <IonLabel>Fecha de nacimiento</IonLabel>
-                  <IonDatetime
-                    displayFormat="DD MM YYYY"
-                    placeholder="Fecha de nacimiento"
-                    value={birthday}
-                    onIonChange={(e) => setBirthday(e.detail.value!)}
-                  ></IonDatetime>
-                </IonCol>
-              </IonRow>
-              <IonRow>
-                <IonCol>
-                  <IonButton
-                    disabled={disableButton()}
-                    onClick={() => addPatient()}
-                  >
-                    Aceptar
-                  </IonButton>
-                </IonCol>
+                <form className="form-no-background">
+                  <IonList className="mt-5">
+                    <IonAvatar className="avatars">
+                      <img
+                        id="avatar"
+                        className="height-auto"
+                        src={avatar}
+                        alt="Avatar"
+                      />
+                    </IonAvatar>
+                    <IonButton
+                      color="tertiary"
+                      size="small"
+                      onClick={() =>
+                        setAvatar(
+                          "https://avatars.dicebear.com/api/bottts/" +
+                            Math.floor(Math.random() * 200) +
+                            ".svg"
+                        )
+                      }
+                    >
+                      <IonIcon
+                        className="pl-5"
+                        slot="end"
+                        icon={refreshOutline}
+                      ></IonIcon>{" "}
+                      Cambiar
+                    </IonButton>
+                    <IonItem className="inputMargin">
+                      <IonInput
+                        name="name"
+                        value={name}
+                        required
+                        clearInput
+                        placeholder="Nombre"
+                        onIonChange={(e) => setName(e.detail.value!)}
+                      />
+                    </IonItem>
+                    <IonItem className="inputMargin">
+                      <IonInput
+                        name="apellido"
+                        value={lastName}
+                        required
+                        clearInput
+                        placeholder="Apellido"
+                        onIonChange={(e) => setLastName(e.detail.value!)}
+                      />
+                    </IonItem>
+                    <IonItem className="p-0">
+                      <IonDatetime
+                        displayFormat="DD MM YYYY"
+                        placeholder="Fecha nacimiento"
+                        value={birthday}
+                        aria-required="true"
+                        onIonChange={(e) => setBirthday(e.detail.value!)}
+                      ></IonDatetime>
+                    </IonItem>
+                  </IonList>
+                  <div>
+                    <IonButton
+                      type="button"
+                      className="formButton mt-5"
+                      onClick={(e) => addPatient()}
+                      expand="block"
+                      disabled={!enableSubmitButton()}
+                    >
+                      Agregar paciente
+                    </IonButton>
+                  </div>
+                </form>
+                <IonLoading
+                  isOpen={loading!}
+                  message={"Trabajando..."}
+                  spinner="crescent"
+                />
+                <IonAlert
+                  isOpen={error!}
+                  animated
+                  backdropDismiss
+                  keyboardClose
+                  message={errorMsg}
+                />
               </IonRow>
             </IonGrid>
           </>
