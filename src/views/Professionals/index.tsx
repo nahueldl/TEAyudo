@@ -183,6 +183,10 @@ const ProfessionalsPage: React.FC = () => {
             </form>
           </IonRow>
         ) : (
+          <>
+          <IonRow>            
+            <IonTitle>Seleccione un profesional para ser asignado a {authData.patientName}</IonTitle>
+          </IonRow>
           <IonRow>
             {professionals?.map((professional, index) => (
               <IonCol key={index} size="4" sizeMd="2">
@@ -208,6 +212,7 @@ const ProfessionalsPage: React.FC = () => {
               ></ModalProfessional>
             ): null}
           </IonRow>
+          </>
       )}
       <IonLoading
         isOpen={loading!}
