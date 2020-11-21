@@ -1,0 +1,42 @@
+.text-black {
+  color: black;
+}
+
+.title {
+  text-align: center;
+}
+
+.overflow-auto {
+  overflow-y: auto !important;
+}
+
+.text-bold {
+  font-weight: bolder;
+}
+
+.text-align-end {
+  text-align: end;
+}
+
+.pl-5 {
+  padding-left: 5px;
+}
+
+.h-300 > div {
+  height: 300px !important;
+}
+
+.pt-5 {
+  padding-top: 5%;
+}
+
+.container-asign-professional {
+  padding-top: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.margin-auto {
+  margin: auto !important;
+}

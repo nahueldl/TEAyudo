@@ -2,6 +2,8 @@ import Page from "../../components/Page";
 import React, { useCallback, useContext } from "react";
 import { IonButton, NavContext } from "@ionic/react";
 import { Plugins } from "@capacitor/core";
+import "./styles.css";
+
 const { Storage } = Plugins;
 const ConfigurationPage: React.FC = () => {
   const { navigate } = useContext(NavContext);
@@ -14,7 +16,7 @@ const ConfigurationPage: React.FC = () => {
 
   return (
     <Page pageTitle="Configuración" showHomeButton>
-      <div>
+      <div className="logout">
         <IonButton onClick={() => logout()}>Cerrar sesión</IonButton>
       </div>
     </Page>

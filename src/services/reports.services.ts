@@ -7,13 +7,14 @@ class ReportServices {
   }
 
   getReport(token: string, patientId: string, date?: any): Promise<any> {
-    return this.axios.get("/api/informe", {
+    return this.axios.get("/api/informes", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
+      responseType: 'arraybuffer',
       params: {
         paciente: patientId,
-        ...(date ? { fecha: date } : {}),
+        // ...(date ? { fecha: date } : {}),
       },
     });
   }

@@ -66,8 +66,8 @@ class PictogramsServices {
     return this.axios.post(`/api/pictogramas`, {
         categoria: category,
         base64img,
-        nombres: names,
-        etiquetas: tags,
+        nombres: [names],
+        etiquetas: [tags],
         ...(eschematic ? { esquematico: true } : {}),
         ...(sex ? { sexo: true } : {}),
         ...(violence ? { violencia: true } : {}),

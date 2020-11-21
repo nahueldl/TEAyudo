@@ -38,6 +38,7 @@ const GamesPage: React.FC = () => {
       .then((res) => {
         setMove(res.data);
         setLoadingMove(false);
+        isPlaying(true);
       })
       .catch((error) => {
         setLoadingMove(false);
