@@ -62,8 +62,13 @@ const PatientSelection: React.FC = () => {
       .then((res: any) => {
         const length = res.data.length;
         if (length === 0) {
-          isLoading(false);
-          isAddition(true);
+          if(authData.role == 1) {
+            isAddition(true);
+            isLoading(false);
+          } else {
+            isLoading(false);
+            goToHome();
+          }
         } else {
           if (length === 1) {
             isLoading(false);
