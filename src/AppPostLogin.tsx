@@ -4,6 +4,7 @@ import { Route, Redirect } from "react-router";
 import Menu from "./components/Menu/Menu";
 import HomePage from "./views/Home";
 import PictogramsPage from "./views/Pictograms";
+import AddPictogramPage from "./views/Pictograms/AddPictogram";
 import CategoriesPage from "./views/Categories";
 import CategoriesAddPage from "./views/Categories/AddCategorie";
 import CategoriesViewEditDeleteCategoryPage from "./views/Categories/ViewEditDeleteCategory";
@@ -18,13 +19,12 @@ import AddPatientPage from "./views/Patients/AddPatient";
 import ViewPatientPage from "./views/Patients/ViewPatient";
 import EditPatientPage from "./views/Patients/EditPatient";
 import RolesPage from "./views/Roles/Page";
-import AddRole from "./views/Roles/Add";
 import RoleSelection from "./views/Roles/Selection";
 import LogInSignUpPage from "./views/LogIn&SignUp";
-import AddRolePage from "./views/Roles/Page/AddRolePage";
+import AddRole from "./views/Roles/Page/AddRolePage";
 
 const AppPostLogin: React.FC = () => {
-  const { token, patientName } = useContext(AuthenticationContext).authData;
+  const { token, patientName, } = useContext(AuthenticationContext).authData;
 
   return (
     <IonSplitPane contentId="main">
@@ -34,7 +34,7 @@ const AppPostLogin: React.FC = () => {
         <Route path="/login" component={LogInSignUpPage} exact />
 
         <Route path="/pictogramas" component={PictogramsPage} exact />
-
+        <Route path="/pictograma/alta" component={AddPictogramPage} exact />
         <Route path="/categorias" component={CategoriesPage} exact />
         <Route path="/categorias/alta" component={CategoriesAddPage} exact />
         <Route
@@ -59,19 +59,13 @@ const AppPostLogin: React.FC = () => {
         />
 
         <Route path="/roles" component={RolesPage} exact />
-        <Route path="/roles/alta" component={AddRolePage} exact />
+        <Route path="/roles/alta" component={AddRole} exact />
         <Route path="/roles/seleccion" component={RoleSelection} exact />
 
         <Route path="/comunicacion" component={ComunicationPage} />
 
         <Route path="/juegos" component={GamesPage} />
 
- 
-        {token ? (
-          <Redirect from="*" to="/inicio" />
-        ) : (
-          <Redirect from="*" to="/login" />
-        )}
       </IonRouterOutlet>
     </IonSplitPane>
   );

@@ -17,6 +17,8 @@ import {
 import { capitalizeFirstLetter } from "../../../utils/methods";
 import { addCircleOutline } from "ionicons/icons";
 import CardWithIcon from "../../../components/CardWithIcon";
+import "./styles.css";
+import "./styles copy.css";
 
 const RolesPage: React.FC = () => {
   const { authData } = useContext(AuthenticationContext);
@@ -28,7 +30,7 @@ const RolesPage: React.FC = () => {
 
   useEffect(() => {
     handleGetRoles();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleGetRoles = () => {
@@ -76,14 +78,14 @@ const RolesPage: React.FC = () => {
                   </IonCard>
                 </IonCol>
               ))}
-              <IonCol size="12">
-                <CardWithIcon
-                  icon={addCircleOutline}
-                  title="Agregar"
-                  touchable
-                  onClick={() => handleAddRol()}
-                />
-              </IonCol>
+            </IonRow>
+            <IonRow>
+              <CardWithIcon
+                icon={addCircleOutline}
+                title="Agregar"
+                touchable
+                onClick={() => handleAddRol()}
+              />
             </IonRow>
           </IonGrid>
         )}
