@@ -38,7 +38,6 @@ export const ModalPictogram: React.FC<Props> = ({showModal, handleShowModal, pic
     }
     
     const marcarFavoritoPictograma = (favorito: boolean) => {
-        debugger;
         if(favorito != undefined) {
             PictogramsService.editPictogram(authData.token!, pictogram?.id_pictograma!, parseInt(authData.patientId!), undefined, undefined, favorito)
             .then((res:any) => {
