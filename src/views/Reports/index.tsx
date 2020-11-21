@@ -64,6 +64,12 @@ const ReportsPage: React.FC = () => {
     )
       .then((res: any) => {
         isLoadingReport(false);
+        const file = new Blob([res.data], {type: 'application/pdf'});
+        const fileURL = URL.createObjectURL(file);
+        const link = document.createElement('a');
+        link.href = fileURL;
+        link.download = "FileName" + new Date() + ".pdf";
+        link.click();
         console.log(res);
       })
       .catch((_error: any) => {
@@ -92,8 +98,10 @@ const ReportsPage: React.FC = () => {
                   <div style={{ textAlign: "justify", padding: "10px" }}>
                     {patients.length > 1
                       ? "Seleccioná un paciente para poder generar el informe correspondiente"
-                      : `Se generará el informe correspondiente a ${patientSelected!
-                          .nombre!}`}
+                      // : `Se generará el informe correspondiente a ${patientSelected!
+                      //     .nombre!}`}
+                      // comento esto porque el patientSelected me esta rompiendo
+                      : `Se generará el informe correspondiente a`}
                     ; si además querés que se genere a partir de una fecha en
                     particular, por favor seleccionala. De lo contrario, se
                     generará el informe de los pasados 30 días a partir de este
