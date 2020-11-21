@@ -11,15 +11,12 @@ import { addOutline } from "ionicons/icons";
 
 const PictogramsPage: React.FC = () => {
   const { authData, setAuthData } = useContext(AuthenticationContext);
-  // const { patientData, setPatientData } = useContext(PatientContext);
-  const { patientData, setPatientData } = useContext(PatientContext);
   const [pictograms, setPictograms] = useState<[Pictogram]>();
   const { navigate } = useContext(NavContext);
   const [searchText, setSearchText] = useState('');
   const [errorMessage, setErrorMessage] = useState<string>();
   const [loading, isLoading] = useState<boolean>(false);
   const [error, hasError] = useState<boolean>(false);
-  const [ showModal, setShowModal] = useState(false);
 
   const getPictogramSearchText = (textBusqueda: string) => {
     setSearchText(textBusqueda);
