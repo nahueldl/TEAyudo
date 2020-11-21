@@ -12,8 +12,10 @@ import {
 import "./styles.css";
 import Page from "../../../components/Page";
 import { PatientContext } from "../../../context/patient";
+import { AuthenticationContext } from "../../../context/authentication";
 
 const ViewPatient: React.FC = () => {
+  const { authData } = useContext(AuthenticationContext);
   const { patientData } = useContext(PatientContext);
   const { navigate } = useContext(NavContext);
 
@@ -73,13 +75,14 @@ const ViewPatient: React.FC = () => {
                 </IonItem> */}
               </IonList>
               <div>
+                {authData.role == 1 ? (
                 <IonButton
                   className="formButton mt-5"
                   onClick={handleEditPatient}
-                  expand="block"
-                >
-                  Editar paciente
+                  expand="block">
+                    Editar paciente
                 </IonButton>
+                ):null}
                 <IonButton
                   className="formButton red-buttom mt-5"
                   onClick={handleCancel}

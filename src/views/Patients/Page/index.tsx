@@ -11,6 +11,7 @@ import { useState } from "react";
 
 const PatientsPage: React.FC = () => {
   const { token } = useContext(AuthenticationContext).authData;
+  const { role } = useContext(AuthenticationContext).authData;
   const { setPatientData } = useContext(PatientContext);
   const { navigate } = useContext(NavContext);
   const [loading, isLoading] = useState<boolean>(true);
@@ -57,7 +58,8 @@ const PatientsPage: React.FC = () => {
       ) : (
         <>
           <ListPatients />
-          <IonRow>
+          {role==1 ? (
+            <IonRow>
             <CardWithIcon
               icon={addCircleOutline}
               title="Agregar"
@@ -65,6 +67,7 @@ const PatientsPage: React.FC = () => {
               onClick={handleAddPatientClick}
             />
           </IonRow>
+          ):null}
         </>
       )}
       {error ? (
