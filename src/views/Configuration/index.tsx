@@ -16,8 +16,8 @@ const ConfigurationPage: React.FC = () => {
 
   return (
     <Page pageTitle="Configuración" showHomeButton>
-      <div>
-        <IonButton className="logout" onClick={() => logout()}>Cerrar sesión</IonButton>
+      <div className="logout">
+        <IonButton onClick={() => logout()}>Cerrar sesión</IonButton>
       </div>
     </Page>
   );
