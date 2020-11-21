@@ -14,18 +14,43 @@ class ProfessionalServices {
     });
   }
 
+  getProfessionalAsignToUser(token: string, patientId: string): any {
+    return this.axios.get("/api/pacientes/" + patientId + "/profesional", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  }
+
   postAsignProfessional(
     token: string,
     patientId: string,
     nroMatricula: string,
     professionalId: number
   ): Promise<any> {
-    return this.axios.post(`/api/pacientes/` + patientId + "/asignarProfesional", {
+    return this.axios.post(`/api/pacientes/` + patientId + "/profesional", {
       id_profesional: professionalId,
       nro_matricula: nroMatricula,
     }, {
       headers: {
         Authorization: `Bearer ${token}`,
+      }
+    });
+  }
+
+  deleteProfessional(
+    token: string,
+    patientId: string,
+    nroMatricula: string,
+    professionalId: number
+  ): Promise<any> {
+    return this.axios.delete(`/api/pacientes/` + patientId + "/profesional", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params: {
+        id_profesional: professionalId,
+        nro_matricula: nroMatricula,
       }
     });
   }
