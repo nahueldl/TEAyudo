@@ -248,8 +248,11 @@ const RoleSelection: React.FC = () => {
                         Necesitamos algunos datos extra para continuar
                       </h4>
                       <IonItem>
-                        <IonLabel>Número de matrícula</IonLabel>
+                        <IonLabel position="stacked">
+                          Número de matrícula
+                        </IonLabel>
                         <IonInput
+                          type="number"
                           value={licenseNumber}
                           placeholder="Número de matrícula"
                           onIonChange={(e) =>
@@ -259,8 +262,11 @@ const RoleSelection: React.FC = () => {
                         ></IonInput>
                       </IonItem>
                       <IonItem>
-                        <IonLabel>Número de documento</IonLabel>
+                        <IonLabel position="stacked">
+                          Número de documento
+                        </IonLabel>
                         <IonInput
+                          type="number"
                           value={dni}
                           placeholder="Número de documento"
                           onIonChange={(e) =>

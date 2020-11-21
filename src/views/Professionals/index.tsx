@@ -1,6 +1,19 @@
 import React, { useContext, useEffect, useState } from "react";
 import Page from "../../components/Page";
-import { IonGrid, IonRow, IonCol, NavContext, IonLoading, IonAlert, IonAvatar, IonTitle, IonList, IonItem, IonButton, IonActionSheet } from "@ionic/react";
+import {
+  IonGrid,
+  IonRow,
+  IonCol,
+  NavContext,
+  IonLoading,
+  IonAlert,
+  IonAvatar,
+  IonTitle,
+  IonList,
+  IonItem,
+  IonButton,
+  IonActionSheet,
+} from "@ionic/react";
 import CardWithImage from "../../components/CardWithImage";
 import { AuthenticationContext } from "../../context/authentication";
 import ProfessionalServices from "../../services/professionals.services";
@@ -13,16 +26,22 @@ import ViewProfessionalAsign from "./ViewProfessionalAsign";
 const ProfessionalsPage: React.FC = () => {
   const { navigate } = useContext(NavContext);
   const { authData } = useContext(AuthenticationContext);
-  const [ showModal, setShowModal] = useState(false);
-  const [ professionalSelected, setProfessionalSelected] = useState<Professional>();
-  const [ professionalAsign, setProfessionalAsign] = useState<Professional>();
-  const [ loading, isLoading ] = useState<boolean>(false);
-  const [ error, hasError ] = useState<boolean>(false);
-  const [ errorMessage, setErrorMessage ] = useState<string>();
-  const [ professionals, setProfessionals ] = useState<Professional[]>([]);
-  const [ avatarString, setAvatarString ] = useState<string>();
-  const [ showActionDeleteProfessional, setShowActionDeleteProfessional ] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [professionalSelected, setProfessionalSelected] = useState<
+    Professional
+  >();
+  const [professionalAsign, setProfessionalAsign] = useState<Professional>();
+  const [loading, isLoading] = useState<boolean>(false);
+  const [error, hasError] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>();
+  const [professionals, setProfessionals] = useState<Professional[]>([]);
+  const [avatarString, setAvatarString] = useState<string>();
+  const [
+    showActionDeleteProfessional,
+    setShowActionDeleteProfessional,
+  ] = useState(false);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => getAsignProfessionalFromuser(), []);
 
   const getAllProfessionals = () => {
@@ -31,8 +50,10 @@ const ProfessionalsPage: React.FC = () => {
         setProfessionals(res.data);
         isLoading(false);
       })
-      .catch(() => { 
-        setErrorMessage("Hubo un problema al cargar los profesionales, por favor intente mas tarde.")
+      .catch(() => {
+        setErrorMessage(
+          "Hubo un problema al cargar los profesionales, por favor intente mas tarde."
+        );
         isLoading(false);
         hasError(true);
       });
@@ -41,27 +62,36 @@ const ProfessionalsPage: React.FC = () => {
   const getAsignProfessionalFromuser = () => {
     isLoading(true);
     hasError(false);
-    ProfessionalServices.getProfessionalAsignToUser(authData.token!, authData.patientId!)
-    .then((res:any) => {
-      if(res.status == 204) {
-        getAllProfessionals();
-      } else {
-        setProfessionalAsign(res.data);
-        setAvatarString(`https://avatars.dicebear.com/api/bottts/${res.data.id_usuario}.svg`);
+    ProfessionalServices.getProfessionalAsignToUser(
+      authData.token!,
+      authData.patientId!
+    )
+      .then((res: any) => {
+        console.log(res);
+        if (res.status === 204) {
+          getAllProfessionals();
+        } else {
+          setProfessionalAsign(res.data);
+          setAvatarString(
+            `https://avatars.dicebear.com/api/bottts/${res.data.id_usuario}.svg`
+          );
+          isLoading(false);
+        }
+      })
+      .catch((res: any) => {
+        setErrorMessage("Hubo un problema, por favor intente más tarde.");
         isLoading(false);
-      }
-    })
-    .catch((res:any) => {
-      setErrorMessage("Hubo un problema, por favor intente mas tarde.")
-      isLoading(false);
-      hasError(true);
-      goToHome();
-    })
+        hasError(true);
+        goToHome();
+      });
   };
 
-  const handleClickSetShowModal = (value: boolean, proffesional?: Professional) => {
-    if(value){
-      setProfessionalSelected( proffesional );
+  const handleClickSetShowModal = (
+    value: boolean,
+    proffesional?: Professional
+  ) => {
+    if (value) {
+      setProfessionalSelected(proffesional);
     }
     setShowModal(value);
   };
@@ -69,13 +99,20 @@ const ProfessionalsPage: React.FC = () => {
   const asignProfessionalToPatient = () => {
     isLoading(true);
     hasError(false);
-    ProfessionalServices.postAsignProfessional(authData.token!, authData.patientId!, professionalSelected?.nro_matricula!, professionalSelected?.id_usuario!)
-      .then((res:any) => {
+    ProfessionalServices.postAsignProfessional(
+      authData.token!,
+      authData.patientId!,
+      professionalSelected?.nro_matricula!,
+      professionalSelected?.id_usuario!
+    )
+      .then((res: any) => {
         handleClickSetShowModal(false);
         getAsignProfessionalFromuser();
       })
-      .catch(() => { 
-        setErrorMessage("Hubo un problema al asignar el profesional, por fabvor intente mas tarde.")
+      .catch(() => {
+        setErrorMessage(
+          "Hubo un problema al asignar el profesional, por favor intente nuevamente más tarde."
+        );
         isLoading(false);
         hasError(true);
       });
@@ -84,78 +121,90 @@ const ProfessionalsPage: React.FC = () => {
   const handleDeleteProfessional = () => {
     isLoading(true);
     hasError(false);
-    ProfessionalServices.deleteProfessional(authData.token!, authData.patientId!, professionalAsign?.nro_matricula!, professionalAsign?.id_usuario!)
-    .then((res:any) => {
-      setProfessionalAsign(undefined);
-      getAllProfessionals();
-    })
-    .catch(() => { 
-      setErrorMessage("Hubo un problema al desasignar el profesional, por fabvor intente mas tarde.")
-      isLoading(false);
-      hasError(true);
-    });
+    ProfessionalServices.deleteProfessional(
+      authData.token!,
+      authData.patientId!,
+      professionalAsign?.nro_matricula!,
+      professionalAsign?.id_usuario!
+    )
+      .then((res: any) => {
+        setProfessionalAsign(undefined);
+        getAllProfessionals();
+      })
+      .catch(() => {
+        setErrorMessage(
+          "Hubo un problema al desasignar el profesional, por favor intente nuevamente más tarde."
+        );
+        isLoading(false);
+        hasError(true);
+      });
   };
 
-  const goToHome = useCallback(
-    () => navigate("/inicio", "back"),
-    [navigate]
-  );
+  const goToHome = useCallback(() => navigate("/inicio", "back"), [navigate]);
 
   return (
     <Page pageTitle="Profesionales" showHomeButton>
       <IonGrid className="overflow-auto">
-        {professionalAsign != undefined ? (
+        {professionalAsign ? (
           <ViewProfessionalAsign
-          setShowActionDeleteProfessional={setShowActionDeleteProfessional}
-          handleDeleteProfessional={handleDeleteProfessional}
-          professionalAsign={professionalAsign}
-          avatarString={avatarString!}
-          showActionDeleteProfessional={showActionDeleteProfessional}/>
+            setShowActionDeleteProfessional={setShowActionDeleteProfessional}
+            handleDeleteProfessional={handleDeleteProfessional}
+            professionalAsign={professionalAsign}
+            avatarString={avatarString!}
+            showActionDeleteProfessional={showActionDeleteProfessional}
+          />
         ) : (
           <>
-          <IonRow>            
-            <IonTitle>Seleccione un profesional para ser asignado a {authData.patientName}</IonTitle>
-          </IonRow>
-          <IonRow>
-            {professionals?.map((professional, index) => (
-              <IonCol key={index} size="4" sizeMd="2">
-                <CardWithImage
-                  img={{
-                    src: `https://avatars.dicebear.com/api/bottts/${professional.id_usuario}.svg`,
-                    alt: `Avatar de ${professional.nombre}`,
+            <IonRow>
+              <IonTitle>
+                Seleccione un profesional para ser asignado a{" "}
+                {authData.patientName}
+              </IonTitle>
+            </IonRow>
+            <IonRow>
+              {professionals?.map((professional, index) => (
+                <IonCol key={index} size="4" sizeMd="2">
+                  <CardWithImage
+                    img={{
+                      src: `https://avatars.dicebear.com/api/bottts/${professional.id_usuario}.svg`,
+                      alt: `Avatar de ${professional.nombre}`,
+                    }}
+                    title={professional.nombre!}
+                    touchable
+                    onClick={() => {
+                      handleClickSetShowModal(true, professional);
+                    }}
+                  />
+                </IonCol>
+              ))}
+              {showModal ? (
+                <ModalProfessional
+                  showModal={showModal}
+                  handleShowModal={handleClickSetShowModal}
+                  handleAsignProfessional={asignProfessionalToPatient}
+                  profesional={professionalSelected!}
+                  patient={{
+                    id_paciente: authData.patientId,
+                    nombre: authData.patientName,
                   }}
-                  title={professional.nombre!}
-                  touchable
-                  onClick={() => {
-                    handleClickSetShowModal(true, professional);
-                  }}
-                />
-              </IonCol>
-            ))}
-            {showModal? (
-              <ModalProfessional showModal={showModal} 
-                handleShowModal={handleClickSetShowModal} 
-                handleAsignProfessional={asignProfessionalToPatient} 
-                profesional={professionalSelected!} 
-                patient={{id_paciente: authData.patientId, nombre: authData.patientName}}
-              ></ModalProfessional>
-            ): null}
-          </IonRow>
+                ></ModalProfessional>
+              ) : null}
+            </IonRow>
           </>
-      )}
-      <IonLoading
-        isOpen={loading!}
-        message="Trabajando..."
-        spinner="crescent"
-      />
-      <IonAlert
-        isOpen={error!}
-        animated
-        backdropDismiss
-        keyboardClose
-        message={errorMessage}
-      />
-    </IonGrid>
+        )}
+        <IonLoading
+          isOpen={loading!}
+          message="Trabajando..."
+          spinner="crescent"
+        />
+        <IonAlert
+          isOpen={error!}
+          animated
+          backdropDismiss
+          keyboardClose
+          message={errorMessage}
+        />
+      </IonGrid>
     </Page>
   );
 };
