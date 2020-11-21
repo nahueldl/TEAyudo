@@ -14,6 +14,7 @@ import { AuthenticationContext } from "../../context/authentication";
 const HomePage: React.FC = () => {
   const { navigate } = useContext(NavContext);
   const { role } = useContext(AuthenticationContext).authData;
+  const { patientId } = useContext(AuthenticationContext).authData;
 
   const goToComunicationPage = useCallback(
     () => navigate("/comunicacion", "forward"),
@@ -49,7 +50,7 @@ const HomePage: React.FC = () => {
               </IonCardTitle>
             </IonCard>
           </IonCol>
-          {role! === 1 ? (
+          {patientId!="NoAsignado" ? (
             <IonCol size="12" sizeMd="6">
               <IonCard
                 button
@@ -59,9 +60,7 @@ const HomePage: React.FC = () => {
                 <IonCardTitle className={styles.cardTitle}>Jugar</IonCardTitle>
               </IonCard>
             </IonCol>
-          ) : null}
-        </IonRow>
-        <IonRow>
+          ):null}
           <IonCol size="12" sizeMd="6">
             <IonCard
               button

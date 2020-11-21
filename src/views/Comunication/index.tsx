@@ -91,14 +91,19 @@ const ComunicationPage: React.FC = () => {
       selectedItems.map(item => {
         listPictograms?.push({id: item.pictogram.id_pictograma!})
       })
-      TranslateServices.postTranslate(token!, patientId!, listPictograms)
-      .then((res:any)=> {
-        setTranslation(translation);
-        setShowModal(true);
-      })
-      .catch((error: any) => {
-        setError(error.msg);
-      });
+      if(authData.role == 1){
+        TranslateServices.postTranslate(token!, patientId!, listPictograms)
+        .then((res:any)=> {
+          setTranslation(translation);
+          setShowModal(true);
+        })
+        .catch((error: any) => {
+          setError(error.msg);
+        });
+    } else {
+      setTranslation(translation);
+      setShowModal(true);
+    }
     return;
   };
 

@@ -62,11 +62,12 @@ const PatientSelection: React.FC = () => {
       .then((res: any) => {
         const length = res.data.length;
         if (length === 0) {
+          isLoading(false);
+          isAddition(true);
           if(authData.role == 1) {
             isAddition(true);
-            isLoading(false);
           } else {
-            isLoading(false);
+            setAuthData({ patientId: "NoAsignado" });
             goToHome();
           }
         } else {
@@ -120,7 +121,7 @@ const PatientSelection: React.FC = () => {
     return name && lastName && birthday;
   };
 
-  const goToHome = useCallback(() => navigate(`/inicio`, "forward"), [
+  const goToHome = useCallback(() => navigate("/inicio", "forward"), [
     navigate,
   ]);
 

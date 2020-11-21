@@ -36,10 +36,7 @@ const ProfessionalsPage: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState<string>();
   const [professionals, setProfessionals] = useState<Professional[]>([]);
   const [avatarString, setAvatarString] = useState<string>();
-  const [
-    showActionDeleteProfessional,
-    setShowActionDeleteProfessional,
-  ] = useState(false);
+  const [ showActionDeleteProfessional, setShowActionDeleteProfessional ] = useState(false);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => getAsignProfessionalFromuser(), []);
@@ -123,9 +120,7 @@ const ProfessionalsPage: React.FC = () => {
     hasError(false);
     ProfessionalServices.deleteProfessional(
       authData.token!,
-      authData.patientId!,
-      professionalAsign?.nro_matricula!,
-      professionalAsign?.id_usuario!
+      authData.patientId!
     )
       .then((res: any) => {
         setProfessionalAsign(undefined);

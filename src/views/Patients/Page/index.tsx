@@ -28,8 +28,8 @@ const PatientsPage: React.FC = () => {
           setPatientData({ patientsList: res.data });
           isLoading(false);
         } else {
-          goToAddPatient();
           isLoading(false);
+          goToAddPatient();
         }
       })
       .catch((_error: any) => {

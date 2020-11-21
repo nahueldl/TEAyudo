@@ -8,20 +8,57 @@ import {
   IonButton,
   IonContent,
   IonAvatar,
+  IonActionSheet,
 } from "@ionic/react";
 import "./styles.css";
 import Page from "../../../components/Page";
 import { PatientContext } from "../../../context/patient";
 import { AuthenticationContext } from "../../../context/authentication";
+import ProfessionalServices from "../../../services/professionals.services";
+import PatientServices from "../../../services/patients.services";
+import { trash, close } from "ionicons/icons";
+import { useState } from "react";
 
 const ViewPatient: React.FC = () => {
   const { authData } = useContext(AuthenticationContext);
-  const { patientData } = useContext(PatientContext);
+  const { patientData, setPatientData } = useContext(PatientContext);
   const { navigate } = useContext(NavContext);
+  const [  showActionDeleteProfessional, setShowActionDeleteProfessional ] = useState(false);
+  const [ loading, isLoading ] = useState<boolean>(false);
+  const [ error, hasError ] = useState<boolean>(false);
+  const [ errorMessage, setErrorMessage ] = useState<string>();
 
   const handleEditPatient = () => {
     goToEditPatient();
   };
+
+  const handleDeleteProfessional = () => {
+    isLoading(true);
+    hasError(false);
+    ProfessionalServices.deleteProfessional(
+      authData.token!,
+      authData.patientId!,
+    )
+      .then((res: any) => {
+        PatientServices.getPatientsFromUser(authData.token!)
+      .then((res: any) => {
+        isLoading(false);
+        setPatientData({ patientsList: res.data });
+      })
+      .catch((_error: any) => {
+        isLoading(false);
+        hasError(true);
+      });
+      })
+      .catch(() => {
+        setErrorMessage(
+          "Hubo un problema al desasignar el profesional, por favor intente nuevamente más tarde."
+        );
+        isLoading(false);
+        hasError(true);
+      });
+  };
+
   const goToEditPatient = useCallback(
     () => navigate("/pacientes/edicion", "back"),
     [navigate]
@@ -82,10 +119,44 @@ const ViewPatient: React.FC = () => {
                   expand="block">
                     Editar paciente
                 </IonButton>
-                ):null}
+                ):(
+                  <>
+                  {/* <IonButton
+                  className="formButtonmt-5"
+                  color="danger"
+                  onClick={() => setShowActionDeleteProfessional(true)}
+                  expand="block"
+                >
+                  Desasignar paciente
+                </IonButton>
+                <IonActionSheet
+                  isOpen={showActionDeleteProfessional}
+                  onDidDismiss={() => setShowActionDeleteProfessional(false)}
+                  buttons={[
+                    {
+                      text: "Desasignar",
+                      role: "destructive",
+                      icon: trash,
+                      handler: () => {
+                        handleDeleteProfessional();
+                      },
+                    },
+                    {
+                      text: "Cancelar",
+                      icon: close,
+                      role: "cancel",
+                      handler: () => {
+                        setShowActionDeleteProfessional(false);
+                      },
+                    },
+                  ]}
+                ></IonActionSheet> */}
+                </>
+                )}
                 <IonButton
-                  className="formButton red-buttom mt-5"
+                  className="formButton mt-5"
                   onClick={handleCancel}
+                  color={authData.role==1?"danger":"warning"}
                   expand="block"
                 >
                   Volver

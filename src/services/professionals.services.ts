@@ -41,16 +41,10 @@ class ProfessionalServices {
   deleteProfessional(
     token: string,
     patientId: string,
-    nroMatricula: string,
-    professionalId: number
   ): Promise<any> {
     return this.axios.delete(`/api/pacientes/` + patientId + "/profesional", {
       headers: {
         Authorization: `Bearer ${token}`,
-      },
-      params: {
-        id_profesional: professionalId,
-        nro_matricula: nroMatricula,
       }
     });
   }
