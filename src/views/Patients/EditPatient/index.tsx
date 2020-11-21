@@ -165,15 +165,6 @@ const EditPatient = () => {
                     onIonChange={(e) => setAuxLastName(e.detail.value!)}
                   />
                 </IonItem>
-                {/* <IonItem className="p-0">
-                  <IonDatetime
-                    displayFormat="DD MM YYYY"
-                    placeholder="Fecha nacimiento"
-                    value={auxBirthday}
-                    aria-required="true"
-                    onIonChange={(e) => setAuxBirthday(e.detail.value!)}
-                  ></IonDatetime>
-                </IonItem> */}
               </IonList>
               <div>
                 <IonButton

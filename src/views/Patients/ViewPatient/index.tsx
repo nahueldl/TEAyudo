@@ -102,14 +102,6 @@ const ViewPatient: React.FC = () => {
                     </strong>
                   </label>
                 </IonItem>
-                {/* <IonItem className="p-0">
-                  <IonDatetime
-                    displayFormat="DD MM YYYY"
-                    placeholder="Fecha nacimiento"
-                    value={patientData.birthday}
-                    disabled={true}
-                  ></IonDatetime>
-                </IonItem> */}
               </IonList>
               <div>
                 {authData.role == 1 ? (

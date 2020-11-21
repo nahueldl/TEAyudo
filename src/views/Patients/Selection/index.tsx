@@ -40,7 +40,6 @@ const PatientSelection: React.FC = () => {
 
   const [name, setName] = useState<string>();
   const [lastName, setLastName] = useState<string>();
-  const [birthday, setBirthday] = useState<any>();
   const [avatar, setAvatar] = useState<string>(
     "https://avatars.dicebear.com/api/bottts/" +
       Math.floor(Math.random() * 200) +
@@ -117,7 +116,7 @@ const PatientSelection: React.FC = () => {
   };
 
   const enableSubmitButton = () => {
-    return name && lastName && birthday;
+    return name && lastName;
   };
 
   const goToHome = useCallback(() => navigate("/inicio", "forward"), [

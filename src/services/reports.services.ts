@@ -13,8 +13,7 @@ class ReportServices {
       },
       responseType: 'arraybuffer',
       params: {
-        paciente: patientId,
-        // ...(date ? { fecha: date } : {}),
+        paciente: patientId
       },
     });
   }

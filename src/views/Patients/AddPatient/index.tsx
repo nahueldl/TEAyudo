@@ -36,9 +36,6 @@ const AddPatient: React.FC<InfoPatientProps> = ({ patient }) => {
   const [lastName, setLastName] = useState<string>(
     patient !== undefined ? patient.lastName : ""
   );
-  const [birthday, setBirthday] = useState<string>(
-    patient !== undefined ? patient.birthday : ""
-  );
   const [avatar, setAvatar] = useState<string>(
     patient !== undefined
       ? patient.avatar
@@ -168,7 +165,6 @@ interface InfoPatientProps {
 interface Patient {
   name: string;
   lastName: string;
-  birthday: string;
   avatar: string;
 }
 

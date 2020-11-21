@@ -18,7 +18,6 @@ class PatientServices {
     token: string,
     name: string,
     lastName: string,
-    // birthday: string,
     avatar?: string
   ) {
     return this.axios.post(
@@ -27,7 +26,6 @@ class PatientServices {
         nombre: name,
         apellido: lastName,
         fase: 1,
-        // fechaNac: birthday,
         base64img: avatar,
       },
       {
