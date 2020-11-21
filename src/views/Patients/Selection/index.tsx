@@ -70,6 +70,7 @@ const PatientSelection: React.FC = () => {
             isLoading(false);
             handlePatientSelection(res.data[0]);
           } else {
+            setPatients(res.data);
             isLoading(false);
             isSelection(true);
           }
@@ -92,7 +93,6 @@ const PatientSelection: React.FC = () => {
   };
 
   const addPatient = () => {
-    debugger;
     isLoading(true);
     var blob = getBlobFromURL(avatar);
     blob.then((blobRes: any) => {
@@ -117,7 +117,7 @@ const PatientSelection: React.FC = () => {
     return !(name && lastName && birthday);
   };
 
-  const goToHome = useCallback(() => navigate(`/`, "forward"), [navigate]);
+  const goToHome = useCallback(() => navigate(`/inicio`, "forward"), [navigate]);
 
   return (
     <IonPage>
@@ -145,7 +145,7 @@ const PatientSelection: React.FC = () => {
             </IonRow>
             <IonRow>
               {patients?.map((patient: any, index: number) => (
-                <IonCol key={index} size="12" sizeMd="6">
+                <IonCol key={index} size="4" sizeMd="6">
                   <CardWithImage
                     onClick={() => handlePatientSelection(patient)}
                     img={{
