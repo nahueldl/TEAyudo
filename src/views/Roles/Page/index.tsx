@@ -79,14 +79,16 @@ const RolesPage: React.FC = () => {
                 </IonCol>
               ))}
             </IonRow>
-            <IonRow>
-              <CardWithIcon
-                icon={addCircleOutline}
-                title="Agregar"
-                touchable
-                onClick={() => handleAddRol()}
-              />
-            </IonRow>
+            {roles.length < 2 ? (
+              <IonRow>
+                <CardWithIcon
+                  icon={addCircleOutline}
+                  title="Agregar"
+                  touchable
+                  onClick={() => handleAddRol()}
+                />
+              </IonRow>
+            ):null}
           </IonGrid>
         )}
         {error ? (
