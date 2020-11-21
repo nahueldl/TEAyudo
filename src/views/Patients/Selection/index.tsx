@@ -11,7 +11,6 @@ import {
   IonAlert,
   IonAvatar,
   IonButton,
-  IonDatetime,
   IonIcon,
   IonInput,
   IonItem,
@@ -222,15 +221,6 @@ const PatientSelection: React.FC = () => {
                         placeholder="Apellido"
                         onIonChange={(e) => setLastName(e.detail.value!)}
                       />
-                    </IonItem>
-                    <IonItem className="p-0">
-                      <IonDatetime
-                        displayFormat="DD MM YYYY"
-                        placeholder="Fecha nacimiento"
-                        value={birthday}
-                        aria-required="true"
-                        onIonChange={(e) => setBirthday(e.detail.value!)}
-                      ></IonDatetime>
                     </IonItem>
                   </IonList>
                   <div>

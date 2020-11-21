@@ -120,15 +120,6 @@ const AddPatient: React.FC<InfoPatientProps> = ({ patient }) => {
                     onIonChange={(e) => setLastName(e.detail.value!)}
                   />
                 </IonItem>
-                <IonItem className="p-0">
-                  <IonDatetime
-                    displayFormat="DD MM YYYY"
-                    placeholder="Fecha nacimiento"
-                    value={birthday}
-                    aria-required="true"
-                    onIonChange={(e) => setBirthday(e.detail.value!)}
-                  ></IonDatetime>
-                </IonItem>
               </IonList>
               <div>
                 <IonButton
