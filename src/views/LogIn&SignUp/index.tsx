@@ -86,7 +86,7 @@ const LogInSignUpPage: React.FC = () => {
   };
 
   const goToAddPatient = useCallback(
-    () => navigate("/pacientes/alta", "forward"),
+    () => navigate("/pacientes/seleccion", "forward"),
     [navigate]
   );
 
