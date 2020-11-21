@@ -35,7 +35,7 @@ const RoleSelection: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [roles, setRoles] = useState<any>([]);
   const [error, hasError] = useState<boolean>(false);
-  const [errorMsg, setErrorMsg] = useState<string>("");
+  const [errorMsg, setErrorMsg] = useState<string>();
   const [selection, isSelection] = useState<boolean>();
   const [addition, isAddition] = useState<boolean>();
   const [licenseNumber, setLicenseNumber] = useState<number>();
@@ -69,6 +69,7 @@ const RoleSelection: React.FC = () => {
           setLoading(false);
           isAddition(true);
         } else {
+          console.log(error.response);
           setLoading(false);
           hasError(true);
           setErrorMsg(error.response.data.msg);
@@ -127,6 +128,7 @@ const RoleSelection: React.FC = () => {
             Storage.set({ key: "role", value: newRole.toString() });
           })
           .catch((error: any) => {
+            console.log(error.response);
             setLoading(false);
             hasError(true);
             setErrorMsg(error.response.data.msg);
@@ -134,6 +136,8 @@ const RoleSelection: React.FC = () => {
       })
       .catch((error: any) => {
         setLoading(false);
+        console.log(error.response);
+
         hasError(true);
         setErrorMsg(error.response.data.msg);
       });
@@ -161,14 +165,6 @@ const RoleSelection: React.FC = () => {
             isOpen={loading}
             message={"Trabajando..."}
             spinner="crescent"
-          />
-        ) : error ? (
-          <IonAlert
-            isOpen={error!}
-            animated
-            backdropDismiss
-            keyboardClose
-            message={errorMsg}
           />
         ) : selection ? (
           <IonGrid className="container">
@@ -289,6 +285,15 @@ const RoleSelection: React.FC = () => {
               </IonRow>
             </IonGrid>
           </>
+        ) : null}
+        {error ? (
+          <IonAlert
+            isOpen={error!}
+            animated
+            backdropDismiss
+            keyboardClose
+            message={errorMsg}
+          />
         ) : null}
       </IonContent>
     </IonPage>
