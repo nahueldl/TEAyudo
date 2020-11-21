@@ -33,7 +33,7 @@ const TranslationModal: React.FC<Props> = ({
           </IonCol>
         </IonRow>
         <IonRow>
-          <IonCol className="translation-container">
+          <IonCol className="translation-container text-black">
             <p className="translation">{translation}</p>
           </IonCol>
         </IonRow>
