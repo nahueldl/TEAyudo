@@ -163,7 +163,7 @@ const ReportsPage: React.FC = () => {
 
             {loadingReport ? (
               <IonLoading
-                isOpen={loading!}
+                isOpen={loadingReport!}
                 message={"Generando reporte..."}
                 spinner="crescent"
               />
