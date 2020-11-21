@@ -145,7 +145,7 @@ const PatientSelection: React.FC = () => {
             </IonRow>
             <IonRow>
               {patients?.map((patient: any, index: number) => (
-                <IonCol key={index} size="12" sizeMd="6">
+                <IonCol key={index} size="4" sizeMd="6">
                   <CardWithImage
                     onClick={() => handlePatientSelection(patient)}
                     img={{
