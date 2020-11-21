@@ -99,12 +99,11 @@ const PatientSelection: React.FC = () => {
       base64.then((base64res: any) => {
         PatientServices.postNewPatient(token!, name!, lastName!, base64res)
           .then((res: any) => {
-            console.log("nuevo paciente!");
             isLoading(false);
             handlePatientSelection(res.data);
           })
           .catch((error: any) => {
-            console.log(error);
+            isLoading(false);
             hasError(true);
             setErrorMsg(error.response.data.msg);
           });
