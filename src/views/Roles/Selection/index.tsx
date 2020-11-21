@@ -108,7 +108,6 @@ const RoleSelection: React.FC = () => {
   };
 
   const assignMedicxRol = (newRole: number, descripction: string) => {
-    debugger;
     setLoading(true);
     UserService.patchUsuario(
       authData.token!,
