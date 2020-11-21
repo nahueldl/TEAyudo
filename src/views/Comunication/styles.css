@@ -63,10 +63,10 @@
 }
 
 .translation-container {
-   padding: 25px 0px 0px 25px;
-   display: flex;
-   justify-content: center;
-   align-items: center;
+  padding-top: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .translation {
