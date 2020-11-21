@@ -11,6 +11,7 @@ class ReportServices {
       headers: {
         Authorization: `Bearer ${token}`,
       },
+      responseType: 'arraybuffer',
       params: {
         paciente: patientId,
         // ...(date ? { fecha: date } : {}),
