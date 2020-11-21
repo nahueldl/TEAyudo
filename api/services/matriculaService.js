@@ -56,7 +56,7 @@ const matriculaService = {
             response: 'La matricula ingresada es distinta a la que tiene asignada el profesional, o no es valida, pruebe ingresarla nuevamente'
             }
           return result;
-        }else if(estado != 'Habilitado'){
+        }else{
           const result = {
             state: estadosRespuesta.USERERROR,
             response: 'El profesional no se encuentra habilitado según el Ministerio de Salud'
