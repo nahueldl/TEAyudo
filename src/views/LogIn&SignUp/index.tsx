@@ -77,7 +77,7 @@ const LogInSignUpPage: React.FC = () => {
         Storage.set({ key: "username", value: email! });
         isLoading(false);
 
-        goToAddPatient();
+        goToSelectRole();
       })
       .catch((_error: any) => {
         isLoading(false);
