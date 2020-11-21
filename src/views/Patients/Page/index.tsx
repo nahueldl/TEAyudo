@@ -29,6 +29,9 @@ const PatientsPage: React.FC = () => {
           isLoading(false);
         } else {
           isLoading(false);
+          if(role===2){
+            goToHome();
+          }
           goToAddPatient();
         }
       })
@@ -44,6 +47,11 @@ const PatientsPage: React.FC = () => {
 
   const goToAddPatient = useCallback(
     () => navigate("/pacientes/alta", "forward"),
+    [navigate]
+  );
+
+  const goToHome = useCallback(
+    () => navigate("/inicio", "back"),
     [navigate]
   );
 

@@ -79,7 +79,7 @@ const Menu: React.FC<Props> = ({ patientName }) => {
   return (
     <IonMenu contentId="main" type="overlay" swipeGesture>
       <IonContent>
-        <h1 className="title">{`Bienvenidx ${patientName}!`}</h1>
+        <h1 className="title">{`Bienvenidx${patientName==null ? "" : " "+patientName}!`}</h1>
         <IonList id="menu-list">
           {role === 1
             ? appPagesFamiliar.map((appPage, index) => {
