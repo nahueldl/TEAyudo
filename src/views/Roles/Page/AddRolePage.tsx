@@ -1,4 +1,5 @@
 import {
+  IonAlert,
   IonButton,
   IonCol,
   IonGrid,
@@ -6,8 +7,7 @@ import {
   IonItem,
   IonLabel,
   IonList,
-  IonRadio,
-  IonRadioGroup,
+  IonLoading,
   IonRow,
   NavContext,
 } from "@ionic/react";
@@ -21,17 +21,16 @@ import "./styles.css";
 
 const AddRole: React.FC = () => {
   const { token, role } = useContext(AuthenticationContext).authData;
+  const roleToAdd: number = role === 1 ? 2 : 1;
   const { name, lastname, email } = useContext(
     RegistrationContext
   ).registrationData;
   const { navigate } = useContext(NavContext);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [roles, setRoles] = useState<any>([]);
+  const [loading, setLoading] = useState<boolean>(false);
   const [error, hasError] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string>("");
   const [licenseNumber, setLicenseNumber] = useState<number>();
   const [dni, setDni] = useState<number>();
-  const [roleSelected, setRoleSelected] = useState<number>();
 
   const assignFamilyRol = () => {
     setLoading(true);
@@ -73,13 +72,13 @@ const AddRole: React.FC = () => {
       })
       .catch((error: any) => {
         setLoading(false);
-        hasError(true);
         setErrorMsg(error.response.data.msg);
+        hasError(true);
       });
   };
 
   const showSubmitButton = () => {
-    switch (roleSelected) {
+    switch (roleToAdd) {
       case 1:
         return true;
       case 2:
@@ -93,88 +92,113 @@ const AddRole: React.FC = () => {
 
   return (
     <Page pageTitle="Agregar rol" showHomeButton>
-      <IonGrid
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-        }}
-      >
-        {role === 1 ? (
-          <>
-            <IonRow>
-              <IonCol>
-                <IonList inset={true}>
-                  <IonItem>
-                    Podés agregar el rol de Profesional; elegí este rol sólo si
-                    sos le medicx tratante de un paciente con TEA
-                  </IonItem>
-                  <div className="doctorData">
-                    <h4 className="title">
-                      Necesitamos algunos datos extra para continuar
-                    </h4>
+      {loading ? (
+        <IonLoading
+          isOpen={loading}
+          message={"Trabajando..."}
+          spinner="crescent"
+        />
+      ) : (
+        <IonGrid
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+          }}
+        >
+          {role === 1 ? (
+            <>
+              <IonRow>
+                <IonCol>
+                  <IonList inset={true}>
                     <IonItem>
-                      <IonLabel position="stacked">Número de matrícula</IonLabel>
-                      <IonInput
-                        value={licenseNumber}
-                        placeholder="Número de matrícula"
-                        onIonChange={(e) =>
-                          setLicenseNumber(parseInt(e.detail.value!, 10))
-                        }
-                        clearInput
-                      ></IonInput>
+                      Podés agregar el rol de Profesional; elegí este rol sólo
+                      si sos le medicx tratante de un paciente con TEA
                     </IonItem>
+                    <div className="doctorData">
+                      <h4 className="title">
+                        Necesitamos algunos datos extra para continuar
+                      </h4>
+                      <IonItem>
+                        <IonLabel position="stacked">
+                          Número de matrícula
+                        </IonLabel>
+                        <IonInput
+                          type="number"
+                          value={licenseNumber}
+                          placeholder="Número de matrícula"
+                          onIonChange={(e) =>
+                            setLicenseNumber(parseInt(e.detail.value!, 10))
+                          }
+                          clearInput
+                        ></IonInput>
+                      </IonItem>
+                      <IonItem>
+                        <IonLabel position="stacked">
+                          Número de documento
+                        </IonLabel>
+                        <IonInput
+                          type="number"
+                          value={dni}
+                          placeholder="Número de documento"
+                          onIonChange={(e) =>
+                            setDni(parseInt(e.detail.value!, 10))
+                          }
+                          clearInput
+                        ></IonInput>
+                      </IonItem>
+                    </div>
+                  </IonList>
+                </IonCol>
+              </IonRow>
+              <IonRow>
+                <IonCol style={{ display: "flex", justifyContent: "center" }}>
+                  <IonButton
+                    disabled={!showSubmitButton()}
+                    onClick={() => assignMedicxRol()}
+                  >
+                    Siguiente
+                  </IonButton>
+                </IonCol>
+              </IonRow>
+            </>
+          ) : (
+            <>
+              <IonRow>
+                <IonCol>
+                  <IonList inset={true}>
                     <IonItem>
-                      <IonLabel position="stacked">Número de documento</IonLabel>
-                      <IonInput
-                        value={dni}
-                        placeholder="Número de documento"
-                        onIonChange={(e) =>
-                          setDni(parseInt(e.detail.value!, 10))
-                        }
-                        clearInput
-                      ></IonInput>
+                      Podés agregar el rol de Familar; elegí este rol si sos el
+                      familiar de un paciente con TEA
                     </IonItem>
-                  </div>
-                </IonList>
-              </IonCol>
-            </IonRow>
-            <IonRow>
-              <IonCol style={{ display: "flex", justifyContent: "center" }}>
-                <IonButton
-                  disabled={!showSubmitButton()}
-                  onClick={() => assignMedicxRol()}
-                >
-                  Siguiente
-                </IonButton>
-              </IonCol>
-            </IonRow>
-          </>
-        ) : (
-          <>
-            <IonRow>
-              <IonCol>
-                <IonList inset={true}>
-                  <IonItem>
-                    Podés agregar el rol de Familar; elegí este rol si sos el
-                    familiar de un paciente con TEA
-                  </IonItem>
-                </IonList>
-              </IonCol>
-            </IonRow>
-            <IonRow>
-              <IonCol style={{ display: "flex", justifyContent: "center" }}>
-                <IonButton
-                  disabled={!showSubmitButton()}
-                  onClick={() => assignFamilyRol()}
-                >
-                  Siguiente
-                </IonButton>
-              </IonCol>
-            </IonRow>
-          </>
-        )}
-      </IonGrid>
+                  </IonList>
+                </IonCol>
+              </IonRow>
+              <IonRow>
+                <IonCol style={{ display: "flex", justifyContent: "center" }}>
+                  <IonButton
+                    disabled={!showSubmitButton()}
+                    onClick={() => assignFamilyRol()}
+                  >
+                    Siguiente
+                  </IonButton>
+                </IonCol>
+              </IonRow>
+            </>
+          )}
+        </IonGrid>
+      )}
+
+      {error ? (
+        <IonAlert
+          cssClass="text-align: justify;"
+          isOpen={error!}
+          animated
+          backdropDismiss
+          keyboardClose
+          message={errorMsg}
+        />
+      ) : null}
     </Page>
   );
 };

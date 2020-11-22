@@ -68,10 +68,9 @@ const RoleSelection: React.FC = () => {
           setLoading(false);
           isAddition(true);
         } else {
-          console.log(error.response);
           setLoading(false);
-          hasError(true);
           setErrorMsg(error.response.data.msg);
+          hasError(true);
         }
       });
   };
@@ -127,16 +126,15 @@ const RoleSelection: React.FC = () => {
             set("role", newRole);
           })
           .catch((error: any) => {
-            console.log(error.response);
             setLoading(false);
-            hasError(true);
             setErrorMsg(error.response.data.msg);
+
+            hasError(true);
           });
       })
       .catch((error: any) => {
         setLoading(false);
         hasError(true);
-        setErrorMsg(error.response.data.msg);
       });
   };
 
