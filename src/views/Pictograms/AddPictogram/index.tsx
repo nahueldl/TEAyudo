@@ -17,7 +17,7 @@ const AddPictogram: React.FC = () => {
     const [errorMessage, setErrorMessage] = useState<string>();
     const [ categoriasPropias, setCategoriasPropias ] = useState<[Category]>();
     const [ loading, isLoading ] = useState<boolean>(false);
-    const  [error, hasError ] = useState<boolean>(false);
+    const [ error, setError ] = useState<boolean>(false);
     const { photos, takePhoto } = usePhotoGallery();
     const [ nombrePictograma, setNombrePictograma ] = useState<string>();
     const [ etiquetaPictograma, setEtiquetaPictograma ] = useState<string>();
@@ -26,35 +26,52 @@ const AddPictogram: React.FC = () => {
     useEffect(() => obtenerCategorias(), []);
 
     const obtenerCategorias = () => {
+        isLoading(true);
+        setError(false);
         CategoriesService.getCategories(authData.token!)
         .then((res: any) => {
+            if(res.data.length===1){
+                setCategoriaValue(res.data[0].id_categoria);
+            } 
             setCategoriasPropias(res.data);
+            isLoading(false);
         })
         .catch((error: any) => {
             setErrorMessage(
               "Hubo un inconveniente, por favor intente más tarde."
             );
-            hasError(true);
+            isLoading(false);
+            setError(true);
         });
     }
 
     const handleAddPictogram = () => {
-        var base64;
-        getBlobFromURL(photos[0].webviewPath!).then(data => {
-            getBase64(data).then(encoded => {
-                base64 = encoded;
-                PictogramsServices.loadPictogramToCategory(authData.token!, categoriaValue!, base64, {nombre: nombrePictograma!}, {nombre: etiquetaPictograma!})
-                    .then((res:any) => {
-                        goToPictogramsPage();
-                    })
-                    .catch(error => {
-                        setErrorMessage(
-                            "Hubo un inconveniente creando el pictograma, pruebe más tarde."
-                          );
-                          hasError(true);
-                    })
-            });
-        })
+        setError(false);
+        if(categoriaValue===undefined || nombrePictograma===undefined ||etiquetaPictograma===undefined || photos.length===0){
+            setErrorMessage( "Complete todos los campos y carge una imagen para crear un pictograma.");
+            setError(true);
+        } else {
+            
+            isLoading(true);
+            var base64;
+            getBlobFromURL(photos[0].webviewPath!).then(data => {
+                getBase64(data).then(encoded => {
+                    base64 = encoded;
+                    PictogramsServices.loadPictogramToCategory(authData.token!, categoriaValue!, base64, {nombre: nombrePictograma!}, {nombre: etiquetaPictograma!})
+                        .then((res:any) => {
+                            isLoading(false);
+                            goToPictogramsPage();
+                        })
+                        .catch(error => {
+                            setErrorMessage(
+                                "Hubo un inconveniente creando el pictograma, pruebe más tarde."
+                            );
+                            isLoading(false);
+                            setError(true);
+                        })
+                });
+            })
+        }
     }
 
     const handleCancel = () => {
@@ -114,6 +131,7 @@ return (
                         animated
                         backdropDismiss
                         keyboardClose
+                        onDidDismiss={e => setError(false)}
                         message={errorMessage}
                     />
                 </IonRow>
