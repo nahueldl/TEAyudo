@@ -13,10 +13,8 @@ import { PlatformContext } from "../../context/platform";
 import { useForm, Controller } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
 
-const ERROR_MESSAGE =
-  "Hubo un error al iniciar sesión, por favor intenta nuevamente más tarde";
 
-const SignInForm: React.FC<Props> = ({ signIn, loading, error }) => {
+const SignInForm: React.FC<Props> = ({ signIn, loading, error, msg }) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [data, setData] = useState();
   const { isMobile } = useContext(PlatformContext).platformData;
@@ -113,7 +111,7 @@ const SignInForm: React.FC<Props> = ({ signIn, loading, error }) => {
         animated
         backdropDismiss
         keyboardClose
-        message={ERROR_MESSAGE}
+        message={msg}
       />
     </>
   );
@@ -123,5 +121,6 @@ interface Props {
   signIn: (data: any) => void;
   loading: boolean;
   error: boolean;
+  msg: string;
 }
 export default SignInForm;

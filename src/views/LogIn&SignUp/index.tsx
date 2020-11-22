@@ -1,4 +1,4 @@
-import React, { useContext, useState, useCallback } from "react";
+import React, { useContext, useState, useCallback, useReducer } from "react";
 import {
   IonContent,
   NavContext,
@@ -16,6 +16,13 @@ import "./styles.css";
 import { PlatformContext } from "../../context/platform";
 import { RegistrationContext } from "../../context/registration";
 import { set } from "../../services/storage.services";
+
+const SIGN_IN_400 =
+  "Hay un error con el mail o la contraseña proporcionadas, por favor intente nuevamente.";
+const SIGN_UP_409 = "Ya existe un usuario con ese correo.";
+const GENERIC_500 =
+  "Hubo un problema inesperado en el servidor, por favor intente más tarde.";
+
 const LogInSignUpPage: React.FC = () => {
   const { navigate } = useContext(NavContext);
   const { setRegistrationData } = useContext(RegistrationContext);
@@ -25,11 +32,17 @@ const LogInSignUpPage: React.FC = () => {
 
   const [showSignIn, setShowSignIn] = useState<boolean>(false);
   const [loading, isLoading] = useState<boolean>(false);
-  const [error, hasError] = useState<boolean>(false);
+  const [errorSignIn, hasErrorSignIn] = useState<boolean>(false);
+  const [errorSignInMsg, setErrorSignInMsg] = useState<string>("");
+  const [errorSignUp, hasErrorSignUp] = useState<boolean>(false);
+  const [errorSignUpMsg, setErrorSignUpMsg] = useState<string>("");
+
+  const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
 
   const handleSignIn = ({ email, password }: any) => {
     isLoading(true);
-    hasError(false);
+    hasErrorSignIn(false);
+    setErrorSignInMsg("");
     AuthenticationService.handleLogIn(email, password)
       .then((res: any) => {
         const expirationDate = calculateExpirationDate();
@@ -41,19 +54,24 @@ const LogInSignUpPage: React.FC = () => {
         });
         set("token", res.data.token);
         set("tokenExpirationDate", expirationDate);
-        set("username",email);
+        set("username", email);
         isLoading(false);
         goToSelectRole();
       })
-      .catch((_error: any) => {
+      .catch((error: any) => {
         isLoading(false);
-        hasError(true);
+        console.log(error.response);
+        const msg: string = error.response.data.msg;
+        setErrorSignInMsg((prev) => prev + msg);
+        forceUpdate();
+        console.log(errorSignInMsg);
+        hasErrorSignIn(true);
       });
   };
 
   const handleSignUpForm = ({ name, lastname, email, password }: any) => {
     isLoading(true);
-    hasError(false);
+    hasErrorSignUp(false);
     setRegistrationData({ name: name, lastname: lastname, email: email });
     AuthenticationService.handleSignUp(name, lastname, email, password)
       .then((res: any) => {
@@ -64,18 +82,18 @@ const LogInSignUpPage: React.FC = () => {
           username: email,
           authenticated: true,
         });
-        set("token", res.data.token );
-        set(
-          "tokenExpirationDate",
-          expirationDate);
-        set("username", email! );
+        set("token", res.data.token);
+        set("tokenExpirationDate", expirationDate);
+        set("username", email!);
         isLoading(false);
 
         goToSelectRole();
       })
-      .catch((_error: any) => {
+      .catch((error: any) => {
         isLoading(false);
-        hasError(true);
+        setErrorSignUpMsg(error.response.data.msg);
+
+        hasErrorSignUp(true);
       });
   };
 
@@ -103,14 +121,16 @@ const LogInSignUpPage: React.FC = () => {
               <SignInForm
                 signIn={handleSignIn}
                 loading={loading}
-                error={error}
+                error={errorSignIn}
+                msg={errorSignInMsg}
               />
             </IonSlide>
             <IonSlide>
               <SignUpForm
                 signUp={handleSignUpForm}
                 loading={loading}
-                error={error}
+                error={errorSignUp}
+                msg={errorSignUpMsg}
               />
             </IonSlide>
           </IonSlides>
@@ -120,14 +140,16 @@ const LogInSignUpPage: React.FC = () => {
               <SignUpForm
                 signUp={handleSignUpForm}
                 loading={loading}
-                error={error}
+                error={errorSignUp}
+                msg={errorSignUpMsg}
               />
             </div>
             <div className="formContainer signInContainer">
               <SignInForm
                 signIn={handleSignIn}
                 loading={loading}
-                error={error}
+                error={errorSignIn}
+                msg={errorSignInMsg}
               />
             </div>
             <div className="overlayContainer">
