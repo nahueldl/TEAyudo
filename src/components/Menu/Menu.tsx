@@ -41,6 +41,10 @@ const appPagesFamiliar: AppPage[] = [
     url: "/roles",
   },
   {
+    title: "Informes",
+    url: "/informes",
+  },
+  {
     title: "Configuración",
     url: "/configuracion",
   },
