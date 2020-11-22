@@ -44,6 +44,7 @@ const HomePage: React.FC = () => {
               button
               className={styles.ionCard}
               onClick={() => goToComunicationPage()}
+              color="secondary"
             >
               <IonCardTitle className={styles.cardTitle}>
                 Comunicarse
@@ -55,7 +56,6 @@ const HomePage: React.FC = () => {
               <IonCard
                 button
                 className={styles.ionCard}
-                onClick={() => goToGamesPage()}
               >
                 <IonCardTitle className={styles.cardTitle}>Jugar</IonCardTitle>
               </IonCard>
@@ -65,6 +65,7 @@ const HomePage: React.FC = () => {
             <IonCard
               button
               className={styles.ionCard}
+              color="success"
               onClick={() => goToPictogramasPage()}
             >
               <IonCardTitle className={styles.cardTitle}>
@@ -77,6 +78,8 @@ const HomePage: React.FC = () => {
               button
               className={styles.ionCard}
               onClick={() => goToCategoriesPage()}
+              color='tertiary'
+              
             >
               <IonCardTitle className={styles.cardTitle}>
                 Categorias
