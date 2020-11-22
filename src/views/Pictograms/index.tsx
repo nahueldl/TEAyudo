@@ -25,13 +25,8 @@ const PictogramsPage: React.FC = () => {
       hasError(false);
       PictogramServices.getPictogramsByName(authData.token!, textBusqueda, authData.patientId!)
         .then((res: any) => {
-          if (res.data?.length > 0) {
-            setPictograms(res.data);
-            isLoading(false);
-          } else {
-            goToAddPictogram();
-            isLoading(false);
-          }
+          setPictograms(res.data);
+          isLoading(false);
         })
         .catch((_error: any) => {
           isLoading(false);
@@ -81,7 +76,7 @@ const PictogramsPage: React.FC = () => {
               <IonLabel>Buscar un pictograma</IonLabel>
             </IonCol>
             <IonCol size="12">
-              <IonSearchbar value={searchText} placeholder="Buscar..." onIonChange={e => getPictogramSearchText(e.detail.value!)} showCancelButton="never"></IonSearchbar>
+              <IonSearchbar value={searchText} placeholder="Buscar..." enterkeyhint="enter" onIonChange={e => getPictogramSearchText(e.detail.value!)} showCancelButton="never" debounce={1500}></IonSearchbar>
             </IonCol>
             <IonCol size="12">
               <IonLabel>Crear un nuevo pictograma</IonLabel>
