@@ -202,7 +202,7 @@ const estadisticaDAO = {
 			}
 		]
 
-		const result = await genericDAO.runQuery("select ISNULL(ROUND(CAST((select count(*) from Jugada where id_paciente = @id and (fecha_hora_alta between DATEADD(month, -1, @fecha) and DATEADD(day, 1, @fecha)) and respondio_correctamente = 1) AS FLOAT) / ISNULL(CAST((select count(*) from Jugada where id_paciente = @id and (fecha_hora_alta between DATEADD(month, -1, @fecha) and DATEADD(day, 1, @fecha))) AS FLOAT), 1)*100, 2), 0) as porcentaje", params);
+		const result = await genericDAO.runQuery("select ISNULL(ROUND(CAST((select count(*) from Jugada where id_paciente = @id and (fecha_hora_alta between DATEADD(month, -1, @fecha) and DATEADD(day, 1, @fecha)) and respondio_correctamente = 1) AS FLOAT) / ISNULL(CAST((select count(*) from Jugada where id_paciente = @id and respondio_correctamente is not null and (fecha_hora_alta between DATEADD(month, -1, @fecha) and DATEADD(day, 1, @fecha))) AS FLOAT), 1)*100, 2), 0) as porcentaje", params);
 
 		if(result.state === estadosRespuesta.OK && result.response.length < 1){
 			result.state = estadosRespuesta.USERERROR;
