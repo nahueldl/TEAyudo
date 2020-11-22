@@ -25,12 +25,12 @@ const informeService = {
 		//agregar intervalo de tiempo variable
 
 		//TODO: BORRARR ESTOOO
-		const resultUsuarioRol = await rolService.getUsuarioRol(usuario.id_usuario, 2);
+		// const resultUsuarioRol = await rolService.getUsuarioRol(usuario.id_usuario, 2);
 
-		if(resultUsuarioRol.state !== estadosRespuesta.OK){
-			res.status(403).json({msg: "El usuario no tiene los permisos"});
-			return;
-		}
+		// if(resultUsuarioRol.state !== estadosRespuesta.OK){
+		// 	res.status(403).json({msg: "El usuario no tiene los permisos"});
+		// 	return;
+		// }
 
 		let date;
 		if(fecha === undefined || fecha === null)
@@ -41,7 +41,7 @@ const informeService = {
 
 		const informe = {
 			"id_paciente": paciente,
-			"id_usuario_rol": resultUsuarioRol.response.id_usuario_rol,
+			//"id_usuario_rol": resultUsuarioRol.response.id_usuario_rol,
 			"fecha_hora": date
 		}
 
