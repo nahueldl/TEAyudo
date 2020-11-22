@@ -4,8 +4,7 @@ import axios, {
   AxiosError,
   AxiosResponse,
 } from "axios";
-import { Plugins } from "@capacitor/core";
-const { Storage } = Plugins;
+import { clear } from "../services/storage.services";
 const __API_BASE_URL__ = "http://200.123.150.57:62999";
 
 export default class AxiosWrapper {
@@ -57,7 +56,7 @@ export default class AxiosWrapper {
     if (error.response?.status !== 401) {
       return Promise.reject(error);
     }
-    Storage.clear().then((res) => this.redirectToLogin("/login"));
+    clear().then((res) => this.redirectToLogin("/login"));
   };
 
   private redirectToLogin = (url: string) => {

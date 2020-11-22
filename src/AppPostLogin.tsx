@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { IonSplitPane, IonRouterOutlet } from "@ionic/react";
-import { Route, Redirect } from "react-router";
+import { Route } from "react-router";
 import Menu from "./components/Menu/Menu";
 import HomePage from "./views/Home";
 import PictogramsPage from "./views/Pictograms";
@@ -24,7 +24,7 @@ import LogInSignUpPage from "./views/LogIn&SignUp";
 import AddRole from "./views/Roles/Page/AddRolePage";
 
 const AppPostLogin: React.FC = () => {
-  const { token, patientName, } = useContext(AuthenticationContext).authData;
+  const { patientName } = useContext(AuthenticationContext).authData;
 
   return (
     <IonSplitPane contentId="main">

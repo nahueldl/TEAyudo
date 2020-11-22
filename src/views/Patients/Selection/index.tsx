@@ -19,12 +19,11 @@ import {
 import { AuthenticationContext } from "../../../context/authentication";
 import PatientServices from "../../../services/patients.services";
 import CardWithImage from "../../../components/CardWithImage";
-import { Plugins } from "@capacitor/core";
 import { PatientContext } from "../../../context/patient";
 import { getBase64 } from "../../../utils/encodeImg";
 import { getBlobFromURL } from "../../../utils/urlToBlob";
 import { refreshOutline } from "ionicons/icons";
-const { Storage } = Plugins;
+import { set } from "../../../services/storage.services";
 
 const PatientSelection: React.FC = () => {
   const { authData, setAuthData } = useContext(AuthenticationContext);
@@ -62,10 +61,11 @@ const PatientSelection: React.FC = () => {
         if (length === 0) {
           isLoading(false);
           isAddition(true);
-          if(authData.role == 1) {
+          if(authData.role === 1) {
             isAddition(true);
           } else {
             setAuthData({ patientId: "NoAsignado" });
+            set("patientId", "NoAsignado");
             goToHome();
           }
         } else {
@@ -89,8 +89,8 @@ const PatientSelection: React.FC = () => {
   const handlePatientSelection = (patient: Patient) => {
     setAuthData({ patientId: patient.id_paciente.toString() });
     setAuthData({ patientName: patient.nombre });
-    Storage.set({ key: "patientId", value: patient.id_paciente.toString() });
-    Storage.set({ key: "patientName", value: patient.nombre });
+    set("patientId", patient.id_paciente);
+    set("patientName", patient.nombre);
     setPatientData({ patientSelected: patient });
     goToHome();
   };

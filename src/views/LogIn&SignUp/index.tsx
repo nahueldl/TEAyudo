@@ -15,9 +15,7 @@ import SignUpForm from "./SignUpForm";
 import "./styles.css";
 import { PlatformContext } from "../../context/platform";
 import { RegistrationContext } from "../../context/registration";
-import { Plugins } from "@capacitor/core";
-const { Storage } = Plugins;
-
+import { set } from "../../services/storage.services";
 const LogInSignUpPage: React.FC = () => {
   const { navigate } = useContext(NavContext);
   const { setRegistrationData } = useContext(RegistrationContext);
@@ -41,12 +39,9 @@ const LogInSignUpPage: React.FC = () => {
           username: email,
           authenticated: true,
         });
-        Storage.set({ key: "token", value: res.data.token });
-        Storage.set({
-          key: "tokenExpirationDate",
-          value: expirationDate.toJSON(),
-        });
-        Storage.set({ key: "username", value: email });
+        set("token", res.data.token);
+        set("tokenExpirationDate", expirationDate);
+        set("username",email);
         isLoading(false);
         goToSelectRole();
       })
@@ -69,12 +64,11 @@ const LogInSignUpPage: React.FC = () => {
           username: email,
           authenticated: true,
         });
-        Storage.set({ key: "token", value: res.data.token });
-        Storage.set({
-          key: "tokenExpirationDate",
-          value: expirationDate.toJSON(),
-        });
-        Storage.set({ key: "username", value: email! });
+        set("token", res.data.token );
+        set(
+          "tokenExpirationDate",
+          expirationDate);
+        set("username", email! );
         isLoading(false);
 
         goToSelectRole();
@@ -84,11 +78,6 @@ const LogInSignUpPage: React.FC = () => {
         hasError(true);
       });
   };
-
-  const goToAddPatient = useCallback(
-    () => navigate("/pacientes/seleccion", "forward"),
-    [navigate]
-  );
 
   const goToSelectRole = useCallback(
     () => navigate("/roles/seleccion", "forward"),

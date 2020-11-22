@@ -22,9 +22,8 @@ import { AuthenticationContext } from "../../../context/authentication";
 import RolesService from "../../../services/roles.services";
 import UserService from "../../../services/user.services";
 import "./styles.css";
-import { Plugins } from "@capacitor/core";
 import { RegistrationContext } from "../../../context/registration";
-const { Storage } = Plugins;
+import { set } from "../../../services/storage.services";
 
 const RoleSelection: React.FC = () => {
   const { navigate } = useContext(NavContext);
@@ -79,7 +78,7 @@ const RoleSelection: React.FC = () => {
 
   const handleRolSelection = (rol: any) => {
     setAuthData({ role: rol.id_rol });
-    Storage.set({ key: "role", value: rol.id_rol });
+    set("role", rol.id_rol);
     goToSelectPatient();
   };
 
@@ -99,7 +98,7 @@ const RoleSelection: React.FC = () => {
       .then((res: any) => {
         setLoading(false);
         setAuthData({ role: newRol });
-        Storage.set({ key: "role", value: newRol.toString() });
+        set("role", newRol);
       })
       .catch((error: any) => {
         setLoading(false);
@@ -125,7 +124,7 @@ const RoleSelection: React.FC = () => {
           .then((res: any) => {
             setLoading(false);
             setAuthData({ role: newRole });
-            Storage.set({ key: "role", value: newRole.toString() });
+            set("role", newRole);
           })
           .catch((error: any) => {
             console.log(error.response);
@@ -136,8 +135,6 @@ const RoleSelection: React.FC = () => {
       })
       .catch((error: any) => {
         setLoading(false);
-        console.log(error.response);
-
         hasError(true);
         setErrorMsg(error.response.data.msg);
       });

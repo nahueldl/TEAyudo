@@ -1,15 +1,14 @@
 import Page from "../../components/Page";
 import React, { useCallback, useContext } from "react";
 import { IonButton, NavContext } from "@ionic/react";
-import { Plugins } from "@capacitor/core";
 import "./styles.css";
+import { clear } from "../../services/storage.services";
 import { PatientContext } from "../../context/patient";
 import { AuthenticationContext } from "../../context/authentication";
 import { CategoryContext } from "../../context/category";
 import { ProfessionalContext } from "../../context/professional";
 import { RegistrationContext } from "../../context/registration";
 
-const { Storage } = Plugins;
 const ConfigurationPage: React.FC = () => {
   const { navigate } = useContext(NavContext);
   const { setAuthData } = useContext(AuthenticationContext);
@@ -24,7 +23,7 @@ const ConfigurationPage: React.FC = () => {
     setCategoriaData({categoriaSelected: undefined, categoriasList: undefined});
     setRegistrationData({name: undefined, lastname: undefined, email: undefined, password: undefined});
     setAuthData({username: undefined, patientId: undefined, authenticated: undefined, token: undefined, tokenExpirationDate: undefined, role: undefined});
-    Storage.clear().then((res) => goToLoginPage());
+    clear().then((res) => goToLoginPage());
   };
 
   return (

@@ -13,8 +13,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useCallback } from "react";
 import { AuthenticationContext } from "../../../context/authentication";
 import RolesService from "../../../services/roles.services";
-import { Plugins } from "@capacitor/core";
-const { Storage } = Plugins;
+import { set } from "../../../services/storage.services";
 
 const AddRole: React.FC = () => {
   const { navigate } = useContext(NavContext);
@@ -53,7 +52,7 @@ const AddRole: React.FC = () => {
       .then((res: any) => {
         isLoading(false);
         setAuthData({role: newRol})
-        Storage.set({key: "role", value:newRol.toString()})
+        set("role", newRol)
         goToHome();
       })
       .catch((error: any) => {

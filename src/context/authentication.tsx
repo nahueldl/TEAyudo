@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Plugins } from "@capacitor/core";
-const { Storage } = Plugins;
+import { get } from "../services/storage.services";
 
 const AuthenticationContext = React.createContext({} as IContext);
 
@@ -12,25 +11,21 @@ const AuthenticationProvider = (props: any) => {
   };
 
   const fetchInitialData = () => {
-    Storage.get({ key: "token" }).then((res) =>
-      setAuthData({ token: res.value! })
+    get("token").then((res) => {
+      setAuthData({ token: res });
+    });
+    get("tokenExpirationDate").then((res) =>
+      setAuthData({ tokenExpirationDate: res })
     );
-    Storage.get({ key: "tokenExpirationDate" }).then((res) =>
-      setAuthData({ tokenExpirationDate: res.value! })
-    );
-    Storage.get({ key: "patientName" }).then((res) =>
-      setAuthData({ patientName: res.value! })
-    );
-    Storage.get({ key: "patientId" }).then((res) =>
-      setAuthData({ patientId: res.value! })
-    );
-    Storage.get({ key: "role" }).then((res) => {
-      res.value
-        ? setAuthData({role: parseInt(res.value)})
+    get("patientName").then((res) => setAuthData({ patientName: res }));
+    get("patientId").then((res) => setAuthData({ patientId: res }));
+    get("role").then((res) => {
+      res
+        ? setAuthData({ role: parseInt(res) })
         : setAuthData({ role: undefined });
     });
-    Storage.get({ key: "username" }).then((res) => {
-      setAuthData({ username: res.value! });
+    get("username").then((res) => {
+      setAuthData({ username: res });
     });
   };
 
