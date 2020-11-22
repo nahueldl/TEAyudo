@@ -62,6 +62,7 @@ const GamesPage: React.FC = () => {
     hasError(false);
     GameServices.postResult(token!, patientId!, move!.id_jugada, resultSelected)
       .then((res: any) => {
+        setResultSelected(-1);
         fetchMove();
       })
       .catch((error: React.SetStateAction<string>) => {
@@ -127,7 +128,7 @@ const GamesPage: React.FC = () => {
           </IonRow>
           <IonRow>
             <IonCol>
-              <IonButton onClick={() => postResult()} color="primary">
+              <IonButton onClick={() => postResult()} color="primary" disabled={resultSelected===(-1)?true:false}>
                 Aceptar
               </IonButton>
             </IonCol>
