@@ -10,6 +10,7 @@ import {
   IonLoading,
   IonRow,
 } from "@ionic/react";
+import "./styles.css";
 import CardWithImage from "../../components/CardWithImage";
 import { AuthenticationContext } from "../../context/authentication";
 import GameServices from "../../services/game.services";
@@ -25,6 +26,7 @@ const GamesPage: React.FC = () => {
   const [error, hasError] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string>("");
   const [resultSelected, setResultSelected] = useState<number>(-1);
+  const [pictogramIdSelected, setPictogramIdSelected ] = useState<number>();
 
   const startPlaying = (e: any) => {
     e.preventDefault();
@@ -49,15 +51,25 @@ const GamesPage: React.FC = () => {
       });
   };
 
-  const selectPictogram = (result: 0 | 1) => {
-    setResultSelected(result);
+  const selectPictogram = (result:any) => {
+    setResultSelected(result.correcta);
+    setPictogramIdSelected(result.id_nombre_pictograma);
     return;
   };
 
   const postResult = () => {
+    setLoadingMove(true);
+    hasError(false);
     GameServices.postResult(token!, patientId!, move!.id_jugada, resultSelected)
-      .then((res: any) => res)
-      .catch((error: React.SetStateAction<string>) => hasError(true));
+      .then((res: any) => {
+        setResultSelected(-1);
+        fetchMove();
+      })
+      .catch((error: React.SetStateAction<string>) => {
+        setLoadingMove(false);
+        setErrorMsg("Ha ocurrido un error al enviar el resultado, pruebe luego.");
+        hasError(true);
+      });
   };
 
   return (
@@ -90,11 +102,12 @@ const GamesPage: React.FC = () => {
         />
       ) : playing ? (
         <IonGrid>
-          <IonRow>
-            <IonCol>
+          <IonRow className="position-relative">
+            <IonCol className="max-width-300 margin-auto">
               <CardWithImage
                 img={{ src: move!.pictograma.ruta_acceso_local, alt: "" }}
                 touchable={false}
+                onClick={()=>{}}
               />
             </IonCol>
           </IonRow>
@@ -104,9 +117,10 @@ const GamesPage: React.FC = () => {
                 <IonCol size="12" sizeMd="6" key={index}>
                   <IonCard
                     button
-                    onClick={(e) => selectPictogram(pictogram.correcta)}
+                    onClick={(e) => selectPictogram(pictogram)}
+                    color={pictogramIdSelected===pictogram.id_nombre_pictograma?"secondary":"light"}
                   >
-                    <IonCardTitle>{pictogram.nombre}</IonCardTitle>
+                    <IonCardTitle className="text-align-center p-5">{pictogram.nombre}</IonCardTitle>
                   </IonCard>
                 </IonCol>
               );
@@ -114,17 +128,16 @@ const GamesPage: React.FC = () => {
           </IonRow>
           <IonRow>
             <IonCol>
-              <IonButton onClick={() => postResult()} color="primary">
+              <IonButton onClick={() => postResult()} color="success" disabled={resultSelected===(-1)?true:false} expand="block">
                 Aceptar
               </IonButton>
             </IonCol>
             <IonCol>
-              <IonButton color="tertiary">Volver</IonButton>
+              <IonButton color="tertiary" onClick={() => isPlaying(false)} expand="block">Volver</IonButton>
             </IonCol>
           </IonRow>
         </IonGrid>
       ) : null}
-      {error ? (
         <IonAlert
           isOpen={error!}
           animated
@@ -132,7 +145,6 @@ const GamesPage: React.FC = () => {
           keyboardClose
           message={errorMsg}
         />
-      ) : null}
     </Page>
   );
 };

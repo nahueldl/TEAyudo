@@ -56,6 +56,7 @@ const HomePage: React.FC = () => {
               <IonCard
                 button
                 className={styles.ionCard}
+                onClick={() => goToGamesPage()}
               >
                 <IonCardTitle className={styles.cardTitle}>Jugar</IonCardTitle>
               </IonCard>

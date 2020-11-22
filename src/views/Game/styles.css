@@ -1,0 +1,36 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.card {
+  padding: 10px;
+}
+
+.title {
+  display: flex;
+  justify-content: center;
+  padding-top: 5px;
+}
+
+.max-width-300 {
+  max-width: 300px;
+}
+
+.position-relative {
+  position: relative;
+}
+
+.margin-auto {
+  margin: aout;
+}
+
+.text-align-center {
+  text-align: center;
+}
+
+.p-5 {
+  padding: 5px;
+}

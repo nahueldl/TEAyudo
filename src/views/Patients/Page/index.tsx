@@ -30,9 +30,11 @@ const PatientsPage: React.FC = () => {
         } else {
           isLoading(false);
           if(role===2){
+            alert("El profesional no tiene pacientes asignados.");
             goToHome();
+          } else {
+            goToAddPatient();
           }
-          goToAddPatient();
         }
       })
       .catch((_error: any) => {

@@ -22,12 +22,11 @@ class GameServices {
     outcome: number
   ) {
     const header = `Bearer ${token}`;
-    return this.axios.post(`/api/${patientId}/jugada/${moveId}/resultado`, {
+    return this.axios.post(`/api/pacientes/${patientId}/jugada/${moveId}/resultado`, {
+        resultado: outcome,
+    }, {
       headers: {
         Authorization: header,
-      },
-      params: {
-        resultado: outcome,
       },
     });
   }
