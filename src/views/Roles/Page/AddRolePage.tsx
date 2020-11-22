@@ -41,9 +41,9 @@ const AddRole: React.FC = () => {
         goToListRoles();
       })
       .catch((error: any) => {
+        setErrorMsg(error.response.data.msg);
         setLoading(false);
         hasError(true);
-        setErrorMsg(error.response.data.msg);
       });
   };
 
@@ -67,8 +67,8 @@ const AddRole: React.FC = () => {
           })
           .catch((error: any) => {
             setLoading(false);
-            hasError(true);
             setErrorMsg(error.response.data.msg);
+            hasError(true);
           });
       })
       .catch((error: any) => {
