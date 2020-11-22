@@ -6,18 +6,23 @@ class CategoriesService {
     this.axios = new AxiosWrapper({ useErrorInterceptor: true });
   }
 
-  getCategories(token: string, patientId?: string):Promise<any> {
+  getCategories(token: string, patientId?: string): Promise<any> {
     const header = `Bearer ${token}`;
     return this.axios.get("/api/categorias", {
       headers: {
         Authorization: header,
       },
-      params: {        paciente: patientId,
+      params: {
+        ...(patientId ? { paciente: patientId } : {}),
       },
     });
   }
 
-  createCategory(token: string, categoryName: string, idRol: number):Promise<any> {
+  createCategory(
+    token: string,
+    categoryName: string,
+    idRol: number
+  ): Promise<any> {
     const header = `Bearer ${token}`;
     return this.axios.post(
       "/api/categorias",
@@ -31,8 +36,10 @@ class CategoriesService {
 
   editCategory(token: string, categoryId: number, categoryName: string) {
     const header = `Bearer ${token}`;
-    return this.axios.put("/api/categorias/" + categoryId, {nombre: categoryName},
-      {headers: {Authorization: header,},}
+    return this.axios.put(
+      "/api/categorias/" + categoryId,
+      { nombre: categoryName },
+      { headers: { Authorization: header } }
     );
   }
 

@@ -56,7 +56,7 @@ const ComunicationPage: React.FC = () => {
 
   const getCategories = () => {
     setIsLoadingCategories(true);
-    CategoriesServices.getCategories(token!, patientId!)
+    CategoriesServices.getCategories(token!)
       .then((res: any) => {
         setCategories(res.data);
         setIsLoadingCategories(false);
