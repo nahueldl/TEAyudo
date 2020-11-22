@@ -68,7 +68,7 @@ const ReportsPage: React.FC = () => {
         const fileURL = URL.createObjectURL(file);
         const link = document.createElement("a");
         link.href = fileURL;
-        link.download = "FileName" + new Date() + ".pdf";
+        link.download = "Informe - " + authData.patientName + new Date() + ".pdf";
         link.click();
         console.log(res);
       })

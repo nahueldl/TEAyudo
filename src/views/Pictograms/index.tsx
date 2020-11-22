@@ -76,7 +76,7 @@ const PictogramsPage: React.FC = () => {
               <IonLabel>Buscar un pictograma</IonLabel>
             </IonCol>
             <IonCol size="12">
-              <IonSearchbar value={searchText} placeholder="Buscar..." enterkeyhint="enter" onIonChange={e => getPictogramSearchText(e.detail.value!)} showCancelButton="never" debounce={1500}></IonSearchbar>
+              <IonSearchbar value={searchText} placeholder="Buscar..." enterkeyhint="enter" onIonChange={e => getPictogramSearchText(e.detail.value!)} showCancelButton="never" debounce={1000}></IonSearchbar>
             </IonCol>
             <IonCol size="12">
               <IonLabel>Crear un nuevo pictograma</IonLabel>
