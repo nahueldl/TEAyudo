@@ -19,7 +19,7 @@ export const ModalPictogram: React.FC<Props> = ({showModal, handleShowModal, pic
     const [ favorito, setFavorito ] = useState(false);
     const [ categoriasPropias, setCategoriasPropias ] = useState<[Category]>();
     const [ newName, setNewName ] = useState("");
-    const [ categoriaValue ] = useState();
+    const [ categoriaValue, setCategoriaValue ] = useState<number>();
     
     useEffect(() => obtenerCategorias(), []);
 
@@ -39,32 +39,42 @@ export const ModalPictogram: React.FC<Props> = ({showModal, handleShowModal, pic
     
     const marcarFavoritoPictograma = (favorito: boolean) => {
         if(favorito != undefined) {
+            isLoading(true);
+            hasError(false);
             PictogramsService.editPictogram(authData.token!, pictogram?.id_pictograma!, parseInt(authData.patientId!), undefined, undefined, favorito)
             .then((res:any) => {
+                if(pictogram != undefined)
+                    pictogram.favorito = favorito;
                 setFavorito(favorito);
+                isLoading(false);
             })
             .catch((error: any) => {
                 setErrorMessage(
                 "Hubo un problema al marcar como favorito el pictograma, por favor intente más tarde."
                 );
+                isLoading(false);
                 hasError(true);
             });
         }
     }
 
-    const crearNuevoPictogramaYAgregarACategoria = () => {
+    const crearNuevoPictogramaYAgregarACategoria = (categoria: number) => {
+        setCategoriaValue(categoria);
+        isLoading(true);
+        hasError(false);
         var base64;
         getBlobFromURL(pictogram?.ruta_acceso_local!).then(data => {
             getBase64(data).then(encoded => {
                 base64 = encoded;
-                PictogramsService.loadPictogramToCategory(authData.token!, categoriaValue!, base64, pictogram!.nombres[0], pictogram!.etiquetas[0])
+                PictogramsService.loadPictogramToCategory(authData.token!, categoria!, base64, pictogram!.nombres[0], pictogram!.etiquetas[0])
                     .then((res:any) => {
-                        // setAuthData({ loading: false, error: false });
+                        isLoading(false);
                     })
                     .catch(error => {
                         setErrorMessage(
                             "Hubo un inconveniente agregando el pictograma a la categoria, pruebe más tarde."
                           );
+                          isLoading(false);
                           hasError(true);
                     })
             });
@@ -72,15 +82,19 @@ export const ModalPictogram: React.FC<Props> = ({showModal, handleShowModal, pic
     }
 
     const personalizarNombrePictograma = () => {
+        isLoading(true);
+        hasError(false);
         PictogramsService.editPictogram(authData.token!, pictogram?.id_pictograma!, parseInt(authData.patientId!), undefined, newName, undefined)
             .then((res:any) => {
                 if(pictogram != undefined)
                     pictogram.nombres[0].nombre = newName;
+                isLoading(false);
             })
             .catch((error: any) => {
                 setErrorMessage(
                 "Hubo un problema al personalizar el nombre, por favor intente más tarde."
                 );
+                isLoading(false);
                 hasError(true);
             });
     }
@@ -131,7 +145,7 @@ export const ModalPictogram: React.FC<Props> = ({showModal, handleShowModal, pic
                                 </IonItem>
                                 <IonItem key="3">
                                     <IonLabel>Categoria</IonLabel>
-                                    <IonSelect value={categoriaValue} interface="action-sheet" cancelText="Cancelar" onIonChange={e => crearNuevoPictogramaYAgregarACategoria()}>
+                                    <IonSelect value={categoriaValue} interface="action-sheet" cancelText="Cancelar" onIonChange={e => crearNuevoPictogramaYAgregarACategoria(e.detail.value)}>
                                         {categoriasPropias?.map((categoria, index) => (
                                             <IonSelectOption key={index} value={categoria.id_categoria}>{categoria.nombre}</IonSelectOption>
                                         ))}
@@ -148,6 +162,7 @@ export const ModalPictogram: React.FC<Props> = ({showModal, handleShowModal, pic
                     animated
                     backdropDismiss
                     keyboardClose
+                    onDidDismiss={e => hasError(false)}
                     message={errorMessage}
                 />
             </IonModal>

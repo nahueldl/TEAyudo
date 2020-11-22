@@ -51,7 +51,6 @@ const AddPictogram: React.FC = () => {
             setErrorMessage( "Complete todos los campos y carge una imagen para crear un pictograma.");
             setError(true);
         } else {
-            
             isLoading(true);
             var base64;
             getBlobFromURL(photos[0].webviewPath!).then(data => {

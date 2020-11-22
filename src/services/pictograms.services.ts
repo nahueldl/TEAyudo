@@ -90,7 +90,7 @@ class PictogramsServices {
         paciente: patientId,
         ...(state ? { estado: state } : {}),
         ...(name ? { nombre: name } : {}),
-        ...(favorite ? { favorito: favorite } : {}),
+        ...(favorite!==undefined ? { favorito: favorite } : {}),
     }, {
       headers: {
         Authorization: `Bearer ${token},`,
