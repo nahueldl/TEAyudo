@@ -118,7 +118,7 @@ const GamesPage: React.FC = () => {
                   <IonCard
                     button
                     onClick={(e) => selectPictogram(pictogram)}
-                    color={pictogramIdSelected===pictogram.id_nombre_pictograma?"primary":"light"}
+                    color={pictogramIdSelected===pictogram.id_nombre_pictograma?"secondary":"light"}
                   >
                     <IonCardTitle className="text-align-center p-5">{pictogram.nombre}</IonCardTitle>
                   </IonCard>
@@ -128,12 +128,12 @@ const GamesPage: React.FC = () => {
           </IonRow>
           <IonRow>
             <IonCol>
-              <IonButton onClick={() => postResult()} color="primary" disabled={resultSelected===(-1)?true:false}>
+              <IonButton onClick={() => postResult()} color="success" disabled={resultSelected===(-1)?true:false} expand="block">
                 Aceptar
               </IonButton>
             </IonCol>
             <IonCol>
-              <IonButton color="tertiary" onClick={() => isPlaying(false)}>Volver</IonButton>
+              <IonButton color="tertiary" onClick={() => isPlaying(false)} expand="block">Volver</IonButton>
             </IonCol>
           </IonRow>
         </IonGrid>
