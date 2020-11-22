@@ -97,7 +97,7 @@ const genericDAO = {
 			console.log(err);
 		}
 		
-		if(!(pool === undefined || pool === null)) sql.close();
+		if(!(pool === undefined || pool === null)) pool.close();
 		return res;
 	},
 
