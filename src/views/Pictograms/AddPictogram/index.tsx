@@ -1,10 +1,9 @@
-import { IonAlert, IonAvatar, IonButton, IonContent, IonFab, IonFabButton, IonGrid, IonIcon, IonImg, IonInput, IonItem, IonLabel, IonList, IonLoading, IonRow, IonSelect, IonSelectOption, IonThumbnail, NavContext } from "@ionic/react";
+import { IonAlert, IonButton, IonContent, IonGrid, IonIcon, IonImg, IonInput, IonItem, IonLabel, IonList, IonLoading, IonRow, IonSelect, IonSelectOption, NavContext } from "@ionic/react";
 import React, { useState, useContext, useEffect, useCallback } from "react";
 import Page from "../../../components/Page";
 import CategoriesService from "../../../services/categories.services";
 import { AuthenticationContext } from "../../../context/authentication";
 import { Category } from "../../../types/Categories";
-import { Pictogram } from "../../../types/Pictograms";
 import { usePhotoGallery } from '../../../utils/usePhotoGallery';
 import { camera } from "ionicons/icons";
 import { getBlobFromURL } from "../../../utils/urlToBlob";
@@ -12,7 +11,7 @@ import { getBase64 } from "../../../utils/encodeImg";
 import PictogramsServices from "../../../services/pictograms.services";
 
 const AddPictogram: React.FC = () => {
-    const { authData, setAuthData } = useContext(AuthenticationContext);
+    const { authData } = useContext(AuthenticationContext);
     const { navigate } = useContext(NavContext);
     const [errorMessage, setErrorMessage] = useState<string>();
     const [ categoriasPropias, setCategoriasPropias ] = useState<[Category]>();
@@ -23,6 +22,7 @@ const AddPictogram: React.FC = () => {
     const [ etiquetaPictograma, setEtiquetaPictograma ] = useState<string>();
     const [ categoriaValue, setCategoriaValue ] = useState<number>();
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => obtenerCategorias(), []);
 
     const obtenerCategorias = () => {

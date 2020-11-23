@@ -7,12 +7,7 @@ import {
   NavContext,
   IonLoading,
   IonAlert,
-  IonAvatar,
   IonTitle,
-  IonList,
-  IonItem,
-  IonButton,
-  IonActionSheet,
 } from "@ionic/react";
 import CardWithImage from "../../components/CardWithImage";
 import { AuthenticationContext } from "../../context/authentication";
@@ -20,7 +15,6 @@ import ProfessionalServices from "../../services/professionals.services";
 import { Professional } from "../../types/Professionals";
 import { ModalProfessional } from "../../components/ModalProfessional";
 import { useCallback } from "react";
-import { trash, close } from "ionicons/icons";
 import ViewProfessionalAsign from "./ViewProfessionalAsign";
 
 const ProfessionalsPage: React.FC = () => {
@@ -75,7 +69,7 @@ const ProfessionalsPage: React.FC = () => {
           isLoading(false);
         }
       })
-      .catch((res: any) => {
+      .catch(() => {
         setErrorMessage("Hubo un problema, por favor intente más tarde.");
         isLoading(false);
         hasError(true);
@@ -102,7 +96,7 @@ const ProfessionalsPage: React.FC = () => {
       professionalSelected?.nro_matricula!,
       professionalSelected?.id_usuario!
     )
-      .then((res: any) => {
+      .then(() => {
         handleClickSetShowModal(false);
         getAsignProfessionalFromuser();
       })
@@ -122,7 +116,7 @@ const ProfessionalsPage: React.FC = () => {
       authData.token!,
       authData.patientId!
     )
-      .then((res: any) => {
+      .then(() => {
         setProfessionalAsign(undefined);
         getAllProfessionals();
       })

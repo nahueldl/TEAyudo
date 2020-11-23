@@ -48,6 +48,10 @@ const appPagesFamiliar: AppPage[] = [
     title: "Configuración",
     url: "/configuracion",
   },
+  {
+    title: "Créditos",
+    url: "/creditos",
+  }
 ];
 
 const appPageMedicx: AppPage[] = [
@@ -75,6 +79,10 @@ const appPageMedicx: AppPage[] = [
     title: "Configuración",
     url: "/configuracion",
   },
+  {
+    title: "Créditos",
+    url: "/creditos",
+  }
 ];
 
 const Menu: React.FC<Props> = ({ patientName }) => {

@@ -6,7 +6,6 @@ import { clear } from "../../services/storage.services";
 import { PatientContext } from "../../context/patient";
 import { AuthenticationContext } from "../../context/authentication";
 import { CategoryContext } from "../../context/category";
-import { ProfessionalContext } from "../../context/professional";
 import { RegistrationContext } from "../../context/registration";
 
 const ConfigurationPage: React.FC = () => {

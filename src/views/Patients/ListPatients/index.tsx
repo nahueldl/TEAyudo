@@ -3,13 +3,10 @@ import "../styles.css";
 import { IonGrid, IonRow, IonCol, NavContext } from "@ionic/react";
 import CardWithImage from "../../../components/CardWithImage";
 import { PatientContext } from "../../../context/patient";
-import { AuthenticationContext } from "../../../context/authentication";
 
 const ListPatients: React.FC<ListPatientsProps> = (props) => {
   const { patientData, setPatientData } = useContext(PatientContext);
   const { navigate } = useContext(NavContext);
-  const { authData } = useContext(AuthenticationContext);
-  const { username } = authData;
 
   const handleCardPatientClick = (patient: any) => {
     setPatientData({ patientSelected: patient });

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { IonModal, IonButton, IonLabel, IonGrid, IonRow, IonCol, IonTitle, IonIcon } from '@ionic/react';
 import "./styles.css";
 import { closeOutline } from 'ionicons/icons';

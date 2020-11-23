@@ -17,12 +17,6 @@ import { PlatformContext } from "../../context/platform";
 import { RegistrationContext } from "../../context/registration";
 import { set } from "../../services/storage.services";
 
-const SIGN_IN_400 =
-  "Hay un error con el mail o la contraseña proporcionadas, por favor intente nuevamente.";
-const SIGN_UP_409 = "Ya existe un usuario con ese correo.";
-const GENERIC_500 =
-  "Hubo un problema inesperado en el servidor, por favor intente más tarde.";
-
 const LogInSignUpPage: React.FC = () => {
   const { navigate } = useContext(NavContext);
   const { setRegistrationData } = useContext(RegistrationContext);
@@ -37,6 +31,7 @@ const LogInSignUpPage: React.FC = () => {
   const [errorSignUp, hasErrorSignUp] = useState<boolean>(false);
   const [errorSignUpMsg, setErrorSignUpMsg] = useState<string>("");
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
 
   const handleSignIn = ({ email, password }: any) => {
@@ -60,11 +55,9 @@ const LogInSignUpPage: React.FC = () => {
       })
       .catch((error: any) => {
         isLoading(false);
-        console.log(error.response);
         const msg: string = error.response.data.msg;
         setErrorSignInMsg((prev) => prev + msg);
         forceUpdate();
-        console.log(errorSignInMsg);
         hasErrorSignIn(true);
       });
   };

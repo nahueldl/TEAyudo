@@ -4,7 +4,6 @@ import ListCategories from "./ListCategories";
 import CategoriesService from "../../services/categories.services";
 import { AuthenticationContext } from "../../context/authentication";
 import { IonAlert, IonLoading, IonRow, NavContext } from "@ionic/react";
-import { PatientContext } from "../../context/patient";
 import { CategoryContext } from "../../context/category";
 import { addCircleOutline } from "ionicons/icons";
 import CardWithIcon from "../../components/CardWithIcon";
@@ -12,7 +11,6 @@ import CardWithIcon from "../../components/CardWithIcon";
 const CategoriesPage: React.FC = () => {
   const { token } = useContext(AuthenticationContext).authData;
   const { setCategoriaData } = useContext(CategoryContext);
-  const { patientData } = useContext(PatientContext);
   const { navigate } = useContext(NavContext);
   const [loading, isLoading] = useState<boolean>(true);
   const [error, hasError] = useState<boolean>(false);

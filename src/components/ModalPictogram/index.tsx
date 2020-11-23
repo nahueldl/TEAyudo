@@ -1,18 +1,17 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { IonModal, IonButton, IonContent, IonLabel, IonGrid, IonRow, IonCol, IonImg, IonThumbnail, IonTitle, IonList, IonItem, IonAvatar, IonToggle, IonInput, IonSelect, IonSelectOption, IonLoading, IonAlert, IonIcon } from '@ionic/react';
+import { IonModal, IonButton, IonContent, IonLabel, IonGrid, IonRow, IonCol, IonImg, IonTitle, IonList, IonItem, IonToggle, IonInput, IonSelect, IonSelectOption, IonLoading, IonAlert, IonIcon } from '@ionic/react';
 import "./styles.css";
 import { Pictogram } from '../../types/Pictograms';
 import PictogramsService from "../../services/pictograms.services";
 import CategoriesService from "../../services/categories.services";
 import { AuthenticationContext } from '../../context/authentication';
-import { PatientContext } from '../../context/patient';
 import { Category } from '../../types/Categories';
 import { checkmarkCircleOutline, closeOutline } from 'ionicons/icons';
 import { getBase64 } from '../../utils/encodeImg';
 import { getBlobFromURL } from '../../utils/urlToBlob';
 
 export const ModalPictogram: React.FC<Props> = ({showModal, handleShowModal, pictogram}) => {
-    const { authData, setAuthData } = useContext(AuthenticationContext);
+    const { authData } = useContext(AuthenticationContext);
     const [ errorMessage, setErrorMessage ] = useState<string>();
     const [ loading, isLoading ] = useState<boolean>(false);
     const [ error, hasError ] = useState<boolean>(false);
@@ -21,6 +20,7 @@ export const ModalPictogram: React.FC<Props> = ({showModal, handleShowModal, pic
     const [ newName, setNewName ] = useState("");
     const [ categoriaValue, setCategoriaValue ] = useState<number>();
     
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => obtenerCategorias(), []);
 
     const obtenerCategorias = () => {
@@ -38,12 +38,12 @@ export const ModalPictogram: React.FC<Props> = ({showModal, handleShowModal, pic
     }
     
     const marcarFavoritoPictograma = (favorito: boolean) => {
-        if(favorito != undefined) {
+        if(favorito !== undefined) {
             isLoading(true);
             hasError(false);
             PictogramsService.editPictogram(authData.token!, pictogram?.id_pictograma!, parseInt(authData.patientId!), undefined, undefined, favorito)
             .then((res:any) => {
-                if(pictogram != undefined)
+                if(pictogram !== undefined)
                     pictogram.favorito = favorito;
                 setFavorito(favorito);
                 isLoading(false);
@@ -86,7 +86,7 @@ export const ModalPictogram: React.FC<Props> = ({showModal, handleShowModal, pic
         hasError(false);
         PictogramsService.editPictogram(authData.token!, pictogram?.id_pictograma!, parseInt(authData.patientId!), undefined, newName, undefined)
             .then((res:any) => {
-                if(pictogram != undefined)
+                if(pictogram !== undefined)
                     pictogram.nombres[0].nombre = newName;
                 isLoading(false);
             })
@@ -101,7 +101,7 @@ export const ModalPictogram: React.FC<Props> = ({showModal, handleShowModal, pic
 
   return (
     <IonContent>
-        {pictogram != undefined ? (
+        {pictogram !== undefined ? (
             <IonModal isOpen={showModal}>
                 <IonLoading
                     isOpen={loading!}
