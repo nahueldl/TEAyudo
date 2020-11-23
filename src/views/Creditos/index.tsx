@@ -26,6 +26,15 @@ const CreditosPage: React.FC = () => {
           </IonCol>
         </IonRow>
         <IonRow>
+        <IonCol size="12" sizeMd="6">
+            <IonCard>
+              <IonImg src={germinar}></IonImg>
+              <IonCardHeader>
+                <IonCardTitle>Germinar</IonCardTitle>
+                <IonCardSubtitle>Equipo Interdisciplinario</IonCardSubtitle>
+              </IonCardHeader>
+            </IonCard>
+          </IonCol>
           <IonCol size="12" sizeMd="6">
             <IonCard>
               <IonImg src={arasaac}></IonImg>
@@ -73,15 +82,7 @@ const CreditosPage: React.FC = () => {
               </IonCardHeader>
             </IonCard>
           </IonCol>
-          <IonCol size="12" sizeMd="6">
-            <IonCard>
-              <IonImg src={germinar}></IonImg>
-              <IonCardHeader>
-                <IonCardTitle>Germinar</IonCardTitle>
-                <IonCardSubtitle>Equipo Interdisciplinario</IonCardSubtitle>
-              </IonCardHeader>
-            </IonCard>
-          </IonCol>
+       
         </IonRow>
       </IonGrid>
     </Page>
