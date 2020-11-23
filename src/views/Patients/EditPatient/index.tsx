@@ -14,6 +14,7 @@ import {
   IonLoading,
   IonAlert,
   IonIcon,
+  IonLabel,
 } from "@ionic/react";
 import "./styles.css";
 import { trash, close, refreshOutline } from "ionicons/icons";
@@ -146,9 +147,11 @@ const EditPatient = () => {
                   <IonIcon className="pl-5" slot="end" icon={refreshOutline}></IonIcon> Cambiar
                 </IonButton> 
                 <IonItem className="inputMargin">
+                  <IonLabel className="text-bold">Nombre:</IonLabel>
                   <IonInput
                     name="name"
                     value={auxName}
+                    className="pl-5"
                     required
                     clearInput
                     placeholder="Nombre"
@@ -156,9 +159,11 @@ const EditPatient = () => {
                   />
                 </IonItem>
                 <IonItem className="inputMargin">
+                <IonLabel className="text-bold">Apellido:</IonLabel>
                   <IonInput
                     name="apellido"
                     value={auxLastName}
+                    className="pl-5"
                     required
                     clearInput
                     placeholder="Apellido"

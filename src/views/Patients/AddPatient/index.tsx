@@ -14,6 +14,7 @@ import {
   IonLoading,
   IonButton,
   IonIcon,
+  IonLabel,
 } from "@ionic/react";
 import "./styles.css";
 import PatientServices from "../../../services/patients.services";
@@ -98,9 +99,11 @@ const AddPatient: React.FC<InfoPatientProps> = ({ patient }) => {
                   <IonIcon className="pl-5" slot="end" icon={refreshOutline}></IonIcon> Cambiar
                 </IonButton> 
                 <IonItem className="inputMargin">
+                  <IonLabel className="text-bold">Nombre:</IonLabel>
                   <IonInput
                     name="name"
                     value={name}
+                    className="pl-5"
                     required
                     clearInput
                     placeholder="Nombre"
@@ -108,9 +111,11 @@ const AddPatient: React.FC<InfoPatientProps> = ({ patient }) => {
                   />
                 </IonItem>
                 <IonItem className="inputMargin">
+                  <IonLabel className="text-bold">Apellido:</IonLabel>
                   <IonInput
                     name="apellido"
                     value={lastName}
+                    className="pl-5"
                     required
                     clearInput
                     placeholder="Apellido"
