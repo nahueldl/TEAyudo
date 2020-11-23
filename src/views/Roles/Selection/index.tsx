@@ -128,7 +128,6 @@ const RoleSelection: React.FC = () => {
           .catch((error: any) => {
             setLoading(false);
             setErrorMsg(error.response.data.msg);
-
             hasError(true);
           });
       })
@@ -293,6 +292,7 @@ const RoleSelection: React.FC = () => {
             animated
             backdropDismiss
             keyboardClose
+            onDidDismiss={e => hasError(false)}
             message={errorMsg}
           />
         ) : null}
