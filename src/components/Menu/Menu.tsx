@@ -51,7 +51,7 @@ const appPagesFamiliar: AppPage[] = [
   {
     title: "Créditos",
     url: "/creditos",
-  }
+  },
 ];
 
 const appPageMedicx: AppPage[] = [
@@ -82,7 +82,7 @@ const appPageMedicx: AppPage[] = [
   {
     title: "Créditos",
     url: "/creditos",
-  }
+  },
 ];
 
 const Menu: React.FC<Props> = ({ patientName }) => {
@@ -91,7 +91,9 @@ const Menu: React.FC<Props> = ({ patientName }) => {
   return (
     <IonMenu contentId="main" type="overlay" swipeGesture>
       <IonContent>
-        <h1 className="title">{`Bienvenidx${patientName==null ? "" : " "+patientName}!`}</h1>
+        <h1 className="title">{`Bienvenidx${
+          patientName == null ? "" : " " + patientName
+        }!`}</h1>
         <IonList id="menu-list">
           {role === 1
             ? appPagesFamiliar.map((appPage, index) => {
@@ -129,11 +131,6 @@ const Menu: React.FC<Props> = ({ patientName }) => {
                 );
               })}
         </IonList>
-        <IonMenuToggle autoHide={false} className="centered">
-          <IonItem lines="none" detail={false} style={{ textAlign: "center" }}>
-            <IonLabel>Créditos</IonLabel>
-          </IonItem>
-        </IonMenuToggle>
       </IonContent>
     </IonMenu>
   );
