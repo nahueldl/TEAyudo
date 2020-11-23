@@ -21,7 +21,6 @@ const GamesPage: React.FC = () => {
 
   const [playing, isPlaying] = useState<boolean>(false);
   const [loadingMove, setLoadingMove] = useState<boolean>(false);
-  const [postingResult, setPostingResult] = useState<boolean>(false);
   const [move, setMove] = useState<Move>();
   const [error, hasError] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string>("");

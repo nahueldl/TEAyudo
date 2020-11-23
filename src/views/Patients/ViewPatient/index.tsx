@@ -104,7 +104,7 @@ const ViewPatient: React.FC = () => {
                 </IonItem>
               </IonList>
               <div>
-                {authData.role == 1 ? (
+                {authData.role === 1 ? (
                 <IonButton
                   className="formButton mt-5"
                   onClick={handleEditPatient}
@@ -148,7 +148,7 @@ const ViewPatient: React.FC = () => {
                 <IonButton
                   className="formButton mt-5"
                   onClick={handleCancel}
-                  color={authData.role==1?"danger":"warning"}
+                  color={authData.role===1?"danger":"warning"}
                   expand="block"
                 >
                   Volver

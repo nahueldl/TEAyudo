@@ -13,7 +13,6 @@ import { AuthenticationContext } from "../../context/authentication";
 
 const HomePage: React.FC = () => {
   const { navigate } = useContext(NavContext);
-  const { role } = useContext(AuthenticationContext).authData;
   const { patientId } = useContext(AuthenticationContext).authData;
 
   const goToComunicationPage = useCallback(
@@ -51,7 +50,7 @@ const HomePage: React.FC = () => {
               </IonCardTitle>
             </IonCard>
           </IonCol>
-          {patientId!="NoAsignado" ? (
+          {patientId!=="NoAsignado" ? (
             <IonCol size="12" sizeMd="6">
               <IonCard
                 button
@@ -80,7 +79,6 @@ const HomePage: React.FC = () => {
               className={styles.ionCard}
               onClick={() => goToCategoriesPage()}
               color='tertiary'
-              
             >
               <IonCardTitle className={styles.cardTitle}>
                 Categorias

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React from "react";
 import { IonActionSheet, IonAvatar, IonButton, IonItem, IonList, IonRow, IonTitle } from "@ionic/react";
 import { trash, close } from "ionicons/icons";
 import { Professional } from "../../../types/Professionals";

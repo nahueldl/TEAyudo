@@ -7,12 +7,7 @@ import {
   NavContext,
   IonLoading,
   IonAlert,
-  IonAvatar,
   IonTitle,
-  IonList,
-  IonItem,
-  IonButton,
-  IonActionSheet,
 } from "@ionic/react";
 import CardWithImage from "../../components/CardWithImage";
 import { AuthenticationContext } from "../../context/authentication";
@@ -20,7 +15,6 @@ import ProfessionalServices from "../../services/professionals.services";
 import { Professional } from "../../types/Professionals";
 import { ModalProfessional } from "../../components/ModalProfessional";
 import { useCallback } from "react";
-import { trash, close } from "ionicons/icons";
 import ViewProfessionalAsign from "./ViewProfessionalAsign";
 
 const ProfessionalsPage: React.FC = () => {

@@ -1,16 +1,15 @@
-import React, { useState, useContext, useEffect, useCallback } from "react";
+import React, { useState, useContext, useCallback } from "react";
 import Page from "../../components/Page";
 import { NavContext, IonLoading, IonGrid, IonRow, IonCol, IonLabel, IonSearchbar, IonButton, IonIcon, IonAlert } from "@ionic/react";
 import { AuthenticationContext } from "../../context/authentication";
 import PictogramServices from "../../services/pictograms.services";
 import CategoriesService from "../../services/categories.services";
 import { Pictogram } from "../../types/Pictograms";
-import { PatientContext } from "../../context/patient";
 import ListPictograms from "./ListPictograms";
 import { addOutline } from "ionicons/icons";
 
 const PictogramsPage: React.FC = () => {
-  const { authData, setAuthData } = useContext(AuthenticationContext);
+  const { authData } = useContext(AuthenticationContext);
   const [pictograms, setPictograms] = useState<[Pictogram]>();
   const { navigate } = useContext(NavContext);
   const [searchText, setSearchText] = useState('');
@@ -103,6 +102,7 @@ const PictogramsPage: React.FC = () => {
           animated
           backdropDismiss
           keyboardClose
+          onDidDismiss={e => hasError(false)}
           message={errorMessage}
       />
     </Page>
