@@ -71,7 +71,7 @@ const RolesPage: React.FC = () => {
                 <IonCol key={rol.id_rol} size="12">
                   <IonCard>
                     <IonItem>
-                      <IonLabel>
+                      <IonLabel className="text-align-center p-5">
                         {capitalizeFirstLetter(rol.descripcion)}
                       </IonLabel>
                     </IonItem>

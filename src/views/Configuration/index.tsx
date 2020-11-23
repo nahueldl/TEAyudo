@@ -26,6 +26,11 @@ const ConfigurationPage: React.FC = () => {
     clear().then((res) => goToLoginPage());
   };
 
+  const changePatient = () => {
+    // setAuthData({username: undefined, patientId: undefined, authenticated: undefined, token: undefined, tokenExpirationDate: undefined, role: undefined});
+    clear().then((res) => goToSelectPatient());
+  }
+
   const goToSelectPatient = useCallback(() => navigate("/pacientes/seleccion", "forward"),  [navigate]);
 
   return (
@@ -33,9 +38,9 @@ const ConfigurationPage: React.FC = () => {
       <IonGrid className="overflow-auto">
         <IonRow>
           <IonCol size="5" sizeMd="4" className="margin-auto">
-            <div className="mt-5">
-              <IonButton onClick={() => goToSelectPatient()} expand="block">Cambiar paciente</IonButton>
-            </div>
+            {/* <div className="mt-5">
+              <IonButton onClick={() => changePatient()} expand="block">Cambiar paciente</IonButton>
+            </div> */}
             <div className="mt-5">
               <IonButton onClick={() => logout()} color="danger" expand="block">Cerrar sesión</IonButton>
             </div>
