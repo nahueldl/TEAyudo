@@ -1,6 +1,6 @@
 import Page from "../../components/Page";
 import React, { useCallback, useContext } from "react";
-import { IonButton, NavContext } from "@ionic/react";
+import { IonButton, IonCol, IonGrid, IonRow, NavContext } from "@ionic/react";
 import "./styles.css";
 import { clear } from "../../services/storage.services";
 import { PatientContext } from "../../context/patient";
@@ -26,11 +26,22 @@ const ConfigurationPage: React.FC = () => {
     clear().then((res) => goToLoginPage());
   };
 
+  const goToSelectPatient = useCallback(() => navigate("/pacientes/seleccion", "forward"),  [navigate]);
+
   return (
     <Page pageTitle="Configuración" showHomeButton>
-      <div className="logout">
-        <IonButton onClick={() => logout()}>Cerrar sesión</IonButton>
-      </div>
+      <IonGrid className="overflow-auto">
+        <IonRow>
+          <IonCol size="5" sizeMd="4" className="margin-auto">
+            <div className="mt-5">
+              <IonButton onClick={() => goToSelectPatient()} expand="block">Cambiar paciente</IonButton>
+            </div>
+            <div className="mt-5">
+              <IonButton onClick={() => logout()} color="danger" expand="block">Cerrar sesión</IonButton>
+            </div>
+          </IonCol>
+        </IonRow>
+      </IonGrid>
     </Page>
   );
 };
