@@ -14,6 +14,7 @@ import arasaac from "./ARASAAC.png";
 import azure from "./Azure.png";
 import sisa from "./SISA.png";
 import utn from "./UTN.png";
+import germinar from "./Germinar.jpeg";
 
 const CreditosPage: React.FC = () => {
   return (
@@ -27,7 +28,7 @@ const CreditosPage: React.FC = () => {
         <IonRow>
           <IonCol size="12" sizeMd="6">
             <IonCard>
-              <IonImg src={arasaac} ></IonImg>
+              <IonImg src={arasaac}></IonImg>
               <IonCardHeader>
                 <IonCardTitle>ARASAAC</IonCardTitle>
                 <IonCardSubtitle>
@@ -69,6 +70,15 @@ const CreditosPage: React.FC = () => {
                 <IonCardSubtitle>
                   Facultad Regional Buenos Aires
                 </IonCardSubtitle>
+              </IonCardHeader>
+            </IonCard>
+          </IonCol>
+          <IonCol size="12" sizeMd="6">
+            <IonCard>
+              <IonImg src={germinar}></IonImg>
+              <IonCardHeader>
+                <IonCardTitle>Germinar</IonCardTitle>
+                <IonCardSubtitle>Equipo Interdisciplinario</IonCardSubtitle>
               </IonCardHeader>
             </IonCard>
           </IonCol>
