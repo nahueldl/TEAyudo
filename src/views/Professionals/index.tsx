@@ -158,7 +158,7 @@ const ProfessionalsPage: React.FC = () => {
                       src: `https://avatars.dicebear.com/api/bottts/${professional.id_usuario}.svg`,
                       alt: `Avatar de ${professional.nombre}`,
                     }}
-                    title={professional.nombre!}
+                    title={professional.nombre! + " " + professional.apellido}
                     touchable
                     onClick={() => {
                       handleClickSetShowModal(true, professional);

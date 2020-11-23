@@ -156,7 +156,7 @@ const PatientSelection: React.FC = () => {
                       src: `${patient.avatar}`,
                       alt: `Avatar de ${patient.nombre}`,
                     }}
-                    title={`${patient.nombre} ${patient.apellido}`}
+                    title={`${patient.nombre}`}
                     touchable
                     patient={patient}
                   />
