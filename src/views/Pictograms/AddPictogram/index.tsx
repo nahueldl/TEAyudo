@@ -22,6 +22,7 @@ const AddPictogram: React.FC = () => {
     const [ etiquetaPictograma, setEtiquetaPictograma ] = useState<string>();
     const [ categoriaValue, setCategoriaValue ] = useState<number>();
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => obtenerCategorias(), []);
 
     const obtenerCategorias = () => {

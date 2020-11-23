@@ -26,7 +26,11 @@ const CategoriesPage: React.FC = () => {
       // patientData.patientSelected?.id_paciente
     )
       .then((res: any) => {
-        setCategoriaData({ categoriasList: res.data });
+        if(res.data.length===0){
+          goToAddCategory();
+        }else{
+          setCategoriaData({ categoriasList: res.data });
+        }
         isLoading(false);
       })
       .catch((_error: any) => {

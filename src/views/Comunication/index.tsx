@@ -88,10 +88,11 @@ const ComunicationPage: React.FC = () => {
       .map((item) => item.pictogram.nombres[0].nombre)
       .join(" ");
       const listPictograms: any[] = [];
+      // eslint-disable-next-line array-callback-return
       selectedItems.map(item => {
         listPictograms?.push({id: item.pictogram.id_pictograma!})
       })
-      if(authData.role == 1){
+      if(authData.role === 1){
         TranslateServices.postTranslate(token!, patientId!, listPictograms)
         .then((res:any)=> {
           setTranslation(translation);

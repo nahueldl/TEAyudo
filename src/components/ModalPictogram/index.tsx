@@ -20,6 +20,7 @@ export const ModalPictogram: React.FC<Props> = ({showModal, handleShowModal, pic
     const [ newName, setNewName ] = useState("");
     const [ categoriaValue, setCategoriaValue ] = useState<number>();
     
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => obtenerCategorias(), []);
 
     const obtenerCategorias = () => {

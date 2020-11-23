@@ -50,7 +50,7 @@ const HomePage: React.FC = () => {
               </IonCardTitle>
             </IonCard>
           </IonCol>
-          {patientId!=="NoAsignado" ? (
+          {patientId !== "NoAsignado" ? (
             <IonCol size="12" sizeMd="6">
               <IonCard
                 button
@@ -60,7 +60,7 @@ const HomePage: React.FC = () => {
                 <IonCardTitle className={styles.cardTitle}>Jugar</IonCardTitle>
               </IonCard>
             </IonCol>
-          ):null}
+          ) : null}
           <IonCol size="12" sizeMd="6">
             <IonCard
               button
@@ -78,7 +78,7 @@ const HomePage: React.FC = () => {
               button
               className={styles.ionCard}
               onClick={() => goToCategoriesPage()}
-              color='tertiary'
+              color="tertiary"
             >
               <IonCardTitle className={styles.cardTitle}>
                 Categorias

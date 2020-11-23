@@ -29,7 +29,7 @@ const PatientsPage: React.FC = () => {
           isLoading(false);
         } else {
           isLoading(false);
-          if(role===2){
+          if (role === 2) {
             alert("El profesional no tiene pacientes asignados.");
             goToHome();
           } else {
@@ -52,10 +52,7 @@ const PatientsPage: React.FC = () => {
     [navigate]
   );
 
-  const goToHome = useCallback(
-    () => navigate("/inicio", "back"),
-    [navigate]
-  );
+  const goToHome = useCallback(() => navigate("/inicio", "back"), [navigate]);
 
   return (
     <Page pageTitle="Pacientes" showHomeButton>
@@ -68,16 +65,16 @@ const PatientsPage: React.FC = () => {
       ) : (
         <>
           <ListPatients />
-          {role==1 ? (
+          {role === 1 ? (
             <IonRow>
-            <CardWithIcon
-              icon={addCircleOutline}
-              title="Agregar"
-              touchable
-              onClick={handleAddPatientClick}
-            />
-          </IonRow>
-          ):null}
+              <CardWithIcon
+                icon={addCircleOutline}
+                title="Agregar"
+                touchable
+                onClick={handleAddPatientClick}
+              />
+            </IonRow>
+          ) : null}
         </>
       )}
       {error ? (

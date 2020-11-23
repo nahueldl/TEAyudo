@@ -69,7 +69,7 @@ const ProfessionalsPage: React.FC = () => {
           isLoading(false);
         }
       })
-      .catch((res: any) => {
+      .catch(() => {
         setErrorMessage("Hubo un problema, por favor intente más tarde.");
         isLoading(false);
         hasError(true);
@@ -96,7 +96,7 @@ const ProfessionalsPage: React.FC = () => {
       professionalSelected?.nro_matricula!,
       professionalSelected?.id_usuario!
     )
-      .then((res: any) => {
+      .then(() => {
         handleClickSetShowModal(false);
         getAsignProfessionalFromuser();
       })
@@ -116,7 +116,7 @@ const ProfessionalsPage: React.FC = () => {
       authData.token!,
       authData.patientId!
     )
-      .then((res: any) => {
+      .then(() => {
         setProfessionalAsign(undefined);
         getAllProfessionals();
       })

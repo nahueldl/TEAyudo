@@ -22,6 +22,7 @@ import RolesPage from "./views/Roles/Page";
 import RoleSelection from "./views/Roles/Selection";
 import LogInSignUpPage from "./views/LogIn&SignUp";
 import AddRole from "./views/Roles/Page/AddRolePage";
+import CreditosPage from "./views/Creditos";
 
 const AppPostLogin: React.FC = () => {
   const { patientName } = useContext(AuthenticationContext).authData;
@@ -66,6 +67,7 @@ const AppPostLogin: React.FC = () => {
 
         <Route path="/juegos" component={GamesPage} />
 
+        <Route path="/creditos" component={CreditosPage} />
       </IonRouterOutlet>
     </IonSplitPane>
   );

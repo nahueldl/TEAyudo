@@ -8,7 +8,6 @@ import {
   IonButton,
   IonContent,
   IonAvatar,
-  IonActionSheet,
 } from "@ionic/react";
 import "./styles.css";
 import Page from "../../../components/Page";
@@ -16,17 +15,15 @@ import { PatientContext } from "../../../context/patient";
 import { AuthenticationContext } from "../../../context/authentication";
 import ProfessionalServices from "../../../services/professionals.services";
 import PatientServices from "../../../services/patients.services";
-import { trash, close } from "ionicons/icons";
 import { useState } from "react";
 
 const ViewPatient: React.FC = () => {
   const { authData } = useContext(AuthenticationContext);
   const { patientData, setPatientData } = useContext(PatientContext);
   const { navigate } = useContext(NavContext);
-  const [  showActionDeleteProfessional, setShowActionDeleteProfessional ] = useState(false);
-  const [ loading, isLoading ] = useState<boolean>(false);
-  const [ error, hasError ] = useState<boolean>(false);
-  const [ errorMessage, setErrorMessage ] = useState<string>();
+  const [loading, isLoading] = useState<boolean>(false);
+  const [error, hasError] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>();
 
   const handleEditPatient = () => {
     goToEditPatient();
@@ -37,18 +34,18 @@ const ViewPatient: React.FC = () => {
     hasError(false);
     ProfessionalServices.deleteProfessional(
       authData.token!,
-      authData.patientId!,
+      authData.patientId!
     )
       .then((res: any) => {
         PatientServices.getPatientsFromUser(authData.token!)
-      .then((res: any) => {
-        isLoading(false);
-        setPatientData({ patientsList: res.data });
-      })
-      .catch((_error: any) => {
-        isLoading(false);
-        hasError(true);
-      });
+          .then((res: any) => {
+            isLoading(false);
+            setPatientData({ patientsList: res.data });
+          })
+          .catch((_error: any) => {
+            isLoading(false);
+            hasError(true);
+          });
       })
       .catch(() => {
         setErrorMessage(
@@ -88,7 +85,7 @@ const ViewPatient: React.FC = () => {
                 </IonAvatar>
                 <IonItem className="inputMargin">
                   <label>
-                    Nombre:{"  "}
+                    Nombre:
                     <strong className="text-bold pl-5">
                       {patientData.patientSelected?.nombre}
                     </strong>
@@ -96,7 +93,7 @@ const ViewPatient: React.FC = () => {
                 </IonItem>
                 <IonItem className="inputMargin">
                   <label>
-                    Apellido:{"  "}
+                    Apellido:
                     <strong className="text-bold pl-5">
                       {patientData.patientSelected?.apellido}
                     </strong>
@@ -110,10 +107,10 @@ const ViewPatient: React.FC = () => {
                   onClick={handleEditPatient}
                   expand="block">
                     Editar paciente
-                </IonButton>
-                ):(
+                  </IonButton>
+                ) : (
                   <>
-                  {/* <IonButton
+                    {/* <IonButton
                   className="formButtonmt-5"
                   color="danger"
                   onClick={() => setShowActionDeleteProfessional(true)}
@@ -143,12 +140,12 @@ const ViewPatient: React.FC = () => {
                     },
                   ]}
                 ></IonActionSheet> */}
-                </>
+                  </>
                 )}
                 <IonButton
                   className="formButton mt-5"
                   onClick={handleCancel}
-                  color={authData.role===1?"danger":"warning"}
+                  color={authData.role === 1 ? "danger" : "warning"}
                   expand="block"
                 >
                   Volver
