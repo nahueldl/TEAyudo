@@ -23,7 +23,7 @@ const matriculaService = {
        if(resultadoConsulta=='REGISTRO_NO_ENCONTRADO'){
         const result = {
           state: estadosRespuesta.USERERROR,
-          response: 'No se encontro una matricula, por favor revise nombre, apellido y dni del profesional'
+          response: 'No se encontro una matrícula, por favor revise nombre, apellido y DNI del profesional'
           }
           return result;
         }
@@ -53,7 +53,7 @@ const matriculaService = {
         }else if(matriculaProf != datosProfesional.matricula){
           const result = {
             state: estadosRespuesta.USERERROR,
-            response: 'La matricula ingresada es distinta a la que tiene asignada el profesional, o no es valida, pruebe ingresarla nuevamente'
+            response: 'La matrícula ingresada es distinta a la que tiene asignada el profesional, o no es válida, pruebe ingresarla nuevamente'
             }
           return result;
         }else{
