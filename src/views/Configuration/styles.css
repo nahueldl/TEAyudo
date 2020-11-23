@@ -1,4 +1,11 @@
-.logout {
+.mt-5 {
   margin-top: 5%;
+}
+
+.text-align-center {
   text-align: center;
+}
+
+.margin-auto {
+  margin: auto;
 }

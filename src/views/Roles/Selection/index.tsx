@@ -128,7 +128,6 @@ const RoleSelection: React.FC = () => {
           .catch((error: any) => {
             setLoading(false);
             setErrorMsg(error.response.data.msg);
-
             hasError(true);
           });
       })
@@ -178,7 +177,7 @@ const RoleSelection: React.FC = () => {
                     onClick={() => handleRolSelection(rol)}
                   >
                     <IonItem>
-                      <IonLabel>{rol.descripcion}</IonLabel>
+                      <IonLabel className="text-align-center p-5">{rol.descripcion}</IonLabel>
                     </IonItem>
                   </IonCard>
                 </IonCol>
@@ -293,6 +292,7 @@ const RoleSelection: React.FC = () => {
             animated
             backdropDismiss
             keyboardClose
+            onDidDismiss={e => hasError(false)}
             message={errorMsg}
           />
         ) : null}
