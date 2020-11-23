@@ -178,7 +178,7 @@ const RoleSelection: React.FC = () => {
                     onClick={() => handleRolSelection(rol)}
                   >
                     <IonItem>
-                      <IonLabel>{rol.descripcion}</IonLabel>
+                      <IonLabel className="text-align-center p-5">{rol.descripcion}</IonLabel>
                     </IonItem>
                   </IonCard>
                 </IonCol>
