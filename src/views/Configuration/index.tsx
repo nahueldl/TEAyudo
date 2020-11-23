@@ -26,7 +26,7 @@ const ConfigurationPage: React.FC = () => {
   };
 
   const changePatient = () => {
-    // setAuthData({username: undefined, patientId: undefined, authenticated: undefined, token: undefined, tokenExpirationDate: undefined, role: undefined});
+    setAuthData({patientId: undefined, authenticated: undefined});
     clear().then((res) => goToSelectPatient());
   }
 
@@ -37,9 +37,9 @@ const ConfigurationPage: React.FC = () => {
       <IonGrid className="overflow-auto">
         <IonRow>
           <IonCol size="5" sizeMd="4" className="margin-auto">
-            {/* <div className="mt-5">
+            <div className="mt-5">
               <IonButton onClick={() => changePatient()} expand="block">Cambiar paciente</IonButton>
-            </div> */}
+            </div>
             <div className="mt-5">
               <IonButton onClick={() => logout()} color="danger" expand="block">Cerrar sesión</IonButton>
             </div>

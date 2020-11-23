@@ -102,11 +102,10 @@ const ViewPatient: React.FC = () => {
               </IonList>
               <div>
                 {authData.role === 1 ? (
-                  <IonButton
-                    className="formButton mt-5"
-                    onClick={handleEditPatient}
-                    expand="block"
-                  >
+                <IonButton
+                  className="formButton mt-5"
+                  onClick={handleEditPatient}
+                  expand="block">
                     Editar paciente
                   </IonButton>
                 ) : (

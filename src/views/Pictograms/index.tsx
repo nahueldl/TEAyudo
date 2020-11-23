@@ -102,6 +102,7 @@ const PictogramsPage: React.FC = () => {
           animated
           backdropDismiss
           keyboardClose
+          onDidDismiss={e => hasError(false)}
           message={errorMessage}
       />
     </Page>

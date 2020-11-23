@@ -4,7 +4,7 @@ import { IonGrid, IonRow, IonCol, NavContext } from "@ionic/react";
 import CardWithImage from "../../../components/CardWithImage";
 import { PatientContext } from "../../../context/patient";
 
-const ListPatients: React.FC<ListPatientsProps> = (props) => {
+const ListPatients: React.FC<ListPatientsProps> = () => {
   const { patientData, setPatientData } = useContext(PatientContext);
   const { navigate } = useContext(NavContext);
 
