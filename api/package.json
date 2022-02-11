@@ -17,7 +17,7 @@
 		"cloudinary": "^1.23.0",
 		"dotenv": "^8.2.0",
 		"express": "^4.17.1",
-		"handlebars": "^4.7.6",
+		"handlebars": "^4.7.7",
 		"html-pdf": "^2.2.0",
 		"install": "^0.13.0",
 		"moment": "^2.29.1",
