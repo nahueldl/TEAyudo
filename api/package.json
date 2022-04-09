@@ -20,7 +20,7 @@
 		"handlebars": "^4.7.6",
 		"html-pdf": "^2.2.0",
 		"install": "^0.13.0",
-		"moment": "^2.29.1",
+		"moment": "^2.29.2",
 		"mssql": "^6.2.3",
 		"nodemailer": "^6.4.14",
 		"npm": "^6.14.8",
